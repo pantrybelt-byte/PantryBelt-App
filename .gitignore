@@ -1,0 +1,31 @@
+# B.L.A.S.T. — ephemeral workbench (keep folder via .gitkeep)
+.tmp/*
+!.tmp/.gitkeep
+
+# Dependencies
+node_modules/
+
+# Expo / Metro
+.expo/
+dist/
+web-build/
+
+# Env (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Firebase service account & admin SDK credentials (never commit)
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+
+# Large archive files
+*.zip
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+*.log
+Pantry-Belt-Landing-Page-/

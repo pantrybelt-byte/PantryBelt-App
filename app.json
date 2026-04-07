@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Pantry Belt",
+    "slug": "pantrybelt",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "pantrybelt",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.pantrybelt.app",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyCVMpRJWb_Vpez1dgVbdBotIBx0OuGdnZY"
+      }
+    },
+    "android": {
+      "package": "com.pantrybelt.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCVMpRJWb_Vpez1dgVbdBotIBx0OuGdnZY"
+        }
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Pantry Belt uses your location to show nearby food pantries on the map."
+        }
+      ]
+    ]
+  }
+}
