@@ -79,7 +79,7 @@ export default function HomeScreen() {
                     </View>
                     <Text style={styles.announcementTitle}>PantryBelt Wins 2nd Place!</Text>
                     <Text style={styles.announcementBody}>
-                        PantryBelt wins 2nd place in The Alabama Collective App Build and Business Pitch Competition on April 8th 2026!!
+                        PantryBelt won 2nd place and a $3,000 prize at The Alabama Collective's HBCU App Build & Pitch Competition on April 8, 2026!! Thank you for your support!
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
                         <Text style={styles.learnMoreText}>Explore the App</Text>
