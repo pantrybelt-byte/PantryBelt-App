@@ -21,7 +21,7 @@ import { useTheme } from '../../context/ThemeContext';
 // ─────────────────────────────────────────────────────────
 // Gemini 2.5 Flash — real AI for PantryPete
 // ─────────────────────────────────────────────────────────
-const GEMINI_API_KEY = 'AIzaSyAG4XZXfQ6eiqNVLzaL1ORMqNibRTiRqnk';
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || '';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const SYSTEM_PROMPT = `You are Pantry Pete, a warm and friendly food assistance guide for families in Alabama's Black Belt region. You work inside the PantryBelt app.
