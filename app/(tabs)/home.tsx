@@ -75,11 +75,11 @@ export default function HomeScreen() {
                             <Ionicons name="megaphone-outline" size={14} color="#fff" />
                             <Text style={styles.announcementBadge}>NEW</Text>
                         </View>
-                        <Text style={styles.announcementDate}>Apr 5, 2026</Text>
+                        <Text style={styles.announcementDate}>Apr 8, 2026</Text>
                     </View>
-                    <Text style={styles.announcementTitle}>PantryBelt Named a Top 10 Finalist!</Text>
+                    <Text style={styles.announcementTitle}>PantryBelt Wins 2nd Place!</Text>
                     <Text style={styles.announcementBody}>
-                        The PantryBelt Team has been selected as one of the top 10 finalists to pitch in the HBCU App Build Pitch Competition on April 8th, 2026! Check back soon for updates!
+                        PantryBelt wins 2nd place in The Alabama Collective App Build and Business Pitch Competition on April 8th 2026!!
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
                         <Text style={styles.learnMoreText}>Explore the App</Text>
