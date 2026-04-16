@@ -19,10 +19,10 @@ import { auth, db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
 
 // ─────────────────────────────────────────────────────────
-// Gemini 2.5 Flash — real AI for PantryPete
+// Gemini 1.5 Flash — real AI for PantryPete
 // ─────────────────────────────────────────────────────────
 const GEMINI_API_KEY = 'AIzaSyAG4XZXfQ6eiqNVLzaL1ORMqNibRTiRqnk';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const SYSTEM_PROMPT = `You are Pantry Pete, a warm and friendly food assistance guide for families in Alabama's Black Belt region. You work inside the PantryBelt app.
 
@@ -166,7 +166,6 @@ export default function PeteScreen() {
                         parts: [{ text: SYSTEM_PROMPT }],
                     },
                     contents: geminiMessages,
-                    tools: [{ googleSearch: {} }],
                     generationConfig: {
                         temperature: 0.7,
                         maxOutputTokens: 500,
@@ -180,16 +179,10 @@ export default function PeteScreen() {
                 || 'I am not sure about that one. Try calling 211 for immediate help — they are free and available 24/7.';
             const cleaned = stripMarkdown(raw);
 
-            // Check if Google Search was used and append source note
-            const groundingChunks = candidate?.groundingMetadata?.groundingChunks ?? [];
-            const sourceNote = groundingChunks.length > 0
-                ? '\n\n(I searched the web to help answer that.)'
-                : '';
-
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 role: 'assistant',
-                text: cleaned + sourceNote,
+                text: cleaned,
             }]);
         } catch (err) {
             setMessages(prev => [...prev, {
