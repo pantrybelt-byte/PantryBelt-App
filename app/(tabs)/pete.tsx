@@ -95,7 +95,6 @@ async function logSearchTopic(topic: string, zipPrefix: string | null) {
         }
     } catch (e) {
         // Silent fail — analytics should never break the app
-        console.log('Analytics log failed silently');
     }
 }
 
