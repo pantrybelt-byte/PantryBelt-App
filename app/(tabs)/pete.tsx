@@ -19,48 +19,104 @@ import { auth, db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
 
 // ─────────────────────────────────────────────────────────
-// Gemini 1.5 Flash — real AI for PantryPete
+// Pantry Pete — Smart Local Response Engine
+// No API key required. Instant responses for all common questions.
 // ─────────────────────────────────────────────────────────
-const GEMINI_API_KEY = 'AIzaSyAG4XZXfQ6eiqNVLzaL1ORMqNibRTiRqnk';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-const SYSTEM_PROMPT = `You are Pantry Pete, a warm and friendly food assistance guide for families in Alabama's Black Belt region. You work inside the PantryBelt app.
+const RESPONSES: Record<string, string> = {
+    find_pantries:
+        "Here are some pantries near you in Alabama's Black Belt:\n\n" +
+        "Montgomery Area\n" +
+        "Montgomery Area Food Bank — (334) 263-3784\n" +
+        "True Divine Community Dev — (334) 286-4008, Mon/Wed/Fri 9am–12:30pm\n" +
+        "Aldersgate UMC — Tuesdays 10am–12pm\n" +
+        "Westside Church of Christ — (334) 356-8759, Thursdays 10am–1pm\n\n" +
+        "Auburn Area\n" +
+        "East Alabama Food Bank — (334) 821-9006\n" +
+        "Alabama Coalition Against Hunger — (334) 262-0359, Mon–Fri 8:30am–5pm\n\n" +
+        "Tuskegee\n" +
+        "Tuskegee Community Food Bank — (334) 727-0060\n\n" +
+        "Selma\n" +
+        "Selma Area Food Bank — (334) 872-4114\n" +
+        "American Red Cross Selma — (334) 875-7565\n\n" +
+        "Use the Map tab to see all 39 pantries with directions. Need urgent help? Call 211 — free, 24/7.",
 
-Your personality: Conversational, caring, patient, and encouraging. Talk like a helpful neighbor — not a robot or a form. Use natural language. Keep it short and easy to read.
+    snap_ebt:
+        "SNAP (also called food stamps or EBT) can help your family buy groceries each month.\n\n" +
+        "To apply in Alabama, call (334) 242-1310 or visit your local DHR office. You can also apply online at dhr.alabama.gov.\n\n" +
+        "You'll generally need: photo ID, proof of address, proof of income, and Social Security numbers for your household.\n\n" +
+        "Most families find out if they qualify within 30 days. If you need food right now while you wait, call 211 or visit a pantry today — no SNAP card required at most pantries.",
 
-IMPORTANT FORMATTING RULES:
-- Never use markdown. No asterisks (**), no bullet dashes, no pound signs (#), no code blocks.
-- Write in plain sentences and paragraphs only.
-- Use line breaks between separate thoughts to make it easy to read.
-- Keep responses under 180 words. If you have a lot to share, give the most important info first and offer to share more.
+    recipe_ideas:
+        "Great pantry staples to cook with: canned beans, rice, pasta, canned tomatoes, oats, and peanut butter.\n\n" +
+        "Quick ideas:\n" +
+        "Rice and Beans — Cook rice, warm a can of black or pinto beans with garlic and cumin. Done in 20 minutes and very filling.\n\n" +
+        "Pasta with Tomato Sauce — Boil pasta, heat a can of diced tomatoes with olive oil and salt. Add any canned veggies you have.\n\n" +
+        "Oatmeal — Mix oats with hot water or milk, add peanut butter or a little sugar. Great for kids.\n\n" +
+        "Want a recipe for something specific you have on hand? Just tell me what's in your pantry and I'll help!",
 
-You help people with:
-Finding food pantries and hours, SNAP/EBT applications, WIC programs, simple recipes using pantry staples, what to bring to a pantry, emergency food, and free school meals.
+    what_to_bring:
+        "Most food pantries in our area are welcoming and don't require much. Here's what's helpful to bring:\n\n" +
+        "A photo ID (driver's license, state ID)\n" +
+        "Proof of address (a bill or piece of mail with your name on it)\n" +
+        "A bag or box to carry food home\n\n" +
+        "Some pantries don't require any ID at all — especially for emergency visits. If you're not sure, just show up or call ahead.\n\n" +
+        "You don't need to prove income or fill out a long form at most locations. Everyone is welcome.",
 
-Real pantries in the PantryBelt app (39 pantries across Alabama's Black Belt):
-Montgomery Area: Montgomery Area Food Bank (334) 263-3784, True Divine Community Dev (334) 286-4008 Mon/Wed/Fri 9am-12:30pm, Aldersgate UMC Tuesdays 10am-12pm, Heart of Alabama Food Bank (334) 263-3784, Catholic Social Services (334) 956-7980, Westside Church of Christ (334) 356-8759 Thursdays 10am-1pm, First Christian Church (334) 277-3037, St. Jude Social Services (334) 265-6791, New Canaan Missionary Baptist (334) 281-3171
-Auburn area: East Alabama Food Bank (334) 821-9006, Auburn United Methodist (334) 826-8800, Alabama Coalition Against Hunger (334) 262-0359 Mon-Fri 8:30am-5pm
-Tuskegee: Tuskegee Community Food Bank (334) 727-0060, Macon County Action Agency (334) 727-6100
-Other areas: AICC Ministry Prattville (334) 365-4080 Tue-Thu 9:30am-2:30pm, ACTS Direct Aid Tallassee (334) 283-6750, Neighbor to Neighbor Phenix City (334) 384-1340, Weeping Mary Baptist Tuscaloosa 3rd Thursday seniors 60+, 2nd Chance Pantry Albertville (256) 891-2430 Wed/Fri 10am-1pm, Operation Homecare York (205) 392-9292, Andrews Chapel UMC Millport (205) 695-2227, Lowndes County Pantry Hayneville (334) 548-2331, Perry County Food Bank Marion (334) 683-6511, Demopolis Food Pantry (334) 289-3221, Greene County Outreach Eutaw (205) 372-9700, Selma Area Food Bank (334) 872-4114, American Red Cross Selma (334) 875-7565
+    emergency_help:
+        "If you or your family need food right now, please call 211.\n\n" +
+        "211 is free, available 24 hours a day, 7 days a week, and connects you with food resources in your area immediately.\n\n" +
+        "You can also visit any pantry on the Map tab — most don't require an appointment for emergencies.\n\n" +
+        "Montgomery Area Food Bank: (334) 263-3784\n" +
+        "Selma Area Food Bank: (334) 872-4114\n" +
+        "East Alabama Food Bank: (334) 821-9006\n\n" +
+        "You are not alone. Help is close by.",
 
-Key resources:
-SNAP: fns.usda.gov/snap/supplemental-nutrition-assistance-program or call (334) 242-1310
-WIC: alabamapublichealth.gov/wic or call (800) 654-3463
-Emergency food: Call 211, free 24/7
-Free school meals: benefits.gov/benefit/361
+    wic:
+        "WIC helps pregnant women, new moms, and children under 5 get nutritious food, formula, and health support.\n\n" +
+        "To apply in Alabama, call (800) 654-3463 or visit alabamapublichealth.gov/wic to find your nearest WIC clinic.\n\n" +
+        "WIC covers things like milk, eggs, cereal, fruits, vegetables, juice, and infant formula. It's separate from SNAP and you can use both.\n\n" +
+        "If you're pregnant or have a young child, it's definitely worth applying — even if you're not sure you qualify.",
 
-Always mention calling 211 for urgent food needs. Never ask for or store personal information. If someone sounds like they are in crisis, respond with 211 immediately and compassionately.`;
+    school_meals:
+        "Free and reduced-price school meals are available to qualifying families across Alabama.\n\n" +
+        "To apply, contact your child's school and ask for a Free and Reduced Meal application. You can also visit benefits.gov/benefit/361 for more information.\n\n" +
+        "During summer, many schools and community centers offer free summer meal programs for kids 18 and under — no application needed, just show up.\n\n" +
+        "Call 211 to find summer meal sites near you.",
 
-// Strip markdown formatting from AI responses
-function stripMarkdown(text: string): string {
-    return text
-        .replace(/\*\*(.+?)\*\*/g, '$1')   // **bold** → bold
-        .replace(/\*(.+?)\*/g, '$1')         // *italic* → italic
-        .replace(/#{1,6}\s+/g, '')           // ## headings → plain
-        .replace(/^[-•]\s+/gm, '')           // bullet points → plain
-        .replace(/`(.+?)`/g, '$1')           // `code` → plain
-        .replace(/\[(.+?)\]\(.+?\)/g, '$1') // [links](url) → text only
-        .trim();
+    hours:
+        "Pantry hours vary by location. Here are some with set schedules:\n\n" +
+        "True Divine Community Dev — Mon, Wed, Fri 9am–12:30pm — (334) 286-4008\n" +
+        "Aldersgate UMC — Tuesdays 10am–12pm\n" +
+        "Westside Church of Christ — Thursdays 10am–1pm — (334) 356-8759\n" +
+        "AICC Ministry Prattville — Tue–Thu 9:30am–2:30pm — (334) 365-4080\n" +
+        "2nd Chance Pantry Albertville — Wed & Fri 10am–1pm — (256) 891-2430\n" +
+        "Alabama Coalition Against Hunger — Mon–Fri 8:30am–5pm — (334) 262-0359\n\n" +
+        "For others, call the pantry directly or check the Map tab. Need food outside of hours? Call 211.",
+
+    general:
+        "I'm here to help! I can assist you with:\n\n" +
+        "Finding a food pantry near you\n" +
+        "Applying for SNAP or EBT benefits\n" +
+        "WIC for moms and young children\n" +
+        "Simple recipes using pantry staples\n" +
+        "What to bring to a pantry\n" +
+        "Emergency food help\n" +
+        "Free school meals for kids\n\n" +
+        "Just tap one of the buttons below or type your question. And remember — if you need food right now, call 211, free 24/7.",
+};
+
+function getPeteResponse(msg: string): string {
+    const t = msg.toLowerCase();
+    if (t.includes('find pantri') || t.includes('find pantries') || (t.includes('pantry') && (t.includes('find') || t.includes('near') || t.includes('where') || t.includes('location') || t.includes('close')))) return RESPONSES.find_pantries;
+    if (t.includes('snap') || t.includes('ebt') || t.includes('food stamp') || t.includes('benefit')) return RESPONSES.snap_ebt;
+    if (t.includes('recipe') || t.includes('cook') || t.includes('meal') || t.includes('make') || t.includes('eat')) return RESPONSES.recipe_ideas;
+    if (t.includes('what to bring') || t.includes('bring') || t.includes('document') || t.includes('id') || t.includes('require')) return RESPONSES.what_to_bring;
+    if (t.includes('emergency') || t.includes('urgent') || t.includes('right now') || t.includes('hungry') || t.includes('crisis') || t.includes('immediate')) return RESPONSES.emergency_help;
+    if (t.includes('wic') || t.includes('pregnant') || t.includes('baby') || t.includes('formula') || t.includes('infant')) return RESPONSES.wic;
+    if (t.includes('school') || t.includes('kid') || t.includes('child') || t.includes('student') || t.includes('summer meal')) return RESPONSES.school_meals;
+    if (t.includes('hour') || t.includes('open') || t.includes('time') || t.includes('schedule') || t.includes('when')) return RESPONSES.hours;
+    return RESPONSES.general;
 }
 
 function detectTopic(text: string): string {
@@ -100,6 +156,13 @@ async function logSearchTopic(topic: string, zipPrefix: string | null) {
 
 type Message = { id: number; role: 'user' | 'assistant'; text: string };
 
+// ─── Quota Protection ────────────────────────────────────────────────────────
+// In-memory cache: normalized question → cached answer (cleared on app restart)
+const responseCache = new Map<string, string>();
+const MAX_MESSAGES_PER_SESSION = 20; // hard cap per session to guard daily quota
+const MAX_HISTORY_TURNS = 6;         // only send last 6 turns to Gemini (saves tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
 const QUICK_QUESTIONS = [
     { label: 'Find pantries', bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe' },
     { label: 'SNAP/EBT help', bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' },
@@ -135,6 +198,17 @@ export default function PeteScreen() {
         const msg = (text || input).trim();
         if (!msg || loading) return;
 
+        // ── Per-session rate limit ──────────────────────────────────────────
+        const userTurns = messages.filter(m => m.role === 'user').length;
+        if (userTurns >= MAX_MESSAGES_PER_SESSION) {
+            setMessages(prev => [...prev, {
+                id: Date.now(),
+                role: 'assistant',
+                text: "You've reached the chat limit for this session. For ongoing food help, please call 211 — free 24/7. Restart the app to begin a new session.",
+            }]);
+            return;
+        }
+
         const userMsg: Message = { id: Date.now(), role: 'user', text: msg };
         const history = [...messages, userMsg];
         setMessages(history);
@@ -146,53 +220,17 @@ export default function PeteScreen() {
         const topic = detectTopic(msg);
         logSearchTopic(topic, zipPrefix);
 
-        try {
-            // Build conversation history for Gemini (exclude the static greeting)
-            const prior = history.slice(0, -1).filter(m => m.id !== 1);
-            const geminiMessages = [
-                ...prior.map(m => ({
-                    role: m.role === 'user' ? 'user' : 'model',
-                    parts: [{ text: m.text }],
-                })),
-                { role: 'user', parts: [{ text: msg }] },
-            ];
-
-            const response = await fetch(GEMINI_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    system_instruction: {
-                        parts: [{ text: SYSTEM_PROMPT }],
-                    },
-                    contents: geminiMessages,
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 500,
-                    },
-                }),
-            });
-
-            const data = await response.json();
-            const candidate = data?.candidates?.[0];
-            const raw = candidate?.content?.parts?.[0]?.text
-                || 'I am not sure about that one. Try calling 211 for immediate help — they are free and available 24/7.';
-            const cleaned = stripMarkdown(raw);
-
+        // ── Local smart response — instant, no API needed ──────────────────
+        const reply = getPeteResponse(msg);
+        setTimeout(() => {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 role: 'assistant',
-                text: cleaned,
+                text: reply,
             }]);
-        } catch (err) {
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                role: 'assistant',
-                text: "Connection issue. For immediate food help please call 211 — free 24/7.",
-            }]);
-        } finally {
             setLoading(false);
             setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
-        }
+        }, 600); // small delay so it feels natural
     }
 
     return (

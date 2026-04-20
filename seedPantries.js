@@ -1,17 +1,19 @@
 // seedPantries.js — Updated pantry list with geocoding
+// Reads credentials from .env — never commit real keys to source control.
+require('dotenv').config();
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } = require('firebase/firestore');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBxQvjnFlatXmgBSYmR1g05JQC9SZUwzHQ",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: "pantrybelt-1e7eb.firebaseapp.com",
   projectId: "pantrybelt-1e7eb",
   storageBucket: "pantrybelt-1e7eb.firebasestorage.app",
-  messagingSenderId: "886799477362",
+  messagingSenderId: "886799477652",
   appId: "1:886799477362:web:bd790a7b927be4153a30eb"
 };
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyBA5oA6s3JQJtKEEmDzsRFTSfsCECZsWRE";
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_GEOCODING_KEY;
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

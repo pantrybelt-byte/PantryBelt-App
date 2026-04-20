@@ -5,7 +5,7 @@ import { getAuth, getReactNativePersistence, initializeAuth } from 'firebase/aut
 import { getFirestore } from 'firebase/firestore';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyBxQvjnFlatXmgBSYmR1g05JQC9SZUwzHQ',
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'pantrybelt-1e7eb.firebaseapp.com',
   projectId: 'pantrybelt-1e7eb',
   storageBucket: 'pantrybelt-1e7eb.firebasestorage.app',
