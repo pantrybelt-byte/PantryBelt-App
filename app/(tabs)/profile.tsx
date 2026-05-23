@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { onAuthStateChanged, signOut, updateProfile, User } from 'firebase/auth';
@@ -309,6 +310,30 @@ export default function ProfileScreen() {
                     </View>
                     <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: '#e5e5ea' }} thumbColor="#fff" />
                 </View>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity
+                    style={styles.settingRow}
+                    onPress={async () => {
+                        await AsyncStorage.removeItem('hasSeenOnboarding');
+                        Alert.alert(
+                            'Reset Successful',
+                            'Onboarding state has been reset. Would you like to view it now?',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                { text: 'Show Onboarding', onPress: () => router.replace('/(onboarding)/') }
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: '#fffbeb' }]}>
+                        <Ionicons name="play-outline" size={18} color="#d97706" />
+                    </View>
+                    <View style={styles.settingTextWrap}>
+                        <Text style={[styles.settingTitle, { color: theme.text }]}>Replay Onboarding</Text>
+                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Watch the app intro again</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
             </View>
 
             {/* Resources */}

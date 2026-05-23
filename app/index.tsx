@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Redirect } from 'expo-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -7,10 +8,16 @@ import { auth } from '@/firebase';
 export default function Index() {
     const [ready, setReady] = useState(false);
     const [authed, setAuthed] = useState(false);
+    const [onboarded, setOnboarded] = useState(false);
 
     useEffect(() => {
-        const unsub = onAuthStateChanged(auth, (user) => {
+        const unsub = onAuthStateChanged(auth, async (user) => {
             setAuthed(!!user);
+            if (user) {
+                // Clear onboarding status for screen recording purposes
+                await AsyncStorage.removeItem('hasSeenOnboarding');
+                setOnboarded(false);
+            }
             setReady(true);
         });
         return unsub;
@@ -22,5 +29,7 @@ export default function Index() {
         </View>
     );
 
-    return <Redirect href={authed ? '/(tabs)/map' : '/(auth)/signin'} />;
+    if (!authed) return <Redirect href="/(auth)/signin" />;
+    if (!onboarded) return <Redirect href="/(onboarding)/" />;
+    return <Redirect href="/(tabs)/map" />;
 }

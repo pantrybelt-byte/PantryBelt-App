@@ -10,7 +10,18 @@
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "config/**/*.ts",
+    "context/**/*.ts",
+    "context/**/*.tsx",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "Pantry-Belt-Landing-Page-",
+    ".expo",
+    "dist",
+    "web-build"
   ]
 }

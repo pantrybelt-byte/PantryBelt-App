@@ -37,6 +37,7 @@ module.exports = {
     },
     plugins: [
       'expo-router',
+      'expo-font',
       [
         'expo-location',
         {

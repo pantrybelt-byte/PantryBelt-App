@@ -22,7 +22,7 @@ export default function SignInScreen() {
         setLoading(true);
         try {
             await signInAnonymously(auth);
-            router.replace('/(tabs)/map');
+            router.replace('/');
         } catch (err) {
             Alert.alert('Error', 'Could not sign in. Please try again.');
         } finally {
