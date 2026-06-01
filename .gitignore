@@ -19,6 +19,9 @@ web-build/
 serviceAccountKey.json
 *-firebase-adminsdk-*.json
 
+# Google Play service account key (used by EAS submit — never commit)
+google-service-account.json
+
 # Large archive files
 *.zip
 

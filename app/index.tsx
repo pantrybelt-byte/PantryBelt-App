@@ -14,9 +14,8 @@ export default function Index() {
         const unsub = onAuthStateChanged(auth, async (user) => {
             setAuthed(!!user);
             if (user) {
-                // Clear onboarding status for screen recording purposes
-                await AsyncStorage.removeItem('hasSeenOnboarding');
-                setOnboarded(false);
+                const seen = await AsyncStorage.getItem('hasSeenOnboarding');
+                setOnboarded(seen === 'true');
             }
             setReady(true);
         });

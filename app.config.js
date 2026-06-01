@@ -18,6 +18,7 @@ module.exports = {
     },
     ios: {
       bundleIdentifier: 'com.pantrybelt.app',
+      buildNumber: '1',
       supportsTablet: true,
       config: {
         googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
@@ -25,6 +26,7 @@ module.exports = {
     },
     android: {
       package: 'com.pantrybelt.app',
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/logo.png',
         backgroundColor: '#ffffff',

@@ -27,7 +27,7 @@ const RESPONSES: Record<string, string> = {
     find_pantries:
         "Here are some pantries near you in Alabama's Black Belt:\n\n" +
         "Montgomery Area\n" +
-        "Montgomery Area Food Bank — (334) 263-3784\n" +
+        "Heart of Alabama Food Bank — (334) 263-3784\n" +
         "True Divine Community Dev — (334) 286-4008, Mon/Wed/Fri 9am–12:30pm\n" +
         "Aldersgate UMC — Tuesdays 10am–12pm\n" +
         "Westside Church of Christ — (334) 356-8759, Thursdays 10am–1pm\n\n" +
@@ -67,7 +67,7 @@ const RESPONSES: Record<string, string> = {
         "If you or your family need food right now, please call 211.\n\n" +
         "211 is free, available 24 hours a day, 7 days a week, and connects you with food resources in your area immediately.\n\n" +
         "You can also visit any pantry on the Map tab — most don't require an appointment for emergencies.\n\n" +
-        "Montgomery Area Food Bank: (334) 263-3784\n" +
+        "Heart of Alabama Food Bank: (334) 263-3784\n" +
         "Selma Area Food Bank: (334) 872-4114\n" +
         "East Alabama Food Bank: (334) 821-9006\n\n" +
         "You are not alone. Help is close by.",
