@@ -37,6 +37,11 @@ module.exports = {
         },
       },
     },
+    extra: {
+      eas: {
+        projectId: '9e9de4c0-d6ce-4e27-8c60-f9026934042f',
+      },
+    },
     plugins: [
       'expo-router',
       'expo-font',
