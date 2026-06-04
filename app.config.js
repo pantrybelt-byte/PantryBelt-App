@@ -11,6 +11,7 @@ module.exports = {
     icon: './assets/logo.png',
     userInterfaceStyle: 'automatic',
     scheme: 'pantrybelt',
+    newArchEnabled: false,
     splash: {
       image: './assets/logo.png',
       resizeMode: 'contain',
