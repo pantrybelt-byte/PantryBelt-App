@@ -26,7 +26,6 @@ module.exports = {
     },
     android: {
       package: 'com.pantrybelt.app',
-      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/logo.png',
         backgroundColor: '#ffffff',
