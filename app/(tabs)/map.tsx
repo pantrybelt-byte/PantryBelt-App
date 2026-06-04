@@ -132,7 +132,7 @@ export default function MapScreen() {
             </MapView>
 
             {/* City filter chips */}
-            <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]}>
+            <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipContent}>
                     {cities.map((city, i) => (
                         <TouchableOpacity
@@ -147,7 +147,7 @@ export default function MapScreen() {
             </View>
 
             {/* Count badge */}
-            <View style={styles.countBadge}>
+            <View style={styles.countBadge} pointerEvents="none">
                 <Text style={styles.countText}>
                     {filtered.length} pantries · {liveData ? 'live' : 'offline'}
                 </Text>
