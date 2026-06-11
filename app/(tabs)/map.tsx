@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { signInAnonymously } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator, Linking, Modal, Platform, ScrollView,
     StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import MapView, { Callout, Marker, PROVIDER_DEFAULT } from 'react-native-maps';
-import { db } from '../../config/firebase';
+import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
+import { auth, db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
 
 type Pantry = {
@@ -33,6 +34,7 @@ export default function MapScreen() {
 
     const [pantries, setPantries] = useState<Pantry[]>([]);
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
     const [cities, setCities] = useState<string[]>(['All']);
@@ -40,30 +42,38 @@ export default function MapScreen() {
     const [modalVisible, setModalVisible] = useState(false);
 
     // ── Load pantries from Firestore ──────────────────────
-    useEffect(() => {
-        const fetchPantries = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'pantries'));
-                if (!snapshot.empty) {
-                    const data = snapshot.docs.map(d => ({
-                        id: d.id,
-                        ...d.data(),
-                    })) as Pantry[];
-                    // Only keep pantries with valid coordinates
-                    const valid = data.filter(p => typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng));
-                    setPantries(valid);
-                    setLiveData(true);
-                    const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];
-                    setCities(uniqueCities);
-                }
-            } catch (err) {
-                console.error('Firestore error:', err);
-            } finally {
-                setLoading(false);
+    const fetchPantries = useCallback(async () => {
+        setLoading(true);
+        setFetchError(false);
+        try {
+            // Ensure we have an authenticated session before reading Firestore.
+            // onAuthStateChanged in index.tsx normally guarantees this, but we
+            // guard here defensively so a stale/expired anonymous session doesn't
+            // silently produce zero results.
+            if (!auth.currentUser) {
+                await signInAnonymously(auth);
             }
-        };
-        fetchPantries();
+            const snapshot = await getDocs(collection(db, 'pantries'));
+            if (!snapshot.empty) {
+                const data = snapshot.docs.map(d => ({
+                    id: d.id,
+                    ...d.data(),
+                })) as Pantry[];
+                const valid = data.filter(p => typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng));
+                setPantries(valid);
+                setLiveData(true);
+                const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];
+                setCities(uniqueCities);
+            }
+        } catch (err) {
+            console.error('Firestore error:', err);
+            setFetchError(true);
+        } finally {
+            setLoading(false);
+        }
     }, []);
+
+    useEffect(() => { fetchPantries(); }, [fetchPantries]);
 
     const filtered = filter === 'All' ? pantries : pantries.filter(p => p.city === filter);
 
@@ -87,6 +97,17 @@ export default function MapScreen() {
         </View>
     );
 
+    if (fetchError) return (
+        <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
+            <Ionicons name="wifi-outline" size={48} color="#b52525" />
+            <Text style={[styles.loadingText, { color: theme.text }]}>Could not load pantries</Text>
+            <Text style={[styles.errorSubtext, { color: theme.subtext }]}>Check your connection and try again.</Text>
+            <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries}>
+                <Text style={styles.retryBtnText}>Retry</Text>
+            </TouchableOpacity>
+        </View>
+    );
+
     return (
         <View style={styles.container}>
 
@@ -94,7 +115,7 @@ export default function MapScreen() {
             <MapView
                 ref={mapRef}
                 style={styles.map}
-                provider={PROVIDER_DEFAULT}
+                provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
                 mapType="standard"
                 userInterfaceStyle={theme.dark ? 'dark' : 'light'}
                 showsUserLocation
@@ -285,4 +306,7 @@ const styles = StyleSheet.create({
     websiteBtnText: { color: '#2563eb', fontWeight: '600', fontSize: 14 },
     verifiedBadge: { flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: '#f0fdf4', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
     verifiedText: { fontSize: 10, color: '#16a34a', fontWeight: '700' },
+    errorSubtext: { fontSize: 14, marginTop: 6 },
+    retryBtn: { marginTop: 20, backgroundColor: '#b52525', paddingHorizontal: 28, paddingVertical: 13, borderRadius: 12 },
+    retryBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
 });
