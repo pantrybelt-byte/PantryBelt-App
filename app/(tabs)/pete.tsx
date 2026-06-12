@@ -17,10 +17,11 @@ import {
 } from 'react-native';
 import { auth, db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
+import { askGemini, GeminiTurn } from '../../utils/gemini';
 
 // ─────────────────────────────────────────────────────────
-// Pantry Pete — Smart Local Response Engine
-// No API key required. Instant responses for all common questions.
+// Pantry Pete — Gemini-powered AI assistant
+// Falls back to local keyword responses if the API is unavailable.
 // ─────────────────────────────────────────────────────────
 
 const RESPONSES: Record<string, string> = {
@@ -220,17 +221,35 @@ export default function PeteScreen() {
         const topic = detectTopic(msg);
         logSearchTopic(topic, zipPrefix);
 
-        // ── Local smart response — instant, no API needed ──────────────────
-        const reply = getPeteResponse(msg);
-        setTimeout(() => {
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                role: 'assistant',
-                text: reply,
-            }]);
+        // ── Cache check ────────────────────────────────────────────────────
+        const cacheKey = msg.toLowerCase().trim();
+        if (responseCache.has(cacheKey)) {
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: responseCache.get(cacheKey)! }]);
             setLoading(false);
             setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
-        }, 600); // small delay so it feels natural
+            return;
+        }
+
+        // ── Gemini API — with local keyword fallback ───────────────────────
+        // Build history from the last MAX_HISTORY_TURNS exchanges, skipping
+        // the initial welcome message at index 0.
+        const geminiHistory: GeminiTurn[] = messages
+            .slice(1)
+            .slice(-(MAX_HISTORY_TURNS * 2))
+            .map(m => ({ role: m.role === 'user' ? 'user' : 'model', text: m.text }));
+
+        try {
+            const reply = await askGemini(geminiHistory, msg);
+            responseCache.set(cacheKey, reply);
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+        } catch (err) {
+            console.warn('Gemini unavailable, using local response:', err);
+            const reply = getPeteResponse(msg);
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+        } finally {
+            setLoading(false);
+            setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+        }
     }
 
     return (
