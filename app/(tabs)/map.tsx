@@ -271,7 +271,7 @@ export default function MapScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    map: { flex: 1 },
+    map: { ...StyleSheet.absoluteFillObject },
     loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f2f2f7', gap: 12 },
     loadingText: { fontSize: 15, color: '#6c6c70', fontWeight: '600' },
     chipsWrapper: { position: 'absolute', top: 54, left: 0, right: 0 },

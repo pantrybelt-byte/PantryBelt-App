@@ -1,6 +1,10 @@
-// app.config.js — Dynamic Expo config that reads secrets from environment variables.
-// Requires EXPO_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file.
-// See .env.example for required variable names.
+if (!process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) {
+  console.warn(
+    '\n⚠️  WARNING: EXPO_PUBLIC_GOOGLE_MAPS_API_KEY is not defined in the environment. ' +
+    'Google Maps will render as a blank screen on Android in production builds. ' +
+    'Make sure to set this in your EAS Secrets/Variables or local .env file!\n'
+  );
+}
 
 module.exports = {
   expo: {
