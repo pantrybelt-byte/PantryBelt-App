@@ -24,6 +24,8 @@ google-service-account.json
 
 # Large archive files
 *.zip
+*.apk
+*.aab
 
 # VS Code
 .vscode/
