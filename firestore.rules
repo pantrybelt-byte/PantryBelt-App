@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthed() { return request.auth != null; }
+    function role() { return request.auth.token.role; }
+    function callerOrgId() { return request.auth.token.orgId; }
+    function callerCounties() { return request.auth.token.counties; }
+
+    function isStateAdmin() { return isAuthed() && role() == 'state_admin'; }
+    function isOrgAdmin() { return isAuthed() && role() in ['org_admin', 'state_admin']; }
+    function isOrgStaff() { return isAuthed() && role() in ['org_staff', 'org_admin', 'state_admin']; }
+    function isReadPartner() { return isAuthed() && role() in ['read_only_partner', 'field_worker', 'org_staff', 'org_admin', 'state_admin']; }
+
+    function ownsOrg(docOrgId) { return callerOrgId() == docOrgId; }
+    function countyOk(county) { return isStateAdmin() || county in callerCounties(); }
+    function hasOrgAccess(docOrgId) { return ownsOrg(docOrgId) || isStateAdmin(); }
+    function orgUnchanged() { return request.resource.data.orgId == resource.data.orgId; }
+
+    function validResourceStatus(s) { return s in ['unopened', 'pending', 'active', 'inactive', 'closed']; }
+    function validEventStatus(s) { return s in ['unopened', 'draft', 'published', 'active', 'fulfilled', 'cancelled', 'postponed']; }
+    function validFulfillmentStatus(s) { return s in ['unopened', 'not_started', 'in_progress', 'partial', 'fulfilled', 'cancelled']; }
+    function validRequestStatus(s) { return s in ['unopened', 'pending', 'partial', 'fulfilled', 'cancelled']; }
+
+    function validCoordinates(data) {
+      return 'coordinates' in data && data.coordinates.lat is number && data.coordinates.lng is number
+          && data.coordinates.lat >= -90 && data.coordinates.lat <= 90
+          && data.coordinates.lng >= -180 && data.coordinates.lng <= 180;
+    }
+    function validGeohash(data) { return 'geohash' in data && data.geohash is string && data.geohash.size() >= 1; }
+    function validItemQuantities(data) {
+      return data.quantityRequested is number && data.quantityFulfilled is number
+          && data.quantityRequested >= 0 && data.quantityFulfilled >= 0 && data.quantityFulfilled <= data.quantityRequested;
+    }
+    function validEventWindow(data) {
+      return data.status in ['unopened', 'draft'] || (data.startTime is timestamp && data.endTime is timestamp && data.startTime < data.endTime);
+    }
+
+    match /organizations/{orgId} {
+      allow read: if isAuthed() && (ownsOrg(orgId) || isStateAdmin());
+      allow create: if isStateAdmin();
+      allow update: if isStateAdmin() || (isOrgAdmin() && ownsOrg(orgId) && request.resource.data.jurisdictionCounties == resource.data.jurisdictionCounties);
+      allow delete: if false;
+    }
+
+    match /resources/{resourceId} {
+      allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
+      allow delete: if false;
+    }
+
+    match /events/{eventId} {
+      allow read: if resource.data.status in ['published', 'active'] || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
+      allow delete: if false;
+    }
+
+    match /resourceRequests/{requestId} {
+      allow read: if isAuthed() && (hasOrgAccess(resource.data.orgId) || (isReadPartner() && countyOk(resource.data.county)));
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validRequestStatus(request.resource.data.status) && request.resource.data.status in ['unopened', 'pending'];
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && validRequestStatus(request.resource.data.status);
+      allow delete: if false;
+
+      match /items/{itemId} {
+        function parentReq() { return get(/databases/$(database)/documents/resourceRequests/$(requestId)).data; }
+        allow read: if isAuthed() && (hasOrgAccess(parentReq().orgId) || (isReadPartner() && countyOk(parentReq().county)));
+        allow create, update: if isOrgStaff() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county) && validItemQuantities(request.resource.data);
+        allow delete: if isOrgAdmin() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county);
+      }
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId || (isOrgAdmin() && ownsOrg(resource.data.orgId)) || isStateAdmin();
+      allow create: if (isOrgAdmin() && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
+      // BUG FIX: original was missing 'if' keyword — would cause a deploy parse error
+      allow update: if (request.auth.uid == userId && request.resource.data.role == resource.data.role && request.resource.data.orgId == resource.data.orgId && request.resource.data.authorizedCounties == resource.data.authorizedCounties) || (isOrgAdmin() && ownsOrg(resource.data.orgId) && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
+      allow delete: if isStateAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isStateAdmin();
+      allow write: if false;
+    }
+
+    match /analytics/{docId} {
+      allow read, update, delete: if false;
+      allow create: if true;
+    }
+
+    match /analytics_searches/{docId} {
+      allow read, update, delete: if false;
+      allow create: if true;
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useRef, useState } from 'react';
 import {
     Dimensions,
@@ -14,8 +13,6 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { auth } from '../../config/firebase';
-import { db } from '../../firebase';
 
 const { width } = Dimensions.get('window');
 
@@ -68,18 +65,6 @@ export default function OnboardingScreen() {
 
     const finish = async () => {
         await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-        const user = auth.currentUser;
-        if (user) {
-            try {
-                await setDoc(
-                    doc(db, 'users', user.uid),
-                    { hasSeenOnboarding: true, onboardedAt: serverTimestamp() },
-                    { merge: true }
-                );
-            } catch {
-                // AsyncStorage is the source of truth; Firestore write is best-effort
-            }
-        }
         router.replace('/(tabs)/map');
     };
 

@@ -1,10 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { signInAnonymously } from 'firebase/auth';
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    ActivityIndicator,
-    Alert,
     Image,
     ImageBackground,
     StyleSheet,
@@ -12,23 +9,9 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { auth } from '../../config/firebase';
 
 export default function SignInScreen() {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
-
-    const handleEnter = async () => {
-        setLoading(true);
-        try {
-            await signInAnonymously(auth);
-            router.replace('/');
-        } catch (err) {
-            Alert.alert('Error', 'Could not sign in. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <ImageBackground
@@ -62,14 +45,10 @@ export default function SignInScreen() {
                     </View>
 
                     <TouchableOpacity
-                        style={[styles.enterBtn, loading && { opacity: 0.7 }]}
-                        onPress={handleEnter}
-                        disabled={loading}
+                        style={styles.enterBtn}
+                        onPress={() => router.replace('/')}
                     >
-                        {loading
-                            ? <ActivityIndicator color="#fff" />
-                            : <Text style={styles.enterBtnText}>Enter PantryBelt →</Text>
-                        }
+                        <Text style={styles.enterBtnText}>Enter PantryBelt →</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -92,7 +71,6 @@ const styles = StyleSheet.create({
     title: { fontSize: 24, fontWeight: '800', color: '#1c1c1e', marginBottom: 10, textAlign: 'center' },
     subtitle: { fontSize: 15, color: '#6c6c70', lineHeight: 22, textAlign: 'center', marginBottom: 20 },
     privacyRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#f0fdf4', borderRadius: 12, padding: 12, marginBottom: 20, borderWidth: 1, borderColor: '#bbf7d0' },
-    privacyIcon: { fontSize: 20 },
     privacyText: { flex: 1, fontSize: 13, color: '#15803d', fontWeight: '500', lineHeight: 18 },
     enterBtn: { backgroundColor: '#b52525', borderRadius: 14, padding: 18, alignItems: 'center' },
     enterBtnText: { color: '#fff', fontSize: 17, fontWeight: '800' },

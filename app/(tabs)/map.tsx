@@ -1,14 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { signInAnonymously } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator, Linking, Modal, Platform, ScrollView,
     StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
-import { auth, db } from '../../config/firebase';
+import { db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
 
 type Pantry = {
@@ -26,6 +25,19 @@ type Pantry = {
     website: string;
     verified: boolean;
 };
+
+function formatHours(hours: Record<string, any> | string | null | undefined): string {
+    if (!hours) return '';
+    if (typeof hours === 'string') return hours;
+    const labels: [string, string][] = [
+        ['monday', 'Mon'], ['tuesday', 'Tue'], ['wednesday', 'Wed'],
+        ['thursday', 'Thu'], ['friday', 'Fri'], ['saturday', 'Sat'], ['sunday', 'Sun'],
+    ];
+    const lines = labels
+        .filter(([key]) => hours[key] && !hours[key].closed)
+        .map(([key, abbr]) => `${abbr} ${hours[key].open}–${hours[key].close}`);
+    return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
+}
 
 export default function MapScreen() {
     const router = useRouter();
@@ -46,20 +58,39 @@ export default function MapScreen() {
         setLoading(true);
         setFetchError(false);
         try {
-            // Ensure we have an authenticated session before reading Firestore.
-            // onAuthStateChanged in index.tsx normally guarantees this, but we
-            // guard here defensively so a stale/expired anonymous session doesn't
-            // silently produce zero results.
-            if (!auth.currentUser) {
-                await signInAnonymously(auth);
-            }
-            const snapshot = await getDocs(collection(db, 'pantries'));
+            const q = query(
+                collection(db, 'resources'),
+                where('status', '==', 'active')
+            );
+            const snapshot = await getDocs(q);
+
             if (!snapshot.empty) {
-                const data = snapshot.docs.map(d => ({
-                    id: d.id,
-                    ...d.data(),
-                })) as Pantry[];
-                const valid = data.filter(p => typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng));
+                const data = snapshot.docs.map(d => {
+                    const r = d.data();
+                    const coords = r.coordinates ?? {};
+                    const addr   = r.address   ?? {};
+                    return {
+                        id:          d.id,
+                        name:        r.name        ?? '',
+                        county:      r.county      ?? '',
+                        city:        addr.city     ?? '',
+                        lat:         typeof coords.lat === 'number' ? coords.lat : 0,
+                        lng:         typeof coords.lng === 'number' ? coords.lng : 0,
+                        phone:       r.phone       ?? '',
+                        website:     r.website     ?? '',
+                        address:     [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
+                        eligibility: r.eligibilityNotes ?? '',
+                        docs:        Array.isArray(r.docsRequired) ? r.docsRequired.join(', ') : '',
+                        hours:       formatHours(r.hours),
+                        verified:    r.verified    ?? false,
+                    } as Pantry;
+                });
+
+                const valid = data.filter(
+                    p => typeof p.lat === 'number' && typeof p.lng === 'number'
+                      && !isNaN(p.lat) && !isNaN(p.lng)
+                      && p.lat !== 0   && p.lng !== 0
+                );
                 setPantries(valid);
                 setLiveData(true);
                 const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];

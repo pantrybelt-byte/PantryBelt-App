@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, increment, setDoc } from 'firebase/firestore';
-import React, { useEffect, useRef, useState } from 'react';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import React, { useRef, useState } from 'react';
 import {
     Image,
     ImageBackground,
@@ -15,7 +14,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { auth, db } from '../../config/firebase';
+import { db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
 
@@ -133,23 +132,13 @@ function detectTopic(text: string): string {
     return 'general';
 }
 
-// Log search topic anonymously to Firestore
 async function logSearchTopic(topic: string, zipPrefix: string | null) {
     try {
-        // Global topic counts
-        await setDoc(doc(db, 'analytics', 'searchTopics'), {
-            [topic]: increment(1),
-            total: increment(1),
-            lastUpdated: new Date().toISOString(),
-        }, { merge: true });
-
-        // Zip prefix heat map data (only if user provided zip prefix)
-        if (zipPrefix && zipPrefix.length === 3) {
-            await setDoc(doc(db, 'analytics', 'zipHeatMap'), {
-                [zipPrefix]: increment(1),
-                lastUpdated: new Date().toISOString(),
-            }, { merge: true });
-        }
+        await addDoc(collection(db, 'analytics_searches'), {
+            topic,
+            zipPrefix: zipPrefix ?? null,
+            timestamp: serverTimestamp(),
+        });
     } catch (e) {
         // Silent fail — analytics should never break the app
     }
@@ -179,21 +168,7 @@ export default function PeteScreen() {
     ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
-    const [zipPrefix, setZipPrefix] = useState<string | null>(null);
     const scrollRef = useRef<ScrollView>(null);
-
-    // Load user's zip prefix for analytics
-    useEffect(() => {
-        const unsub = onAuthStateChanged(auth, async (u) => {
-            if (u) {
-                try {
-                    const snap = await getDoc(doc(db, 'users', u.uid));
-                    if (snap.exists()) setZipPrefix(snap.data().zipPrefix || null);
-                } catch (e) { }
-            }
-        });
-        return unsub;
-    }, []);
 
     async function sendMessage(text?: string) {
         const msg = (text || input).trim();
@@ -217,9 +192,8 @@ export default function PeteScreen() {
         setLoading(true);
         setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
 
-        // Log topic anonymously — no message content stored
         const topic = detectTopic(msg);
-        logSearchTopic(topic, zipPrefix);
+        logSearchTopic(topic, null);
 
         // ── Cache check ────────────────────────────────────────────────────
         const cacheKey = msg.toLowerCase().trim();
