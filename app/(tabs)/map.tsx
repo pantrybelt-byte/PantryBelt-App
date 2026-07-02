@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import { db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
+import { logFoodDesert, logUserCounty } from '../../utils/analytics';
 
 type Pantry = {
     id: string;
@@ -52,6 +54,8 @@ export default function MapScreen() {
     const [cities, setCities] = useState<string[]>(['All']);
     const [selected, setSelected] = useState<Pantry | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
+    // Tracks the user's coarse location for analytics (county / food desert)
+    const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
     // ── Load pantries from Firestore ──────────────────────
     const fetchPantries = useCallback(async () => {
@@ -95,6 +99,41 @@ export default function MapScreen() {
                 setLiveData(true);
                 const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];
                 setCities(uniqueCities);
+
+                // ── Analytics: user county + food desert detection ──────────
+                try {
+                    const { status } = await Location.requestForegroundPermissionsAsync();
+                    if (status === 'granted') {
+                        const loc = await Location.getCurrentPositionAsync({
+                            accuracy: Location.Accuracy.Balanced,
+                        });
+                        const userLat = loc.coords.latitude;
+                        const userLng = loc.coords.longitude;
+                        setUserLocation({ lat: userLat, lng: userLng });
+
+                        // Find the closest pantry and derive county from it
+                        const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
+                        const nearbyPantries = valid.filter(p =>
+                            Math.abs(p.lat - userLat) < MILES_30_IN_DEG &&
+                            Math.abs(p.lng - userLng) < MILES_30_IN_DEG
+                        );
+
+                        if (nearbyPantries.length > 0) {
+                            // Sort by distance and use the closest pantry's county
+                            const closest = nearbyPantries.slice().sort((a, b) => {
+                                const distA = Math.hypot(a.lat - userLat, a.lng - userLng);
+                                const distB = Math.hypot(b.lat - userLat, b.lng - userLng);
+                                return distA - distB;
+                            })[0];
+                            logUserCounty(closest.county, closest.city, 'location');
+                        } else {
+                            // No pantries nearby — this is a food desert
+                            logFoodDesert(userLat, userLng, null, null, 0);
+                        }
+                    }
+                } catch {
+                    // Location permission denied or unavailable — silent
+                }
             }
         } catch (err) {
             console.error('Firestore error:', err);
@@ -111,6 +150,12 @@ export default function MapScreen() {
     const handleFilter = (city: string) => {
         setFilter(city);
         const items = city === 'All' ? pantries : pantries.filter(p => p.city === city);
+
+        // Log county interaction when user taps a city filter
+        if (city !== 'All' && items.length > 0) {
+            logUserCounty(items[0].county, city, 'filter_tap');
+        }
+
         if (items.length > 0 && mapRef.current) {
             mapRef.current.animateToRegion({
                 latitude: items.reduce((s, p) => s + p.lat, 0) / items.length,

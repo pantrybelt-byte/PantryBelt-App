@@ -85,12 +85,35 @@ service cloud.firestore {
     }
 
     match /analytics/{docId} {
-      allow read, update, delete: if false;
+      allow read: if true;
+      allow update, delete: if false;
       allow create: if true;
     }
 
     match /analytics_searches/{docId} {
-      allow read, update, delete: if false;
+      allow read: if true;
+      allow update, delete: if false;
+      allow create: if true;
+    }
+
+    // Tracks which county each anonymous session originates from
+    match /analytics_user_counties/{docId} {
+      allow read: if true;
+      allow update, delete: if false;
+      allow create: if true;
+    }
+
+    // Records locations where users searched but found zero nearby pantries
+    match /analytics_food_deserts/{docId} {
+      allow read: if true;
+      allow update, delete: if false;
+      allow create: if true;
+    }
+
+    // One document per app launch — timestamp only, no user data
+    match /analytics_sessions/{docId} {
+      allow read: if true;
+      allow update, delete: if false;
       allow create: if true;
     }
   }

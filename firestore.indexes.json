@@ -15,7 +15,16 @@
     { "collectionGroup": "resourceRequests", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "orgId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
     { "collectionGroup": "resourceRequests", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "eventId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
     { "collectionGroup": "resourceRequests", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "requestType", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
-    { "collectionGroup": "resourceRequests", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "assignedTo", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "dueDate", "order": "ASCENDING" } ] }
+    { "collectionGroup": "resourceRequests", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "assignedTo", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "dueDate", "order": "ASCENDING" } ] },
+    { "collectionGroup": "analytics_searches", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "topic", "order": "ASCENDING" }, { "fieldPath": "timestamp", "order": "DESCENDING" } ] },
+    { "collectionGroup": "analytics_user_counties", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "timestamp", "order": "DESCENDING" } ] },
+    { "collectionGroup": "analytics_food_deserts", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "timestamp", "order": "DESCENDING" } ] }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [],
+  "_comments": {
+    "analytics_user_counties": "county+timestamp lets you query sessions per county in a date range",
+    "analytics_food_deserts": "county+timestamp lets you find desert hotspots over time",
+    "analytics_searches": "topic+timestamp lets you rank the most requested Pete topics"
+  }
 }
+

@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import React, { useRef, useState } from 'react';
 import {
     Image,
@@ -14,8 +13,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
+import { logPeteRequest } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
 
 // ─────────────────────────────────────────────────────────
@@ -132,17 +131,7 @@ function detectTopic(text: string): string {
     return 'general';
 }
 
-async function logSearchTopic(topic: string, zipPrefix: string | null) {
-    try {
-        await addDoc(collection(db, 'analytics_searches'), {
-            topic,
-            zipPrefix: zipPrefix ?? null,
-            timestamp: serverTimestamp(),
-        });
-    } catch (e) {
-        // Silent fail — analytics should never break the app
-    }
-}
+// logSearchTopic replaced by logPeteRequest from utils/analytics.ts
 
 type Message = { id: number; role: 'user' | 'assistant'; text: string };
 
@@ -193,7 +182,8 @@ export default function PeteScreen() {
         setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
 
         const topic = detectTopic(msg);
-        logSearchTopic(topic, null);
+        // Log to analytics_searches with raw message + interaction source
+        logPeteRequest(topic, msg, text ? 'chip' : 'typed');
 
         // ── Cache check ────────────────────────────────────────────────────
         const cacheKey = msg.toLowerCase().trim();

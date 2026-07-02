@@ -1,10 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     Alert,
     Linking,
+    Pressable,
     ScrollView,
     StyleSheet,
     Switch,
@@ -30,6 +31,23 @@ export default function ProfileScreen() {
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
+
+    const tapCountRef = useRef(0);
+    const lastTapRef = useRef(0);
+
+    const handleVersionTap = () => {
+        const now = Date.now();
+        if (now - lastTapRef.current > 2000) {
+            tapCountRef.current = 1;
+        } else {
+            tapCountRef.current += 1;
+        }
+        lastTapRef.current = now;
+        if (tapCountRef.current >= 7) {
+            tapCountRef.current = 0;
+            router.push('/(tabs)/admin');
+        }
+    };
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
@@ -154,7 +172,9 @@ export default function ProfileScreen() {
                 </Text>
             </View>
 
-            <Text style={[styles.version, { color: theme.subtext }]}>PantryBelt v1.0.0 · Free for families</Text>
+            <Pressable onPress={handleVersionTap} hitSlop={12}>
+                <Text style={[styles.version, { color: theme.subtext }]}>PantryBelt v1.0.0 · Free for families</Text>
+            </Pressable>
 
         </ScrollView>
     );

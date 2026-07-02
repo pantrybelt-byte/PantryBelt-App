@@ -1,8 +1,14 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { ThemeProvider } from '../context/ThemeContext';
+import { logUserSession } from '../utils/analytics';
 
 export default function RootLayout() {
+    useEffect(() => {
+        logUserSession();
+    }, []);
+
     return (
         <ThemeProvider>
             <StatusBar style="light" />
