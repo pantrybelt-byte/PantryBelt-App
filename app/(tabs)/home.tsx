@@ -2,6 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { logReferral, updateMonthlySummary } from '../../utils/analytics';
+import { getLastKnownCounty } from '../../utils/userLocation';
 
 const QUICK_LINKS = [
     { id: '1', title: 'Apply for SNAP', icon: 'card-outline' as const, color: '#f0fdf4', iconColor: '#16a34a', url: 'https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program' },
@@ -21,11 +23,25 @@ const STATS = [
 export default function HomeScreen() {
     const router = useRouter();
 
-    const handleQuickLink = (item: typeof QUICK_LINKS[0]) => {
+    const handleQuickLink = async (item: typeof QUICK_LINKS[0]) => {
         if (item.id === '5') {
             router.push('/(tabs)/map');
         } else if (item.url) {
             Linking.openURL(item.url);
+        }
+        // GAP 2 — SNAP/WIC Referral Count (USDA FNS / Alabama DHR)
+        // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
+        const referralMap: Record<string, 'snap' | 'wic' | 'emergency_211' | 'food_bank' | 'school_meals' | 'myplate'> = {
+            '1': 'snap',
+            '2': 'wic',
+            '3': 'food_bank',
+            '4': 'emergency_211',
+            '6': 'myplate',
+        };
+        if (referralMap[item.id]) {
+            const county = await getLastKnownCounty();
+            logReferral(referralMap[item.id], 'home', county);
+            updateMonthlySummary(county ?? 'Statewide', referralMap[item.id] === 'emergency_211' ? 'emergencies' : 'referrals');
         }
     };
 

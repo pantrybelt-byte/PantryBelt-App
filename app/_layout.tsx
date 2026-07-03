@@ -2,11 +2,17 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { ThemeProvider } from '../context/ThemeContext';
-import { logUserSession } from '../utils/analytics';
+import { initAppSecurity } from '../utils/auth';
+import { logSession } from '../utils/analytics';
 
 export default function RootLayout() {
     useEffect(() => {
-        logUserSession();
+        // 🔒 TIER 1 + TIER 3A: Anonymous auth + session bootstrap
+        // Must complete before any Firestore analytics writes are attempted.
+        initAppSecurity().then(() => {
+            // GAP 5: Log the session AFTER auth is confirmed
+            logSession();
+        });
     }, []);
 
     return (

@@ -49,24 +49,6 @@ export default function TabLayout() {
                     ),
                 }}
             />
-            {/* Approach 2 — build-time: visible in tab bar only when EXPO_PUBLIC_IS_ADMIN=true  */}
-            {/* Approach 1 — runtime:  always hidden (href:null) but reachable via 7-tap gesture */}
-            {process.env.EXPO_PUBLIC_IS_ADMIN === 'true' ? (
-                <Tabs.Screen
-                    name="admin"
-                    options={{
-                        tabBarLabel: 'Admin',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Ionicons name={focused ? 'bar-chart' : 'bar-chart-outline'} size={24} color={color} />
-                        ),
-                    }}
-                />
-            ) : (
-                <Tabs.Screen
-                    name="admin"
-                    options={{ href: null }}
-                />
-            )}
         </Tabs>
     );
 }

@@ -1,4 +1,5 @@
 import { getApps, initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 export const firebaseConfig = {
@@ -13,3 +14,6 @@ export const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 export const db = getFirestore(app);
+
+// ── TIER 1: Auth instance for Anonymous Authentication ──
+export const auth = getAuth(app);

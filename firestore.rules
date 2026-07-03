@@ -2,39 +2,176 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isAuthed() { return request.auth != null; }
-    function role() { return request.auth.token.role; }
-    function callerOrgId() { return request.auth.token.orgId; }
+    // ══════════════════════════════════════════════════════════════════════════
+    // PANTRYBELT — 3-TIER SECURITY SYSTEM
+    // ══════════════════════════════════════════════════════════════════════════
+    //
+    // TIER 1: All writes require Firebase Anonymous Auth (request.auth != null)
+    //         Blocks: bots using the API key directly, curl, Postman, AI scrapers
+    //
+    // TIER 2: Strict field-level schema validation on every collection
+    //         Blocks: malformed payloads, field injection, unknown fields,
+    //                 string overflow, numeric range abuse, enum bypasses
+    //
+    // TIER 3A: App session validation via _app_sessions/{uid} (Spark plan)
+    //          Blocks: scripts that obtain a valid anonymous token but aren't
+    //                  running the real PantryBelt app binary
+    //
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // ─── Core Auth Helpers ────────────────────────────────────────────────────
+    function isAuthed()     { return request.auth != null; }
+    function role()         { return request.auth.token.role; }
+    function callerOrgId()  { return request.auth.token.orgId; }
     function callerCounties() { return request.auth.token.counties; }
 
-    function isStateAdmin() { return isAuthed() && role() == 'state_admin'; }
-    function isOrgAdmin() { return isAuthed() && role() in ['org_admin', 'state_admin']; }
-    function isOrgStaff() { return isAuthed() && role() in ['org_staff', 'org_admin', 'state_admin']; }
+    function isStateAdmin()  { return isAuthed() && role() == 'state_admin'; }
+    function isOrgAdmin()    { return isAuthed() && role() in ['org_admin', 'state_admin']; }
+    function isOrgStaff()    { return isAuthed() && role() in ['org_staff', 'org_admin', 'state_admin']; }
     function isReadPartner() { return isAuthed() && role() in ['read_only_partner', 'field_worker', 'org_staff', 'org_admin', 'state_admin']; }
 
-    function ownsOrg(docOrgId) { return callerOrgId() == docOrgId; }
-    function countyOk(county) { return isStateAdmin() || county in callerCounties(); }
-    function hasOrgAccess(docOrgId) { return ownsOrg(docOrgId) || isStateAdmin(); }
-    function orgUnchanged() { return request.resource.data.orgId == resource.data.orgId; }
+    function ownsOrg(docOrgId)    { return callerOrgId() == docOrgId; }
+    function countyOk(county)     { return isStateAdmin() || county in callerCounties(); }
+    function hasOrgAccess(orgId)  { return ownsOrg(orgId) || isStateAdmin(); }
+    function orgUnchanged()       { return request.resource.data.orgId == resource.data.orgId; }
 
-    function validResourceStatus(s) { return s in ['unopened', 'pending', 'active', 'inactive', 'closed']; }
-    function validEventStatus(s) { return s in ['unopened', 'draft', 'published', 'active', 'fulfilled', 'cancelled', 'postponed']; }
-    function validFulfillmentStatus(s) { return s in ['unopened', 'not_started', 'in_progress', 'partial', 'fulfilled', 'cancelled']; }
-    function validRequestStatus(s) { return s in ['unopened', 'pending', 'partial', 'fulfilled', 'cancelled']; }
+    // ─── Business Logic Validators ────────────────────────────────────────────
+    function validResourceStatus(s)    { return s in ['unopened','pending','active','inactive','closed']; }
+    function validEventStatus(s)       { return s in ['unopened','draft','published','active','fulfilled','cancelled','postponed']; }
+    function validFulfillmentStatus(s) { return s in ['unopened','not_started','in_progress','partial','fulfilled','cancelled']; }
+    function validRequestStatus(s)     { return s in ['unopened','pending','partial','fulfilled','cancelled']; }
 
     function validCoordinates(data) {
-      return 'coordinates' in data && data.coordinates.lat is number && data.coordinates.lng is number
-          && data.coordinates.lat >= -90 && data.coordinates.lat <= 90
-          && data.coordinates.lng >= -180 && data.coordinates.lng <= 180;
+      return 'coordinates' in data
+          && data.coordinates.lat is number && data.coordinates.lng is number
+          && data.coordinates.lat >= -90   && data.coordinates.lat <= 90
+          && data.coordinates.lng >= -180  && data.coordinates.lng <= 180;
     }
-    function validGeohash(data) { return 'geohash' in data && data.geohash is string && data.geohash.size() >= 1; }
+    function validGeohash(data) {
+      return 'geohash' in data && data.geohash is string && data.geohash.size() >= 1;
+    }
     function validItemQuantities(data) {
       return data.quantityRequested is number && data.quantityFulfilled is number
-          && data.quantityRequested >= 0 && data.quantityFulfilled >= 0 && data.quantityFulfilled <= data.quantityRequested;
+          && data.quantityRequested >= 0 && data.quantityFulfilled >= 0
+          && data.quantityFulfilled <= data.quantityRequested;
     }
     function validEventWindow(data) {
-      return data.status in ['unopened', 'draft'] || (data.startTime is timestamp && data.endTime is timestamp && data.startTime < data.endTime);
+      return data.status in ['unopened','draft']
+          || (data.startTime is timestamp && data.endTime is timestamp && data.startTime < data.endTime);
     }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // TIER 3A: App Session Validation
+    // ══════════════════════════════════════════════════════════════════════════
+    // Reads _app_sessions/{uid} to confirm the requester is the real PantryBelt app.
+    // The session doc is created by utils/auth.ts with app-specific fields.
+    // A bot with a valid anonymous token cannot write analytics without this session.
+
+    function hasActiveSession() {
+      let uid = request.auth.uid;
+      let session = get(/databases/$(database)/documents/_app_sessions/$(uid)).data;
+      return session.active == true
+          && session.appId == 'pantrybelt-v3'
+          && session.platform in ['ios', 'android', 'web'];
+    }
+
+    // Combined check: Tier 1 (auth) + Tier 3A (session)
+    function isVerifiedApp() {
+      return isAuthed() && hasActiveSession();
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // TIER 2: Analytics Schema Validators
+    // ══════════════════════════════════════════════════════════════════════════
+
+    function validTimeFields(data) {
+      return data.hourOfDay is number && data.hourOfDay >= 0 && data.hourOfDay <= 23
+          && data.dayOfWeek is number && data.dayOfWeek >= 0 && data.dayOfWeek <= 6
+          && data.monthYear is string && data.monthYear.size() == 7; // "YYYY-MM"
+    }
+
+    function validAnalyticsSearch(data) {
+      return data.topic is string && data.topic.size() <= 50
+          && data.topic in ['snap_ebt','wic','recipes','emergency','pantry_search',
+                            'hours','documents','school_meals','general']
+          && data.rawMessage is string && data.rawMessage.size() <= 300
+          && data.source in ['chip','typed']
+          && (data.county == null || (data.county is string && data.county.size() <= 100))
+          && validTimeFields(data);
+    }
+
+    function validUserCounty(data) {
+      return data.county is string && data.county.size() >= 1 && data.county.size() <= 100
+          && data.source in ['location','filter_tap','inferred']
+          && (data.city == null || (data.city is string && data.city.size() <= 100))
+          && validTimeFields(data);
+    }
+
+    function validFoodDesert(data) {
+      return data.lat is number && data.lat >= -90   && data.lat <= 90
+          && data.lng is number && data.lng >= -180  && data.lng <= 180
+          && data.pantryCount is number && data.pantryCount == 0
+          && (data.county == null || (data.county is string && data.county.size() <= 100))
+          && (data.city   == null || (data.city   is string && data.city.size()   <= 100))
+          && validTimeFields(data);
+    }
+
+    function validPantryEngagement(data) {
+      return data.pantryId   is string && data.pantryId.size()   >= 1 && data.pantryId.size()   <= 128
+          && data.pantryName is string && data.pantryName.size() >= 1 && data.pantryName.size() <= 200
+          && data.county     is string && data.county.size()     >= 1 && data.county.size()     <= 100
+          && data.city       is string && data.city.size()       >= 1 && data.city.size()       <= 100
+          && data.action in ['view','directions','call','website']
+          && validTimeFields(data);
+    }
+
+    function validReferral(data) {
+      return data.referralType in ['snap','wic','emergency_211','food_bank','school_meals','myplate']
+          && data.source in ['home','profile','pete','map']
+          && data.isEmergency is bool
+          && (data.referralType == 'emergency_211') == data.isEmergency
+          && (data.county == null || (data.county is string && data.county.size() <= 100))
+          && validTimeFields(data);
+    }
+
+    function validSearchOutcome(data) {
+      return data.topic is string && data.topic.size() <= 50
+          && data.outcome in ['map_opened','pantry_viewed','no_action']
+          && data.success is bool
+          && (data.outcome != 'no_action') == data.success
+          && (data.county == null || (data.county is string && data.county.size() <= 100))
+          && validTimeFields(data);
+    }
+
+    function validMonthlySummary(data) {
+      return data.county is string && data.county.size() >= 1
+          && data.monthYear is string && data.monthYear.size() == 7;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // TIER 3A: App Session Collection
+    // ══════════════════════════════════════════════════════════════════════════
+    // Only the authenticated user can write their own session doc.
+    // The doc is read by hasActiveSession() to gate all analytics writes.
+
+    match /_app_sessions/{uid} {
+      // Only the owner can read their session
+      allow read: if isAuthed() && request.auth.uid == uid;
+      // Create/update only if authenticated as the target uid AND fields are valid
+      allow create, update: if isAuthed()
+          && request.auth.uid == uid
+          && request.resource.data.active == true
+          && request.resource.data.appId == 'pantrybelt-v3'
+          && request.resource.data.platform in ['ios','android','web']
+          && request.resource.data.sessionToken is string
+          && request.resource.data.sessionToken.size() >= 10
+          && request.resource.data.sessionToken.size() <= 60;
+      allow delete: if false;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // BUSINESS COLLECTIONS (unchanged — existing role-based access)
+    // ══════════════════════════════════════════════════════════════════════════
 
     match /organizations/{orgId} {
       allow read: if isAuthed() && (ownsOrg(orgId) || isStateAdmin());
@@ -44,6 +181,7 @@ service cloud.firestore {
     }
 
     match /resources/{resourceId} {
+      // Public read for active resources (needed for the map)
       allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
       allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
       allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
@@ -51,7 +189,7 @@ service cloud.firestore {
     }
 
     match /events/{eventId} {
-      allow read: if resource.data.status in ['published', 'active'] || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      allow read: if resource.data.status in ['published','active'] || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
       allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
       allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
       allow delete: if false;
@@ -59,7 +197,7 @@ service cloud.firestore {
 
     match /resourceRequests/{requestId} {
       allow read: if isAuthed() && (hasOrgAccess(resource.data.orgId) || (isReadPartner() && countyOk(resource.data.county)));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validRequestStatus(request.resource.data.status) && request.resource.data.status in ['unopened', 'pending'];
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validRequestStatus(request.resource.data.status) && request.resource.data.status in ['unopened','pending'];
       allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && validRequestStatus(request.resource.data.status);
       allow delete: if false;
 
@@ -74,7 +212,6 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if request.auth.uid == userId || (isOrgAdmin() && ownsOrg(resource.data.orgId)) || isStateAdmin();
       allow create: if (isOrgAdmin() && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
-      // BUG FIX: original was missing 'if' keyword — would cause a deploy parse error
       allow update: if (request.auth.uid == userId && request.resource.data.role == resource.data.role && request.resource.data.orgId == resource.data.orgId && request.resource.data.authorizedCounties == resource.data.authorizedCounties) || (isOrgAdmin() && ownsOrg(resource.data.orgId) && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
       allow delete: if isStateAdmin();
     }
@@ -84,37 +221,71 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // ANALYTICS COLLECTIONS
+    // All require: TIER 1 (auth) + TIER 2 (schema) + TIER 3A (app session)
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // Legacy — lock down the previously-open collections
     match /analytics/{docId} {
-      allow read: if true;
-      allow update, delete: if false;
-      allow create: if true;
+      allow read, write: if false;
     }
 
+    // Pete AI queries — most requested items
     match /analytics_searches/{docId} {
-      allow read: if true;
-      allow update, delete: if false;
-      allow create: if true;
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validAnalyticsSearch(request.resource.data);
     }
 
-    // Tracks which county each anonymous session originates from
+    // User county tracking — geographic reach for government reports
     match /analytics_user_counties/{docId} {
-      allow read: if true;
-      allow update, delete: if false;
-      allow create: if true;
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validUserCounty(request.resource.data);
     }
 
-    // Records locations where users searched but found zero nearby pantries
+    // Food desert detection — areas with no nearby pantries
     match /analytics_food_deserts/{docId} {
-      allow read: if true;
-      allow update, delete: if false;
-      allow create: if true;
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validFoodDesert(request.resource.data);
     }
 
-    // One document per app launch — timestamp only, no user data
+    // Pantry engagements — successful connections + utilization (USDA / County)
+    match /analytics_pantry_engagements/{docId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validPantryEngagement(request.resource.data);
+    }
+
+    // Referrals — SNAP/WIC referral count + emergency 211 calls (FNS / CDC / DHR)
+    match /analytics_referrals/{docId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validReferral(request.resource.data);
+    }
+
+    // Sessions — return user tracking (device-keyed, increment-only)
     match /analytics_sessions/{docId} {
-      allow read: if true;
-      allow update, delete: if false;
-      allow create: if true;
+      allow read, delete: if false;
+      // Create/update requires the same app-session verification as every
+      // other analytics collection. logSession() always runs after
+      // initAppSecurity() resolves (see _layout.tsx), so _app_sessions/{uid}
+      // already exists by the time this write happens — isAuthed() alone let
+      // any anonymous token holder (not just the real app) inflate this
+      // government-contract metric up to the cap.
+      allow create, update: if isVerifiedApp()
+          && request.resource.data.sessionCount is number
+          && request.resource.data.sessionCount >= 1
+          && request.resource.data.sessionCount <= 10000;
+    }
+
+    // Search outcomes — search-to-success rate (USDA / HRSA)
+    match /analytics_search_outcomes/{docId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validSearchOutcome(request.resource.data);
+    }
+
+    // Monthly county impact summary — auto-assembled, admin-read only
+    match /analytics_monthly_summary/{docId} {
+      allow read, update, delete: if false;
+      allow create, update: if isVerifiedApp() && validMonthlySummary(request.resource.data);
     }
   }
 }

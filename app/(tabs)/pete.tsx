@@ -14,8 +14,9 @@ import {
     View,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
-import { logPeteRequest } from '../../utils/analytics';
+import { logPeteRequest, logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
+import { getLastKnownCounty, setPendingSearchOutcome } from '../../utils/userLocation';
 
 // ─────────────────────────────────────────────────────────
 // Pantry Pete — Gemini-powered AI assistant
@@ -183,7 +184,10 @@ export default function PeteScreen() {
 
         const topic = detectTopic(msg);
         // Log to analytics_searches with raw message + interaction source
-        logPeteRequest(topic, msg, text ? 'chip' : 'typed');
+        const county = await getLastKnownCounty();
+        logPeteRequest(topic, msg, text ? 'chip' : 'typed', county);
+        // GAP 7 — if this is a pantry search, watch for a map/pantry follow-up
+        if (topic === 'pantry_search') setPendingSearchOutcome(topic);
 
         // ── Cache check ────────────────────────────────────────────────────
         const cacheKey = msg.toLowerCase().trim();
@@ -232,7 +236,16 @@ export default function PeteScreen() {
                     <Text style={styles.headerName}>Pantry Pete</Text>
                     <Text style={styles.headerStatus}>● Powered by Gemini AI</Text>
                 </View>
-                <TouchableOpacity style={styles.callBtn} onPress={() => Linking.openURL('tel:211')}>
+                <TouchableOpacity
+                    style={styles.callBtn}
+                    onPress={async () => {
+                        Linking.openURL('tel:211');
+                        // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
+                        const county = await getLastKnownCounty();
+                        logReferral('emergency_211', 'pete', county);
+                        updateMonthlySummary(county ?? 'Statewide', 'emergencies');
+                    }}
+                >
                     <Ionicons name="call-outline" size={14} color="#16a34a" />
                     <Text style={styles.callBtnText}>211</Text>
                 </TouchableOpacity>

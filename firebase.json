@@ -10,5 +10,25 @@
       "rules": "firestore.rules",
       "indexes": "firestore.indexes.json"
     }
-  ]
+  ],
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "pantrybelt-security",
+      "ignore": [
+        "node_modules",
+        ".git"
+      ]
+    }
+  ],
+  "extensions": {
+    "fs-bq-monthly-summary": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-referrals": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-pantry-engagements": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-search-outcomes": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-searches": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-sessions": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-food-deserts": "firebase/firestore-bigquery-export@0.3.2",
+    "fs-bq-user-counties": "firebase/firestore-bigquery-export@0.3.2"
+  }
 }

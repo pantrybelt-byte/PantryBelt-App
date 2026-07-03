@@ -10,7 +10,8 @@ import {
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import { db } from '../../config/firebase';
 import { useTheme } from '../../context/ThemeContext';
-import { logFoodDesert, logUserCounty } from '../../utils/analytics';
+import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
+import { clearPendingSearchOutcome, getLastKnownCounty, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
     id: string;
@@ -126,6 +127,7 @@ export default function MapScreen() {
                                 return distA - distB;
                             })[0];
                             logUserCounty(closest.county, closest.city, 'location');
+                            setLastKnownCounty(closest.county);
                         } else {
                             // No pantries nearby — this is a food desert
                             logFoodDesert(userLat, userLng, null, null, 0);
@@ -145,6 +147,22 @@ export default function MapScreen() {
 
     useEffect(() => { fetchPantries(); }, [fetchPantries]);
 
+    // GAP 7 — Search-to-Success Rate: if the user arrived here shortly after
+    // asking Pete to find a pantry, record that the search led somewhere.
+    const outcomeCheckedRef = useRef(false);
+    useEffect(() => {
+        if (loading || fetchError || outcomeCheckedRef.current) return;
+        outcomeCheckedRef.current = true;
+        (async () => {
+            const topic = await getPendingSearchOutcome();
+            if (topic) {
+                const county = await getLastKnownCounty();
+                logSearchOutcome(topic, 'map_opened', county);
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, fetchError]);
+
     const filtered = filter === 'All' ? pantries : pantries.filter(p => p.city === filter);
 
     const handleFilter = (city: string) => {
@@ -154,6 +172,7 @@ export default function MapScreen() {
         // Log county interaction when user taps a city filter
         if (city !== 'All' && items.length > 0) {
             logUserCounty(items[0].county, city, 'filter_tap');
+            setLastKnownCounty(items[0].county);
         }
 
         if (items.length > 0 && mapRef.current) {
@@ -215,6 +234,17 @@ export default function MapScreen() {
                         onPress={() => {
                             setSelected(pantry);
                             setModalVisible(true);
+                            // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
+                            logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
+                            updateMonthlySummary(pantry.county, 'pantryViews');
+                            // GAP 7 — close the loop if this view follows a Pete search
+                            (async () => {
+                                const topic = await getPendingSearchOutcome();
+                                if (topic) {
+                                    logSearchOutcome(topic, 'pantry_viewed', pantry.county);
+                                    await clearPendingSearchOutcome();
+                                }
+                            })();
                         }}
                     >
                         <Callout tooltip>
@@ -315,6 +345,10 @@ export default function MapScreen() {
                                 onPress={() => {
                                     const d = selected.phone.replace(/[^0-9]/g, '');
                                     Linking.openURL('tel:' + d);
+                                    // GAP 1 — Successful Connections (USDA)
+                                    // GAP 6 — Pantry-Level Utilization (County Govts)
+                                    logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'call');
+                                    updateMonthlySummary(selected.county, 'calls');
                                 }}
                             >
                                 <Ionicons name="call-outline" size={16} color="#b52525" />
@@ -322,7 +356,13 @@ export default function MapScreen() {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.modalBtn}
-                                onPress={() => Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(selected.address)}`)}
+                                onPress={() => {
+                                    Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(selected.address)}`);
+                                    // GAP 1 — Successful Connections (USDA)
+                                    // GAP 6 — Pantry-Level Utilization (County Govts)
+                                    logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'directions');
+                                    updateMonthlySummary(selected.county, 'directions');
+                                }}
                             >
                                 <Ionicons name="navigate-outline" size={16} color="#fff" />
                                 <Text style={styles.modalBtnText}>Directions</Text>
@@ -332,7 +372,11 @@ export default function MapScreen() {
                         {selected.website !== '' && (
                             <TouchableOpacity
                                 style={[styles.websiteBtn, { backgroundColor: theme.bg }]}
-                                onPress={() => Linking.openURL(selected.website)}
+                                onPress={() => {
+                                    Linking.openURL(selected.website);
+                                    // GAP 6 — Website visit as engagement signal
+                                    logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'website');
+                                }}
                             >
                                 <Ionicons name="globe-outline" size={14} color="#2563eb" />
                                 <Text style={styles.websiteBtnText}>Visit Website</Text>

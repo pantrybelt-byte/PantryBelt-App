@@ -1,11 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Alert,
     Linking,
-    Pressable,
     ScrollView,
     StyleSheet,
     Switch,
@@ -14,6 +13,8 @@ import {
     View,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
+import { logReferral, updateMonthlySummary } from '../../utils/analytics';
+import { getLastKnownCounty } from '../../utils/userLocation';
 
 const RESOURCES = [
     { id: '1', title: 'Apply for SNAP / EBT', sub: 'USDA FNS · fns.usda.gov', icon: 'card-outline' as const, color: '#16a34a', url: 'https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program' },
@@ -31,23 +32,6 @@ export default function ProfileScreen() {
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
-
-    const tapCountRef = useRef(0);
-    const lastTapRef = useRef(0);
-
-    const handleVersionTap = () => {
-        const now = Date.now();
-        if (now - lastTapRef.current > 2000) {
-            tapCountRef.current = 1;
-        } else {
-            tapCountRef.current += 1;
-        }
-        lastTapRef.current = now;
-        if (tapCountRef.current >= 7) {
-            tapCountRef.current = 0;
-            router.push('/(tabs)/admin');
-        }
-    };
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
@@ -149,7 +133,23 @@ export default function ProfileScreen() {
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 {RESOURCES.map((res, i) => (
                     <View key={res.id}>
-                        <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL(res.url)}>
+                        <TouchableOpacity
+                            style={styles.linkRow}
+                            onPress={async () => {
+                                Linking.openURL(res.url);
+                                // GAP 2 — SNAP/WIC Referral Count (USDA FNS / Alabama DHR)
+                                // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
+                                const referralMap: Record<string, 'snap' | 'wic' | 'emergency_211' | 'food_bank' | 'school_meals' | 'myplate'> = {
+                                    '1': 'snap', '2': 'wic', '3': 'food_bank',
+                                    '4': 'myplate', '5': 'school_meals', '6': 'emergency_211',
+                                };
+                                if (referralMap[res.id]) {
+                                    const county = await getLastKnownCounty();
+                                    logReferral(referralMap[res.id], 'profile', county);
+                                    updateMonthlySummary(county ?? 'Statewide', referralMap[res.id] === 'emergency_211' ? 'emergencies' : 'referrals');
+                                }
+                            }}
+                        >
                             <View style={[styles.linkIconCircle, { backgroundColor: res.color + '18' }]}>
                                 <Ionicons name={res.icon} size={18} color={res.color} />
                             </View>
@@ -172,9 +172,7 @@ export default function ProfileScreen() {
                 </Text>
             </View>
 
-            <Pressable onPress={handleVersionTap} hitSlop={12}>
-                <Text style={[styles.version, { color: theme.subtext }]}>PantryBelt v1.0.0 · Free for families</Text>
-            </Pressable>
+            <Text style={[styles.version, { color: theme.subtext }]}>PantryBelt v1.0.0 · Free for families</Text>
 
         </ScrollView>
     );
