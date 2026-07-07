@@ -50,6 +50,8 @@ export default function MapScreen() {
     const [pantries, setPantries] = useState<Pantry[]>([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    // REMOVE BEFORE PUBLIC LAUNCH — temporary beta-only diagnostic detail
+    const [errorDetail, setErrorDetail] = useState<{ code?: string; message?: string } | null>(null);
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
     const [cities, setCities] = useState<string[]>(['All']);
@@ -62,6 +64,7 @@ export default function MapScreen() {
     const fetchPantries = useCallback(async () => {
         setLoading(true);
         setFetchError(false);
+        setErrorDetail(null);
         try {
             const q = query(
                 collection(db, 'resources'),
@@ -140,6 +143,8 @@ export default function MapScreen() {
         } catch (err) {
             console.error('Firestore error:', err);
             setFetchError(true);
+            // REMOVE BEFORE PUBLIC LAUNCH — surfaces the real error for beta testers
+            setErrorDetail({ code: (err as any)?.code, message: (err as any)?.message });
         } finally {
             setLoading(false);
         }
@@ -197,6 +202,12 @@ export default function MapScreen() {
             <Ionicons name="wifi-outline" size={48} color="#b52525" />
             <Text style={[styles.loadingText, { color: theme.text }]}>Could not load pantries</Text>
             <Text style={[styles.errorSubtext, { color: theme.subtext }]}>Check your connection and try again.</Text>
+            {/* REMOVE BEFORE PUBLIC LAUNCH — beta-only diagnostic error detail */}
+            {errorDetail && (
+                <Text style={[styles.errorSubtext, { color: theme.subtext }]}>
+                    {errorDetail.code ?? 'unknown-code'}: {errorDetail.message ?? 'no message'}
+                </Text>
+            )}
             <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries}>
                 <Text style={styles.retryBtnText}>Retry</Text>
             </TouchableOpacity>
