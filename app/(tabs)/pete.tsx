@@ -4,6 +4,7 @@ import {
     Image,
     ImageBackground,
     KeyboardAvoidingView,
+    LayoutAnimation,
     Linking,
     Platform,
     ScrollView,
@@ -11,12 +12,19 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    UIManager,
     View,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { logPeteRequest, logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
 import { getLastKnownCounty, setPendingSearchOutcome } from '../../utils/userLocation';
+
+// Enable smooth, non-jarring layout transitions on Android when the pantry
+// card list expands (iOS animates LayoutAnimation by default).
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 // ─────────────────────────────────────────────────────────
 // Pantry Pete — Gemini-powered AI assistant
@@ -39,7 +47,7 @@ const RESPONSES: Record<string, string> = {
         "Selma\n" +
         "Selma Area Food Bank — (334) 872-4114\n" +
         "American Red Cross Selma — (334) 875-7565\n\n" +
-        "Use the Map tab to see all 39 pantries with directions. Need urgent help? Call 211 — free, 24/7.",
+        "Use the Map tab to see all 40+ pantries with directions. Need urgent help? Call 211 — free, 24/7.",
 
     snap_ebt:
         "SNAP (also called food stamps or EBT) can help your family buy groceries each month.\n\n" +
@@ -134,7 +142,9 @@ function detectTopic(text: string): string {
 
 // logSearchTopic replaced by logPeteRequest from utils/analytics.ts
 
-type Message = { id: number; role: 'user' | 'assistant'; text: string };
+type PantryPreview = { name: string; area: string; phone?: string; hours?: string };
+
+type Message = { id: number; role: 'user' | 'assistant'; text: string; pantries?: PantryPreview[] };
 
 // ─── Quota Protection ────────────────────────────────────────────────────────
 // In-memory cache: normalized question → cached answer (cleared on app restart)
@@ -142,6 +152,21 @@ const responseCache = new Map<string, string>();
 const MAX_MESSAGES_PER_SESSION = 20; // hard cap per session to guard daily quota
 const MAX_HISTORY_TURNS = 6;         // only send last 6 turns to Gemini (saves tokens)
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Pantry search results — shown as a paginated card list instead of one ────
+// big wall of text, a few at a time via "Show more" so Pete doesn't overwhelm.
+const PANTRY_PREVIEW: PantryPreview[] = [
+    { name: 'Heart of Alabama Food Bank', area: 'Montgomery', phone: '(334) 263-3784' },
+    { name: 'True Divine Community Dev', area: 'Montgomery', phone: '(334) 286-4008', hours: 'Mon/Wed/Fri 9am–12:30pm' },
+    { name: 'Aldersgate UMC', area: 'Montgomery', hours: 'Tuesdays 10am–12pm' },
+    { name: 'Westside Church of Christ', area: 'Montgomery', phone: '(334) 356-8759', hours: 'Thursdays 10am–1pm' },
+    { name: 'East Alabama Food Bank', area: 'Auburn', phone: '(334) 821-9006' },
+    { name: 'Alabama Coalition Against Hunger', area: 'Auburn', phone: '(334) 262-0359', hours: 'Mon–Fri 8:30am–5pm' },
+    { name: 'Tuskegee Community Food Bank', area: 'Tuskegee', phone: '(334) 727-0060' },
+    { name: 'Selma Area Food Bank', area: 'Selma', phone: '(334) 872-4114' },
+    { name: 'American Red Cross Selma', area: 'Selma', phone: '(334) 875-7565' },
+];
+const PANTRY_PAGE_SIZE = 4;
 
 const QUICK_QUESTIONS = [
     { label: 'Find pantries', bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe' },
@@ -158,7 +183,14 @@ export default function PeteScreen() {
     ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [visibleCounts, setVisibleCounts] = useState<Record<number, number>>({});
     const scrollRef = useRef<ScrollView>(null);
+
+    function showMorePantries(id: number, total: number) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setVisibleCounts(prev => ({ ...prev, [id]: Math.min(total, (prev[id] ?? PANTRY_PAGE_SIZE) + PANTRY_PAGE_SIZE) }));
+        setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 50);
+    }
 
     async function sendMessage(text?: string) {
         const msg = (text || input).trim();
@@ -188,6 +220,22 @@ export default function PeteScreen() {
         logPeteRequest(topic, msg, text ? 'chip' : 'typed', county);
         // GAP 7 — if this is a pantry search, watch for a map/pantry follow-up
         if (topic === 'pantry_search') setPendingSearchOutcome(topic);
+
+        // ── Pantry search — answer with a paginated card list, not a text dump ──
+        // Skips Gemini entirely: it's deterministic, instant, and saves quota.
+        if (topic === 'pantry_search') {
+            setTimeout(() => {
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    role: 'assistant',
+                    text: "Here are some pantries near you in Alabama's Black Belt — I'll show them a few at a time:",
+                    pantries: PANTRY_PREVIEW,
+                }]);
+                setLoading(false);
+                setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+            }, 500);
+            return;
+        }
 
         // ── Cache check ────────────────────────────────────────────────────
         const cacheKey = msg.toLowerCase().trim();
@@ -257,18 +305,62 @@ export default function PeteScreen() {
                 style={[styles.messages, { backgroundColor: theme.bg }]}
                 contentContainerStyle={styles.messagesContent}
             >
-                {messages.map(msg => (
+                {messages.map(msg => {
+                    const shown = visibleCounts[msg.id] ?? PANTRY_PAGE_SIZE;
+                    return (
                     <View key={msg.id} style={[styles.msgRow, msg.role === 'user' && styles.msgRowUser]}>
                         {msg.role === 'assistant' && (
                             <Image source={require('../../assets/pete.png')} style={styles.petePip} resizeMode="cover" />
                         )}
-                        <View style={[styles.bubble, msg.role === 'user' ? styles.bubbleUser : [styles.bubblePete, { backgroundColor: theme.card }]]}>
+                        <View style={[styles.bubble, msg.pantries && styles.bubbleWide, msg.role === 'user' ? styles.bubbleUser : [styles.bubblePete, { backgroundColor: theme.card }]]}>
                             <Text style={[styles.bubbleText, { color: theme.text }, msg.role === 'user' && styles.bubbleTextUser]}>
                                 {msg.text}
                             </Text>
+
+                            {msg.pantries && (
+                                <View style={styles.pantryList}>
+                                    {msg.pantries.slice(0, shown).map((p, idx) => (
+                                        <View key={idx} style={[styles.pantryCard, { backgroundColor: theme.bg }]}>
+                                            <View style={styles.pantryCardHeader}>
+                                                <Text style={[styles.pantryCardName, { color: theme.text }]} numberOfLines={2}>{p.name}</Text>
+                                                <View style={styles.pantryAreaBadge}>
+                                                    <Text style={styles.pantryAreaText}>{p.area}</Text>
+                                                </View>
+                                            </View>
+                                            {p.hours && <Text style={[styles.pantryCardMeta, { color: theme.subtext }]}>{p.hours}</Text>}
+                                            {p.phone && (
+                                                <TouchableOpacity
+                                                    style={styles.pantryCallRow}
+                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, ''))}
+                                                >
+                                                    <Ionicons name="call-outline" size={13} color="#16a34a" />
+                                                    <Text style={styles.pantryCallText}>{p.phone}</Text>
+                                                </TouchableOpacity>
+                                            )}
+                                        </View>
+                                    ))}
+
+                                    {shown < msg.pantries.length ? (
+                                        <TouchableOpacity
+                                            style={styles.showMoreBtn}
+                                            onPress={() => showMorePantries(msg.id, msg.pantries!.length)}
+                                        >
+                                            <Text style={styles.showMoreText}>
+                                                Show {Math.min(PANTRY_PAGE_SIZE, msg.pantries.length - shown)} more
+                                            </Text>
+                                            <Ionicons name="chevron-down" size={14} color="#b52525" />
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <Text style={[styles.pantryFooterText, { color: theme.subtext }]}>
+                                            See all 40+ pantries with directions on the Map tab. Need urgent help? Call 211 — free, 24/7.
+                                        </Text>
+                                    )}
+                                </View>
+                            )}
                         </View>
                     </View>
-                ))}
+                    );
+                })}
 
                 {loading && (
                     <View style={styles.msgRow}>
@@ -342,10 +434,23 @@ const styles = StyleSheet.create({
     msgRowUser: { justifyContent: 'flex-end' },
     petePip: { width: 30, height: 30, borderRadius: 15, flexShrink: 0, overflow: 'hidden' },
     bubble: { maxWidth: '85%', padding: 14, borderRadius: 18 },
+    bubbleWide: { maxWidth: '92%' },
     bubblePete: { backgroundColor: '#fff', borderBottomLeftRadius: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3 },
     bubbleUser: { backgroundColor: '#b52525', borderBottomRightRadius: 4 },
     bubbleText: { fontSize: 14, color: '#1c1c1e', lineHeight: 24 },
     bubbleTextUser: { color: '#fff' },
+    pantryList: { marginTop: 10, gap: 8 },
+    pantryCard: { borderRadius: 12, padding: 12, gap: 4 },
+    pantryCardHeader: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
+    pantryCardName: { flex: 1, fontSize: 13, fontWeight: '700' },
+    pantryAreaBadge: { backgroundColor: '#fff7ed', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
+    pantryAreaText: { fontSize: 10, fontWeight: '700', color: '#c2410c' },
+    pantryCardMeta: { fontSize: 12 },
+    pantryCallRow: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 2 },
+    pantryCallText: { fontSize: 12, fontWeight: '700', color: '#16a34a' },
+    showMoreBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, paddingVertical: 10, backgroundColor: '#fff5f5', borderRadius: 12 },
+    showMoreText: { fontSize: 13, fontWeight: '700', color: '#b52525' },
+    pantryFooterText: { fontSize: 12, lineHeight: 17, marginTop: 2 },
     quickWrap: { maxHeight: 48, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#f0f0f0' },
     quickContent: { paddingHorizontal: 10, paddingVertical: 8, gap: 6, alignItems: 'center' },
     quickChip: { borderRadius: 20, paddingHorizontal: 11, paddingVertical: 5, borderWidth: 1 },

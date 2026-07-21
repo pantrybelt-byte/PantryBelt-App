@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import { db } from '../../config/firebase';
+import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { clearPendingSearchOutcome, getLastKnownCounty, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
@@ -45,6 +46,7 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
 export default function MapScreen() {
     const router = useRouter();
     const theme = useTheme();
+    const { authReady } = useAuthReady();
     const mapRef = useRef<MapView>(null);
 
     const [pantries, setPantries] = useState<Pantry[]>([]);
@@ -150,7 +152,11 @@ export default function MapScreen() {
         }
     }, []);
 
-    useEffect(() => { fetchPantries(); }, [fetchPantries]);
+    // Gate on authReady to avoid querying Firestore before anonymous auth completes.
+    // Without this, the query races auth and can hit permission-denied.
+    useEffect(() => {
+        if (authReady) fetchPantries();
+    }, [authReady, fetchPantries]);
 
     // GAP 7 — Search-to-Success Rate: if the user arrived here shortly after
     // asking Pete to find a pantry, record that the search led somewhere.

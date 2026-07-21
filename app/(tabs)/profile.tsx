@@ -41,7 +41,7 @@ export default function ProfileScreen() {
             {/* Stats */}
             <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>39</Text>
+                    <Text style={styles.statValue}>40+</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
                 </View>
                 <View style={[styles.statDivider, { backgroundColor: theme.border }]} />

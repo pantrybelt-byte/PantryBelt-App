@@ -1,6 +1,10 @@
 import { getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+// @ts-ignore — getReactNativePersistence is exported from Firebase's RN-specific
+// bundle (dist/rn/index.js), resolved by Metro at runtime. TS types only cover
+// the main entry point which doesn't include it.
+import { getReactNativePersistence, initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 export const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -16,4 +20,9 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0
 export const db = getFirestore(app);
 
 // ── TIER 1: Auth instance for Anonymous Authentication ──
-export const auth = getAuth(app);
+// Uses AsyncStorage persistence so auth state survives app restarts.
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
+
+
