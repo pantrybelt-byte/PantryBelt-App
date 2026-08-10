@@ -4,14 +4,16 @@ import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Linking, Modal, Platform, ScrollView,
+    ActivityIndicator, Alert, Linking, Modal, Platform, ScrollView,
     StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
+import FeedbackModal from '../../components/FeedbackModal';
 import { db } from '../../config/firebase';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
+import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { clearPendingSearchOutcome, getLastKnownCounty, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
@@ -43,6 +45,36 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
     return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
 }
 
+const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
+
+// GAP 4/6 — Whenever we get a fresh GPS fix (initial load or recenter tap),
+// log the user's county if pantries are nearby, or a food-desert event if not.
+async function trackLocationCoverage(
+    pantries: Pantry[],
+    lat: number,
+    lng: number,
+    source: 'location' | 'filter_tap' | 'inferred'
+): Promise<void> {
+    const nearbyPantries = pantries.filter(p =>
+        Math.abs(p.lat - lat) < MILES_30_IN_DEG &&
+        Math.abs(p.lng - lng) < MILES_30_IN_DEG
+    );
+
+    if (nearbyPantries.length > 0) {
+        // Sort by distance and use the closest pantry's county
+        const closest = nearbyPantries.slice().sort((a, b) => {
+            const distA = Math.hypot(a.lat - lat, a.lng - lng);
+            const distB = Math.hypot(b.lat - lat, b.lng - lng);
+            return distA - distB;
+        })[0];
+        logUserCounty(closest.county, closest.city, source);
+        setLastKnownCounty(closest.county);
+    } else {
+        // No pantries nearby — this is a food desert
+        logFoodDesert(lat, lng, null, null, 0);
+    }
+}
+
 export default function MapScreen() {
     const router = useRouter();
     const theme = useTheme();
@@ -61,6 +93,8 @@ export default function MapScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     // Tracks the user's coarse location for analytics (county / food desert)
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [feedbackVisible, setFeedbackVisible] = useState(false);
+    const [feedbackIsAutoPrompt, setFeedbackIsAutoPrompt] = useState(false);
 
     // ── Load pantries from Firestore ──────────────────────
     const fetchPantries = useCallback(async () => {
@@ -116,27 +150,7 @@ export default function MapScreen() {
                         const userLat = loc.coords.latitude;
                         const userLng = loc.coords.longitude;
                         setUserLocation({ lat: userLat, lng: userLng });
-
-                        // Find the closest pantry and derive county from it
-                        const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
-                        const nearbyPantries = valid.filter(p =>
-                            Math.abs(p.lat - userLat) < MILES_30_IN_DEG &&
-                            Math.abs(p.lng - userLng) < MILES_30_IN_DEG
-                        );
-
-                        if (nearbyPantries.length > 0) {
-                            // Sort by distance and use the closest pantry's county
-                            const closest = nearbyPantries.slice().sort((a, b) => {
-                                const distA = Math.hypot(a.lat - userLat, a.lng - userLng);
-                                const distB = Math.hypot(b.lat - userLat, b.lng - userLng);
-                                return distA - distB;
-                            })[0];
-                            logUserCounty(closest.county, closest.city, 'location');
-                            setLastKnownCounty(closest.county);
-                        } else {
-                            // No pantries nearby — this is a food desert
-                            logFoodDesert(userLat, userLng, null, null, 0);
-                        }
+                        await trackLocationCoverage(valid, userLat, userLng, 'location');
                     }
                 } catch {
                     // Location permission denied or unavailable — silent
@@ -174,6 +188,20 @@ export default function MapScreen() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, fetchError]);
 
+    // Auto-prompt the feedback/rating modal once after the user's 3rd session.
+    const promptCheckedRef = useRef(false);
+    useEffect(() => {
+        if (loading || fetchError || promptCheckedRef.current) return;
+        promptCheckedRef.current = true;
+        (async () => {
+            if (await shouldShowFeedbackPrompt()) {
+                markFeedbackPromptShown();
+                setFeedbackIsAutoPrompt(true);
+                setFeedbackVisible(true);
+            }
+        })();
+    }, [loading, fetchError]);
+
     const filtered = filter === 'All' ? pantries : pantries.filter(p => p.city === filter);
 
     const handleFilter = (city: string) => {
@@ -195,6 +223,32 @@ export default function MapScreen() {
             }, 800);
         }
     };
+
+    // Recenter the map on the user and zoom in close enough to see nearby pantries.
+    const recenterOnUser = useCallback(async () => {
+        try {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert(
+                    'Location access needed',
+                    'Enable location access in Settings to find pantries near you.'
+                );
+                return;
+            }
+            const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+            const { latitude, longitude } = loc.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
+            mapRef.current?.animateToRegion({
+                latitude,
+                longitude,
+                latitudeDelta: 0.15,
+                longitudeDelta: 0.15,
+            }, 800);
+            await trackLocationCoverage(pantries, latitude, longitude, 'location');
+        } catch {
+            Alert.alert('Location unavailable', 'Could not determine your location. Please try again.');
+        }
+    }, [pantries]);
 
     if (loading) return (
         <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
@@ -297,11 +351,46 @@ export default function MapScreen() {
                 </Text>
             </View>
 
+            {/* Recenter-on-me button */}
+            <TouchableOpacity
+                style={[styles.recenterFloating, { backgroundColor: theme.card }]}
+                onPress={recenterOnUser}
+            >
+                <Ionicons name="locate" size={20} color="#2563eb" />
+            </TouchableOpacity>
+
             {/* Ask Pete floating button */}
             <TouchableOpacity style={styles.peteFloating} onPress={() => router.push('/(tabs)/pete')}>
                 <Ionicons name="chatbubble-ellipses" size={16} color="#fff" />
                 <Text style={styles.peteFloatingText}>Ask Pete</Text>
             </TouchableOpacity>
+
+            {/* Feedback floating button */}
+            <TouchableOpacity
+                style={styles.feedbackFloating}
+                onPress={() => {
+                    setFeedbackIsAutoPrompt(false);
+                    setFeedbackVisible(true);
+                }}
+            >
+                <Ionicons name="chatbox-ellipses-outline" size={16} color="#b52525" />
+                <Text style={styles.feedbackFloatingText}>Feedback</Text>
+            </TouchableOpacity>
+
+            <FeedbackModal
+                visible={feedbackVisible}
+                onClose={() => {
+                    // Any dismissal of the auto-prompt (X, backdrop, or "Not now")
+                    // snoozes it — otherwise it re-shows on the very next session.
+                    if (feedbackIsAutoPrompt) snoozeFeedbackPrompt();
+                    setFeedbackVisible(false);
+                }}
+                screenName="map"
+                onNotNow={feedbackIsAutoPrompt ? () => {
+                    snoozeFeedbackPrompt();
+                    setFeedbackVisible(false);
+                } : undefined}
+            />
 
             {/* Detail Modal */}
             <Modal
@@ -419,8 +508,11 @@ const styles = StyleSheet.create({
     chipTextActive: { color: '#fff' },
     countBadge: { position: 'absolute', top: 106, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
     countText: { color: '#fff', fontSize: 12, fontWeight: '600' },
+    recenterFloating: { position: 'absolute', bottom: 92, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     peteFloating: { position: 'absolute', bottom: 30, right: 16, backgroundColor: '#16a34a', borderRadius: 24, paddingHorizontal: 18, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     peteFloatingText: { color: '#fff', fontWeight: '800', fontSize: 14 },
+    feedbackFloating: { position: 'absolute', bottom: 30, left: 16, backgroundColor: '#fff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
+    feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },

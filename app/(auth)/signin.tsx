@@ -24,7 +24,7 @@ export default function SignInScreen() {
 
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../../assets/logo.png')}
+                        source={require('../../assets/badge_transparent.png')}
                         style={styles.logoImage}
                         resizeMode="contain"
                     />
@@ -32,7 +32,7 @@ export default function SignInScreen() {
                 </View>
 
                 <View style={styles.card}>
-                    <Text style={styles.title}>Welcome to PantryBelt</Text>
+                    <Text style={styles.title}>Welcome to AccessBelt</Text>
                     <Text style={styles.subtitle}>
                         Find food pantries, SNAP resources, and community support across Alabama's Black Belt — free and private.
                     </Text>
@@ -48,7 +48,7 @@ export default function SignInScreen() {
                         style={styles.enterBtn}
                         onPress={() => router.replace('/')}
                     >
-                        <Text style={styles.enterBtnText}>Enter PantryBelt →</Text>
+                        <Text style={styles.enterBtnText}>Enter AccessBelt →</Text>
                     </TouchableOpacity>
                 </View>
 

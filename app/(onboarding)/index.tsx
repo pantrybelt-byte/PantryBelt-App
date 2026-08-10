@@ -27,7 +27,7 @@ type Slide = {
 const SLIDES: Slide[] = [
     {
         id: 'welcome',
-        title: 'Welcome to PantryBelt',
+        title: 'Welcome to AccessBelt',
         subtitle:
             'Your free, private guide to food pantries across Alabama\'s Black Belt. No account required — just help when you need it.',
         visual: 'logo',
@@ -46,7 +46,7 @@ const SLIDES: Slide[] = [
     },
     {
         id: 'pete',
-        title: 'Meet Pantry Pete',
+        title: 'Meet Pete',
         subtitle:
             'Pete is your AI-powered assistant. Ask him about SNAP benefits, what to bring, or how to find emergency food help.',
         visual: 'pete',
@@ -65,7 +65,7 @@ export default function OnboardingScreen() {
 
     const finish = async () => {
         await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-        router.replace('/(tabs)/map');
+        router.replace('/(tabs)/home');
     };
 
     const handleNext = () => {
@@ -83,7 +83,7 @@ export default function OnboardingScreen() {
             {item.visual === 'logo' && (
                 <View style={styles.logoWrap}>
                     <Image
-                        source={require('../../assets/logo.png')}
+                        source={require('../../assets/badge_transparent.png')}
                         style={styles.logoImg}
                         resizeMode="contain"
                     />

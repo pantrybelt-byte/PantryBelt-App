@@ -6,7 +6,7 @@ Reserved for **deterministic, atomic scripts** (e.g. Python or Node) when needed
 - API handshake / health checks
 - Build or deploy automation
 
-PantryBelt is currently a client-only Expo app; no scripts required yet. When adding any script:
+AccessBelt is currently a client-only Expo app; no scripts required yet. When adding any script:
 
 1. Document the goal and I/O in `architecture/`.
 2. Use `.env` for secrets; use `.tmp/` for intermediate files.

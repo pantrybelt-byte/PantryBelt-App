@@ -4,7 +4,7 @@ const ENDPOINT =
 const API_TIMEOUT_MS = 10_000;
 
 const PETE_SYSTEM_PROMPT =
-    "You are Pantry Pete, a warm and knowledgeable food assistance helper serving Alabama's Black Belt " +
+    "You are Pete, a warm and knowledgeable food assistance helper serving Alabama's Black Belt " +
     'communities — including Dallas, Wilcox, Perry, Hale, Marengo, Lowndes, Autauga, Elmore, and ' +
     'neighboring counties.\n\n' +
     'Your job: help community members find food pantries, understand SNAP/EBT and WIC benefits, school ' +
@@ -22,7 +22,7 @@ const PETE_SYSTEM_PROMPT =
 // with neutral placeholders so personal data is never transmitted to Google's
 // Gemini infrastructure. This satisfies the HIPAA Technical Safeguard
 // requirement (§164.312(e)(2)(ii)) to protect ePHI in transit to third parties,
-// even if PantryBelt is not a covered entity.
+// even if AccessBelt is not a covered entity.
 const PII_PATTERNS: ReadonlyArray<readonly [RegExp, string]> = [
     // Email addresses
     [/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g,                       '[email]'],

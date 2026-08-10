@@ -1,5 +1,5 @@
 /**
- * PantryBelt — Pantries → Resources Migration
+ * AccessBelt — Pantries → Resources Migration
  * Reads all 39 documents from the legacy `pantries` collection in (default)
  * and writes them into the `resources` collection in BOTH databases:
  *   • (default)            — so the live app map works immediately
@@ -84,7 +84,7 @@ function toResource(id, pantry) {
 
 // ── Runner ───────────────────────────────────────────────────────────────────
 async function migrate() {
-  console.log('\nPantryBelt — Migrating pantries → resources\n');
+  console.log('\nAccessBelt — Migrating pantries → resources\n');
 
   const snapshot = await sourceDb.collection('pantries').get();
   console.log(`Found ${snapshot.size} pantries in (default).pantries\n`);

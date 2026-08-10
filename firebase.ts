@@ -6,6 +6,14 @@ import { getReactNativePersistence, initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
+if (!process.env.EXPO_PUBLIC_FIREBASE_API_KEY) {
+  console.warn(
+    '\n⚠️  WARNING: EXPO_PUBLIC_FIREBASE_API_KEY is not defined in the environment. ' +
+    'Firebase Auth and Firestore calls will fail with an opaque auth/invalid-api-key error. ' +
+    'Make sure to set this in your EAS Secrets/Variables or local .env file!\n'
+  );
+}
+
 export const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'pantrybelt-1e7eb.firebaseapp.com',

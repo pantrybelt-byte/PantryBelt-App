@@ -8,21 +8,21 @@ if (!process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) {
 
 module.exports = {
   expo: {
-    name: 'Pantry Belt',
-    slug: 'pantrybelt',
+    name: 'AccessBelt',
+    slug: 'accessbelt',
     version: '1.0.0',
     orientation: 'portrait',
-    icon: './assets/logo.png',
+    icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
-    scheme: 'pantrybelt',
+    scheme: 'accessbelt',
     newArchEnabled: false,
     splash: {
-      image: './assets/logo.png',
+      image: './assets/splash-icon.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
     ios: {
-      bundleIdentifier: 'com.pantrybelt.app',
+      bundleIdentifier: 'com.accessbelt.app',
       buildNumber: '1',
       supportsTablet: true,
       config: {
@@ -30,16 +30,19 @@ module.exports = {
       },
     },
     android: {
-      package: 'com.pantrybelt.app',
+      package: 'com.accessbelt.app',
       adaptiveIcon: {
-        foregroundImage: './assets/logo.png',
-        backgroundColor: '#ffffff',
+        foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#F3EAD8',
       },
       config: {
         googleMaps: {
           apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
         },
       },
+    },
+    web: {
+      favicon: './assets/favicon.png',
     },
     extra: {
       eas: {
@@ -53,7 +56,7 @@ module.exports = {
         'expo-location',
         {
           locationWhenInUsePermission:
-            'Pantry Belt uses your location to show nearby food pantries on the map.',
+            'AccessBelt uses your location to show nearby food pantries on the map.',
         },
       ],
     ],

@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // ══════════════════════════════════════════════════════════════════════════
-    // PANTRYBELT — 3-TIER SECURITY SYSTEM
+    // ACCESSBELT — 3-TIER SECURITY SYSTEM
     // ══════════════════════════════════════════════════════════════════════════
     //
     // TIER 1: All writes require Firebase Anonymous Auth (request.auth != null)
@@ -15,7 +15,7 @@ service cloud.firestore {
     //
     // TIER 3A: App session validation via _app_sessions/{uid} (Spark plan)
     //          Blocks: scripts that obtain a valid anonymous token but aren't
-    //                  running the real PantryBelt app binary
+    //                  running the real AccessBelt app binary
     //
     // ══════════════════════════════════════════════════════════════════════════
 
@@ -63,7 +63,7 @@ service cloud.firestore {
     // ══════════════════════════════════════════════════════════════════════════
     // TIER 3A: App Session Validation
     // ══════════════════════════════════════════════════════════════════════════
-    // Reads _app_sessions/{uid} to confirm the requester is the real PantryBelt app.
+    // Reads _app_sessions/{uid} to confirm the requester is the real AccessBelt app.
     // The session doc is created by utils/auth.ts with app-specific fields.
     // A bot with a valid anonymous token cannot write analytics without this session.
 
@@ -71,7 +71,7 @@ service cloud.firestore {
       let uid = request.auth.uid;
       let session = get(/databases/$(database)/documents/_app_sessions/$(uid)).data;
       return session.active == true
-          && session.appId == 'pantrybelt-v3'
+          && session.appId == 'accessbelt-v3'
           && session.platform in ['ios', 'android', 'web'];
     }
 
@@ -148,6 +148,20 @@ service cloud.firestore {
           && data.monthYear is string && data.monthYear.size() == 7;
     }
 
+    function validFeedback(data) {
+      return data.rating is number && data.rating >= 0 && data.rating <= 5
+          && data.category in ['Bug','Pantry info wrong','Feature request','Other']
+          && data.message is string && data.message.size() <= 500
+          && (data.email == null || (data.email is string && data.email.size() <= 254))
+          && (data.appVersion   == null || data.appVersion   is string)
+          && (data.buildNumber  == null || data.buildNumber  is string)
+          && data.platform in ['ios','android','web']
+          && (data.osVersion    == null || data.osVersion    is string)
+          && (data.deviceModel  == null || data.deviceModel  is string)
+          && data.screenName is string && data.screenName.size() <= 100
+          && data.status == 'new';
+    }
+
     // ══════════════════════════════════════════════════════════════════════════
     // TIER 3A: App Session Collection
     // ══════════════════════════════════════════════════════════════════════════
@@ -161,7 +175,7 @@ service cloud.firestore {
       allow create, update: if isAuthed()
           && request.auth.uid == uid
           && request.resource.data.active == true
-          && request.resource.data.appId == 'pantrybelt-v3'
+          && request.resource.data.appId == 'accessbelt-v3'
           && request.resource.data.platform in ['ios','android','web']
           && request.resource.data.sessionToken is string
           && request.resource.data.sessionToken.size() >= 10
@@ -286,6 +300,75 @@ service cloud.firestore {
     match /analytics_monthly_summary/{docId} {
       allow read, update, delete: if false;
       allow create, update: if isVerifiedApp() && validMonthlySummary(request.resource.data);
+    }
+
+    // In-app feedback + bug reports — any verified app client can submit;
+    // admin-read only (reviewed via the Firebase console / admin tooling).
+    match /feedback/{docId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validFeedback(request.resource.data);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // NAMESPACED ANALYTICS — analytics/{type}/events/{eventId}
+    // Destination paths for tools/migrateAnalyticsNamespaced.js. Same schema and
+    // same create-only / admin-read-only posture as the flat analytics_* collections
+    // above (that migration is a copy — the flat collections stay live and covered
+    // by their existing rules above until manually dropped).
+    // Note: the top-level `analytics/{docId}` parent documents (e.g. "analytics/searches")
+    // are already covered by the legacy `match /analytics/{docId}` block above
+    // (allow read, write: if false) — no separate rule needed for the parent docs.
+    // ══════════════════════════════════════════════════════════════════════════
+
+    match /analytics/sessions/events/{eventId} {
+      allow read, delete: if false;
+      allow create, update: if isVerifiedApp()
+          && request.resource.data.sessionCount is number
+          && request.resource.data.sessionCount >= 1
+          && request.resource.data.sessionCount <= 10000;
+    }
+
+    match /analytics/user_counties/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validUserCounty(request.resource.data);
+    }
+
+    match /analytics/searches/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validAnalyticsSearch(request.resource.data);
+    }
+
+    match /analytics/food_deserts/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validFoodDesert(request.resource.data);
+    }
+
+    match /analytics/pantry_engagements/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validPantryEngagement(request.resource.data);
+    }
+
+    match /analytics/referrals/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validReferral(request.resource.data);
+    }
+
+    match /analytics/search_outcomes/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create: if isVerifiedApp() && validSearchOutcome(request.resource.data);
+    }
+
+    match /analytics/monthly_summary/events/{eventId} {
+      allow read, update, delete: if false;
+      allow create, update: if isVerifiedApp() && validMonthlySummary(request.resource.data);
+    }
+
+    // Server-computed county+month rollup (joins analytics_searches +
+    // analytics_user_counties) — written only by the Admin SDK migration script,
+    // never by the client app. No client create path, unlike the event
+    // collections above.
+    match /final_analytical_kpis/{docId} {
+      allow read, write: if false;
     }
   }
 }

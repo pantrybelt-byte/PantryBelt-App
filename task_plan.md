@@ -1,4 +1,4 @@
-# PantryBelt — Task Plan (B.L.A.S.T.)
+# AccessBelt — Task Plan (B.L.A.S.T.)
 
 ## North Star
 One app that connects Alabama's Black Belt families to food pantries, SNAP/EBT, and Pantry Pete assistance—reliable on any device.

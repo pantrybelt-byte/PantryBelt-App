@@ -56,11 +56,11 @@ export default function HomeScreen() {
                 <View style={styles.headerTop}>
                     <View>
                         <Text style={styles.greeting}>Welcome to</Text>
-                        <Text style={styles.brandTitle}>PantryBelt</Text>
+                        <Text style={styles.brandTitle}>AccessBelt</Text>
                     </View>
                     <View style={styles.logoWrap}>
                         <Image
-                            source={require('../../assets/logo.png')}
+                            source={require('../../assets/badge_transparent.png')}
                             style={styles.logoImage}
                             resizeMode="contain"
                         />
@@ -93,9 +93,9 @@ export default function HomeScreen() {
                         </View>
                         <Text style={styles.announcementDate}>Apr 8, 2026</Text>
                     </View>
-                    <Text style={styles.announcementTitle}>PantryBelt Wins 2nd Place!</Text>
+                    <Text style={styles.announcementTitle}>AccessBelt Wins 2nd Place!</Text>
                     <Text style={styles.announcementBody}>
-                        PantryBelt won 2nd place and a $3,000 prize at The Alabama Collective's HBCU App Build & Pitch Competition on April 8, 2026!! Thank you for your support!
+                        AccessBelt won 2nd place and a $3,000 prize at The Alabama Collective's HBCU App Build & Pitch Competition on April 8, 2026!! Thank you for your support!
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
                         <Text style={styles.learnMoreText}>Explore the App</Text>
@@ -152,7 +152,7 @@ export default function HomeScreen() {
                     <Ionicons name="chatbubble-ellipses" size={22} color="#15803d" />
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.peteBannerTitle}>Ask Pantry Pete</Text>
+                    <Text style={styles.peteBannerTitle}>Ask Pete</Text>
                     <Text style={styles.peteBannerSub}>SNAP help, recipes, pantry info & more</Text>
                 </View>
                 <Ionicons name="arrow-forward" size={20} color="#16a34a" />

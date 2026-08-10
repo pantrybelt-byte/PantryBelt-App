@@ -1,5 +1,5 @@
 /**
- * test-analytics.js — PantryBelt Analytics Firestore Verification Test
+ * test-analytics.js — AccessBelt Analytics Firestore Verification Test
  *
  * Tests that all 8 government-contract metrics are being correctly
  * tallied in Firestore by writing a test document to each collection
@@ -89,7 +89,7 @@ async function runIncrementTest(gapNumber, label, collection, docId, field) {
 
 async function testAll() {
     console.log('\n══════════════════════════════════════════════════════');
-    console.log('  PantryBelt Analytics Firestore Verification Tests');
+    console.log('  AccessBelt Analytics Firestore Verification Tests');
     console.log('  Project: pantrybelt-1e7eb');
     console.log('══════════════════════════════════════════════════════\n');
 

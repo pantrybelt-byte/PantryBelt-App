@@ -1,5 +1,5 @@
 /**
- * utils/auth.ts — PantryBelt 3-Tier Security System
+ * utils/auth.ts — AccessBelt 3-Tier Security System
  *
  * ┌──────────────────────────────────────────────────────────────────────┐
  * │  TIER 1: Firebase Anonymous Authentication                            │
@@ -66,7 +66,7 @@ async function ensureAnonymousAuth(): Promise<string> {
 // ─── TIER 3A: Bootstrap App Session in Firestore ─────────────────────────────
 // Writes a session document to _app_sessions/{uid}.
 // The Firestore rules on all analytics collections do a get() on this doc
-// to confirm the write originates from the real PantryBelt app.
+// to confirm the write originates from the real AccessBelt app.
 async function bootstrapAppSession(uid: string): Promise<void> {
     const sessionToken = deriveSessionToken(uid);
 
@@ -76,7 +76,7 @@ async function bootstrapAppSession(uid: string): Promise<void> {
             // Fields Firestore rules validate:
             active: true,
             platform: Platform.OS,
-            appId: 'pantrybelt-v3',
+            appId: 'accessbelt-v3',
             sessionToken,
             // Metadata:
             lastBootstrap: serverTimestamp(),

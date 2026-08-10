@@ -1,5 +1,5 @@
 /**
- * PantryBelt Cloud Functions — TIER 3B Security
+ * AccessBelt Cloud Functions — TIER 3B Security
  *
  * ┌─────────────────────────────────────────────────────────────────────┐
  * │  UPGRADE PATH: Deploy when upgrading to Firebase Blaze plan         │

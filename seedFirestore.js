@@ -1,5 +1,5 @@
 /**
- * PantryBelt — Four-Pillar Firestore Seed Script
+ * AccessBelt — Four-Pillar Firestore Seed Script
  * Seeds one representative document per collection so the Firebase Console
  * shows all four pillars: organizations, resources, events, resourceRequests.
  * Run once: node seedFirestore.js
@@ -239,7 +239,7 @@ const resourceRequests = [
 // ── Runner ───────────────────────────────────────────────────────────────────
 
 async function seed() {
-  console.log('\nPantryBelt — Seeding Four-Pillar Firestore Collections\n');
+  console.log('\nAccessBelt — Seeding Four-Pillar Firestore Collections\n');
 
   // Pillar 1: organizations
   console.log('Pillar 1 — organizations');

@@ -14,7 +14,7 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "pantrybelt-security",
+      "codebase": "accessbelt-security",
       "ignore": [
         "node_modules",
         ".git"

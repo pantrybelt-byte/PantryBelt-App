@@ -154,7 +154,7 @@ async function clearPantries() {
 }
 
 async function seedPantries() {
-  console.log('🔥 PantryBelt — Seeding updated pantry list\n');
+  console.log('🔥 AccessBelt — Seeding updated pantry list\n');
   await clearPantries();
 
   const ref = collection(db, 'pantries');

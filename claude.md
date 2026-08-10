@@ -1,4 +1,4 @@
-# PantryBelt — Project Constitution (claude.md)
+# AccessBelt — Project Constitution (claude.md)
 
 **This file is law.** Update only when schemas, rules, or architecture change.
 

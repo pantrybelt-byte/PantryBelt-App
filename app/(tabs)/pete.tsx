@@ -27,7 +27,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 // ─────────────────────────────────────────────────────────
-// Pantry Pete — Gemini-powered AI assistant
+// Pete — Gemini-powered AI assistant
 // Falls back to local keyword responses if the API is unavailable.
 // ─────────────────────────────────────────────────────────
 
@@ -179,7 +179,7 @@ const QUICK_QUESTIONS = [
 export default function PeteScreen() {
     const theme = useTheme();
     const [messages, setMessages] = useState<Message[]>([
-        { id: 1, role: 'assistant', text: "Hi! I'm Pantry Pete, your food assistance helper for Alabama's Black Belt!\n\nI can help you find pantries, apply for SNAP, get recipe ideas, and more. What do you need today?" },
+        { id: 1, role: 'assistant', text: "Hi! I'm Pete, your food assistance helper for Alabama's Black Belt!\n\nI can help you find pantries, apply for SNAP, get recipe ideas, and more. What do you need today?" },
     ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -281,7 +281,7 @@ export default function PeteScreen() {
             <View style={styles.header}>
                 <Image source={require('../../assets/pete.png')} style={styles.avatar} resizeMode="cover" />
                 <View style={styles.headerText}>
-                    <Text style={styles.headerName}>Pantry Pete</Text>
+                    <Text style={styles.headerName}>Pete</Text>
                     <Text style={styles.headerStatus}>● Powered by Gemini AI</Text>
                 </View>
                 <TouchableOpacity
@@ -398,7 +398,7 @@ export default function PeteScreen() {
                     style={[styles.input, { backgroundColor: theme.input, color: theme.text }]}
                     value={input}
                     onChangeText={setInput}
-                    placeholder="Ask Pantry Pete anything..."
+                    placeholder="Ask Pete anything..."
                     placeholderTextColor="#aaa"
                     onSubmitEditing={() => sendMessage()}
                     returnKeyType="send"

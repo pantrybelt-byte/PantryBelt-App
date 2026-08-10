@@ -1,4 +1,4 @@
-# PantryBelt — App Structure (Layer 1 SOP)
+# AccessBelt — App Structure (Layer 1 SOP)
 
 ## Goal
 

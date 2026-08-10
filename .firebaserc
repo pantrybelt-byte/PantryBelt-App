@@ -1,5 +1,7 @@
 {
-  "projects": {},
+  "projects": {
+    "default": "pantrybelt-1e7eb"
+  },
   "targets": {},
   "etags": {
     "pantrybelt-1e7eb": {

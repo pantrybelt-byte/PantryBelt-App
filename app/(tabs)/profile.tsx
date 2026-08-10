@@ -1,9 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
     Linking,
     ScrollView,
     StyleSheet,
@@ -12,6 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import FeedbackModal from '../../components/FeedbackModal';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { getLastKnownCounty } from '../../utils/userLocation';
@@ -26,12 +24,12 @@ const RESOURCES = [
 ];
 
 export default function ProfileScreen() {
-    const router = useRouter();
     const theme = useTheme();
 
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
+    const [feedbackVisible, setFeedbackVisible] = useState(false);
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
@@ -103,26 +101,13 @@ export default function ProfileScreen() {
                     <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: '#e5e5ea' }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                <TouchableOpacity
-                    style={styles.settingRow}
-                    onPress={async () => {
-                        await AsyncStorage.removeItem('hasSeenOnboarding');
-                        Alert.alert(
-                            'Reset Successful',
-                            'Onboarding state has been reset. Would you like to view it now?',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Show Onboarding', onPress: () => router.replace('/(onboarding)/') },
-                            ]
-                        );
-                    }}
-                >
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#fffbeb' }]}>
-                        <Ionicons name="play-outline" size={18} color="#d97706" />
+                <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: '#fff0f0' }]}>
+                        <Ionicons name="chatbox-ellipses-outline" size={18} color="#b52525" />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Replay Onboarding</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Watch the app intro again</Text>
+                        <Text style={[styles.settingTitle, { color: theme.text }]}>Send Feedback</Text>
+                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Report a bug or share an idea</Text>
                     </View>
                     <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
                 </TouchableOpacity>
@@ -166,13 +151,19 @@ export default function ProfileScreen() {
 
             {/* About */}
             <View style={[styles.aboutCard, { backgroundColor: theme.card }]}>
-                <Text style={[styles.aboutTitle, { color: theme.text }]}>About PantryBelt</Text>
+                <Text style={[styles.aboutTitle, { color: theme.text }]}>About AccessBelt</Text>
                 <Text style={[styles.aboutText, { color: theme.subtext }]}>
-                    PantryBelt connects families in Alabama's Black Belt region to food pantries, SNAP/EBT resources, and community programs. Our mission: more meals, less stress.
+                    AccessBelt connects families in Alabama's Black Belt region to food pantries, SNAP/EBT resources, and community programs. Our mission: more meals, less stress.
                 </Text>
             </View>
 
-            <Text style={[styles.version, { color: theme.subtext }]}>PantryBelt v1.0.0 · Free for families</Text>
+            <Text style={[styles.version, { color: theme.subtext }]}>AccessBelt v1.0.0 · Free for families</Text>
+
+            <FeedbackModal
+                visible={feedbackVisible}
+                onClose={() => setFeedbackVisible(false)}
+                screenName="profile"
+            />
 
         </ScrollView>
     );

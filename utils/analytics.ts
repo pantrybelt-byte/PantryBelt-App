@@ -1,5 +1,5 @@
 /**
- * analytics.ts — PantryBelt Centralized Analytics
+ * analytics.ts — AccessBelt Centralized Analytics
  *
  * All 8 government-contract metrics are tracked here.
  * Every function is fire-and-forget — never throws, never blocks the UI.
@@ -43,7 +43,7 @@ function timeFields() {
 // ─── Shared: Anonymous Device ID ─────────────────────────────────────────────
 // GAP 5 — used by logSession to detect return users (no personal data stored)
 async function getDeviceId(): Promise<string> {
-    const KEY = '@pantrybelt_device_id';
+    const KEY = '@accessbelt_device_id';
     let id = await AsyncStorage.getItem(KEY);
     if (!id) {
         id = `anon_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
@@ -74,8 +74,8 @@ export async function logSession(): Promise<void> {
             },
             { merge: true }
         );
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logSession failed:', err);
     }
 }
 
@@ -96,8 +96,8 @@ export async function logUserCounty(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logUserCounty failed:', err);
     }
 }
 
@@ -123,8 +123,8 @@ export async function logPeteRequest(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logPeteRequest failed:', err);
     }
 }
 
@@ -151,8 +151,8 @@ export async function logFoodDesert(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logFoodDesert failed:', err);
     }
 }
 
@@ -187,8 +187,8 @@ export async function logPantryEngagement(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logPantryEngagement failed:', err);
     }
 }
 
@@ -225,8 +225,8 @@ export async function logReferral(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logReferral failed:', err);
     }
 }
 
@@ -257,8 +257,8 @@ export async function logSearchOutcome(
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] logSearchOutcome failed:', err);
     }
 }
 
@@ -295,7 +295,7 @@ export async function updateMonthlySummary(
             },
             { merge: true }
         );
-    } catch {
-        // Silent
+    } catch (err) {
+        console.warn('[Analytics] updateMonthlySummary failed:', err);
     }
 }

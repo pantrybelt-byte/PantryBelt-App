@@ -13,6 +13,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { initAppSecurity } from '../utils/auth';
 import { logSession } from '../utils/analytics';
+import { flushFeedbackQueue, incrementFeedbackSessionCount } from '../utils/feedback';
 
 type AuthReadyContextType = {
     authReady: boolean;
@@ -31,6 +32,10 @@ export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
                 setAuthReady(true);
                 // GAP 5: Log the session AFTER auth is confirmed
                 logSession();
+                // Local session count for the feedback auto-prompt, and retry
+                // any feedback that failed to submit while offline last time.
+                incrementFeedbackSessionCount();
+                flushFeedbackQueue();
             })
             .catch(() => {
                 // Even if auth fails, mark ready so the UI isn't stuck forever.
