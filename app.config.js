@@ -16,11 +16,6 @@ module.exports = {
     userInterfaceStyle: 'automatic',
     scheme: 'accessbelt',
     newArchEnabled: false,
-    splash: {
-      image: './assets/splash-icon.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-    },
     ios: {
       bundleIdentifier: 'com.accessbelt.app',
       buildNumber: '1',
@@ -53,6 +48,15 @@ module.exports = {
     plugins: [
       'expo-router',
       'expo-font',
+      [
+        'expo-splash-screen',
+        {
+          image: './assets/splash-icon.png',
+          imageWidth: 200,
+          resizeMode: 'contain',
+          backgroundColor: '#ffffff',
+        },
+      ],
       [
         'expo-location',
         {
