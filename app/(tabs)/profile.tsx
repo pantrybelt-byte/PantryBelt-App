@@ -1,6 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
+    Alert,
     Linking,
     ScrollView,
     StyleSheet,
@@ -24,6 +27,7 @@ const RESOURCES = [
 ];
 
 export default function ProfileScreen() {
+    const router = useRouter();
     const theme = useTheme();
 
     const [notifications, setNotifications] = useState(true);
@@ -39,7 +43,7 @@ export default function ProfileScreen() {
             {/* Stats */}
             <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>40+</Text>
+                    <Text style={styles.statValue}>60+</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
                 </View>
                 <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
@@ -100,6 +104,30 @@ export default function ProfileScreen() {
                     </View>
                     <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: '#e5e5ea' }} thumbColor="#fff" />
                 </View>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity
+                    style={styles.settingRow}
+                    onPress={async () => {
+                        await AsyncStorage.removeItem('hasSeenOnboarding');
+                        Alert.alert(
+                            'Reset Successful',
+                            'Onboarding state has been reset. Would you like to view it now?',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                { text: 'Show Onboarding', onPress: () => router.replace('/(onboarding)/') },
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: '#fffbeb' }]}>
+                        <Ionicons name="play-outline" size={18} color="#d97706" />
+                    </View>
+                    <View style={styles.settingTextWrap}>
+                        <Text style={[styles.settingTitle, { color: theme.text }]}>Replay Onboarding</Text>
+                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Watch the app intro again</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>
                     <View style={[styles.settingIconCircle, { backgroundColor: '#fff0f0' }]}>

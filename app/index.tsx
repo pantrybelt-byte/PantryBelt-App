@@ -21,5 +21,5 @@ export default function Index() {
     );
 
     if (!onboarded) return <Redirect href="/(onboarding)/" />;
-    return <Redirect href="/(tabs)/home" />;
+    return <Redirect href="/(tabs)/map" />;
 }

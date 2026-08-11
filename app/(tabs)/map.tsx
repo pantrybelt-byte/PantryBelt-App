@@ -95,6 +95,7 @@ export default function MapScreen() {
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [feedbackIsAutoPrompt, setFeedbackIsAutoPrompt] = useState(false);
+    const [is3D, setIs3D] = useState(true);
 
     // ── Load pantries from Firestore ──────────────────────
     const fetchPantries = useCallback(async () => {
@@ -224,6 +225,13 @@ export default function MapScreen() {
         }
     };
 
+    // Toggle between a flat top-down view and a tilted 3D perspective.
+    const toggleMapView = useCallback(() => {
+        const next = !is3D;
+        setIs3D(next);
+        mapRef.current?.animateCamera({ pitch: next ? 30 : 0, heading: 0 }, { duration: 500 });
+    }, [is3D]);
+
     // Recenter the map on the user and zoom in close enough to see nearby pantries.
     const recenterOnUser = useCallback(async () => {
         try {
@@ -350,6 +358,14 @@ export default function MapScreen() {
                     {filtered.length} pantries · {liveData ? 'live' : 'offline'}
                 </Text>
             </View>
+
+            {/* 2D / 3D view toggle */}
+            <TouchableOpacity
+                style={[styles.viewToggle, { backgroundColor: theme.card }]}
+                onPress={toggleMapView}
+            >
+                <Text style={styles.viewToggleText}>{is3D ? '2D' : '3D'}</Text>
+            </TouchableOpacity>
 
             {/* Recenter-on-me button */}
             <TouchableOpacity
@@ -509,6 +525,8 @@ const styles = StyleSheet.create({
     countBadge: { position: 'absolute', top: 106, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
     countText: { color: '#fff', fontSize: 12, fontWeight: '600' },
     recenterFloating: { position: 'absolute', bottom: 92, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
+    viewToggle: { position: 'absolute', bottom: 148, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
+    viewToggleText: { color: '#2563eb', fontWeight: '800', fontSize: 13 },
     peteFloating: { position: 'absolute', bottom: 30, right: 16, backgroundColor: '#16a34a', borderRadius: 24, paddingHorizontal: 18, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     peteFloatingText: { color: '#fff', fontWeight: '800', fontSize: 14 },
     feedbackFloating: { position: 'absolute', bottom: 30, left: 16, backgroundColor: '#fff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },

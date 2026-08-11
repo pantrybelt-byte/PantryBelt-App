@@ -8,7 +8,7 @@
 
 ### App state (in-memory unless noted)
 
-- **Auth:** No persistent user; "Sign In" / "Continue as Guest" both route to `/(tabs)/home`. No token or session stored.
+- **Auth:** No persistent user; "Sign In" / "Continue as Guest" both route to `/(tabs)/map`. No token or session stored.
 - **Profile:**
   - `displayName: string`
   - `email: string`
@@ -30,7 +30,7 @@
 1. **Tone:** Helpful, clear, respectful. Alabama Black Belt focus; no jargon.
 2. **Do not:** Guess at business logic; change pantry data without updating architecture; add a second logo asset (use single `logo.png`).
 3. **Links:** External links open in browser or dialer (211). Map directions: Apple Maps on iOS, Google Maps on Android.
-4. **Tab order:** Always Home → Map → Pete → Profile. Entry after auth: `/(tabs)/home`.
+4. **Tab order:** Always Home → Map → Pete → Profile. Entry after auth: `/(tabs)/map`.
 
 ---
 
@@ -48,6 +48,7 @@
 | Date       | Change |
 |-----------|--------|
 | (today)   | B.L.A.S.T. applied: task_plan, findings, progress, claude.md, architecture/, .tmp/ |
+| 2026-08-10 | Entry point reverted to `/(tabs)/map` (was briefly changed to `/(tabs)/home`, then reverted per explicit request) |
 
 ---
 *Only update this file when a schema, rule, or invariant changes.*
