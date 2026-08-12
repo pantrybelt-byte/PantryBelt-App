@@ -485,9 +485,9 @@ export default function MapScreen() {
 
                                     if (Platform.OS === 'ios') {
                                         // Apple Maps driving directions to pantry
-                                        // Apple Maps is always available on iOS — no canOpenURL needed
-                                        Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=d`);
-                                        opened = true;
+                                        const appleUrl = `http://maps.apple.com/?daddr=${lat},${lng}&dirflg=d`;
+                                        opened = await Linking.canOpenURL(appleUrl);
+                                        if (opened) Linking.openURL(appleUrl);
                                     } else {
                                         // Android geo: intent with labeled pin
                                         const geoUrl = `geo:${lat},${lng}?q=${lat},${lng}(${encodedName})`;
@@ -495,7 +495,7 @@ export default function MapScreen() {
                                         if (opened) Linking.openURL(geoUrl);
                                     }
 
-                                    // Fallback to Google Maps web URL (Android only, if no maps app)
+                                    // Fallback to Google Maps web URL if no native maps handler
                                     if (!opened) {
                                         Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`);
                                     }
