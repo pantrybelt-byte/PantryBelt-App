@@ -10,7 +10,7 @@ module.exports = {
   expo: {
     name: 'AccessBelt',
     slug: 'accessbelt',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -54,10 +54,10 @@ module.exports = {
       [
         'expo-splash-screen',
         {
-          image: './assets/splash-icon.png',
+          image: './assets/splash.png',
           imageWidth: 200,
           resizeMode: 'contain',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#F1EBD8',
         },
       ],
       [
