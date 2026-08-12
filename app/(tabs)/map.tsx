@@ -478,8 +478,28 @@ export default function MapScreen() {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.modalBtn}
-                                onPress={() => {
-                                    Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(selected.address)}`);
+                                onPress={async () => {
+                                    const { lat, lng, name, address } = selected;
+                                    const encodedName = encodeURIComponent(name);
+                                    let opened = false;
+
+                                    if (Platform.OS === 'ios') {
+                                        // Apple Maps driving directions to pantry
+                                        // Apple Maps is always available on iOS — no canOpenURL needed
+                                        Linking.openURL(`http://maps.apple.com/?daddr=${lat},${lng}&dirflg=d`);
+                                        opened = true;
+                                    } else {
+                                        // Android geo: intent with labeled pin
+                                        const geoUrl = `geo:${lat},${lng}?q=${lat},${lng}(${encodedName})`;
+                                        opened = await Linking.canOpenURL(geoUrl);
+                                        if (opened) Linking.openURL(geoUrl);
+                                    }
+
+                                    // Fallback to Google Maps web URL (Android only, if no maps app)
+                                    if (!opened) {
+                                        Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`);
+                                    }
+
                                     // GAP 1 — Successful Connections (USDA)
                                     // GAP 6 — Pantry-Level Utilization (County Govts)
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'directions');

@@ -51,6 +51,7 @@ module.exports = {
     plugins: [
       'expo-router',
       'expo-font',
+      './plugins/withPodfilePatches',
       [
         'expo-splash-screen',
         {
