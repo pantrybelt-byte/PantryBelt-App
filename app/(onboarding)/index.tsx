@@ -13,6 +13,7 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '../../context/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -60,6 +61,7 @@ const SLIDES: Slide[] = [
 
 export default function OnboardingScreen() {
     const router = useRouter();
+    const theme = useTheme();
     const listRef = useRef<FlatList<Slide>>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -81,7 +83,7 @@ export default function OnboardingScreen() {
     const renderSlide = ({ item }: { item: Slide }) => (
         <View style={styles.slide}>
             {item.visual === 'logo' && (
-                <View style={styles.logoWrap}>
+                <View style={[styles.logoWrap, { backgroundColor: theme.dark ? '#b5252526' : '#fff5f5' }]}>
                     <Image
                         source={require('../../assets/badge_transparent.png')}
                         style={styles.logoImg}
@@ -91,7 +93,7 @@ export default function OnboardingScreen() {
             )}
 
             {item.visual === 'map' && (
-                <View style={[styles.iconWrap, { backgroundColor: '#fff5f5' }]}>
+                <View style={[styles.iconWrap, { backgroundColor: theme.dark ? '#b5252526' : '#fff5f5' }]}>
                     <Ionicons name="map" size={72} color="#b52525" />
                 </View>
             )}
@@ -106,17 +108,17 @@ export default function OnboardingScreen() {
                 </View>
             )}
 
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.subtitle}>{item.subtitle}</Text>
+            <Text style={[styles.title, { color: theme.text }]}>{item.title}</Text>
+            <Text style={[styles.subtitle, { color: theme.subtext }]}>{item.subtitle}</Text>
 
             {item.features && (
                 <View style={styles.featureList}>
                     {item.features.map((f, i) => (
-                        <View key={i} style={styles.featureRow}>
-                            <View style={styles.featureIconWrap}>
+                        <View key={i} style={[styles.featureRow, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                            <View style={[styles.featureIconWrap, { backgroundColor: theme.dark ? '#b5252526' : '#fff5f5' }]}>
                                 <Ionicons name={f.icon as never} size={18} color="#b52525" />
                             </View>
-                            <Text style={styles.featureText}>{f.text}</Text>
+                            <Text style={[styles.featureText, { color: theme.text }]}>{f.text}</Text>
                         </View>
                     ))}
                 </View>
@@ -125,15 +127,15 @@ export default function OnboardingScreen() {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.bg }]}>
+            <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} backgroundColor={theme.bg} />
 
             <TouchableOpacity
                 style={styles.skipBtn}
                 onPress={finish}
                 accessibilityLabel="Skip onboarding"
             >
-                <Text style={styles.skipText}>Skip</Text>
+                <Text style={[styles.skipText, { color: theme.subtext }]}>Skip</Text>
             </TouchableOpacity>
 
             <FlatList
@@ -159,7 +161,7 @@ export default function OnboardingScreen() {
             <View style={styles.footer}>
                 <View style={styles.dots}>
                     {SLIDES.map((_, i) => (
-                        <View key={i} style={[styles.dot, i === currentIndex && styles.dotActive]} />
+                        <View key={i} style={[styles.dot, { backgroundColor: theme.border }, i === currentIndex && styles.dotActive]} />
                     ))}
                 </View>
 

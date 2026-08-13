@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Alert,
     Linking,
@@ -13,9 +13,15 @@ import {
     View,
 } from 'react-native';
 import FeedbackModal from '../../components/FeedbackModal';
+import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
+import { signOutUser } from '../../utils/auth';
+import { registerForPushNotificationsAsync } from '../../utils/notifications';
+import { updatePushToken } from '../../utils/userProfile';
 import { getLastKnownCounty } from '../../utils/userLocation';
+
+const PUSH_ENABLED_KEY = '@pb_push_enabled';
 
 const RESOURCES = [
     { id: '1', title: 'Apply for SNAP / EBT', sub: 'USDA FNS · fns.usda.gov', icon: 'card-outline' as const, color: '#16a34a', url: 'https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program' },
@@ -29,11 +35,59 @@ const RESOURCES = [
 export default function ProfileScreen() {
     const router = useRouter();
     const theme = useTheme();
+    const { authReady, accountLabel } = useAuthReady();
 
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
     const [feedbackVisible, setFeedbackVisible] = useState(false);
+
+    const handleSignOut = () => {
+        Alert.alert(
+            'Sign out?',
+            'You\'ll return to anonymous browsing. Your saved info stays safely in your account and will be back next time you sign in.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Sign Out',
+                    style: 'destructive',
+                    onPress: () => {
+                        signOutUser().catch(() => {
+                            Alert.alert('Could not sign out', 'Check your connection and try again.');
+                        });
+                    },
+                },
+            ]
+        );
+    };
+
+    useEffect(() => {
+        AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
+            if (val !== null) setNotifications(val === 'true');
+        });
+    }, []);
+
+    const handleToggleNotifications = async (value: boolean) => {
+        if (!value) {
+            setNotifications(false);
+            await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'false');
+            if (authReady) await updatePushToken(null);
+            return;
+        }
+
+        const token = await registerForPushNotificationsAsync();
+        if (!token) {
+            Alert.alert(
+                'Notifications not enabled',
+                'We couldn\'t enable push notifications. Check that notifications are allowed for AccessBelt in your device settings.'
+            );
+            return;
+        }
+
+        setNotifications(true);
+        await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'true');
+        if (authReady) await updatePushToken(token);
+    };
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
@@ -51,86 +105,74 @@ export default function ProfileScreen() {
                     <Text style={styles.statValue}>AL</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Region</Text>
                 </View>
-                <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
-                <View style={styles.statItem}>
-                    <Text style={styles.statValue}>Free</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Plan</Text>
-                </View>
+            </View>
+
+            {/* Account */}
+            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Account</Text>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
+                <TouchableOpacity style={styles.settingRow} onPress={() => router.push('/account')}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: accountLabel ? (theme.dark ? '#16a34a26' : '#f0fdf4') : (theme.dark ? '#b5252526' : '#fff0f0') }]}>
+                        <Ionicons name={accountLabel ? 'person-circle-outline' : 'person-add-outline'} size={18} color={accountLabel ? '#16a34a' : '#b52525'} />
+                    </View>
+                    <View style={styles.settingTextWrap}>
+                        <Text style={[styles.settingTitle, { color: theme.text }]}>{accountLabel ?? 'Sign In / Create Account'}</Text>
+                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>
+                            {accountLabel ? 'Signed in · Edit your About You info' : 'Optional — account, About You info, and more'}
+                        </Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
             </View>
 
             {/* Preferences */}
             <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Preferences</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#3a3a3c' }]}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#3a3a3c' : '#ede9fe' }]}>
                         <Ionicons name={theme.dark ? 'moon' : 'moon-outline'} size={18} color="#a78bfa" />
                     </View>
                     <View style={styles.settingTextWrap}>
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Dark Mode</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Easy on the eyes at night</Text>
                     </View>
-                    <Switch value={theme.dark} onValueChange={theme.toggle} trackColor={{ true: '#a78bfa', false: '#e5e5ea' }} thumbColor="#fff" />
+                    <Switch value={theme.dark} onValueChange={theme.toggle} trackColor={{ true: '#a78bfa', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#fff0f0' }]}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
                         <Ionicons name="notifications-outline" size={18} color="#b52525" />
                     </View>
                     <View style={styles.settingTextWrap}>
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Push Notifications</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Alerts about nearby pantries</Text>
                     </View>
-                    <Switch value={notifications} onValueChange={setNotifications} trackColor={{ true: '#b52525', false: '#e5e5ea' }} thumbColor="#fff" />
+                    <Switch value={notifications} onValueChange={handleToggleNotifications} trackColor={{ true: '#b52525', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#eff6ff' }]}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#2563eb26' : '#eff6ff' }]}>
                         <Ionicons name="location-outline" size={18} color="#2563eb" />
                     </View>
                     <View style={styles.settingTextWrap}>
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Location Services</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Find pantries near you</Text>
                     </View>
-                    <Switch value={locationEnabled} onValueChange={setLocationEnabled} trackColor={{ true: '#2563eb', false: '#e5e5ea' }} thumbColor="#fff" />
+                    <Switch value={locationEnabled} onValueChange={setLocationEnabled} trackColor={{ true: '#2563eb', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#f0fdf4' }]}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
                         <Ionicons name="mail-outline" size={18} color="#16a34a" />
                     </View>
                     <View style={styles.settingTextWrap}>
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Newsletter</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Monthly updates & resources</Text>
                     </View>
-                    <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: '#e5e5ea' }} thumbColor="#fff" />
+                    <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                <TouchableOpacity
-                    style={styles.settingRow}
-                    onPress={async () => {
-                        await AsyncStorage.removeItem('hasSeenOnboarding');
-                        Alert.alert(
-                            'Reset Successful',
-                            'Onboarding state has been reset. Would you like to view it now?',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Show Onboarding', onPress: () => router.replace('/(onboarding)/') },
-                            ]
-                        );
-                    }}
-                >
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#fffbeb' }]}>
-                        <Ionicons name="play-outline" size={18} color="#d97706" />
-                    </View>
-                    <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Replay Onboarding</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Watch the app intro again</Text>
-                    </View>
-                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
-                </TouchableOpacity>
-                <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: '#fff0f0' }]}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
                         <Ionicons name="chatbox-ellipses-outline" size={18} color="#b52525" />
                     </View>
                     <View style={styles.settingTextWrap}>
@@ -185,6 +227,12 @@ export default function ProfileScreen() {
                 </Text>
             </View>
 
+            {accountLabel && (
+                <TouchableOpacity style={styles.signOutBtn} onPress={handleSignOut}>
+                    <Text style={styles.signOutBtnText}>Sign Out</Text>
+                </TouchableOpacity>
+            )}
+
             <Text style={[styles.version, { color: theme.subtext }]}>AccessBelt v1.0.0 · Free for families</Text>
 
             <FeedbackModal
@@ -222,5 +270,7 @@ const styles = StyleSheet.create({
     aboutCard: { borderRadius: 16, padding: 18, marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
     aboutTitle: { fontSize: 15, fontWeight: '800', marginBottom: 8 },
     aboutText: { fontSize: 13, lineHeight: 20 },
+    signOutBtn: { backgroundColor: '#dc2626', borderRadius: 14, paddingVertical: 16, alignItems: 'center', marginBottom: 20 },
+    signOutBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
     version: { textAlign: 'center', fontSize: 12 },
 });

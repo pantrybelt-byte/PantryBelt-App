@@ -67,6 +67,7 @@ module.exports = {
             'AccessBelt uses your location to show nearby food pantries on the map.',
         },
       ],
+      'expo-notifications',
     ],
   },
 };

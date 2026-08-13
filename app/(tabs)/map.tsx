@@ -305,36 +305,40 @@ export default function MapScreen() {
                     zoom: 6,
                 }}
             >
-                {filtered.map(pantry => (
-                    <Marker
-                        key={pantry.id}
-                        coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                        pinColor="#b52525"
-                        onPress={() => {
-                            setSelected(pantry);
-                            setModalVisible(true);
-                            // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
-                            logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
-                            updateMonthlySummary(pantry.county, 'pantryViews');
-                            // GAP 7 — close the loop if this view follows a Pete search
-                            (async () => {
-                                const topic = await getPendingSearchOutcome();
-                                if (topic) {
-                                    logSearchOutcome(topic, 'pantry_viewed', pantry.county);
-                                    await clearPendingSearchOutcome();
-                                }
-                            })();
-                        }}
-                    >
-                        <Callout tooltip>
-                            <View style={styles.callout}>
-                                <Text style={styles.calloutName}>{pantry.name}</Text>
-                                <Text style={styles.calloutCity}>{pantry.city}</Text>
-                                <Text style={styles.calloutTap}>Tap for details</Text>
-                            </View>
-                        </Callout>
-                    </Marker>
-                ))}
+                {filtered.map(pantry => {
+                    const openDetails = () => {
+                        setSelected(pantry);
+                        setModalVisible(true);
+                        // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
+                        logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
+                        updateMonthlySummary(pantry.county, 'pantryViews');
+                        // GAP 7 — close the loop if this view follows a Pete search
+                        (async () => {
+                            const topic = await getPendingSearchOutcome();
+                            if (topic) {
+                                logSearchOutcome(topic, 'pantry_viewed', pantry.county);
+                                await clearPendingSearchOutcome();
+                            }
+                        })();
+                    };
+
+                    return (
+                        <Marker
+                            key={pantry.id}
+                            coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
+                            pinColor="#b52525"
+                            onPress={openDetails}
+                        >
+                            <Callout tooltip onPress={openDetails}>
+                                <View style={[styles.callout, { backgroundColor: theme.card }]}>
+                                    <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
+                                    <Text style={styles.calloutCity}>{pantry.city}</Text>
+                                    <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
+                                </View>
+                            </Callout>
+                        </Marker>
+                    );
+                })}
             </MapView>
 
             {/* City filter chips */}
@@ -383,7 +387,7 @@ export default function MapScreen() {
 
             {/* Feedback floating button */}
             <TouchableOpacity
-                style={styles.feedbackFloating}
+                style={[styles.feedbackFloating, { backgroundColor: theme.card }]}
                 onPress={() => {
                     setFeedbackIsAutoPrompt(false);
                     setFeedbackVisible(true);
@@ -422,7 +426,7 @@ export default function MapScreen() {
                 />
                 {selected && (
                     <View style={[styles.modalCard, { backgroundColor: theme.card }]}>
-                        <View style={styles.modalHandle} />
+                        <View style={[styles.modalHandle, { backgroundColor: theme.border }]} />
 
                         <View style={styles.modalHeader}>
                             <View style={{ flex: 1 }}>
@@ -431,7 +435,7 @@ export default function MapScreen() {
                                         {selected.city} · {selected.county}
                                     </Text>
                                     {selected.verified && (
-                                        <View style={styles.verifiedBadge}>
+                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
                                             <Ionicons name="checkmark-circle" size={12} color="#16a34a" />
                                             <Text style={styles.verifiedText}>Verified</Text>
                                         </View>

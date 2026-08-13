@@ -278,10 +278,10 @@ export default function PeteScreen() {
             >
 
             {/* Header */}
-            <View style={styles.header}>
+            <View style={[styles.header, { backgroundColor: theme.card, borderBottomColor: theme.border }]}>
                 <Image source={require('../../assets/pete.png')} style={styles.avatar} resizeMode="cover" />
                 <View style={styles.headerText}>
-                    <Text style={styles.headerName}>Pete</Text>
+                    <Text style={[styles.headerName, { color: theme.text }]}>Pete</Text>
                     <Text style={styles.headerStatus}>● Powered by Gemini AI</Text>
                 </View>
                 <TouchableOpacity
@@ -378,7 +378,7 @@ export default function PeteScreen() {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={styles.quickWrap}
+                style={[styles.quickWrap, { backgroundColor: theme.card, borderTopColor: theme.border }]}
                 contentContainerStyle={styles.quickContent}
             >
                 {QUICK_QUESTIONS.map(q => (

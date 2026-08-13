@@ -148,6 +148,23 @@ service cloud.firestore {
           && data.monthYear is string && data.monthYear.size() == 7;
     }
 
+    // Each field is independently optional so a push-token-only write (before
+    // the demographic form has ever been filled out) validates against the
+    // full resulting document just like a demographic-only write does.
+    function validUserProfile(data) {
+      return (!('age' in data) || (data.age is number && data.age >= 13 && data.age <= 120))
+          && (!('familySize' in data) || (data.familySize is number && data.familySize >= 1 && data.familySize <= 20))
+          && (!('zipCode' in data) || (data.zipCode is string && data.zipCode.matches('^[0-9]{5}$')))
+          && (!('race' in data) || data.race == null || (data.race is string && data.race in
+                ['american_indian_alaska_native','asian','black_african_american',
+                 'native_hawaiian_pacific_islander','white','hispanic_latino',
+                 'two_or_more','other','prefer_not_to_say']))
+          && (!('contactEmail' in data) || data.contactEmail == null || (data.contactEmail is string
+                && data.contactEmail.size() <= 254
+                && data.contactEmail.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')))
+          && (!('pushToken' in data) || data.pushToken == null || (data.pushToken is string && data.pushToken.size() <= 200));
+    }
+
     function validFeedback(data) {
       return data.rating is number && data.rating >= 0 && data.rating <= 5
           && data.category in ['Bug','Pantry info wrong','Feature request','Other']
@@ -180,6 +197,19 @@ service cloud.firestore {
           && request.resource.data.sessionToken is string
           && request.resource.data.sessionToken.size() >= 10
           && request.resource.data.sessionToken.size() <= 60;
+      allow delete: if false;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // USER PROFILE — optional demographic data (age, family size, zip)
+    // ══════════════════════════════════════════════════════════════════════════
+    // Owner-only read/write, gated on both uid ownership AND an active verified
+    // app session (same posture as the analytics collections). Not linked to
+    // any real-world identity — keyed purely by the anonymous Firebase uid.
+
+    match /user_profiles/{uid} {
+      allow read: if isVerifiedApp() && request.auth.uid == uid;
+      allow create, update: if isVerifiedApp() && request.auth.uid == uid && validUserProfile(request.resource.data);
       allow delete: if false;
     }
 
