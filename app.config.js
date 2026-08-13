@@ -41,7 +41,7 @@ module.exports = {
     web: {
       favicon: './assets/favicon.png',
     },
-    owner: 'pantrybelt',
+    owner: 'accessbelt',
     extra: {
       eas: {
         projectId: '59f03f7a-deae-43d4-abb2-ee18a299a9b0',
