@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// accessbelt-agency database. No collections/schema exist yet (Agency
+// Dashboard Phase 3 — see Agency-Dashboard's docs/superpowers/plans/2026-08-11-roadmap.md
+// — is not started). Deny-all until that schema is designed and real rules
+// are written against it.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

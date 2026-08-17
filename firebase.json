@@ -6,9 +6,14 @@
       "indexes": "firestore.indexes.json"
     },
     {
-      "database": "pantrybelt-statewide",
-      "rules": "firestore.rules",
-      "indexes": "firestore.indexes.json"
+      "database": "accessbelt-agency",
+      "rules": "firestore.agency.rules",
+      "indexes": "firestore.empty.indexes.json"
+    },
+    {
+      "database": "accessbelt-operator",
+      "rules": "firestore.operator.rules",
+      "indexes": "firestore.empty.indexes.json"
     }
   ],
   "functions": [
