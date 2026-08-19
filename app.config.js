@@ -41,6 +41,12 @@ module.exports = {
     web: {
       favicon: './assets/favicon.png',
     },
+    updates: {
+      url: 'https://u.expo.dev/59f03f7a-deae-43d4-abb2-ee18a299a9b0',
+    },
+    runtimeVersion: {
+      policy: 'appVersion',
+    },
     owner: 'accessbelt',
     extra: {
       eas: {
