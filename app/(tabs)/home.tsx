@@ -16,8 +16,8 @@ const QUICK_LINKS = [
 ];
 
 const STATS = [
-    { label: 'Pantries', value: '60+', icon: 'storefront-outline' as const },
-    { label: 'Counties', value: '15+', icon: 'map-outline' as const },
+    { label: 'Pantries', value: '884', icon: 'storefront-outline' as const },
+    { label: 'Counties', value: '67', icon: 'map-outline' as const },
     { label: 'Free', value: '100%', icon: 'heart-outline' as const },
 ];
 

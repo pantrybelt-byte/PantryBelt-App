@@ -47,6 +47,16 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
 
 const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
 
+// Default fallback camera: Alabama center (statewide view)
+const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
+const DEFAULT_CAMERA = {
+    center: ALABAMA_CENTER,
+    pitch: 30,
+    heading: 0,
+    altitude: 550000,
+    zoom: 6,
+};
+
 // GAP 4/6 — Whenever we get a fresh GPS fix (initial load or recenter tap),
 // log the user's county if pantries are nearby, or a food-desert event if not.
 async function trackLocationCoverage(
@@ -88,7 +98,7 @@ export default function MapScreen() {
     const [errorDetail, setErrorDetail] = useState<{ code?: string; message?: string } | null>(null);
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
-    const [cities, setCities] = useState<string[]>(['All']);
+    const [counties, setCounties] = useState<string[]>(['All']);
     const [selected, setSelected] = useState<Pantry | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     // Tracks the user's coarse location for analytics (county / food desert)
@@ -96,6 +106,14 @@ export default function MapScreen() {
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [feedbackIsAutoPrompt, setFeedbackIsAutoPrompt] = useState(false);
     const [is3D, setIs3D] = useState(true);
+
+    // Track the visible map region so we only render markers in view
+    const [visibleRegion, setVisibleRegion] = useState<{
+        latitude: number; longitude: number;
+        latitudeDelta: number; longitudeDelta: number;
+    } | null>(null);
+    // Whether we've already animated to the user's location on first load
+    const didCenterOnUser = useRef(false);
 
     // ── Load pantries from Firestore ──────────────────────
     const fetchPantries = useCallback(async () => {
@@ -138,10 +156,10 @@ export default function MapScreen() {
                 );
                 setPantries(valid);
                 setLiveData(true);
-                const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];
-                setCities(uniqueCities);
+                const uniqueCounties = ['All', ...Array.from(new Set(valid.map(p => p.county).filter(Boolean))).sort()];
+                setCounties(uniqueCounties);
 
-                // ── Analytics: user county + food desert detection ──────────
+                // ── Get user location: center map + analytics ──────────
                 try {
                     const { status } = await Location.requestForegroundPermissionsAsync();
                     if (status === 'granted') {
@@ -151,10 +169,22 @@ export default function MapScreen() {
                         const userLat = loc.coords.latitude;
                         const userLng = loc.coords.longitude;
                         setUserLocation({ lat: userLat, lng: userLng });
+
+                        // Center map on user's location on first load (~5-mile view)
+                        if (!didCenterOnUser.current && mapRef.current) {
+                            didCenterOnUser.current = true;
+                            mapRef.current.animateToRegion({
+                                latitude: userLat,
+                                longitude: userLng,
+                                latitudeDelta: 0.15,   // ~10-mile view
+                                longitudeDelta: 0.15,
+                            }, 800);
+                        }
+
                         await trackLocationCoverage(valid, userLat, userLng, 'location');
                     }
                 } catch {
-                    // Location permission denied or unavailable — silent
+                    // Location permission denied or unavailable — show statewide view
                 }
             }
         } catch (err) {
@@ -203,15 +233,27 @@ export default function MapScreen() {
         })();
     }, [loading, fetchError]);
 
-    const filtered = filter === 'All' ? pantries : pantries.filter(p => p.city === filter);
+    const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
-    const handleFilter = (city: string) => {
-        setFilter(city);
-        const items = city === 'All' ? pantries : pantries.filter(p => p.city === city);
+    // Only render markers within (or near) the visible map region to avoid
+    // dumping all 884 pins at once — much cleaner UX and better performance.
+    const filtered = visibleRegion
+        ? cityFiltered.filter(p => {
+            const pad = 0.3; // render slightly beyond the visible edge for smooth panning
+            return (
+                Math.abs(p.lat - visibleRegion.latitude)  < visibleRegion.latitudeDelta  / 2 + pad &&
+                Math.abs(p.lng - visibleRegion.longitude) < visibleRegion.longitudeDelta / 2 + pad
+            );
+        })
+        : cityFiltered;
 
-        // Log county interaction when user taps a city filter
-        if (city !== 'All' && items.length > 0) {
-            logUserCounty(items[0].county, city, 'filter_tap');
+    const handleFilter = (county: string) => {
+        setFilter(county);
+        const items = county === 'All' ? pantries : pantries.filter(p => p.county === county);
+
+        // Log county interaction when user taps a county filter
+        if (county !== 'All' && items.length > 0) {
+            logUserCounty(items[0].county, items[0].city, 'filter_tap');
             setLastKnownCounty(items[0].county);
         }
 
@@ -219,8 +261,8 @@ export default function MapScreen() {
             mapRef.current.animateToRegion({
                 latitude: items.reduce((s, p) => s + p.lat, 0) / items.length,
                 longitude: items.reduce((s, p) => s + p.lng, 0) / items.length,
-                latitudeDelta: city === 'All' ? 3.5 : 0.3,
-                longitudeDelta: city === 'All' ? 3.0 : 0.3,
+                latitudeDelta: county === 'All' ? 3.5 : 0.2,
+                longitudeDelta: county === 'All' ? 3.0 : 0.2,
             }, 800);
         }
     };
@@ -297,13 +339,8 @@ export default function MapScreen() {
                 showsBuildings
                 pitchEnabled
                 rotateEnabled
-                camera={{
-                    center: { latitude: 32.75, longitude: -86.83 },
-                    pitch: 30,
-                    heading: 0,
-                    altitude: 550000,
-                    zoom: 6,
-                }}
+                camera={DEFAULT_CAMERA}
+                onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
                 {filtered.map(pantry => {
                     const openDetails = () => {
@@ -341,25 +378,30 @@ export default function MapScreen() {
                 })}
             </MapView>
 
-            {/* City filter chips */}
+            {/* County filter chips */}
             <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipContent}>
-                    {cities.map((city, i) => (
-                        <TouchableOpacity
-                            key={city ?? `city-${i}`}
-                            style={[styles.chip, { backgroundColor: theme.card }, filter === city && styles.chipActive]}
-                            onPress={() => handleFilter(city)}
-                        >
-                            <Text style={[styles.chipText, { color: theme.text }, filter === city && styles.chipTextActive]}>{city}</Text>
-                        </TouchableOpacity>
-                    ))}
+                    {counties.map((county, i) => {
+                        const count = county === 'All' ? pantries.length : pantries.filter(p => p.county === county).length;
+                        return (
+                            <TouchableOpacity
+                                key={county ?? `county-${i}`}
+                                style={[styles.chip, { backgroundColor: theme.card }, filter === county && styles.chipActive]}
+                                onPress={() => handleFilter(county)}
+                            >
+                                <Text style={[styles.chipText, { color: theme.text }, filter === county && styles.chipTextActive]}>
+                                    {county === 'All' ? `All (${count})` : `${county} (${count})`}
+                                </Text>
+                            </TouchableOpacity>
+                        );
+                    })}
                 </ScrollView>
             </View>
 
             {/* Count badge */}
             <View style={styles.countBadge} pointerEvents="none">
                 <Text style={styles.countText}>
-                    {filtered.length} pantries · {liveData ? 'live' : 'offline'}
+                    {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
                 </Text>
             </View>
 

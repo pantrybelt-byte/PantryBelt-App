@@ -97,13 +97,13 @@ export default function ProfileScreen() {
             {/* Stats */}
             <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>60+</Text>
+                    <Text style={styles.statValue}>884</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
                 </View>
                 <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>AL</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Region</Text>
+                    <Text style={styles.statValue}>67</Text>
+                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
                 </View>
             </View>
 
@@ -233,7 +233,7 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             )}
 
-            <Text style={[styles.version, { color: theme.subtext }]}>AccessBelt v1.0.0 · Free for families</Text>
+            <Text style={[styles.version, { color: theme.subtext }]}>AccessBelt v1.0.1 · Free for families</Text>
 
             <FeedbackModal
                 visible={feedbackVisible}

@@ -47,7 +47,7 @@ const RESPONSES: Record<string, string> = {
         "Selma\n" +
         "Selma Area Food Bank — (334) 872-4114\n" +
         "American Red Cross Selma — (334) 875-7565\n\n" +
-        "Use the Map tab to see all 40+ pantries with directions. Need urgent help? Call 211 — free, 24/7.",
+        "Use the Map tab to see all 884 pantries across 67 Alabama counties with directions. Need urgent help? Call 211 — free, 24/7.",
 
     snap_ebt:
         "SNAP (also called food stamps or EBT) can help your family buy groceries each month.\n\n" +
