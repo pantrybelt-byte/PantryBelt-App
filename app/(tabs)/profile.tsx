@@ -15,6 +15,7 @@ import {
     View,
 } from 'react-native';
 import FeedbackModal from '../../components/FeedbackModal';
+import LegalModal from '../../components/LegalModal';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
@@ -44,6 +45,8 @@ export default function ProfileScreen() {
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
     const [feedbackVisible, setFeedbackVisible] = useState(false);
+    const [legalModalVisible, setLegalModalVisible] = useState(false);
+    const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy'>('privacy');
     const [pantryCount, setPantryCount] = useState('—');
     const [countyCount, setCountyCount] = useState('—');
 
@@ -270,25 +273,138 @@ export default function ProfileScreen() {
             </View>
 
             {/* Legal */}
-            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Legal</Text>
+            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Legal & Disclaimers</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
-                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/privacy-policy').catch(() => {
-                    Alert.alert('Could not open link', 'Please try again later.');
-                })}>
+                <TouchableOpacity
+                    style={styles.linkRow}
+                    onPress={() => {
+                        Alert.alert(
+                            'Open Privacy Policy',
+                            'Opening accessbelt.com/privacy in your web browser.',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'Open Web Page',
+                                    onPress: () => {
+                                        Linking.openURL('https://accessbelt.com/privacy').catch(() => {
+                                            Alert.alert('Could not open browser', 'Please visit https://accessbelt.com/privacy in your web browser.');
+                                        });
+                                    },
+                                },
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#2563eb26' : '#eff6ff' }]}>
+                        <Ionicons name="shield-checkmark-outline" size={18} color="#2563eb" />
+                    </View>
                     <View style={styles.linkTextWrap}>
                         <Text style={[styles.linkText, { color: theme.text }]}>Privacy Policy</Text>
+                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/privacy</Text>
                     </View>
-                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                    <Ionicons name="open-outline" size={16} color={theme.subtext} />
                 </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/terms-of-service').catch(() => {
-                    Alert.alert('Could not open link', 'Please try again later.');
-                })}>
+                <TouchableOpacity
+                    style={styles.linkRow}
+                    onPress={() => {
+                        Alert.alert(
+                            'Open Terms of Service',
+                            'Opening accessbelt.com/terms in your web browser.',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'Open Web Page',
+                                    onPress: () => {
+                                        Linking.openURL('https://accessbelt.com/terms').catch(() => {
+                                            Alert.alert('Could not open browser', 'Please visit https://accessbelt.com/terms in your web browser.');
+                                        });
+                                    },
+                                },
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
+                        <Ionicons name="document-text-outline" size={18} color="#b52525" />
+                    </View>
                     <View style={styles.linkTextWrap}>
                         <Text style={[styles.linkText, { color: theme.text }]}>Terms of Service</Text>
+                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/terms</Text>
                     </View>
-                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                    <Ionicons name="open-outline" size={16} color={theme.subtext} />
                 </TouchableOpacity>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity
+                    style={styles.linkRow}
+                    onPress={() => {
+                        Alert.alert(
+                            'Open DMCA Takedown Policy',
+                            'Opening accessbelt.com/dmca in your web browser.',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'Open Web Page',
+                                    onPress: () => {
+                                        Linking.openURL('https://accessbelt.com/dmca').catch(() => {
+                                            Alert.alert('Could not open browser', 'Please visit https://accessbelt.com/dmca in your web browser.');
+                                        });
+                                    },
+                                },
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
+                        <Ionicons name="document-lock-outline" size={18} color="#16a34a" />
+                    </View>
+                    <View style={styles.linkTextWrap}>
+                        <Text style={[styles.linkText, { color: theme.text }]}>DMCA Takedown Policy</Text>
+                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/dmca · getaccessbelt@gmail.com</Text>
+                    </View>
+                    <Ionicons name="open-outline" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity
+                    style={styles.linkRow}
+                    onPress={() => {
+                        Alert.alert(
+                            'Open UGC Moderation Policy',
+                            'Opening accessbelt.com/ugc in your web browser.',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'Open Web Page',
+                                    onPress: () => {
+                                        Linking.openURL('https://accessbelt.com/ugc').catch(() => {
+                                            Alert.alert('Could not open browser', 'Please visit https://accessbelt.com/ugc in your web browser.');
+                                        });
+                                    },
+                                },
+                            ]
+                        );
+                    }}
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#9333ea26' : '#fdf4ff' }]}>
+                        <Ionicons name="chatbubbles-outline" size={18} color="#9333ea" />
+                    </View>
+                    <View style={styles.linkTextWrap}>
+                        <Text style={[styles.linkText, { color: theme.text }]}>UGC Content Moderation</Text>
+                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/ugc · Community rules</Text>
+                    </View>
+                    <Ionicons name="open-outline" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+            </View>
+
+            {/* FTC Informational Disclaimer */}
+            <View style={[styles.disclaimerCard, { backgroundColor: theme.dark ? '#1c1917' : '#fffbeb', borderColor: theme.dark ? '#44403c' : '#fef3c7' }]}>
+                <View style={styles.disclaimerHeader}>
+                    <Ionicons name="alert-circle-outline" size={18} color="#b52525" />
+                    <Text style={[styles.disclaimerTitle, { color: theme.text }]}>Informational Disclaimer</Text>
+                </View>
+                <Text style={[styles.disclaimerText, { color: theme.subtext }]}>
+                    AccessBelt is an independent community resource directory. Pantry operating hours, locations, eligibility, and food inventory levels are crowd-sourced and managed by third-party organizations. AccessBelt does not guarantee resource availability or food distribution at any listed facility.
+                </Text>
             </View>
 
             {/* About */}
@@ -311,6 +427,12 @@ export default function ProfileScreen() {
                 visible={feedbackVisible}
                 onClose={() => setFeedbackVisible(false)}
                 screenName="profile"
+            />
+
+            <LegalModal
+                visible={legalModalVisible}
+                type={legalModalType}
+                onClose={() => setLegalModalVisible(false)}
             />
 
         </ScrollView>
@@ -342,6 +464,10 @@ const styles = StyleSheet.create({
     aboutCard: { borderRadius: 16, padding: 18, marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
     aboutTitle: { fontSize: 15, fontWeight: '800', marginBottom: 8 },
     aboutText: { fontSize: 13, lineHeight: 20 },
+    disclaimerCard: { borderRadius: 16, padding: 16, marginBottom: 24, borderWidth: 1 },
+    disclaimerHeader: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
+    disclaimerTitle: { fontSize: 14, fontWeight: '800' },
+    disclaimerText: { fontSize: 12, lineHeight: 18 },
     signOutBtn: { backgroundColor: '#dc2626', borderRadius: 14, paddingVertical: 16, alignItems: 'center', marginBottom: 20 },
     signOutBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
     version: { textAlign: 'center', fontSize: 12 },

@@ -129,9 +129,9 @@ export default function HomeScreen() {
                         </View>
                         <Text style={[styles.announcementDate, { color: theme.subtext }]}>Aug 2026</Text>
                     </View>
-                    <Text style={[styles.announcementTitle, { color: theme.text }]}>AccessBelt is Live!</Text>
+                    <Text style={[styles.announcementTitle, { color: theme.text }]}>AccessBelt is Now on the App Store!</Text>
                     <Text style={[styles.announcementBody, { color: theme.subtext }]}>
-                        AccessBelt now features an improved map that zooms to your location, clearer verified and unverified pantry labels, and our AI assistant Pete. Thank you for being part of our mission!
+                        AccessBelt is now available to download on the App Store. Thank you for being part of our mission to connect Alabama's Black Belt with food pantries, SNAP resources, and community support.
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
                         <Text style={styles.learnMoreText}>Explore the Map</Text>
