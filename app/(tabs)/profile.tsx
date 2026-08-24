@@ -70,30 +70,40 @@ export default function ProfileScreen() {
     };
 
     useEffect(() => {
-        AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
-            if (val !== null) setNotifications(val === 'true');
-        });
-        AsyncStorage.getItem(NEWSLETTER_KEY).then(val => {
-            if (val !== null) setNewsletter(val === 'true');
-        });
-        getLocationPreference().then(setLocationEnabled);
-        // Fetch live pantry/county counts
-        (async () => {
-            try {
-                const q = query(collection(db, 'resources'), where('status', '==', 'active'));
-                const snapshot = await getDocs(q);
-                const counties = new Set<string>();
-                snapshot.docs.forEach(d => {
-                    const county = d.data().county;
-                    if (county) counties.add(county);
-                });
-                setPantryCount(String(snapshot.size));
-                setCountyCount(String(counties.size));
-            } catch {
-                setPantryCount('880+');
-                setCountyCount('67');
-            }
-        })();
+        try {
+            AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
+                if (val !== null) setNotifications(val === 'true');
+            }).catch(() => {});
+            AsyncStorage.getItem(NEWSLETTER_KEY).then(val => {
+                if (val !== null) setNewsletter(val === 'true');
+            }).catch(() => {});
+            getLocationPreference().then(setLocationEnabled).catch(() => {});
+            // Fetch live pantry/county counts safely
+            (async () => {
+                try {
+                    if (!db) {
+                        setPantryCount('880+');
+                        setCountyCount('67');
+                        return;
+                    }
+                    const q = query(collection(db, 'resources'), where('status', '==', 'active'));
+                    const snapshot = await getDocs(q);
+                    const counties = new Set<string>();
+                    snapshot.docs.forEach(d => {
+                        const county = d.data()?.county;
+                        if (county) counties.add(county);
+                    });
+                    setPantryCount(String(snapshot.size > 0 ? snapshot.size : '880+'));
+                    setCountyCount(String(counties.size > 0 ? counties.size : '67'));
+                } catch {
+                    setPantryCount('880+');
+                    setCountyCount('67');
+                }
+            })();
+        } catch {
+            setPantryCount('880+');
+            setCountyCount('67');
+        }
     }, []);
 
     const handleToggleNewsletter = async (value: boolean) => {
