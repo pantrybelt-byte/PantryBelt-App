@@ -1,7 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { db } from '../../config/firebase';
+import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { getLastKnownCounty } from '../../utils/userLocation';
@@ -15,15 +18,33 @@ const QUICK_LINKS = [
     { id: '6', title: 'MyPlate Guide', icon: 'nutrition-outline' as const, color: '#f0fdf4', iconColor: '#15803d', url: 'https://www.myplate.gov' },
 ];
 
-const STATS = [
-    { label: 'Pantries', value: '884', icon: 'storefront-outline' as const },
-    { label: 'Counties', value: '67', icon: 'map-outline' as const },
-    { label: 'Free', value: '100%', icon: 'heart-outline' as const },
-];
 
 export default function HomeScreen() {
     const router = useRouter();
     const theme = useTheme();
+    const { authReady } = useAuthReady();
+    const [pantryCount, setPantryCount] = useState('—');
+    const [countyCount, setCountyCount] = useState('—');
+
+    useEffect(() => {
+        if (!authReady) return;
+        (async () => {
+            try {
+                const q = query(collection(db, 'resources'), where('status', '==', 'active'));
+                const snapshot = await getDocs(q);
+                const counties = new Set<string>();
+                snapshot.docs.forEach(d => {
+                    const county = d.data().county;
+                    if (county) counties.add(county);
+                });
+                setPantryCount(String(snapshot.size));
+                setCountyCount(String(counties.size));
+            } catch {
+                setPantryCount('880+');
+                setCountyCount('67');
+            }
+        })();
+    }, [authReady]);
 
     const handleQuickLink = async (item: typeof QUICK_LINKS[0]) => {
         if (item.id === '5') {
@@ -80,13 +101,21 @@ export default function HomeScreen() {
 
             {/* Stats */}
             <View style={[styles.statsBar, { backgroundColor: theme.card }]}>
-                {STATS.map((stat, i) => (
-                    <View key={i} style={[styles.statItem, i < STATS.length - 1 && [styles.statDivider, { borderRightColor: theme.border }]]}>
-                        <Ionicons name={stat.icon} size={26} color="#b52525" />
-                        <Text style={[styles.statValue, { color: theme.text }]}>{stat.value}</Text>
-                        <Text style={[styles.statLabel, { color: theme.subtext }]}>{stat.label}</Text>
-                    </View>
-                ))}
+                <View style={[styles.statItem, styles.statDivider, { borderRightColor: theme.border }]}>
+                    <Ionicons name="storefront-outline" size={26} color="#b52525" />
+                    <Text style={[styles.statValue, { color: theme.text }]}>{pantryCount}</Text>
+                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
+                </View>
+                <View style={[styles.statItem, styles.statDivider, { borderRightColor: theme.border }]}>
+                    <Ionicons name="map-outline" size={26} color="#b52525" />
+                    <Text style={[styles.statValue, { color: theme.text }]}>{countyCount}</Text>
+                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
+                </View>
+                <View style={styles.statItem}>
+                    <Ionicons name="heart-outline" size={26} color="#b52525" />
+                    <Text style={[styles.statValue, { color: theme.text }]}>100%</Text>
+                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Free</Text>
+                </View>
             </View>
 
             {/* Announcement */}
@@ -96,16 +125,16 @@ export default function HomeScreen() {
                     <View style={styles.announcementHeader}>
                         <View style={styles.badgeRow}>
                             <Ionicons name="megaphone-outline" size={14} color="#fff" />
-                            <Text style={styles.announcementBadge}>NEW</Text>
+                            <Text style={styles.announcementBadge}>UPDATE</Text>
                         </View>
-                        <Text style={[styles.announcementDate, { color: theme.subtext }]}>Apr 8, 2026</Text>
+                        <Text style={[styles.announcementDate, { color: theme.subtext }]}>Aug 2026</Text>
                     </View>
-                    <Text style={[styles.announcementTitle, { color: theme.text }]}>AccessBelt Wins 2nd Place!</Text>
+                    <Text style={[styles.announcementTitle, { color: theme.text }]}>AccessBelt is Live!</Text>
                     <Text style={[styles.announcementBody, { color: theme.subtext }]}>
-                        AccessBelt won 2nd place and a $3,000 prize at The Alabama Collective's HBCU App Build & Pitch Competition on April 8, 2026!! Thank you for your support!
+                        AccessBelt now features an improved map that zooms to your location, clearer verified and unverified pantry labels, and our AI assistant Pete. Thank you for being part of our mission!
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
-                        <Text style={styles.learnMoreText}>Explore the App</Text>
+                        <Text style={styles.learnMoreText}>Explore the Map</Text>
                         <Ionicons name="arrow-forward" size={14} color="#b52525" />
                     </TouchableOpacity>
                 </View>

@@ -41,7 +41,7 @@ const SLIDES: Slide[] = [
         visual: 'map',
         features: [
             { icon: 'location', text: 'Tap any pin for hours, address & phone' },
-            { icon: 'funnel', text: 'Filter pantries by city' },
+            { icon: 'funnel', text: 'Filter pantries by county' },
             { icon: 'navigate', text: 'Get directions with one tap' },
         ],
     },

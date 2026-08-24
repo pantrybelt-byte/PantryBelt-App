@@ -1,6 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -42,6 +44,8 @@ export default function ProfileScreen() {
     const [locationEnabled, setLocationEnabled] = useState(true);
     const [newsletter, setNewsletter] = useState(false);
     const [feedbackVisible, setFeedbackVisible] = useState(false);
+    const [pantryCount, setPantryCount] = useState('—');
+    const [countyCount, setCountyCount] = useState('—');
 
     const handleSignOut = () => {
         Alert.alert(
@@ -70,6 +74,23 @@ export default function ProfileScreen() {
             if (val !== null) setNewsletter(val === 'true');
         });
         getLocationPreference().then(setLocationEnabled);
+        // Fetch live pantry/county counts
+        (async () => {
+            try {
+                const q = query(collection(db, 'resources'), where('status', '==', 'active'));
+                const snapshot = await getDocs(q);
+                const counties = new Set<string>();
+                snapshot.docs.forEach(d => {
+                    const county = d.data().county;
+                    if (county) counties.add(county);
+                });
+                setPantryCount(String(snapshot.size));
+                setCountyCount(String(counties.size));
+            } catch {
+                setPantryCount('880+');
+                setCountyCount('67');
+            }
+        })();
     }, []);
 
     const handleToggleNewsletter = async (value: boolean) => {
@@ -121,12 +142,12 @@ export default function ProfileScreen() {
             {/* Stats */}
             <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>884</Text>
+                    <Text style={styles.statValue}>{pantryCount}</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
                 </View>
                 <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
                 <View style={styles.statItem}>
-                    <Text style={styles.statValue}>67</Text>
+                    <Text style={styles.statValue}>{countyCount}</Text>
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
                 </View>
             </View>
