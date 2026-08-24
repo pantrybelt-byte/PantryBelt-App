@@ -1,0 +1,100 @@
+{
+  "batch": "55",
+  "counties": [
+    "St. Clair",
+    "Sumter"
+  ],
+  "rows": [
+    {
+      "id": "7LPilBjN6sRee8gATBRF",
+      "name": "Christian Love Pantry",
+      "phone": "(205) 884-7200",
+      "website": null,
+      "address": "205 Edwin Holladay Place, Pell City, AL 35125"
+    },
+    {
+      "id": "BR4O49H2E7enhZeDlycI",
+      "name": "Steele United Methodist Church Pantry",
+      "phone": "(256) 390-2992",
+      "website": null,
+      "address": "3375 Pope Ave, Steele, AL 35987"
+    },
+    {
+      "id": "TxmcfhgR2IL687mHLlBk",
+      "name": "Ashville First Methodist Church Pantry",
+      "phone": "(205) 540-2011",
+      "website": null,
+      "address": "292 7th Avenue, Ashville, AL 35953"
+    },
+    {
+      "id": "YT3hsdwuSD09O8p1LyFK",
+      "name": "The Healing Place Pantry",
+      "phone": "(205) 515-3645",
+      "website": null,
+      "address": "90 Sheffield Drive, Ashville, AL 35953"
+    },
+    {
+      "id": "dEOqoQ0yb70iUrbRF9J3",
+      "name": "Shepherd's Supply, Inc. Pantry",
+      "phone": "(205) 441-2340",
+      "website": null,
+      "address": "768 Kerr Road, Moody, AL 35004"
+    },
+    {
+      "id": "fTXTRLmIjhCqUzYNrTv6",
+      "name": "New Hope Baptist Pell City Pantry",
+      "phone": "(205) 201-2751",
+      "website": null,
+      "address": "75 Cogswell Avenue, Pell City, AL 35125"
+    },
+    {
+      "id": "frAwRVm742OSYMzqjplO",
+      "name": "Bethel Baptist Church Pantry",
+      "phone": "(205) 243-5424",
+      "website": null,
+      "address": "8332 Moody Parkway, Odenville, AL 35120"
+    },
+    {
+      "id": "ksSvlZxRkABKZjtbLUSK",
+      "name": "Argo Community Food Bank Pantry",
+      "phone": "(205) 352-2123",
+      "website": null,
+      "address": "100 Blackjack Road, Trussville, AL 35173"
+    },
+    {
+      "id": "ox2Y4ekE5Q6LEU2mnLAL",
+      "name": "Good Works",
+      "phone": "(205) 369-8516",
+      "website": null,
+      "address": "200 Koa Road, Riverside, AL 35135"
+    },
+    {
+      "id": "3ywk47uEnzN9UIOAD2dW",
+      "name": "Miller Hill Missionary Baptist Church",
+      "phone": "(205) 499-9798",
+      "website": null,
+      "address": "344 Miller Hill Rd., Epes, AL 35460"
+    },
+    {
+      "id": "M1DDmJOojg9f36k6Oah3",
+      "name": "Sumter County DHR",
+      "phone": "(205) 652-5000",
+      "website": null,
+      "address": "108 West Main St, Livingston, AL 35470, Livingston, AL"
+    },
+    {
+      "id": "YvEuQYyxdCyUPRwbyCkI",
+      "name": "IV Vets",
+      "phone": "(205) 609-7193",
+      "website": null,
+      "address": "302 Longshore Dr, York, AL 36925"
+    },
+    {
+      "id": "amUedi5fHK9EcySwDO3e",
+      "name": "Children of the Village Network",
+      "phone": "(205) 657-3173",
+      "website": null,
+      "address": "Bellamy, AL 36901"
+    }
+  ]
+}

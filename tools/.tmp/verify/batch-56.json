@@ -1,0 +1,78 @@
+{
+  "batch": "56",
+  "counties": [
+    "Talladega"
+  ],
+  "rows": [
+    {
+      "id": "7ioKctr3r0MaTKNAQU1X",
+      "name": "Sycamore House of Compassion Pantry & Soup Kitchen",
+      "phone": "(256) 267-0831",
+      "website": null,
+      "address": "341 Thurman Road, Sylacauga, AL 35149"
+    },
+    {
+      "id": "FA0DyUVmH9UPwxCcnGqf",
+      "name": "Harper Springs Baptist Church Pantry",
+      "phone": "(256) 375-9141",
+      "website": null,
+      "address": "525 Harper Springs Rd, Sylacauga, AL 35150"
+    },
+    {
+      "id": "HFSYhxMQqowShczZ5b4M",
+      "name": "First Baptist Church Childersburg Pantry",
+      "phone": "(256) 589-1038",
+      "website": null,
+      "address": "200 8th Ave SW, Childersburg, AL 35044"
+    },
+    {
+      "id": "bZQFU9HRPoFsDcjNJhLv",
+      "name": "Red Door Kitchen Soup Kitchen",
+      "phone": "(256) 493-0203",
+      "website": null,
+      "address": "500 South St W, Talladega, AL 35160"
+    },
+    {
+      "id": "dE8hhM1QsTx6jEhh37YT",
+      "name": "The Sanctuary Pantry",
+      "phone": "(313) 575-5828",
+      "website": null,
+      "address": "46639 U.S. Hwy 280, Sylacauga, AL 35150"
+    },
+    {
+      "id": "mj0rd5G3CM9BIvxVcg9b",
+      "name": "Samaritan House Pantry",
+      "phone": "(256) 368-7310",
+      "website": null,
+      "address": "806 N St. E, Talladega, AL 35160"
+    },
+    {
+      "id": "ri8RdsTTFeiOVMtrCH61",
+      "name": "Chandler Springs Assembly Pantry",
+      "phone": "(863) 677-1085",
+      "website": null,
+      "address": "1401 Horns Lake Rd, Talladega, AL 35160"
+    },
+    {
+      "id": "sUhsmVMRio0C5HenzYUN",
+      "name": "Alabama Childhood Food Solutions Pantry & Backpack",
+      "phone": "(205) 451-2358",
+      "website": null,
+      "address": "114 Canyon Ridge Road, Sylacauga, AL 35151"
+    },
+    {
+      "id": "y3TjgGQhQDVDdHQboA1I",
+      "name": "Saint Mary's Client Choice Senior Grocery Program",
+      "phone": null,
+      "website": null,
+      "address": "2389 St Mary Rd., Lincoln, AL 35096"
+    },
+    {
+      "id": "yJupMdjgdmJZ5InJG04A",
+      "name": "Lincoln Food Pantry",
+      "phone": "(205) 473-8097",
+      "website": null,
+      "address": "225 Magnolia Street, Lincoln, AL 35096"
+    }
+  ]
+}

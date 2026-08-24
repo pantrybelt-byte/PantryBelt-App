@@ -1,0 +1,78 @@
+{
+  "batch": "15",
+  "counties": [
+    "Dallas"
+  ],
+  "rows": [
+    {
+      "id": "k3iWcSupS69sDUjK92bP",
+      "name": "Sandridge Missionary Baptist Church",
+      "phone": "(334) 267-1015",
+      "website": null,
+      "address": "5024 County Road 27, Selma, AL"
+    },
+    {
+      "id": "mpjPTuDk5KfbCkr1Vcs2",
+      "name": "Faith Community Outreach Ministry",
+      "phone": "(334) 431-2411",
+      "website": null,
+      "address": "4846 Highway 80 W, Selma, AL"
+    },
+    {
+      "id": "mqmwEsqjaQrDBtg60L0O",
+      "name": "Crosspoint Christian Church",
+      "phone": "(334) 872-0086",
+      "website": null,
+      "address": "1710 West Dallas Avenue, Selma, AL"
+    },
+    {
+      "id": "rS6ATYS0nUwHWIE41y4n",
+      "name": "New Sister Springs Baptist Church",
+      "phone": "(334) 875-9520",
+      "website": null,
+      "address": "446 County Road 67, Selma, AL"
+    },
+    {
+      "id": "res_dls_001",
+      "name": "Selma Community Food Pantry",
+      "phone": "(334) 555-0192",
+      "website": "https://selmafoodpantry.org",
+      "address": "215 Broad St, Selma, AL 36701"
+    },
+    {
+      "id": "sN4893yPxYlqxXPiDw2J",
+      "name": "Rising Star Primitive Baptist Church",
+      "phone": "(334) 874-9658",
+      "website": null,
+      "address": "3665 County Road 115, Orrville, AL"
+    },
+    {
+      "id": "tSUOvV5kzuq6AGexxWDX",
+      "name": "Mt. Olive #2 Baptist Church",
+      "phone": "(334) 875-8259",
+      "website": null,
+      "address": "6827 Alabama Highway 41, Sardis, AL"
+    },
+    {
+      "id": "vASK9ow1QPFJVSIkb5vz",
+      "name": "Christian Outreach Alliance",
+      "phone": "(334) 872-6904",
+      "website": null,
+      "address": "700 Jeff Davis Ave, Selma, AL, Selma, AL"
+    },
+    {
+      "id": "yOthRQ4IMMXlooZc2cTX",
+      "name": "Greater New Hope",
+      "phone": "(334) 267-1569",
+      "website": null,
+      "address": "4955 US Highway 80 East, Selma, AL"
+    },
+    {
+      "id": "zAZNnDn1drSJMafNPRmt",
+      "name": "Alabama Teen Challenge",
+      "phone": "(334) 872-0133",
+      "website": null,
+      "address": "3888 County Road 261, Jones, AL"
+    }
+  ]
+}

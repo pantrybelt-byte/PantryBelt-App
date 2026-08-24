@@ -1,0 +1,57 @@
+{
+  "batch": "17",
+  "counties": [
+    "Escambia"
+  ],
+  "rows": [
+    {
+      "id": "94gfhAr9INJzT03gyTJh",
+      "name": "Empowerment Tabernacle Christian Center",
+      "phone": "(251) 253-9817",
+      "website": null,
+      "address": "309 Peachtree Street, Atmore, AL 36502"
+    },
+    {
+      "id": "EKatJsVXtbfKsfzFpnti",
+      "name": "Spirit and Truth Tabernacle",
+      "phone": "(251) 296-5112",
+      "website": null,
+      "address": "608 McCurdy St, Flomaton, AL 36441"
+    },
+    {
+      "id": "Z64sjanGt1gjquuM9rhf",
+      "name": "Pensacola Caring Hearts Inc.",
+      "phone": "(850) 375-1838",
+      "website": null,
+      "address": "301 Liles Blvd, Brewton, AL 36426"
+    },
+    {
+      "id": "adU557wFcL1njkhtbhNe",
+      "name": "Friendly Holiness Church",
+      "phone": "(251) 368-9229",
+      "website": null,
+      "address": "3266 Atmosphere Road, Atmore, AL 36502"
+    },
+    {
+      "id": "kGeO8mLSkoEG26nmNUl5",
+      "name": "Zion Star A.M.E. Zion Church",
+      "phone": "(251) 446-3598",
+      "website": null,
+      "address": "127 Carvers Ave, Atmore, AL 36502"
+    },
+    {
+      "id": "rbyU30J2YMYNScJpHx6V",
+      "name": "Escambia County Community Enabled, Inc.",
+      "phone": null,
+      "website": null,
+      "address": "114 Deer Street, Brewton, AL 36426"
+    },
+    {
+      "id": "t83dEp7iWNjPdaNdS38g",
+      "name": "Grace Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "714 Brandenburg Street, East Brewton, AL 36426"
+    }
+  ]
+}

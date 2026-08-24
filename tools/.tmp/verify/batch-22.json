@@ -1,0 +1,71 @@
+{
+  "batch": "22",
+  "counties": [
+    "Houston"
+  ],
+  "rows": [
+    {
+      "id": "b74yLDJilL9q0y2CtPdG",
+      "name": "Southeast Alabama Baptist Assoc",
+      "phone": "(334) 699-2855",
+      "website": null,
+      "address": "1306 Ross Clark Circle, Dothan, AL 36303"
+    },
+    {
+      "id": "jRg06nrWWd7woVjwtSfG",
+      "name": "Westgate Church of Christ",
+      "phone": "(334) 793-2280",
+      "website": null,
+      "address": "617 Westgate Pkwy, Dothan, AL 36303"
+    },
+    {
+      "id": "lO6I1NYhVvi3zXZTQOlK",
+      "name": "Living Hope Community Center",
+      "phone": "(334) 671-2376",
+      "website": null,
+      "address": "309 N. Lena Street, Dothan, AL 36303"
+    },
+    {
+      "id": "qYUY7hjkGmjmcCx116EF",
+      "name": "Salvation Army - Houston County",
+      "phone": "(334) 792-1911",
+      "website": null,
+      "address": "1001 South Bell Street, Dothan, AL 36301"
+    },
+    {
+      "id": "rNDnewh0xGkw2gaGvVNe",
+      "name": "Good News Ministry Inc",
+      "phone": "(334) 405-9844",
+      "website": null,
+      "address": "208 W. Newton Street, Dothan, AL 36303"
+    },
+    {
+      "id": "re1glXUF7rzQ9onYMA7u",
+      "name": "TOPS/Momma Tina's",
+      "phone": "(334) 714-3482",
+      "website": null,
+      "address": "605 N. Alice Street, Dothan, AL 36303"
+    },
+    {
+      "id": "tAa8yUiNoxQ7muNLH3oA",
+      "name": "First Church of the Nazarene",
+      "phone": "(334) 792-6974",
+      "website": null,
+      "address": "1081 Honeysuckle Road, Dothan, AL 36305"
+    },
+    {
+      "id": "tRhC6rAXNZ9HvPU3B7nf",
+      "name": "Hines Chapel A.M.E. Church",
+      "phone": "(334) 744-9306",
+      "website": null,
+      "address": "912 Dellwood Avenue, Dothan, AL 36303"
+    },
+    {
+      "id": "y113z7O25bbhQnOdn9j3",
+      "name": "Covenant United Methodist Church",
+      "phone": "(334) 793-4440",
+      "website": null,
+      "address": "3610 West Main Street, Dothan, AL 36305"
+    }
+  ]
+}

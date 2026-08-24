@@ -1,0 +1,87 @@
+{
+  "batch": "11",
+  "counties": [
+    "Coosa",
+    "Covington",
+    "Crenshaw"
+  ],
+  "rows": [
+    {
+      "id": "nGZ4OmM7rLFgBRRCu34N",
+      "name": "Community Life Center of Coosa County, Inc.",
+      "phone": "(256) 935-0016",
+      "website": null,
+      "address": "188 County Road 30, Kellyton, AL 35089"
+    },
+    {
+      "id": "oyMErtEpvdGkDI7vcWVI",
+      "name": "Rockford Baptist Church",
+      "phone": "(256) 496-2548",
+      "website": null,
+      "address": "9575 AL Hwy. 231, Rockford, AL 35136"
+    },
+    {
+      "id": "LqsUgZwiQ0dYA7eJtZFv",
+      "name": "Beulah Baptist Church",
+      "phone": "(334) 493-0470",
+      "website": null,
+      "address": "16612 Maggie Road, Opp, AL 36467"
+    },
+    {
+      "id": "VQVyiO16NqOEQ3HcFEuY",
+      "name": "Meals of Love Opp",
+      "phone": null,
+      "website": null,
+      "address": "205 East Covington Avenue, Opp, AL 36467"
+    },
+    {
+      "id": "Yt7BaEZBz3gycAEzAZBc",
+      "name": "Christ The King Parish",
+      "phone": "(334) 222-4808",
+      "website": null,
+      "address": "508 Sanford Road, Andalusia, AL 36420"
+    },
+    {
+      "id": "hxCYjybgCbTb9DUBZrAt",
+      "name": "Northern Heights Baptist Church",
+      "phone": "(334) 493-6625",
+      "website": null,
+      "address": "405 Pearl Drive, Opp, AL 36467"
+    },
+    {
+      "id": "lF2S5ULgwKaCefIdE0lO",
+      "name": "Opp Church of Christ",
+      "phone": "(334) 493-3728",
+      "website": null,
+      "address": "901 East Hart Avenue, Opp, AL 36467"
+    },
+    {
+      "id": "v1VtBeeoHK7uSwSCGOjG",
+      "name": "Covington Baptist Association",
+      "phone": "(334) 222-3009",
+      "website": null,
+      "address": "18350 U. S. Highway 84, Andalusia, AL 36421"
+    },
+    {
+      "id": "wsXfeXbvvzv67GfqOHwV",
+      "name": "South Central Alabama Mental Health Board",
+      "phone": "(334) 428-5050",
+      "website": null,
+      "address": "205 Academy Drive, Andalusia, AL 36420"
+    },
+    {
+      "id": "xaxmXB3kjKKv9YqDp4jV",
+      "name": "West County Line Baptist Church",
+      "phone": "(334) 764-6466",
+      "website": null,
+      "address": "30380 County Line Loop, Opp, AL 36467"
+    },
+    {
+      "id": "2cEcXnpFcITRBT3JItIi",
+      "name": "Faith Walk Ministries",
+      "phone": "(334) 492-4541",
+      "website": null,
+      "address": "153 Jeffcoat Street, Luverne, AL 36049"
+    }
+  ]
+}

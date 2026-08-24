@@ -1,0 +1,127 @@
+{
+  "batch": "45",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "RQFuZI0opqjDEZBDGYt5",
+      "name": "Mt. Olive A. M. E. Zion Church",
+      "phone": "(251) 456-2058",
+      "website": null,
+      "address": "701 Bella Street, Prichard, AL 36610"
+    },
+    {
+      "id": "S2wGtEKrRi4k977FngpY",
+      "name": "Refuge Church of Mobile Alabama",
+      "phone": "(251) 649-3502",
+      "website": null,
+      "address": "6159 Moffett Road, Mobile, AL 36618"
+    },
+    {
+      "id": "S6NpBbNzGGh1UPKmsgIl",
+      "name": "Trinity Episcopal Church",
+      "phone": "(251) 473-2779",
+      "website": null,
+      "address": "1900 Dauphin Street, Mobile, AL 36606"
+    },
+    {
+      "id": "SocAXkYYTa5YGQiMx4Go",
+      "name": "Holy Trinity Ministry Church of God in Christ",
+      "phone": "(251) 473-2779",
+      "website": null,
+      "address": "1105 South Broad Street, Mobile, AL 36603"
+    },
+    {
+      "id": "SyM8sq167XHy0Ctgm0id",
+      "name": "St. Stephen African Methodist Episcopal Church",
+      "phone": "(251) 479-3053",
+      "website": null,
+      "address": "2707 Josephine Street, Mobile, AL 36607"
+    },
+    {
+      "id": "Ta6KJZBNczQ8jbbyYAlu",
+      "name": "Hands Of Hope Ministry",
+      "phone": "(251) 287-6146",
+      "website": null,
+      "address": "3750 Michael Blvd, Mobile, AL 36609"
+    },
+    {
+      "id": "U7I2aDm07DxmAciQbnRV",
+      "name": "St. Louis Missionary Baptist Church",
+      "phone": "(251) 438-3823",
+      "website": null,
+      "address": "108 North Dearborn Street, Mobile, AL 36602"
+    },
+    {
+      "id": "UjcQ34mIjzh6FVwMCK9G",
+      "name": "The Joseph Project",
+      "phone": "(251) 478-6356",
+      "website": null,
+      "address": "126 Mobile Street, Mobile, AL 36607"
+    },
+    {
+      "id": "VHQe56TNOQYfDRu1FQPe",
+      "name": "Chickasaw United Methodist Church - Mike's Pantry",
+      "phone": "(251) 452-3461",
+      "website": null,
+      "address": "108 Lee Street, Chickasaw, AL 36611"
+    },
+    {
+      "id": "VHUDqBV2Ea2THMKNpw55",
+      "name": "Catholic Social Services Service Center",
+      "phone": "(251) 434-1550",
+      "website": null,
+      "address": "188 South Florida Street, Mobile, AL 36606"
+    },
+    {
+      "id": "VnuQIS73ASYYz5tXsDFR",
+      "name": "New Beginning Church of God",
+      "phone": "(251) 653-6606",
+      "website": null,
+      "address": "3106 Moffett Road, Mobile, AL 36607"
+    },
+    {
+      "id": "W3XeCzH2HmXPXbpmmaDe",
+      "name": "Church of Life, Inc.",
+      "phone": "(251) 457-4040",
+      "website": null,
+      "address": "539 South Wilson Avenue, Prichard, AL 36610"
+    },
+    {
+      "id": "WMsVwOpqNPzi1WBO46Cp",
+      "name": "St. John's Deliverance Temple",
+      "phone": "(251) 479-2084",
+      "website": null,
+      "address": "2621 Ralston Road, Mobile, AL 36605"
+    },
+    {
+      "id": "X3riAdxoQ9eVSJIUQ6gM",
+      "name": "Mt. Zion Baptist Church",
+      "phone": "(251) 432-2997",
+      "website": null,
+      "address": "1012 Adams Street, Mobile, AL 36603"
+    },
+    {
+      "id": "X5uZ6zsRbLOcSK5oEBBb",
+      "name": "Infinite Opportunities",
+      "phone": "(251) 662-9812",
+      "website": null,
+      "address": "6389 Three Notch Road, Mobile, AL 36619"
+    },
+    {
+      "id": "Xwuz1HvBaHivFy7OwpUP",
+      "name": "AIDS Alabama South",
+      "phone": "(251) 471-5277",
+      "website": null,
+      "address": "4321 Downtowner Blvd, Mobile, AL 36609"
+    },
+    {
+      "id": "YRDs9EpYXwtr63TogIYq",
+      "name": "Pine Grove Missionary Baptist Church",
+      "phone": "(205) 274-8346",
+      "website": null,
+      "address": "19130 Pine Grove Church Road, Mt. Vernon, AL 36560"
+    }
+  ]
+}

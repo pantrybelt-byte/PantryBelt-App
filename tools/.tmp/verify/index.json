@@ -1,0 +1,307 @@
+[
+  {
+    "batch": "01",
+    "counties": "Autauga",
+    "count": 9
+  },
+  {
+    "batch": "02",
+    "counties": "Baldwin",
+    "count": 17
+  },
+  {
+    "batch": "03",
+    "counties": "Baldwin",
+    "count": 2
+  },
+  {
+    "batch": "04",
+    "counties": "Barbour, Bibb",
+    "count": 16
+  },
+  {
+    "batch": "05",
+    "counties": "Blount, Bullock",
+    "count": 11
+  },
+  {
+    "batch": "06",
+    "counties": "Butler",
+    "count": 7
+  },
+  {
+    "batch": "07",
+    "counties": "Calhoun, Chambers",
+    "count": 17
+  },
+  {
+    "batch": "08",
+    "counties": "Cherokee, Chilton, Choctaw",
+    "count": 15
+  },
+  {
+    "batch": "09",
+    "counties": "Clarke, Clay, Cleburne",
+    "count": 15
+  },
+  {
+    "batch": "10",
+    "counties": "Coffee, Colbert, Conecuh",
+    "count": 17
+  },
+  {
+    "batch": "11",
+    "counties": "Coosa, Covington, Crenshaw",
+    "count": 11
+  },
+  {
+    "batch": "12",
+    "counties": "Cullman",
+    "count": 15
+  },
+  {
+    "batch": "13",
+    "counties": "Dale",
+    "count": 12
+  },
+  {
+    "batch": "14",
+    "counties": "Dallas",
+    "count": 17
+  },
+  {
+    "batch": "15",
+    "counties": "Dallas",
+    "count": 10
+  },
+  {
+    "batch": "16",
+    "counties": "DeKalb, Elmore",
+    "count": 13
+  },
+  {
+    "batch": "17",
+    "counties": "Escambia",
+    "count": 7
+  },
+  {
+    "batch": "18",
+    "counties": "Etowah",
+    "count": 17
+  },
+  {
+    "batch": "19",
+    "counties": "Fayette, Franklin, Geneva, Greene, Hale",
+    "count": 17
+  },
+  {
+    "batch": "20",
+    "counties": "Henry",
+    "count": 6
+  },
+  {
+    "batch": "21",
+    "counties": "Houston",
+    "count": 17
+  },
+  {
+    "batch": "22",
+    "counties": "Houston",
+    "count": 9
+  },
+  {
+    "batch": "23",
+    "counties": "Jackson",
+    "count": 12
+  },
+  {
+    "batch": "24",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "25",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "26",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "27",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "28",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "29",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "30",
+    "counties": "Jefferson",
+    "count": 17
+  },
+  {
+    "batch": "31",
+    "counties": "Lamar, Lauderdale",
+    "count": 15
+  },
+  {
+    "batch": "32",
+    "counties": "Lawrence",
+    "count": 8
+  },
+  {
+    "batch": "33",
+    "counties": "Lee",
+    "count": 17
+  },
+  {
+    "batch": "34",
+    "counties": "Lee",
+    "count": 1
+  },
+  {
+    "batch": "35",
+    "counties": "Limestone, Lowndes",
+    "count": 14
+  },
+  {
+    "batch": "36",
+    "counties": "Macon",
+    "count": 7
+  },
+  {
+    "batch": "37",
+    "counties": "Madison",
+    "count": 17
+  },
+  {
+    "batch": "38",
+    "counties": "Madison",
+    "count": 17
+  },
+  {
+    "batch": "39",
+    "counties": "Madison",
+    "count": 17
+  },
+  {
+    "batch": "40",
+    "counties": "Madison",
+    "count": 3
+  },
+  {
+    "batch": "41",
+    "counties": "Marengo",
+    "count": 12
+  },
+  {
+    "batch": "42",
+    "counties": "Marion, Marshall",
+    "count": 15
+  },
+  {
+    "batch": "43",
+    "counties": "Mobile",
+    "count": 17
+  },
+  {
+    "batch": "44",
+    "counties": "Mobile",
+    "count": 17
+  },
+  {
+    "batch": "45",
+    "counties": "Mobile",
+    "count": 17
+  },
+  {
+    "batch": "46",
+    "counties": "Mobile",
+    "count": 17
+  },
+  {
+    "batch": "47",
+    "counties": "Mobile",
+    "count": 17
+  },
+  {
+    "batch": "48",
+    "counties": "Mobile",
+    "count": 12
+  },
+  {
+    "batch": "49",
+    "counties": "Monroe",
+    "count": 8
+  },
+  {
+    "batch": "50",
+    "counties": "Morgan",
+    "count": 15
+  },
+  {
+    "batch": "51",
+    "counties": "Perry, Pickens, Pike",
+    "count": 17
+  },
+  {
+    "batch": "52",
+    "counties": "Randolph, Russell",
+    "count": 15
+  },
+  {
+    "batch": "53",
+    "counties": "Shelby",
+    "count": 17
+  },
+  {
+    "batch": "54",
+    "counties": "Shelby",
+    "count": 2
+  },
+  {
+    "batch": "55",
+    "counties": "St. Clair, Sumter",
+    "count": 13
+  },
+  {
+    "batch": "56",
+    "counties": "Talladega",
+    "count": 10
+  },
+  {
+    "batch": "57",
+    "counties": "Tallapoosa",
+    "count": 10
+  },
+  {
+    "batch": "58",
+    "counties": "Tuscaloosa",
+    "count": 17
+  },
+  {
+    "batch": "59",
+    "counties": "Tuscaloosa",
+    "count": 12
+  },
+  {
+    "batch": "60",
+    "counties": "Walker",
+    "count": 15
+  },
+  {
+    "batch": "61",
+    "counties": "Washington, Wilcox, Winston",
+    "count": 17
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "batch": "20",
+  "counties": [
+    "Henry"
+  ],
+  "rows": [
+    {
+      "id": "COnDzQbg0j3nrpGwv54Z",
+      "name": "Greater Shiloh Baptist Church",
+      "phone": "(334) 693-3590",
+      "website": null,
+      "address": "12 Martin Luther King jr. Drive, Headland, AL 36345"
+    },
+    {
+      "id": "LCQV5jd17JDMPp9TDn25",
+      "name": "Judson Baptist Church",
+      "phone": "(334) 618-5984",
+      "website": null,
+      "address": "180 County Road 93, Abbeville, AL 36310"
+    },
+    {
+      "id": "aGFJlw4NhfllxrXVQnzK",
+      "name": "Lord's House of Prayer",
+      "phone": "(334) 618-0480",
+      "website": null,
+      "address": "121 Ash Drive, Abbeville, AL 36310"
+    },
+    {
+      "id": "gpv4YihktoWRrgbpyoCf",
+      "name": "Sardis Missionary Baptist Church",
+      "phone": "(334) 693-5318",
+      "website": null,
+      "address": "115 County Road 238, Headland, AL 36345"
+    },
+    {
+      "id": "hwgEQDg3p4vBout0cNKF",
+      "name": "Judson Baptist Assn.",
+      "phone": "(334) 585-3274",
+      "website": null,
+      "address": "532 Ozark Road, Abbeville, AL 36310"
+    },
+    {
+      "id": "vjeggoQ5EDfUXPicOknR",
+      "name": "Christ Temple Outreach",
+      "phone": "(334) 787-5713",
+      "website": null,
+      "address": "2836 Highway 10 East, Abbeville, AL 36310"
+    }
+  ]
+}

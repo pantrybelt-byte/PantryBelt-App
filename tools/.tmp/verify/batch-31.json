@@ -1,0 +1,114 @@
+{
+  "batch": "31",
+  "counties": [
+    "Lamar",
+    "Lauderdale"
+  ],
+  "rows": [
+    {
+      "id": "YVJGYBKc6UHV30vdA6CU",
+      "name": "Matt Miller Food Pantry",
+      "phone": "(205) 712-3327",
+      "website": null,
+      "address": "131 Wood St, Millport, AL 35576"
+    },
+    {
+      "id": "hDb7I4bj2gqE6h8hrtBG",
+      "name": "Grace Methodist Food Pantry",
+      "phone": "(205) 712-1763",
+      "website": null,
+      "address": "3885 7th St, Vernon, AL 35592"
+    },
+    {
+      "id": "r6foWhDK1rf0j70BYmEf",
+      "name": "Kennedy Church of God",
+      "phone": null,
+      "website": null,
+      "address": "119 Porter St, Kennedy, AL 35574"
+    },
+    {
+      "id": "FYzB5aBUf5OUugEoqsCZ",
+      "name": "Word Fellowship",
+      "phone": null,
+      "website": null,
+      "address": "101 CR 426, Killen, AL 35645"
+    },
+    {
+      "id": "MAcd529ckq8RrtUuzXtg",
+      "name": "North Wood United Methodist Ch.",
+      "phone": null,
+      "website": null,
+      "address": "1129 Wills Ave., Florence, AL 35630"
+    },
+    {
+      "id": "PWkB3jdYiB3UlipnSnLm",
+      "name": "The Help Center",
+      "phone": null,
+      "website": null,
+      "address": "621 S. Court St., Florence, AL 35630"
+    },
+    {
+      "id": "TjQppNTB0gzW5VgCdXRZ",
+      "name": "Killen United Methodist Church",
+      "phone": null,
+      "website": null,
+      "address": "201 J. C. Mauldin Hwy, Killen, AL 35645"
+    },
+    {
+      "id": "VCiBTVLkAp9tC9BHazPr",
+      "name": "Fish & Loaves Food Pantry",
+      "phone": null,
+      "website": null,
+      "address": "510 Lee St., Rogersville, AL 35652"
+    },
+    {
+      "id": "VkTklPzbkwnEer3P9wu7",
+      "name": "Woodmont Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "2001 Darby Drive, Florence, AL 35630"
+    },
+    {
+      "id": "aAlF3lGtSrbuWy7tNbsD",
+      "name": "Crossroads Community Outreach",
+      "phone": null,
+      "website": null,
+      "address": "220 West Tn Street, Florence, AL 35630"
+    },
+    {
+      "id": "ksY7WuTnVOYQpmFuEi7S",
+      "name": "Salem Church of Christ",
+      "phone": null,
+      "website": null,
+      "address": "9671 Highway 17, Florence, AL 35634"
+    },
+    {
+      "id": "nQGUc14d1cOV10K901xa",
+      "name": "Shoals Dream Center",
+      "phone": null,
+      "website": null,
+      "address": "2950 Cloverdale Road, Florence, AL 35633"
+    },
+    {
+      "id": "oISDLXUZR2YNajdw6MLu",
+      "name": "Underwood Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "5091 Hwy. 157, Florence, AL 35633"
+    },
+    {
+      "id": "vK5QXVS6Z58hfwRW4dVb",
+      "name": "Salvation Army- Florence",
+      "phone": null,
+      "website": null,
+      "address": "1601 Huntsville Road, Florence, AL 35630"
+    },
+    {
+      "id": "voMBUzgYEmN9qi9vW0Fe",
+      "name": "Center Star Methodist Church",
+      "phone": null,
+      "website": null,
+      "address": "6293 Hwy. 72, Killen, AL 35645"
+    }
+  ]
+}

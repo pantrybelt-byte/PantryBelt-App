@@ -1,0 +1,127 @@
+{
+  "batch": "27",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "SCIIUx6943VLTKXyQ2iy",
+      "name": "CSFP - Be The Change",
+      "phone": "(205) 966-5239",
+      "website": null,
+      "address": "600 Main Street Suit 101, Gardendale, AL 35071"
+    },
+    {
+      "id": "STYCBMxYSaLZZWgbn45B",
+      "name": "Community Action Togetherness Service, Inc Pantry",
+      "phone": "(205) 383-8626",
+      "website": null,
+      "address": "2617 Eastern Valley Road, Leeds, AL 35094"
+    },
+    {
+      "id": "SuZMBWSXnhOmHrsLtZ4Y",
+      "name": "Hope Community Outreach Pantry",
+      "phone": "(205) 602-2686",
+      "website": null,
+      "address": "8713 Division Avenue, Birmingham, AL 35206"
+    },
+    {
+      "id": "SyIbmfYoGj17MjokdgOz",
+      "name": "United Community Center, Inc. Pantry",
+      "phone": "(205) 925-2944",
+      "website": null,
+      "address": "3617 Hickory Ave SW, Birmingham, AL 35221"
+    },
+    {
+      "id": "T3C66XJLPIhOvMRfa8Wp",
+      "name": "Thirgood Memorial CME Church",
+      "phone": "(205) 902-2994",
+      "website": null,
+      "address": "517 Center Street North, Birmingham, AL 35204"
+    },
+    {
+      "id": "TM2kw0OWpYwjoFZXjOFZ",
+      "name": "Garywood Church Pantry",
+      "phone": "(205) 586-5321",
+      "website": null,
+      "address": "2730 Allison-Bonnett Memorial Dr, Hueytown, AL 35023"
+    },
+    {
+      "id": "TVnsPEB0tTAOVGOkaS86",
+      "name": "Joe Brooks Food Ministry Pantry",
+      "phone": "(205) 835-6400",
+      "website": null,
+      "address": "300 4th Court North, Birmingham, AL 35204"
+    },
+    {
+      "id": "TsdKttWRLvEMOnRAjbf1",
+      "name": "NAME Ministries Inc Pantry & Soup Kitchen",
+      "phone": "(205) 786-1642",
+      "website": null,
+      "address": "701 18th St, Ensley, AL 35218"
+    },
+    {
+      "id": "U009RWcJ7A31MmvktL1b",
+      "name": "House of Love",
+      "phone": "(205) 901-4717",
+      "website": null,
+      "address": "1001 35th St Ensley, Birmingham, AL 35218"
+    },
+    {
+      "id": "U5hsOalOPPsrc3dYNNO6",
+      "name": "Nurturing Golden Hearts Pantry",
+      "phone": "(205) 902-7910",
+      "website": null,
+      "address": "113 Hueytown Plaza, Hueytown, AL 35023"
+    },
+    {
+      "id": "UFpltw8hRc0kyTmCdMYj",
+      "name": "Brother Bryan Mission Residential & Soup Kitchen",
+      "phone": "(659) 910-4474",
+      "website": null,
+      "address": "1608 2nd Ave N, Birmingham, AL 35203"
+    },
+    {
+      "id": "UOb6IIdr2tBXPmhDCsGB",
+      "name": "Southside Baptist Church Pantry",
+      "phone": "(205) 902-6523",
+      "website": null,
+      "address": "1016 19th St S, Birmingham, AL 35205"
+    },
+    {
+      "id": "V46auCA9FoOrRwPQum6C",
+      "name": "Church of God of the Union Assembly Pantry",
+      "phone": "(205) 281-2156",
+      "website": null,
+      "address": "1230 Simmons St, Bessemer, AL 35020"
+    },
+    {
+      "id": "VMYx4Nc2b0EgsVpD7FDH",
+      "name": "New Beginnings United Methodist Church Pantry",
+      "phone": null,
+      "website": null,
+      "address": "2133 32nd Ave. N, Birmingham, AL 35207"
+    },
+    {
+      "id": "VfBBnndM3XbOWZFAQXvP",
+      "name": "LifeChurch Birmingham",
+      "phone": "(205) 986-5433",
+      "website": null,
+      "address": "5567 Chalkville Rd, Birmingham, AL 35235"
+    },
+    {
+      "id": "WpEDhHaqRBFlYBkzJMf7",
+      "name": "The Grace Place Pantry",
+      "phone": "(205) 519-5402",
+      "website": null,
+      "address": "1630 Powder Plant Road, Bessemer, AL 35022"
+    },
+    {
+      "id": "XMSxMIqtCWvZdTYQZZyw",
+      "name": "New Life SDA Church Pantry",
+      "phone": "(205) 754-1823",
+      "website": null,
+      "address": "5626 Ash Street, Birmingham, AL 35207"
+    }
+  ]
+}

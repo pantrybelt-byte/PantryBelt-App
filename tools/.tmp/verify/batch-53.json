@@ -1,0 +1,127 @@
+{
+  "batch": "53",
+  "counties": [
+    "Shelby"
+  ],
+  "rows": [
+    {
+      "id": "4xPESk6VCP4w5i1ZDSVu",
+      "name": "Alabaster Church of God Pantry",
+      "phone": "(205) 588-9262",
+      "website": null,
+      "address": "530 1st Ave W, Alabaster, AL 35007"
+    },
+    {
+      "id": "ALFK4WVblBBJ4A28cSJZ",
+      "name": "Westwood Baptist Church (Harvest House) Pantry",
+      "phone": "(205) 908-9905",
+      "website": null,
+      "address": "1440 Simmsville Rd, Alabaster, AL 35007"
+    },
+    {
+      "id": "C1rzoXojQTAJwp1TVwiB",
+      "name": "First Baptist Church Alabaster Pantry",
+      "phone": "(205) 663-3531",
+      "website": null,
+      "address": "903 3rd Avenue NW, Alabaster, AL 35007"
+    },
+    {
+      "id": "HfnNQl28Fugsqlw3P0KW",
+      "name": "Upper Room Church Pantry",
+      "phone": "(205) 479-9535",
+      "website": null,
+      "address": "656 Co Rd 8, Montevallo, AL 35115"
+    },
+    {
+      "id": "MJAawWwUmxfaPgWiSKn7",
+      "name": "Shelby Emergency Assistance Pantry",
+      "phone": null,
+      "website": null,
+      "address": "160 Shoshone Drive, Montevallo, AL 35115"
+    },
+    {
+      "id": "PbryHTmYwtQWZDS6grUr",
+      "name": "Matthew 25-35 Outreach Organization Pantry",
+      "phone": "(205) 706-1002",
+      "website": null,
+      "address": "5511 Hwy 280 Suite 116, Birmingham, AL 35242"
+    },
+    {
+      "id": "SYxUl6hfMPXM9GDgfdsw",
+      "name": "Our Light Ministry Pantry",
+      "phone": "(205) 369-6634",
+      "website": null,
+      "address": "11692 N County Rd 41, Leeds, AL 35094"
+    },
+    {
+      "id": "XznsP0EQEAln2sPgHl6v",
+      "name": "Shelby Baptist Association Pantry",
+      "phone": "(205) 910-9713",
+      "website": null,
+      "address": "205 Walton Street, Columbiana, AL 35051"
+    },
+    {
+      "id": "cYhX5GqrBI6FFra5evSL",
+      "name": "Mount Pleasant Baptist Church Pantry",
+      "phone": "(205) 515-9626",
+      "website": null,
+      "address": "5320 Helena Road, Helena, AL 35080"
+    },
+    {
+      "id": "gzwZ0zOiG8CvaYx8gpPQ",
+      "name": "Montevallo Falcon Food Pantry",
+      "phone": "(205) 665-6245",
+      "website": null,
+      "address": "1031 Middle Street, Montevallo, AL 35115"
+    },
+    {
+      "id": "i3oadY0dFeDrDbIbfNdb",
+      "name": "New Life Pentecostal Church Pantry",
+      "phone": "(205) 296-2264",
+      "website": null,
+      "address": "30 Persimmon Lane, Columbiana, AL 35051"
+    },
+    {
+      "id": "iRkdjtaehedtIdCGRRDW",
+      "name": "Build-A-Bridge Pantry",
+      "phone": "(205) 960-0026",
+      "website": null,
+      "address": "7993 County Road 62, Vincent, AL 35178"
+    },
+    {
+      "id": "lc2E8uuzI39mtTN0uxqN",
+      "name": "St. Catherine's Episcopal Church Pantry",
+      "phone": "(205) 529-9438",
+      "website": null,
+      "address": "642 Kings' Home Dr, Chelsea, AL 35043"
+    },
+    {
+      "id": "otHdlOlOYNHXSe85DnYW",
+      "name": "Present-Truth Tabernacle Ministries Pantry",
+      "phone": "(205) 706-7685",
+      "website": null,
+      "address": "350 Davis Hawkins St., Montevallo, AL 35115"
+    },
+    {
+      "id": "pkJxbonxdTNaaZe9zl15",
+      "name": "Ward Chapel AME Church Pantry",
+      "phone": "(205) 276-2735",
+      "website": null,
+      "address": "765 West St, Montevallo, AL 35115"
+    },
+    {
+      "id": "qVfa2MU1UJsotLiCF5S3",
+      "name": "Love in Action Pantry",
+      "phone": "(205) 410-3014",
+      "website": null,
+      "address": "1026A Commerce Boulevard, Pelham, AL 35124"
+    },
+    {
+      "id": "rFgJhgjLbZshvjJAnkdH",
+      "name": "Oak Mountain Missions Pantry",
+      "phone": "(205) 527-8192",
+      "website": null,
+      "address": "2699 Pelham Parkway, Pelham, AL 35124"
+    }
+  ]
+}

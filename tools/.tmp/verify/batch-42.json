@@ -1,0 +1,114 @@
+{
+  "batch": "42",
+  "counties": [
+    "Marion",
+    "Marshall"
+  ],
+  "rows": [
+    {
+      "id": "9j1rZYWqrej3pwoNbPRT",
+      "name": "Hines Baptist Church",
+      "phone": "(205) 486-2767",
+      "website": null,
+      "address": "10726 AL 241, Bear Creek, AL 35543"
+    },
+    {
+      "id": "JDgP8NUKFaZYNhmyv7pB",
+      "name": "Winfield First Methodist Church",
+      "phone": "(205) 487-2405",
+      "website": null,
+      "address": "835 Bankhead Hwy, Winfield, AL 35594"
+    },
+    {
+      "id": "RFtFz6gjnE70bbFpwJdF",
+      "name": "Brilliant Food Pantry",
+      "phone": "(205) 495-4456",
+      "website": null,
+      "address": "210 Carlee St, Brilliant, AL 35548"
+    },
+    {
+      "id": "ZTVrMXgVRIutgcTnHmqt",
+      "name": "Community Pantry of Hamilton",
+      "phone": "(205) 412-2455",
+      "website": null,
+      "address": "195 1st Ave SE, Hamilton, AL 35570"
+    },
+    {
+      "id": "l5ZbUWsCpusbQPsIrcaf",
+      "name": "Bethel Apostolic Holiness",
+      "phone": "(205) 717-6532",
+      "website": null,
+      "address": "188 Iris Lane, Winfield, AL 35594"
+    },
+    {
+      "id": "szr7102Ep3ZLLI7MAWod",
+      "name": "Fulton Bridge Baptist Church",
+      "phone": "(205) 921-3669",
+      "website": null,
+      "address": "3090 County Rd 55, Hamilton, AL 35570"
+    },
+    {
+      "id": "5neAq82BXqxjfyayHyj5",
+      "name": "Life Point Church",
+      "phone": null,
+      "website": null,
+      "address": "700 Motley St., Albertville, AL 35950"
+    },
+    {
+      "id": "CV6YiFBqqxuKcaJAaNDn",
+      "name": "Marshall County Christian Services",
+      "phone": null,
+      "website": null,
+      "address": "217 South Cahill Road, Albertville, AL 35950"
+    },
+    {
+      "id": "FFBxlZ6tONZ9dWWfpn0V",
+      "name": "Church of God of Union Assembly",
+      "phone": null,
+      "website": null,
+      "address": "1 Chloris Street, Albertville, AL 35950"
+    },
+    {
+      "id": "GSme3vvRhShGevuAmokD",
+      "name": "Julia Street Congregational Methodist",
+      "phone": null,
+      "website": null,
+      "address": "302 Thomas Ave., Boaz, AL 35957"
+    },
+    {
+      "id": "I8Lj27rapV5jYoLML9nD",
+      "name": "Marshall County Hope Center",
+      "phone": null,
+      "website": null,
+      "address": "1910 Gunter Ave., Guntersville, AL 35976"
+    },
+    {
+      "id": "YVLtMWbOBCTJ75CZgstt",
+      "name": "Christ Episcopal",
+      "phone": null,
+      "website": null,
+      "address": "607 East Main Street, Albertville, AL 35950"
+    },
+    {
+      "id": "Yj2dtwlhEKsrZzHsPzng",
+      "name": "St. Vincent De Paul",
+      "phone": null,
+      "website": null,
+      "address": "929 Gunter Ave., Guntersville, AL 35976"
+    },
+    {
+      "id": "nfz3UZFRfyYBxogGdN52",
+      "name": "New Life Church",
+      "phone": null,
+      "website": null,
+      "address": "515 2nd Avenue NW, Arab, AL 35016"
+    },
+    {
+      "id": "y4MNLhArgdf6gIiDN7Wh",
+      "name": "Arab Christian Center",
+      "phone": null,
+      "website": null,
+      "address": "9105 Ala. Hwy. 69, Arab, AL 35016"
+    }
+  ]
+}

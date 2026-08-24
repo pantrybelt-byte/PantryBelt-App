@@ -1,0 +1,127 @@
+{
+  "batch": "30",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "s4rUuybiyNhHSRMgNiRb",
+      "name": "Freedom Rain, Inc. (Lovelady) Residential & Pantry",
+      "phone": "(205) 601-5034",
+      "website": null,
+      "address": "7916 2nd Avenue South, Birmingham, AL 35206"
+    },
+    {
+      "id": "tKbpy5sPWQNopmjNh1KK",
+      "name": "Greater Saint John Baptist Church Pantry",
+      "phone": "(205) 757-4767",
+      "website": null,
+      "address": "2401 Carlos Ave. SW, Birmingham, AL 35211"
+    },
+    {
+      "id": "tdQu0fX6dT63hR24MIke",
+      "name": "Jesus is Lord Ministry Pantry",
+      "phone": "(205) 703-8388",
+      "website": null,
+      "address": "1268 Maple St, Birmingham, AL 35217"
+    },
+    {
+      "id": "tkTOmlewkY9vuEK2zrGg",
+      "name": "Leeds Outreach Pantry",
+      "phone": "(205) 699-7291",
+      "website": null,
+      "address": "1000 Park Drive, Leeds, AL 35094"
+    },
+    {
+      "id": "ttFKb8TRmRdE37T6ycbE",
+      "name": "Fairfield First Seventh Day Adventist Church Pantry",
+      "phone": "(205) 447-2254",
+      "website": null,
+      "address": "540 54th Street, Fairfield, AL 35064"
+    },
+    {
+      "id": "ttIpDoQUOPoWcbrnuUpB",
+      "name": "Bluff Park United Methodist Church Pantry",
+      "phone": "(205) 842-9902",
+      "website": null,
+      "address": "733 Valley Street, Hoover, AL 35226"
+    },
+    {
+      "id": "u3IInDGDxFyX0739YNoX",
+      "name": "The Church at Southside Soup Kitchen",
+      "phone": "(205) 613-3836",
+      "website": null,
+      "address": "401 22nd St S, Birmingham, AL 35233"
+    },
+    {
+      "id": "uCa9KcR0nH6pvUwp13sv",
+      "name": "Victorious Living Pantry",
+      "phone": "(205) 919-1282",
+      "website": null,
+      "address": "8737 4th Avenue South, Birmingham, AL 35206"
+    },
+    {
+      "id": "uNM2fXmK8quNktvscltI",
+      "name": "Faith Missionary Baptist Roebuck Pantry",
+      "phone": "(205) 427-2886",
+      "website": null,
+      "address": "9841 Red Mill Road, Birmingham, AL 35215"
+    },
+    {
+      "id": "um5IpVMTcuUjqY5kOgIq",
+      "name": "Adventist Community Services Pantry",
+      "phone": "(205) 903-4273",
+      "website": null,
+      "address": "105 6th Avenue North, Birmingham, AL 35204"
+    },
+    {
+      "id": "v006FjoEbhahY1ZeqPbT",
+      "name": "Vestavia Hills Methodist Church Pantry",
+      "phone": "(205) 444-9793",
+      "website": null,
+      "address": "2061 Kentucky Ave., Vestavia Hills, AL 35216"
+    },
+    {
+      "id": "x1QtZgEhNHxAaao8u3BS",
+      "name": "Love Fellowship Christian Center",
+      "phone": "(404) 395-0137",
+      "website": null,
+      "address": "1150 Hillcrest Road, Adamsville, AL 35005"
+    },
+    {
+      "id": "xEicmr3C2Ow6KRHsQUnT",
+      "name": "Avondale Samaritan Place Pantry",
+      "phone": "(205) 903-1187",
+      "website": null,
+      "address": "3829 5th Avenue South, Birmingham, AL 35222"
+    },
+    {
+      "id": "yNJNY8s4rWlUIpo6MR8x",
+      "name": "Disabled American Veterans Pantry",
+      "phone": "(205) 202-4460",
+      "website": null,
+      "address": "238 2nd Avenue North, Birmingham, AL 35204"
+    },
+    {
+      "id": "yO2lU57PzNX086QtrE3u",
+      "name": "Fultondale Baptist Church Pantry",
+      "phone": "(205) 910-5694",
+      "website": null,
+      "address": "1419 Stouts Rd, Fultondale, AL 35068"
+    },
+    {
+      "id": "zVRRDX2nxnUpFH4ZAqZ1",
+      "name": "The Ministry Center at Green Springs Pantry",
+      "phone": "(205) 979-8633",
+      "website": null,
+      "address": "2230 Green Springs Highway, Birmingham, AL 35205"
+    },
+    {
+      "id": "zl4AuJslFpkEcvUM5wLI",
+      "name": "Twenty-Third Street Missionary Baptist Church Pantry",
+      "phone": "(205) 914-2692",
+      "website": null,
+      "address": "331 S. 23rd Street, Birmingham, AL 35233"
+    }
+  ]
+}

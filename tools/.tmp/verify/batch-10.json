@@ -1,0 +1,129 @@
+{
+  "batch": "10",
+  "counties": [
+    "Coffee",
+    "Colbert",
+    "Conecuh"
+  ],
+  "rows": [
+    {
+      "id": "FQcVs3gLWHyP9BOuvbTn",
+      "name": "The Grace Place/Salem Baptist",
+      "phone": "(334) 347-5214",
+      "website": null,
+      "address": "5730 Shellfield Road, Enterprise, AL 36330"
+    },
+    {
+      "id": "bIoQwniwiRqtt8UkA1R3",
+      "name": "Coffee County Community Church",
+      "phone": "(334) 475-3525",
+      "website": null,
+      "address": "130 Vester Cole, New Brockton, AL 36351"
+    },
+    {
+      "id": "jegWdv7vUoagvFBFIleK",
+      "name": "Johns Chapel AME Church",
+      "phone": "(334) 393-2661",
+      "website": null,
+      "address": "605 Geneva Highway, Enterprise, AL 36331"
+    },
+    {
+      "id": "mFqABEg5wtjSrwksoUXo",
+      "name": "Wiregrass Elba Church of Christ",
+      "phone": "(334) 897-2057",
+      "website": null,
+      "address": "715 N. Troy Highway, Elba, AL 36323"
+    },
+    {
+      "id": "rHzzoV5XvbM3y4kfDy8e",
+      "name": "Wiregrass Inner Faith Help Center",
+      "phone": "(334) 447-1948",
+      "website": null,
+      "address": "405 Janice Street, Enterprise, AL 36330"
+    },
+    {
+      "id": "u4hUpwuigXA6at6HSuFz",
+      "name": "Christian Mission Center",
+      "phone": "(334) 393-2607",
+      "website": null,
+      "address": "231 Geneva Highway, Enterprise, AL 36330"
+    },
+    {
+      "id": "wzbTwB81ldc00N6Nhx1p",
+      "name": "Beth-El Faith Church",
+      "phone": "(334) 475-7757",
+      "website": null,
+      "address": "3180 Rucker Blvd. E., Enterprise, AL 36330"
+    },
+    {
+      "id": "xcao6P9aEejGIoadoLXO",
+      "name": "Wiregass Community Worship",
+      "phone": "(334) 500-0885",
+      "website": null,
+      "address": "151 Eastgate /383 Geneva Highway, Enterprise, AL 36331"
+    },
+    {
+      "id": "1LBQIOvx74dQPMqeQe1g",
+      "name": "The Chapel",
+      "phone": null,
+      "website": null,
+      "address": "600 Columbia Avenue, Sheffield, AL 35660"
+    },
+    {
+      "id": "6jzwUJATu6JqwVqp5lRO",
+      "name": "Cowboy Church of Colbert County",
+      "phone": null,
+      "website": null,
+      "address": "3440 Hwy 157, Leighton, AL 35646"
+    },
+    {
+      "id": "B72tOSe6NIvnBpl5tYkc",
+      "name": "First Presbyterian Church Sheffield",
+      "phone": null,
+      "website": null,
+      "address": "130 East 5th Street, Sheffield, AL 35660"
+    },
+    {
+      "id": "P4JOpekq7MeC0X9oNyQP",
+      "name": "The Meal Barrel Project",
+      "phone": null,
+      "website": null,
+      "address": "267 Claude Posey Road, Cherokee, AL 35616"
+    },
+    {
+      "id": "UtJ3qNnjQpq5BHptglu7",
+      "name": "Colbert Caring Center",
+      "phone": null,
+      "website": null,
+      "address": "102 N. Water Street, Tuscumbia, AL 35674"
+    },
+    {
+      "id": "V6vC5WL71lY2G6W7USrE",
+      "name": "Highland Park Church of Christ",
+      "phone": null,
+      "website": null,
+      "address": "600 Geneva Avenue, Muscle Shoals, AL 35661"
+    },
+    {
+      "id": "UP5QtaZxYQiwzaCYe2zK",
+      "name": "Belleville Missionary Baptist Church",
+      "phone": "(251) 248-2495",
+      "website": null,
+      "address": "7841 County Road 15, Repton, AL 36575"
+    },
+    {
+      "id": "piEKhBm1IuW8CUgwQHnl",
+      "name": "Pensacola Caring Hearts Inc. - Evergreen",
+      "phone": "(850) 375-1838",
+      "website": null,
+      "address": "10930 Hwy 31 South, Evergreen, AL 36401"
+    },
+    {
+      "id": "ud8SmR8n7lCoLnVQ79LX",
+      "name": "Creation Science Evangelism Ministries",
+      "phone": "(855) 244-3644",
+      "website": null,
+      "address": "488 Pearl Lane, Repton, AL 36474"
+    }
+  ]
+}

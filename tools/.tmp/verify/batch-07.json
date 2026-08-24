@@ -1,0 +1,128 @@
+{
+  "batch": "07",
+  "counties": [
+    "Calhoun",
+    "Chambers"
+  ],
+  "rows": [
+    {
+      "id": "G1edmgmL3tA4Dybcy0DR",
+      "name": "Walter Wellborn Elementary School Family Market",
+      "phone": "(256) 294-6614",
+      "website": null,
+      "address": "525 Cooper Cir, Anniston, AL 36201"
+    },
+    {
+      "id": "LDiTFAuzu84NYbZwQQlT",
+      "name": "Salvation Army Anniston Pantry",
+      "phone": "(256) 236-5643",
+      "website": null,
+      "address": "404 Noble Street, Anniston, AL 36201"
+    },
+    {
+      "id": "MpWTnSlLGt8XoQsx53ne",
+      "name": "Jesus is the Way, Truth, Life Pantry",
+      "phone": "(256) 452-9958",
+      "website": null,
+      "address": "520 Golden Springs Road, Anniston, AL 36207"
+    },
+    {
+      "id": "Mx0144Dl1AbHL9fuxtAo",
+      "name": "New Life Christian Cathedral, Inc. Residential & Soup Kitchen",
+      "phone": "(256) 473-5088",
+      "website": null,
+      "address": "1800 Gurnee Avenue, Anniston, AL 36201"
+    },
+    {
+      "id": "TU8585LhjRTxd4JiHsEW",
+      "name": "Cornerstone Church Pantry",
+      "phone": "(256) 343-9577",
+      "website": null,
+      "address": "2885 Choccolocco Road, Anniston, AL 36207"
+    },
+    {
+      "id": "Tw5YJrMwYmGh7DLOGuGD",
+      "name": "Friendship Missionary Baptist Pantry",
+      "phone": "(919) 452-0870",
+      "website": null,
+      "address": "1130 West 14th St, Anniston, AL 36201"
+    },
+    {
+      "id": "W7Ygk745HNocyZx8h8oL",
+      "name": "CSFP - Southern Ridge",
+      "phone": "(256) 236-0193",
+      "website": null,
+      "address": "3000 Cresthill Avenue, Anniston, AL 36201"
+    },
+    {
+      "id": "ci3kyAi6l0lRYjDjZgeU",
+      "name": "Community Enabler Developer Pantry",
+      "phone": "(256) 237-6144",
+      "website": null,
+      "address": "104 F Street, Anniston, AL 36201"
+    },
+    {
+      "id": "dMqbdUlriXrx7VLZFGsK",
+      "name": "Mt. Liberty/Turning Point Missionary Baptist Pantry",
+      "phone": "(256) 283-8515",
+      "website": null,
+      "address": "851 Morrisville Rd, Anniston, AL 36201"
+    },
+    {
+      "id": "emGjWDrANvk8jKcvwA3Q",
+      "name": "Jacksonville Christian Outreach Center Pantry",
+      "phone": "(256) 282-8184",
+      "website": null,
+      "address": "206 Francis Street West, Jacksonville, AL 36265"
+    },
+    {
+      "id": "flgdx9zu7zDOvZS7oiWn",
+      "name": "All Saints Interfaith Center Pantry",
+      "phone": "(256) 236-7793",
+      "website": null,
+      "address": "1513 Noble Street, Anniston, AL 36201"
+    },
+    {
+      "id": "gKd7vVc5hkhaGV7FgzFd",
+      "name": "Piedmont Benevolence Center Pantry",
+      "phone": "(256) 447-2220",
+      "website": null,
+      "address": "20222 AL Hwy 9, Piedmont, AL 36272"
+    },
+    {
+      "id": "rDDDgiJ7H6uSDahmRcZf",
+      "name": "Anniston Soup Bowl Soup Kitchen",
+      "phone": "(256) 236-6794",
+      "website": null,
+      "address": "301 W 15th Street, Anniston, AL 36201"
+    },
+    {
+      "id": "OyyU1CzOCGCP2GKkId3K",
+      "name": "Valley First Assembly of God",
+      "phone": "(706) 585-6990",
+      "website": null,
+      "address": "5307 US-29, Valley, AL 36854"
+    },
+    {
+      "id": "XskEOdxNlDUfiMOj3uYw",
+      "name": "Tabernacle of Praise Church International",
+      "phone": "(334) 524-8755",
+      "website": null,
+      "address": "139 Church Street, Valley, AL 36854"
+    },
+    {
+      "id": "dkjWqqxcr9DU5kDCDGhq",
+      "name": "Pilgrim Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "420 North 12th Ave, Lanett, AL 36863"
+    },
+    {
+      "id": "mKrMiuwgN9un8iAmFmD0",
+      "name": "Christian Service Center",
+      "phone": "(334) 476-2605",
+      "website": null,
+      "address": "5342 Cusseta Road, Lanett, AL 36863"
+    }
+  ]
+}

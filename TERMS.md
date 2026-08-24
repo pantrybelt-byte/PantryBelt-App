@@ -56,7 +56,7 @@ AccessBelt enforces a strict zero-tolerance policy against inappropriate, illega
 AccessBelt respects the intellectual property rights of others and complies with the Digital Millennium Copyright Act. If you believe that your copyrighted work has been copied or used in a way that constitutes copyright infringement, please send a written DMCA Takedown Notice to our Designated Contact:
 
 **DMCA Designated Contact:**  
-AccessBelt Official Contact  
+Official Contact  
 Email: `getaccessbelt@gmail.com`
 
 Your DMCA Notice must include:

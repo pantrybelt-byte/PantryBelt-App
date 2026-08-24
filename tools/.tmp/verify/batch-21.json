@@ -1,0 +1,127 @@
+{
+  "batch": "21",
+  "counties": [
+    "Houston"
+  ],
+  "rows": [
+    {
+      "id": "0UqTTAfHiiwGEDTFhyHJ",
+      "name": "Catholic Social Services",
+      "phone": "(334) 793-3601",
+      "website": null,
+      "address": "577 West Main Street, Dothan, AL 36301"
+    },
+    {
+      "id": "43kLmgk4ry39Tq7KbwQs",
+      "name": "First Missionary BC",
+      "phone": "(334) 258-3861",
+      "website": null,
+      "address": "311 W. Church Street, Columbia, AL 36319"
+    },
+    {
+      "id": "5E8DSFBeJNWvWXKUqJVT",
+      "name": "St. John Missionary BC",
+      "phone": "(334) 522-3220",
+      "website": null,
+      "address": "5529 South State Highway 95, Gordon, AL 36343"
+    },
+    {
+      "id": "5MvzUnbAxfZoMTQRFPOw",
+      "name": "Greater Dothan Baptist Church",
+      "phone": "(334) 699-0066",
+      "website": null,
+      "address": "2041 Mimosa Drive, Dothan, AL 36303"
+    },
+    {
+      "id": "9z3VZTPWg2X0kW6ziz2g",
+      "name": "Helping Hands Dothan",
+      "phone": "(601) 934-0554",
+      "website": null,
+      "address": "435 J. Steele Road, Dothan, AL 36303"
+    },
+    {
+      "id": "AoOSOyJi1r5HzG7uHuRC",
+      "name": "Triune Christian Family",
+      "phone": "(334) 828-4541",
+      "website": null,
+      "address": "209 Blackshear Street, Dothan, AL 36303"
+    },
+    {
+      "id": "BAZLHBww6ahTETF9ZxUD",
+      "name": "The Harbor Church",
+      "phone": "(334) 790-4031",
+      "website": null,
+      "address": "320 N. Foster Street, Dothan, AL 36303"
+    },
+    {
+      "id": "CxiiJnZzCTSRdBlxHykA",
+      "name": "Shady Grove C.H. Church",
+      "phone": "(334) 714-3878",
+      "website": null,
+      "address": "355 County Road 75 S., Pansey, AL 36370"
+    },
+    {
+      "id": "FQJM0SlrazOAQBFedeH1",
+      "name": "Philadelphia Baptist Church",
+      "phone": "(334) 522-3373",
+      "website": null,
+      "address": "24 Philadelphia Church Road, Gordon, AL 36343"
+    },
+    {
+      "id": "Ko1BOPWCYnqDWrFXy7hR",
+      "name": "Dothan Community Church",
+      "phone": "(334) 794-9464",
+      "website": null,
+      "address": "4390 Westgate Parkway, Dothan, AL 36303"
+    },
+    {
+      "id": "NIMJeRBFJzlWjNA6eiIa",
+      "name": "Bread Of Life Ministries",
+      "phone": "(334) 470-6055",
+      "website": null,
+      "address": "213 W. Crawford Street, Dothan, AL 36301"
+    },
+    {
+      "id": "NQsCcNhlg9R9ZdgDDise",
+      "name": "Dothan 7th Day Adventist",
+      "phone": "(678) 650-5766",
+      "website": null,
+      "address": "147 Picard Street, Dothan, AL 36301"
+    },
+    {
+      "id": "NdEYIyiICit2N5nYWHi3",
+      "name": "Mercy Outreach Mission",
+      "phone": "(334) 890-3402",
+      "website": null,
+      "address": "310 Church Street, Ashford, AL 36312"
+    },
+    {
+      "id": "PdByhQtFukcvITjAPW49",
+      "name": "Episcopal Church of the Nativity",
+      "phone": "(334) 792-8742",
+      "website": null,
+      "address": "148 N. Foster Street, Dothan, AL 36301"
+    },
+    {
+      "id": "PeiGM30wfBLVwpFBkqNQ",
+      "name": "Memphis Baptist Church",
+      "phone": "(334) 677-5387",
+      "website": null,
+      "address": "4595 Eddins Road, Dothan, AL 36301"
+    },
+    {
+      "id": "TsSPG70i47BJgSmcu5XU",
+      "name": "Cottonwood United Meth. Church",
+      "phone": "(334) 547-8617",
+      "website": null,
+      "address": "1331 Metcalf Street, Cottonwood, AL 36320"
+    },
+    {
+      "id": "ZW2Pb1iqEvVYYhns8gQY",
+      "name": "Evergreen Presbyterian Church",
+      "phone": "(334) 792-7898",
+      "website": null,
+      "address": "1103 North Pontiac Avenue, Dothan, AL 36303"
+    }
+  ]
+}

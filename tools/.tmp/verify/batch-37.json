@@ -1,0 +1,127 @@
+{
+  "batch": "37",
+  "counties": [
+    "Madison"
+  ],
+  "rows": [
+    {
+      "id": "1OLbA3kNdM3dRdwVymVw",
+      "name": "Heaven's Storehouse at Oakwood University Church",
+      "phone": null,
+      "website": null,
+      "address": "5500 Adventist Blvd, Huntsville, AL 35896"
+    },
+    {
+      "id": "3nYUa7zGHXnADLWfgs5J",
+      "name": "Fountain of Life Community Development",
+      "phone": null,
+      "website": null,
+      "address": "4015 Triana Blvd, Huntsville, AL 35805"
+    },
+    {
+      "id": "7xtaNvT0vKkeizzeOXQF",
+      "name": "Patricia Haley Charity",
+      "phone": null,
+      "website": null,
+      "address": "3322 South Memorial Parkway, Huntsville, AL 35804"
+    },
+    {
+      "id": "BONhaAgIkmlghvyCRZWa",
+      "name": "Journey Church",
+      "phone": null,
+      "website": null,
+      "address": "9640 Meridian St. N, Huntsville, AL 35810"
+    },
+    {
+      "id": "BgFiIMdSmhRNEkkg8Afg",
+      "name": "Bethlehem Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1936 Elkwood Section Rd, Hazel Green, AL 35750"
+    },
+    {
+      "id": "CIVlEjrMxCjQ3MCow6i2",
+      "name": "One In Christ Ministries",
+      "phone": null,
+      "website": null,
+      "address": "2131 Hwy 72 E, Huntsville, AL 35810"
+    },
+    {
+      "id": "CkB6RTCqj79827BqmMsi",
+      "name": "New Market U.M.C.",
+      "phone": null,
+      "website": null,
+      "address": "310 Hurricane Rd., New Market, AL 35761"
+    },
+    {
+      "id": "DNMVJjj431gU5dMQBY4g",
+      "name": "Rose of Sharon",
+      "phone": null,
+      "website": null,
+      "address": "723 Arcadia Cir NW, Huntsville, AL 35810"
+    },
+    {
+      "id": "DWsyP7HYjWKsq3IOYwLm",
+      "name": "Lincoln Church of Christ",
+      "phone": null,
+      "website": null,
+      "address": "1307 Meridian st., Huntsville, AL 35801"
+    },
+    {
+      "id": "F9My7EA2TYpROogB9aDi",
+      "name": "Triana SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "252 Advent Dr., Madison, AL 35656"
+    },
+    {
+      "id": "Ffq1JEySEv8Y71oVHadN",
+      "name": "House of Harvest",
+      "phone": null,
+      "website": null,
+      "address": "9144 Wall Triana Hwy, Harvest, AL 35749"
+    },
+    {
+      "id": "HHlT3FsMkVGNTuKwdMqd",
+      "name": "St. John the Baptist Catholic Church- St. Vincent dePaul",
+      "phone": null,
+      "website": null,
+      "address": "1055 Hughes Road, Madison, AL 35758"
+    },
+    {
+      "id": "HbOvqQD4I9etoUGmrZxO",
+      "name": "Owens Chapel Missionary Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "2520 Elton Road, Huntsville, AL 35810"
+    },
+    {
+      "id": "JKIhcXtH5adV21xrMtQb",
+      "name": "Asbury Church",
+      "phone": null,
+      "website": null,
+      "address": "980 Hughes Rd., Madison, AL 35758"
+    },
+    {
+      "id": "JQSnpVWsgc3aX6Hx1A0x",
+      "name": "Mt. Pisgah SDA",
+      "phone": null,
+      "website": null,
+      "address": "111 Church Street, Gurley, AL 35748"
+    },
+    {
+      "id": "KlRkH0nDd8VQrb3ci858",
+      "name": "New Flower",
+      "phone": null,
+      "website": null,
+      "address": "3156 University Drive, Huntsville, AL 35773"
+    },
+    {
+      "id": "KnMYiRoYJFWN3APyMDyx",
+      "name": "New Life SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "3912 Pulaski Pike, Huntsville, AL 35810"
+    }
+  ]
+}

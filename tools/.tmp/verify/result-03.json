@@ -1,0 +1,21 @@
+{
+  "batch": "03",
+  "results": [
+    {
+      "id": "tfbWEhVmUcQMZuG80tDv",
+      "name": "Foley Hispanic Seventh Day Adventist Church",
+      "verdict": "active",
+      "website": "https://foleyhispal.adventistchurch.org/",
+      "evidence": "Own church site on the Adventist church-site platform lists 817 N Cedar St, Foley with current service times and pastor; also in the Adventist Organizational Directory and an active Facebook page (Iglesia Adventista del Septimo Dia de Foley).",
+      "dataIssue": "On-file phone (662) 266-9370 is a Mississippi area code; church's published number is (251) 504-8110. Food-distribution activity itself not confirmed online."
+    },
+    {
+      "id": "wm9Husl9o66t7Y5uFMmf",
+      "name": "Mt. Aid Missionary Baptist Church",
+      "verdict": "active",
+      "website": "https://mtaid.org/",
+      "evidence": "Own site mtaid.org plus active Facebook page; listings show a food pantry at 9470 US-90, Daphne on the 2nd and 4th Saturdays 9am-2pm.",
+      "dataIssue": "A food-pantry contact number of 251-600-9777 appears in listings alongside the on-file church number (251) 626-0020; pantry line may be the better contact."
+    }
+  ]
+}

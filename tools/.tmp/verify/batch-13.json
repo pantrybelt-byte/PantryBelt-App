@@ -1,0 +1,92 @@
+{
+  "batch": "13",
+  "counties": [
+    "Dale"
+  ],
+  "rows": [
+    {
+      "id": "21UaTtW6cISOuyn4SH8Y",
+      "name": "Ridgecrest Baptist Church",
+      "phone": "(334) 774-5610",
+      "website": null,
+      "address": "1971 Deese Road, Ozark, AL 36360"
+    },
+    {
+      "id": "6lrOMs1W5J2CUjk06dvM",
+      "name": "St. John Catholic Church",
+      "phone": "(334) 774-6826",
+      "website": null,
+      "address": "475 Camilla Street, Ozark, AL 36360"
+    },
+    {
+      "id": "HG5VUGfMtaHwhnA0dawh",
+      "name": "Ozark Baptist Church",
+      "phone": "(334) 774-9381",
+      "website": null,
+      "address": "282 S. Union Avenue, Ozark, AL 36360"
+    },
+    {
+      "id": "Onrp0C8Nl1bj1mEjIrmZ",
+      "name": "Shiloh 7th Day Adventist",
+      "phone": "(334) 774-6713",
+      "website": null,
+      "address": "199 Willa Street, Ozark, AL 36361"
+    },
+    {
+      "id": "P4N0BgJzePXaJmxYiZOO",
+      "name": "Winds of Change",
+      "phone": "(334) 379-0964",
+      "website": null,
+      "address": "1615 E. Andrews Avenue, Ozark, AL 36360"
+    },
+    {
+      "id": "TfeKVlSkKNvHxGC7F7AZ",
+      "name": "Daleville Heights COC",
+      "phone": "(334) 464-0415",
+      "website": null,
+      "address": "660 Willow Oaks Drive, Ozark, AL 36360"
+    },
+    {
+      "id": "Z3YmWnGzD3FT9yp6064y",
+      "name": "Daleville Christian Fellowship",
+      "phone": "(334) 598-6279",
+      "website": null,
+      "address": "1 Martin Luther King, Jr. Circle, Daleville, AL 36322"
+    },
+    {
+      "id": "deXnjaqKhQO5t3qXiFPq",
+      "name": "Word of Truth Family Church",
+      "phone": "(334) 655-7770",
+      "website": null,
+      "address": "5474 Highway 231 S., Ozark, AL 36352"
+    },
+    {
+      "id": "otPvnhdG27BJvzsDKim5",
+      "name": "Ewell Bible BC",
+      "phone": "(334) 774-4127",
+      "website": null,
+      "address": "64 Susie Street, Ozark, AL 36360"
+    },
+    {
+      "id": "yaiC81I27BuHhGRUu94C",
+      "name": "Dale Co. Rescue Mission",
+      "phone": "(334) 774-6553",
+      "website": null,
+      "address": "891 N. Highway 231, Ozark, AL 36360"
+    },
+    {
+      "id": "yxIrkUhkqX0JBHFsMz3A",
+      "name": "Mary Hill Family Services Center",
+      "phone": "(334) 350-3668",
+      "website": null,
+      "address": "204 Katherine Avenue, Ozark, AL 36360"
+    },
+    {
+      "id": "zaIZhR4bDh17Me0LLCdO",
+      "name": "Mt. Zion Assembly of God",
+      "phone": "(334) 983-3963",
+      "website": null,
+      "address": "1078 County Road 112, Midland City, AL 36350"
+    }
+  ]
+}

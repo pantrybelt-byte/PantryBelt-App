@@ -1,0 +1,127 @@
+{
+  "batch": "43",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "0uUlU3vNMcCNTLVklnpR",
+      "name": "Lott Road Church of God",
+      "phone": "(251) 649-8991",
+      "website": null,
+      "address": "5301 Lott Road, Eight Mile, AL 36613"
+    },
+    {
+      "id": "1WLbb1hA9q3A8zDH1LQs",
+      "name": "Pure Word Deliverance House of Prayer",
+      "phone": "(251) 456-1234",
+      "website": null,
+      "address": "2530 South Shelton Beach Road, Eight Mile, AL 36613"
+    },
+    {
+      "id": "1p1bNSEuGv7hRnnLT6M9",
+      "name": "Nazaree Full Gospel Church",
+      "phone": "(251) 478-9948",
+      "website": null,
+      "address": "1695 North Beltline Highway, Mobile, AL 36618"
+    },
+    {
+      "id": "1uye67D3bZYMYdbkDAfc",
+      "name": "Cedar Street Missionary Baptist Church",
+      "phone": "(251) 675-0606",
+      "website": null,
+      "address": "541 Cedar Street, Saraland, AL 36571"
+    },
+    {
+      "id": "2l8mUlJ3BFhFmqT9Bles",
+      "name": "State Street African Methodist Episcopal Zion Church",
+      "phone": "(251) 432-3965",
+      "website": null,
+      "address": "502 State Street, Mobile, AL 36603"
+    },
+    {
+      "id": "2wsip4vFHBFqXXeC1yxd",
+      "name": "Freewater Missionary Baptist Church",
+      "phone": "(251) 824-2035",
+      "website": null,
+      "address": "11470 Irvington Blvd Hwy, Irvington, AL 36544"
+    },
+    {
+      "id": "3rSkOnIZfAsGDAGIpeQ7",
+      "name": "Feeding the Gulf Coast",
+      "phone": "(251) 653-1617",
+      "website": "https://www.feedingthegulfcoast.org/",
+      "address": "5248 Mobile South St, Theodore, AL, Theodore, AL"
+    },
+    {
+      "id": "4m8HrovHkwlHo60xrr8H",
+      "name": "Gateway Community Outreach at Navco",
+      "phone": "(251) 471-3552",
+      "website": null,
+      "address": "1719 Navco Road, Mobile, AL 36605"
+    },
+    {
+      "id": "4nB13K1xnddyQWBv1eSE",
+      "name": "Closing the Revolving Door",
+      "phone": "(251) 402-5965",
+      "website": null,
+      "address": "117 Phillips Ave, Prichard, AL 36610"
+    },
+    {
+      "id": "50JrRQIvd33RIPUHxEU7",
+      "name": "Church of the Lord Jesus Christ Apostolic",
+      "phone": "(251) 689-8909",
+      "website": null,
+      "address": "5443 McCrary Road, Semmes, AL 36575"
+    },
+    {
+      "id": "5W9PK7DeMVAj4cMQ6U6J",
+      "name": "Victory Health Partners, Inc.",
+      "phone": "(251) 460-0999",
+      "website": null,
+      "address": "3750 Professional Parkway, Mobile, AL 36609"
+    },
+    {
+      "id": "6KwZc3NL8gcxF4F9xPig",
+      "name": "Sweet Bethel Missionary Baptist Church",
+      "phone": "(251) 824-4132",
+      "website": null,
+      "address": "8555 Sweet Bethel Drive West, Coden, AL 36523"
+    },
+    {
+      "id": "8bM6IPjtjJUs7JaGMAYs",
+      "name": "New Generation Church",
+      "phone": "(251) 334-0898",
+      "website": null,
+      "address": "1350 N Cody Rd., Mobile, AL 36608"
+    },
+    {
+      "id": "8gFTRySU0MeYuDiQFFTQ",
+      "name": "Calvary Assembly of God",
+      "phone": "(251) 661-8130",
+      "website": null,
+      "address": "6800 Three Notch Road, Mobile, AL 36619"
+    },
+    {
+      "id": "A0G8jZ0TVwtEmNQRPgRs",
+      "name": "Bayou Sara Baptist Church",
+      "phone": "(251) 675-1770",
+      "website": null,
+      "address": "12 Bayou Sara Avenue, Saraland, AL 36571"
+    },
+    {
+      "id": "BED7P7DuxKlYMJ9kNYii",
+      "name": "Saint Vincent Society of Saint Thomas",
+      "phone": "(251) 458-4578",
+      "website": null,
+      "address": "251 North Craft Highway, Chickasaw, AL 36611"
+    },
+    {
+      "id": "DdhRUrldOljg3dFurOFh",
+      "name": "One Meal Mobile",
+      "phone": "(251) 622-3460",
+      "website": null,
+      "address": "1120 Joaneen Drive Suite D, Saraland, AL 36571"
+    }
+  ]
+}

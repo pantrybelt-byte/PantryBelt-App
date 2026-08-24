@@ -1,0 +1,127 @@
+{
+  "batch": "58",
+  "counties": [
+    "Tuscaloosa"
+  ],
+  "rows": [
+    {
+      "id": "56vOoYMqDcnMMjTiHw9A",
+      "name": "Bama Cares Student Pantry",
+      "phone": "(205) 348-2461",
+      "website": null,
+      "address": "751 Campus Dr, Tuscaloosa, AL 35407"
+    },
+    {
+      "id": "Ac8pByTSdrz6Yy6vqZVJ",
+      "name": "Tuscaloosa Church of God-Real Hope",
+      "phone": null,
+      "website": null,
+      "address": "4115 5th Ave, Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "AnYBJMumUedbYsQtMgUM",
+      "name": "Canterbury Chapel",
+      "phone": "(205) 345-9590",
+      "website": null,
+      "address": "812 5th AVE, Tuscaloosa, AL 35404"
+    },
+    {
+      "id": "BeP8kTMOSx5ypie63QJx",
+      "name": "Wallace Chapel Iglesia del Nazareno",
+      "phone": "(334) 301-2515",
+      "website": null,
+      "address": "11391 Tingle Tangle Rd, Vance, AL 35490"
+    },
+    {
+      "id": "D3ksTykaBJQQsrFofCzj",
+      "name": "Lakewood Baptist Church",
+      "phone": "(205) 333-0414",
+      "website": null,
+      "address": "14468 HWY 43N, Northport, AL 35475"
+    },
+    {
+      "id": "IUy6igsMau0vV34Xp8YZ",
+      "name": "United for the Homeless",
+      "phone": "(205) 361-2837",
+      "website": null,
+      "address": "9310 AL-69, Northport, AL 35473"
+    },
+    {
+      "id": "Izvaf0cL7mzf7nwZkxXw",
+      "name": "Tracy Dent Foundation",
+      "phone": "(205) 246-5655",
+      "website": null,
+      "address": "15591 Thomas Chapel Rd, Tuscaloosa, AL 35404"
+    },
+    {
+      "id": "KvIcLdZZazpltfl1Rseb",
+      "name": "West Alabama Food Bank",
+      "phone": "(205) 759-5519",
+      "website": null,
+      "address": "3160 McFarland Blvd, Northport, AL 35476, Northport, AL"
+    },
+    {
+      "id": "O6kN2lnDGBNy0elCZF9S",
+      "name": "Coker UMC",
+      "phone": "(205) 799-2722",
+      "website": null,
+      "address": "14992 Hwy 140, Coker, AL 35452"
+    },
+    {
+      "id": "OPe9CuuFDw6lJbPnLkq5",
+      "name": "Saint Mark Church Food Pantry",
+      "phone": "(205) 339-5990",
+      "website": null,
+      "address": "1421 McFarland Blvd, Northport, AL 35473"
+    },
+    {
+      "id": "Ra0Y83GPkl5VqHcQqtz4",
+      "name": "Wings of Grace",
+      "phone": "(205) 616-2792",
+      "website": null,
+      "address": "3101 Alabama Ave NE, Tuscaloosa, AL 35404"
+    },
+    {
+      "id": "Saq3cjKcqfGEJ17J7Ucf",
+      "name": "St. Mark AME-Center of Hope",
+      "phone": "(205) 886-2320",
+      "website": null,
+      "address": "2715 18th St, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "SgLkp25NrLgbJoCUt3iH",
+      "name": "University Church of Christ-Harvest Hands",
+      "phone": "(205) 394-7536",
+      "website": null,
+      "address": "1200 Julia Tutwiler Dr., Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "VgxavBoXRvLzIfBmQOsa",
+      "name": "St. Paul AME Church-Kindness Kitchen",
+      "phone": "(205) 861-0555",
+      "website": null,
+      "address": "7901 Old Greensboro Rd, Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "Y7vU7s7WkloowVIC5upF",
+      "name": "Hope City Church",
+      "phone": null,
+      "website": null,
+      "address": "3800 University Blvd, Tuscaloosa, AL 35404"
+    },
+    {
+      "id": "d73VR2Fm5eaFV3aV4MGc",
+      "name": "New Dimensions Worship Center",
+      "phone": "(205) 333-3230",
+      "website": null,
+      "address": "2200 Main Ave, Northport, AL 35473"
+    },
+    {
+      "id": "eY2NvipHsJbUnIUtfwjS",
+      "name": "Catholic Social Services of West Alabama",
+      "phone": "(205) 759-1268",
+      "website": null,
+      "address": "608 James I Harrison Jr Pkwy E, Tuscaloosa, AL 35405"
+    }
+  ]
+}

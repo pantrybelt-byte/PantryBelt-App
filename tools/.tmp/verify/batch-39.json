@@ -1,0 +1,127 @@
+{
+  "batch": "39",
+  "counties": [
+    "Madison"
+  ],
+  "rows": [
+    {
+      "id": "bTIzJ11unpUSasxDXpWn",
+      "name": "Morris Chapel",
+      "phone": null,
+      "website": null,
+      "address": "2135 Winchester Road NW, Huntsville, AL 35810"
+    },
+    {
+      "id": "ckuEbMMU3yHJV8CIrsnr",
+      "name": "The Harbour",
+      "phone": null,
+      "website": null,
+      "address": "172 Commissioner Drive, Meridianville, AL 35759"
+    },
+    {
+      "id": "ctVFI2HinlFpkkO54RRL",
+      "name": "Huntsville Central SDA Church (new)",
+      "phone": null,
+      "website": null,
+      "address": "403 Treymore Avenue NW, Huntsville, AL 35811"
+    },
+    {
+      "id": "dyvvjbJeCVTjDhJkgk2J",
+      "name": "Oasis Christian Center",
+      "phone": null,
+      "website": null,
+      "address": "12737 Highway 231 North, Hazel Green, AL 35750"
+    },
+    {
+      "id": "fwnaynoPRdfgERiwF3M7",
+      "name": "Little Indian Creek Primitive Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "884 Indian Creek Road NW, Huntsville, AL 35806"
+    },
+    {
+      "id": "hwuJMs5m7WmqT446UT7Z",
+      "name": "Faith Chapel",
+      "phone": null,
+      "website": null,
+      "address": "3913 Pulaski Pike NW, Huntsville, AL 35810"
+    },
+    {
+      "id": "jHYXIcwmJJFo82JjXmvq",
+      "name": "Life Family Worship Center",
+      "phone": null,
+      "website": null,
+      "address": "2112 Winchester Road, Huntsville, AL 35810"
+    },
+    {
+      "id": "nlPEC0LdAayJXvMpg3X2",
+      "name": "New Vision Apostolic Ch.",
+      "phone": null,
+      "website": null,
+      "address": "920 Weatherly Road, Huntsville, AL 35803"
+    },
+    {
+      "id": "pfrEvrygjVTpt4iX23nf",
+      "name": "Good Shepherd UMC",
+      "phone": null,
+      "website": null,
+      "address": "1418 Old Railroad Bed Road, Madison, AL 35757"
+    },
+    {
+      "id": "pnzwmxIkmyOrgbWTGoaZ",
+      "name": "Huntsville Assistance Program (HAP)- Toney",
+      "phone": null,
+      "website": null,
+      "address": "11588 Pulaski Pike, Toney, AL 35773"
+    },
+    {
+      "id": "qulFWY0Yl1JjZzPA7sKa",
+      "name": "Progressive Union Missionary Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1919 Brandontown Road, Huntsville, AL 35816"
+    },
+    {
+      "id": "rvYMMOkwnWtnGzamhIKg",
+      "name": "Oakwood Community Health Action Center",
+      "phone": null,
+      "website": null,
+      "address": "1863 Sparkman Dr., Huntsville, AL 35816"
+    },
+    {
+      "id": "u46CSuIrRWwvZuyHU3cy",
+      "name": "Downtown Rescue Mission",
+      "phone": null,
+      "website": null,
+      "address": "1400 Evangel Drive, Huntsville, AL 35816"
+    },
+    {
+      "id": "uP3ttqnV2A8EvMidj7HS",
+      "name": "Fellowship of Faith",
+      "phone": null,
+      "website": null,
+      "address": "3703 Memorial Parkway NW, Huntsville, AL 35810"
+    },
+    {
+      "id": "uQoFxjIjaRNOYoLAzzVK",
+      "name": "Mt. Calvary SDA",
+      "phone": null,
+      "website": null,
+      "address": "1100 Meadow Drive, Huntsville, AL 35816"
+    },
+    {
+      "id": "uwYiSqZ9vcuu2kEvLlFn",
+      "name": "RCCG Jesus House",
+      "phone": null,
+      "website": null,
+      "address": "4906 Blue Spring Road, Huntsville, AL 35810"
+    },
+    {
+      "id": "wEXjarrMbgthZeODYMj2",
+      "name": "Metropolitan Community Worship Center",
+      "phone": null,
+      "website": null,
+      "address": "1116 Church St., Huntsville, AL 35801"
+    }
+  ]
+}

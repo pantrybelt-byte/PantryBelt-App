@@ -1,0 +1,131 @@
+{
+  "batch": "19",
+  "counties": [
+    "Fayette",
+    "Franklin",
+    "Geneva",
+    "Greene",
+    "Hale"
+  ],
+  "rows": [
+    {
+      "id": "RQdWEwZs609mBsLSIYNe",
+      "name": "Christian Center of Concern-Fayette",
+      "phone": null,
+      "website": null,
+      "address": "316 2nd AVE NE, Fayette, AL 35555"
+    },
+    {
+      "id": "aeijlgFYSP33lr6pzizB",
+      "name": "New Hope Baptist Church",
+      "phone": "(205) 242-4746",
+      "website": null,
+      "address": "2078 New Hope Rd, Berry, AL 35546"
+    },
+    {
+      "id": "LpbMF5ediVHZKhGKK3XH",
+      "name": "Russellville First Methodist",
+      "phone": null,
+      "website": null,
+      "address": "311 North Jackson Ave, Russellville, AL 35653"
+    },
+    {
+      "id": "VdH0oH9nOQWiq206YGce",
+      "name": "North Highlands Church of Christ",
+      "phone": null,
+      "website": null,
+      "address": "2101 North Jackson Avenue, Russellville, AL 35653"
+    },
+    {
+      "id": "WNLGIWFmQps0d4s6p3Ev",
+      "name": "Faith Mission Outreach",
+      "phone": null,
+      "website": null,
+      "address": "109 Marion Street, Russellville, AL 35653"
+    },
+    {
+      "id": "t4e0PXGEFEZmbZJA8GOe",
+      "name": "The Meal Barrel Project, Vina",
+      "phone": null,
+      "website": null,
+      "address": "91 Church Street, Vina, AL 35593"
+    },
+    {
+      "id": "uGs9lcl4IgFT08xsVAXy",
+      "name": "Russellville Dream Center",
+      "phone": null,
+      "website": null,
+      "address": "206 Coffee Ave., Russellville, AL 35653"
+    },
+    {
+      "id": "0dlOojd9iVbwZVX0kHmP",
+      "name": "Geneva County Community Church",
+      "phone": "(334) 791-7663",
+      "website": null,
+      "address": "2497 N. State Highway 85, Geneva, AL 36340"
+    },
+    {
+      "id": "WnulB9dqHfyUEXeQN0ZG",
+      "name": "The Hartford Food Pantry",
+      "phone": "(334) 587-9095",
+      "website": null,
+      "address": "310 Avenue H, Hartford, AL 36344"
+    },
+    {
+      "id": "bN0oYTGWFitfvf3lLKte",
+      "name": "Jehovah New Covenant Of Jesus",
+      "phone": "(334) 333-8858",
+      "website": null,
+      "address": "600 W. Main Street, Hartford, AL 36344"
+    },
+    {
+      "id": "m8DmXILy1jesUr9SJDdE",
+      "name": "The Crossing Geneva",
+      "phone": "(334) 360-4478",
+      "website": null,
+      "address": "617 S. Commerce Street, Geneva, AL 36340"
+    },
+    {
+      "id": "qtBxYsGXGgGvvvRBJi37",
+      "name": "Shiloh Baptist Church",
+      "phone": "(334) 588-3540",
+      "website": null,
+      "address": "873 Shiloh Road, Hartford, AL 36344"
+    },
+    {
+      "id": "xbytkwdsus9Fv8RpPUag",
+      "name": "First United Methodist Church - Slocomb",
+      "phone": "(334) 886-2897",
+      "website": null,
+      "address": "102 N. Dalton, Slocomb, AL 36375"
+    },
+    {
+      "id": "NoBiv1SK3soJYiEB8yO6",
+      "name": "Greene County Food Bank",
+      "phone": "(205) 372-3311",
+      "website": null,
+      "address": "Eutaw, AL, Eutaw, AL"
+    },
+    {
+      "id": "Aa5Sp6kXEL4qW7aEEZx1",
+      "name": "Hale County Dept of Human Res",
+      "phone": "(334) 624-2580",
+      "website": null,
+      "address": "Greensboro, AL, Greensboro, AL"
+    },
+    {
+      "id": "QAC57jXNzYyVUW41fRsQ",
+      "name": "Moundville Baptist Church",
+      "phone": "(205) 371-6370",
+      "website": null,
+      "address": "150 5th AVE, Moundville, AL 35474"
+    },
+    {
+      "id": "XZXFzSDVoosrdrs8Pk8X",
+      "name": "Greater Mircale House of Prayer",
+      "phone": "(334) 507-3990",
+      "website": null,
+      "address": "36267 Alabama HWY 69 South, Moundville, AL 35474"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "batch": "33",
+  "counties": [
+    "Lee"
+  ],
+  "rows": [
+    {
+      "id": "5eRZ1z8Ndq2ymJGtLzIx",
+      "name": "Pine Grove Church Manna House",
+      "phone": "(334) 749-8874",
+      "website": null,
+      "address": "7235 US-29 North, Opelika, AL 36801"
+    },
+    {
+      "id": "7xmXnsUoYFrXcD2BtWLG",
+      "name": "Lakeview Baptist Church",
+      "phone": "(334) 887-7904",
+      "website": null,
+      "address": "1600 East Glenn Avenue, Auburn, AL 36832"
+    },
+    {
+      "id": "BbL2rQIRdwbAOV6Gx0m1",
+      "name": "Greater Ebenezer Missionary Baptist Church",
+      "phone": "(706) 718-2724",
+      "website": null,
+      "address": ", AL"
+    },
+    {
+      "id": "E8Zl4rZExWEGEhNMZMn2",
+      "name": "Catholic Social Services of Lee County",
+      "phone": "(334) 363-0698",
+      "website": null,
+      "address": "2200 Gateway Drive, Suite A, Opelika, AL 36801"
+    },
+    {
+      "id": "LHgVpKqXw5kE4MT003Iz",
+      "name": "Smiths Station Baptist Church",
+      "phone": "(334) 297-4932",
+      "website": null,
+      "address": "2460 Panther Parkway, Smiths Station, AL 36877"
+    },
+    {
+      "id": "OhaaArMWlYKvX6hBxw88",
+      "name": "Christian Care Ministries",
+      "phone": null,
+      "website": null,
+      "address": "1000 Samford Court, Opelika, AL 36801"
+    },
+    {
+      "id": "PPcDH5ZMXdxZH7HCwm06",
+      "name": "Auburn Opelika SDA Church",
+      "phone": "(334) 758-4272",
+      "website": null,
+      "address": "1201 South Uniroyal Road, Opelika, AL 36801"
+    },
+    {
+      "id": "RpVThmYJ6lAiVtMH1fZy",
+      "name": "Bridge Church",
+      "phone": "(334) 742-0144",
+      "website": null,
+      "address": "1000 Lee Road 263, Cusseta, AL 36852"
+    },
+    {
+      "id": "TM0AepxDeHrZjJ35jOit",
+      "name": "New Nelius Baptist Church",
+      "phone": "(229) 829-5615",
+      "website": null,
+      "address": "175 New Nelius Church Road, Smiths Station, AL 36877"
+    },
+    {
+      "id": "WoERyd97BSOnIgmoC5Lh",
+      "name": "Auburn Community Development",
+      "phone": "(334) 821-2262",
+      "website": null,
+      "address": "400 Boykin Center, Auburn, AL 36832"
+    },
+    {
+      "id": "b2FwD4J1din8pYCaeV25",
+      "name": "Auburn United Methodist Church (Good News Center)",
+      "phone": "(334) 826-8800",
+      "website": null,
+      "address": "302 East Magnolia Avenue, Auburn, AL 36832"
+    },
+    {
+      "id": "mWT9lc2rwuJBynyKIZet",
+      "name": "Food Bank of East Alabama",
+      "phone": "(334) 821-9006",
+      "website": null,
+      "address": "375 Industry Drive, Auburn, AL, Auburn, AL"
+    },
+    {
+      "id": "qUwJl9yBkQ1jtkGrQafe",
+      "name": "St. Michael's Catholic Church",
+      "phone": "(334) 887-5540",
+      "website": null,
+      "address": "1100 North College Street, Auburn, AL 36832"
+    },
+    {
+      "id": "si3NIv0i3ZwHW05sxveD",
+      "name": "Mount of Transfiguration",
+      "phone": "(334) 750-5958",
+      "website": null,
+      "address": "3125 Wyndham Industrial Drive, Opelika, AL 36801"
+    },
+    {
+      "id": "tEUvaVaVLP79qwo8AO4A",
+      "name": "Lee-Russell Council of Governments",
+      "phone": "(334) 749-5264",
+      "website": null,
+      "address": "2207 Gateway Drive, Opelika, AL 36801"
+    },
+    {
+      "id": "uxQh1KaztBlmbZkFlbpM",
+      "name": "Auburn Wesley Foundation (Loachapoka Methodist Church)",
+      "phone": null,
+      "website": null,
+      "address": "6220 Stage Road, Loachapoka, AL 36865"
+    },
+    {
+      "id": "vgY5Wpggh2cHhaPTDhnH",
+      "name": "Community Market",
+      "phone": "(334) 749-8844",
+      "website": null,
+      "address": "3810-C Pepperell Parkway, Opelika, AL 36801"
+    }
+  ]
+}

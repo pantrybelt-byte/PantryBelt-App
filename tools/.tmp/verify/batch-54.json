@@ -1,0 +1,22 @@
+{
+  "batch": "54",
+  "counties": [
+    "Shelby"
+  ],
+  "rows": [
+    {
+      "id": "usaBHdH1eLdgXQ3RSW6e",
+      "name": "The Episcopal Church of St. Francis of Assisi",
+      "phone": "(205) 601-8131",
+      "website": null,
+      "address": "3545 Cahaba Valley Rd, Pelham, AL 35214"
+    },
+    {
+      "id": "zNtryD0GmvxpHrWXTjiC",
+      "name": "Manna Ministries Pantry",
+      "phone": "(253) 886-7797",
+      "website": null,
+      "address": "333 Smokey Rd., Alabaster, AL 35007"
+    }
+  ]
+}

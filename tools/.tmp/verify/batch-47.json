@@ -1,0 +1,127 @@
+{
+  "batch": "47",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "jVRmWvi5kB46wu0vBXcE",
+      "name": "Home of Grace For Women, Inc",
+      "phone": "(251) 456-7807",
+      "website": null,
+      "address": "394 Aldock Road, Eight Mile, AL 36613"
+    },
+    {
+      "id": "jgJYxtSvNTFDHoikN6QT",
+      "name": "House Of Rescue Church Ministries",
+      "phone": null,
+      "website": null,
+      "address": "258-B Glenwood Street, Mobile, AL 36606"
+    },
+    {
+      "id": "k2FK9DvaNw5gzqwm30iR",
+      "name": "Redeemed Community Church",
+      "phone": "(251) 639-1900",
+      "website": null,
+      "address": "6254 Howells Ferry Road, Mobile, AL 36618"
+    },
+    {
+      "id": "kUNdY8TIxugsdHpGgxbo",
+      "name": "Northside Bible Church",
+      "phone": "(251) 457-2464",
+      "website": null,
+      "address": "2700 North University Blvd, Mobile, AL 36618"
+    },
+    {
+      "id": "kbCYjLT7BGJq4LTRmwjU",
+      "name": "Pleasant Grove Missionary Baptist",
+      "phone": "(251) 456-6486",
+      "website": null,
+      "address": "132 North Hobbs Ave., Prichard, AL 36610"
+    },
+    {
+      "id": "l9uMoQqn2PWxGBPI1usb",
+      "name": "Authentic Life Church",
+      "phone": "(251) 342-4886",
+      "website": null,
+      "address": "3750 Michael Boulevard, Mobile, AL 36609"
+    },
+    {
+      "id": "m7eM2yPOyB0Z52QiN8xN",
+      "name": "Serenity Care, Inc.",
+      "phone": "(205) 255-3975",
+      "website": null,
+      "address": "1951 Dawes Road, Mobile, AL 36606"
+    },
+    {
+      "id": "ml78dh2tvwfPzo8fHd8O",
+      "name": "Truevine Missionary Baptist",
+      "phone": "(251) 473-6906",
+      "website": null,
+      "address": "1850 Dr. Martin Luther King Ave., Mobile, AL 36617"
+    },
+    {
+      "id": "mwn5VibXx7ZPjATxuZgY",
+      "name": "Providence Hospital Outreach - Senior and Guadalupe Center",
+      "phone": "(251) 544-4480",
+      "website": null,
+      "address": "1900 Cody Road, Mobile, AL 36695"
+    },
+    {
+      "id": "nO3fN5WWERi8gDDeSeTI",
+      "name": "Citronelle United Methodist Church",
+      "phone": "(251) 866-7423",
+      "website": null,
+      "address": "7970 Lebaron Avenue, Citronelle, AL 36522"
+    },
+    {
+      "id": "pLSvavOCTaG8sXbXDziH",
+      "name": "St. Andrew's Chapel",
+      "phone": "(251) 490-1095",
+      "website": null,
+      "address": "2354 Dead Lake Marina Road, Creola, AL 36525"
+    },
+    {
+      "id": "ptBovLQmoYp8lMvhftdh",
+      "name": "The One 2eight Project",
+      "phone": null,
+      "website": null,
+      "address": "6390 Old Shell Road, Mobile, AL 36689"
+    },
+    {
+      "id": "qTYArh2dUqswYXqgaoKS",
+      "name": "Watchman International Ministries",
+      "phone": "(251) 232-1574",
+      "website": null,
+      "address": "108 North Dearborn Street, Mobile, AL 36602"
+    },
+    {
+      "id": "qeRBWGbd5JLMIuXqxIM4",
+      "name": "New Birth Community Church",
+      "phone": "(251) 307-5628",
+      "website": null,
+      "address": "1329 Forrest Ridge Road, Mobile, AL 36618"
+    },
+    {
+      "id": "rkC3JdHNYPlPaHUegnxV",
+      "name": "Mt. Olive Missionary Baptist Church",
+      "phone": "(251) 438-3166",
+      "website": null,
+      "address": "409 Lexington Ave, Mobile, AL 36603"
+    },
+    {
+      "id": "sHhSMmc2mrApjr61qnRZ",
+      "name": "Emmanuel Seventh-Day Adventist Church",
+      "phone": "(251) 479-1215",
+      "website": null,
+      "address": "2000 Dr. Martin Luther King Jr. Ave, Mobile, AL 36617"
+    },
+    {
+      "id": "sPj2AbcNNhvRSSKhESZb",
+      "name": "The Holy Church of God (Grand Bay)",
+      "phone": "(251) 865-2045",
+      "website": null,
+      "address": "14400 Fort Lake Road, Grand Bay, AL 36541"
+    }
+  ]
+}

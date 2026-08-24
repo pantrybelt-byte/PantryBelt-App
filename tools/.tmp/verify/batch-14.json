@@ -1,0 +1,127 @@
+{
+  "batch": "14",
+  "counties": [
+    "Dallas"
+  ],
+  "rows": [
+    {
+      "id": "2zkxijrwbjix50frGgwM",
+      "name": "Alabama Avenue Church of God",
+      "phone": "(334) 412-0657",
+      "website": null,
+      "address": "2259 Alabama Avenue, Selma, AL"
+    },
+    {
+      "id": "6vOdFytI1mKQVAUnPgwn",
+      "name": "Selma Area Food Bank (Hub)",
+      "phone": "(334) 872-4111",
+      "website": "https://selmafoodbank.com",
+      "address": "101 Craig Industrial Park, Selma, AL, Selma, AL"
+    },
+    {
+      "id": "CaZmL4vPwkbe9YxzRhdu",
+      "name": "Selma AIR",
+      "phone": "(334) 872-6795",
+      "website": null,
+      "address": "102 Central Park Place, Selma, AL"
+    },
+    {
+      "id": "F8ROpznr26MTONoo8B4v",
+      "name": "Tyus Ministries",
+      "phone": "(334) 874-8340",
+      "website": null,
+      "address": "203 Hobson Street, Selma, AL"
+    },
+    {
+      "id": "FUJD7SGvqhFcAuClDSHo",
+      "name": "Temple Gate Community Service Center",
+      "phone": "(504) 400-6027",
+      "website": null,
+      "address": "1227 Philpot Street, Selma, AL"
+    },
+    {
+      "id": "FZNYTDuVuLEirsRqkUut",
+      "name": "SABRA Sanctuary",
+      "phone": "(334) 412-9427",
+      "website": null,
+      "address": "726 Dallas Avenue, Selma, AL"
+    },
+    {
+      "id": "J4OCYsotKInudcxZ0OQO",
+      "name": "Abundant Life Center",
+      "phone": "(334) 590-7260",
+      "website": null,
+      "address": "210 Lawrence Street, Selma, AL"
+    },
+    {
+      "id": "L4O5JdlWtNyXZHGumWjW",
+      "name": "Selma Area Food Bank",
+      "phone": "(334) 872-4111",
+      "website": "https://selmafoodbank.com",
+      "address": "497 Oak St, Selma, AL 36701, Selma, AL"
+    },
+    {
+      "id": "L9Fqw97cok7DZZfSzbdu",
+      "name": "New Hope Apostolic Church",
+      "phone": "(334) 418-0202",
+      "website": null,
+      "address": "718 Franklin Street, Selma, AL"
+    },
+    {
+      "id": "QMdZNogtiXYLpzb9oatK",
+      "name": "AGAPE Community Development",
+      "phone": "(334) 375-0386",
+      "website": null,
+      "address": "2306 US Highway 80 East, Selma, AL"
+    },
+    {
+      "id": "RUfEhyeAx4VKF2oqrQXb",
+      "name": "Special Years Plus, Inc.",
+      "phone": "(334) 875-3214",
+      "website": null,
+      "address": "2710 Prospect Lane, Selma, AL"
+    },
+    {
+      "id": "UaEbAzrh58Y3DVIFRPTw",
+      "name": "Sardis Community Center",
+      "phone": "(334) 872-7155",
+      "website": null,
+      "address": "6144 County Road 30, Sardis, AL"
+    },
+    {
+      "id": "eLL81j4Dz47WAlpEWQFB",
+      "name": "Five Points CDC",
+      "phone": "(334) 996-0077",
+      "website": null,
+      "address": "7333 County Road 33, Orrville, AL"
+    },
+    {
+      "id": "eOPIBJ8AjzO6lZUQYOc1",
+      "name": "Restoration Place",
+      "phone": "(334) 872-8657",
+      "website": null,
+      "address": "2001 West Highland Avenue, Selma, AL"
+    },
+    {
+      "id": "eQfWXeaYiOFLpjYPdY80",
+      "name": "New Life Christian Church",
+      "phone": "(334) 412-4915",
+      "website": null,
+      "address": "401 3rd Avenue, Selma, AL"
+    },
+    {
+      "id": "fF8IZw1Jqna7ZGAg4Y5s",
+      "name": "Ellwood Community Church - Circle of Love",
+      "phone": "(334) 875-4888",
+      "website": null,
+      "address": "1 Bell Road, Selma, AL"
+    },
+    {
+      "id": "gp5Ey0QGTItc6kpFJQrA",
+      "name": "Shady Grove Baptist Church",
+      "phone": "(334) 875-6760",
+      "website": null,
+      "address": "234 County Road 83, Selma, AL"
+    }
+  ]
+}

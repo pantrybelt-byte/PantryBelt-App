@@ -1,0 +1,121 @@
+{
+  "batch": "04",
+  "counties": [
+    "Barbour",
+    "Bibb"
+  ],
+  "rows": [
+    {
+      "id": "B4zka1wioZtFdnNpMbGd",
+      "name": "Hilltop Cidel Christian Church",
+      "phone": "(334) 688-1229",
+      "website": null,
+      "address": "343 South Randolph Avenue, Eufaula, AL 36027"
+    },
+    {
+      "id": "MavqptEPSuNKY0zrxw4v",
+      "name": "Forgiven Ministries",
+      "phone": "(334) 687-2896",
+      "website": null,
+      "address": "Eufaula, AL, Eufaula, AL"
+    },
+    {
+      "id": "N0c0OA5lNzxWfRqVrbiJ",
+      "name": "White Oak UMC",
+      "phone": "(334) 687-5991",
+      "website": null,
+      "address": "Eufaula, AL, Eufaula, AL"
+    },
+    {
+      "id": "PusVQuGCVHZ1DwZAGfFT",
+      "name": "Eufaula Church of God In Christ",
+      "phone": "(334) 687-5397",
+      "website": null,
+      "address": "Eufaula, AL, Eufaula, AL"
+    },
+    {
+      "id": "S6QddPgpDQqkccZPczbz",
+      "name": "Eufaula Church of God",
+      "phone": "(334) 687-4581",
+      "website": null,
+      "address": "4097 U.S. Highway 431 S., Eufaula, AL 36327"
+    },
+    {
+      "id": "YpNf7vFGyGakRow2W6JM",
+      "name": "Calvary Hope Center Food Bank",
+      "phone": "(850) 363-1283",
+      "website": null,
+      "address": "3267 Louisville Street, Clio, AL 36017"
+    },
+    {
+      "id": "gMlD4JYqpcUUdNr2qezh",
+      "name": "Holy Redeemer Catholic Church",
+      "phone": "(334) 687-3716",
+      "website": null,
+      "address": "515 West Broad Street, Eufaula, AL 36027"
+    },
+    {
+      "id": "kb4ppv4zyjT7bknxp5vw",
+      "name": "Grace Independent Baptist",
+      "phone": "(334) 687-5397",
+      "website": null,
+      "address": "9 Cheneyhatchee Drive, Eufaula, AL 36027"
+    },
+    {
+      "id": "kcj0GTAe97bm5zZ2pa5J",
+      "name": "FMC Food Bank",
+      "phone": "(334) 775-0031",
+      "website": null,
+      "address": "Clayton, AL, Clayton, AL"
+    },
+    {
+      "id": "lu802I6fGxSj0Ox5yG9o",
+      "name": "Shiloh A.M.E. Church",
+      "phone": "(334) 775-3131",
+      "website": null,
+      "address": "13 Humer Street, Midway, AL 36053"
+    },
+    {
+      "id": "m90pN9U3ruzrr9Yvtxbf",
+      "name": "Friendly AOG",
+      "phone": "(334) 775-7615",
+      "website": null,
+      "address": "35 Cooper Road, Clayton, AL 36016"
+    },
+    {
+      "id": "xxue6hq03VcVJWEeDxZF",
+      "name": "Bakerhill Community Outreach",
+      "phone": "(334) 687-8372",
+      "website": null,
+      "address": "Bakerhill, AL, Bakerhill, AL"
+    },
+    {
+      "id": "LRUT9vg3OJGJkeT1ZNVS",
+      "name": "River of Life",
+      "phone": "(205) 928-0401",
+      "website": null,
+      "address": "10325 US-82, Centreville, AL 35042"
+    },
+    {
+      "id": "UU6GZgWbFVEaYH5iNdaf",
+      "name": "New Life Assembly of God-Woodstock Hope Center",
+      "phone": "(205) 292-6998",
+      "website": null,
+      "address": "27039 Highway 5, Woodstock, AL 35188"
+    },
+    {
+      "id": "Y9G8tX9IwhHlc02hT2PK",
+      "name": "West Blocton First Baptist Church",
+      "phone": "(205) 572-8280",
+      "website": null,
+      "address": "1249 Main St, West Blocton, AL 35184"
+    },
+    {
+      "id": "oPsuEJ9kszaMZdPU6C2y",
+      "name": "Cahaba Medical Care",
+      "phone": "(205) 926-2992",
+      "website": null,
+      "address": "195 Hospital Dr, Centreville, AL 35042"
+    }
+  ]
+}

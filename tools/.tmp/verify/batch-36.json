@@ -1,0 +1,57 @@
+{
+  "batch": "36",
+  "counties": [
+    "Macon"
+  ],
+  "rows": [
+    {
+      "id": "9H9yHhs4QzVGeZyA1d7T",
+      "name": "From Under the Tree Ministries",
+      "phone": null,
+      "website": null,
+      "address": "302 North School St, Tuskegee, AL 36083"
+    },
+    {
+      "id": "NLrbLv675I24KEXXfqQG",
+      "name": "Macon County Food Pantry",
+      "phone": "(334) 724-2601",
+      "website": null,
+      "address": "Shorter/Tuskegee Area, AL, Tuskegee, AL"
+    },
+    {
+      "id": "Nd2iQN4bMQM36o5VqLcP",
+      "name": "Mount Sinai Baptist Church Soup Kitchen",
+      "phone": null,
+      "website": null,
+      "address": "106 East Oak St, Tuskegee, AL 36083"
+    },
+    {
+      "id": "PzwVKVMn8Hz6uUGlo8EX",
+      "name": "Venison Provisions",
+      "phone": "(334) 439-5080",
+      "website": null,
+      "address": "1884 County Rd 6, Shorter, AL, Shorter, AL"
+    },
+    {
+      "id": "SiHx4VZVv2bthQtvYD8v",
+      "name": "Zelda Kitt Ministry",
+      "phone": "(334) 604-6093",
+      "website": null,
+      "address": "145 County Road 20, Shorter, AL 36075"
+    },
+    {
+      "id": "hCvzeGTMEYlRLNILqhtb",
+      "name": "Bowen United Methodist Church",
+      "phone": "(334) 727-4239",
+      "website": null,
+      "address": "2701 West Montgomery Rd., Tuskegee, AL 36087"
+    },
+    {
+      "id": "nJcxtUIhG7yciGKMtuVe",
+      "name": "Tuskegee Islamic Community",
+      "phone": null,
+      "website": null,
+      "address": "1103 South Main Street, Tuskegee, AL 36083"
+    }
+  ]
+}

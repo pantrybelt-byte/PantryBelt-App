@@ -1,0 +1,127 @@
+{
+  "batch": "46",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "YScYnCxXo5jFkYfOrmxC",
+      "name": "Providence Baptist Church",
+      "phone": "(251) 802-8732",
+      "website": null,
+      "address": "2159 Dauphin Street, Mobile, AL 36606"
+    },
+    {
+      "id": "aTUcV8wU9sXLLiLrKaA6",
+      "name": "Saraland United Methodist Church",
+      "phone": "(251) 675-2728",
+      "website": null,
+      "address": "415 McKeough Avenue, Saraland, AL 36571"
+    },
+    {
+      "id": "aUMsEYlhjCPsgEg4YkjV",
+      "name": "High Praise Worship Church",
+      "phone": "(251) 452-4996",
+      "website": null,
+      "address": "265 Thompson Blvd, Chickasaw, AL 36611"
+    },
+    {
+      "id": "cA6OLLGL6X4xesqQzER4",
+      "name": "First Baptist Church of Satsuma",
+      "phone": "(251) 675-1280",
+      "website": null,
+      "address": "5600 Old Highway 43, Satsuma, AL 36572"
+    },
+    {
+      "id": "cL1GrUGWS9wlvXewzsub",
+      "name": "The Veterans Closet",
+      "phone": "(888) 213-8505",
+      "website": null,
+      "address": "3224 St. Stephens Road, Prichard, AL 36612"
+    },
+    {
+      "id": "dPOsK6JCg1nVKnszT5rC",
+      "name": "MOWA Band/Choctaw/Mobile",
+      "phone": "(251) 829-5500",
+      "website": null,
+      "address": "1080 Red Fox Road West, Mt. Vernon, AL 36560"
+    },
+    {
+      "id": "ezsvABjMcOwxOJBWBkiO",
+      "name": "Grace Temple Holiness Church",
+      "phone": "(251) 478-9200",
+      "website": null,
+      "address": "159 Hemley Avenue, Mobile, AL 36607"
+    },
+    {
+      "id": "fSQIzHG841BwvVVUyGiA",
+      "name": "Tillmans Corner Senior Service Center",
+      "phone": "(251) 661-6600",
+      "website": null,
+      "address": "5863 Nevius Road, Theodore, AL 36619"
+    },
+    {
+      "id": "fcgAi8Z1FlBOvVtXtvIP",
+      "name": "Overcoming Church of God Pentecostal, Inc.",
+      "phone": null,
+      "website": null,
+      "address": "1306 Martin Luther King Jr Dr, Prichard, AL 36610"
+    },
+    {
+      "id": "g9LkrhKCptxJst6zIqnk",
+      "name": "Greater Morning Star Baptist Church",
+      "phone": "(251) 479-7891",
+      "website": null,
+      "address": "401 Donald Street, Mobile, AL 36617"
+    },
+    {
+      "id": "gfTo8r2INjcUs775RiXp",
+      "name": "St. Andrew Episcopal Church",
+      "phone": "(251) 479-0336",
+      "website": null,
+      "address": "1854 Staples Road, Mobile, AL 36605"
+    },
+    {
+      "id": "hD34EJ5heWbEvicYixMw",
+      "name": "St. Pius X Church",
+      "phone": "(251) 471-2449",
+      "website": null,
+      "address": "217 South Sage Avenue, Mobile, AL 36606"
+    },
+    {
+      "id": "hWLRNMzPUCApa5yNXkWb",
+      "name": "Greater Miracle Temple",
+      "phone": "(251) 604-1057",
+      "website": null,
+      "address": "703 South Hobbs Ave., Prichard, AL 36610"
+    },
+    {
+      "id": "ijhI3i1iQBkLiXbLmDA6",
+      "name": "Little Sisters of the Poor",
+      "phone": "(251) 476-6335",
+      "website": null,
+      "address": "1655 McGill Avenue, Mobile, AL 36604"
+    },
+    {
+      "id": "j28X6oP4qvWXQMCMS6ba",
+      "name": "Yorktown Missionary Baptist Church",
+      "phone": "(251) 452-8108",
+      "website": null,
+      "address": "851 East Street, Plateau, AL 36610"
+    },
+    {
+      "id": "j48X4ldOO9cbe1HygiYE",
+      "name": "Holy Name of Jesus",
+      "phone": "(251) 649-4794",
+      "website": null,
+      "address": "2275 Snow Road N., Semmes, AL 36575"
+    },
+    {
+      "id": "jB6aLpcp1AlEsxYi5tAH",
+      "name": "Samuel Chapel African Methodist Episcopal Church",
+      "phone": "(251) 456-7588",
+      "website": null,
+      "address": "717 Prichard Avenue, Prichard, AL 36610"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "batch": "40",
+  "counties": [
+    "Madison"
+  ],
+  "rows": [
+    {
+      "id": "woY7ILvim4D06VS3kws5",
+      "name": "First Church of God in Christ",
+      "phone": null,
+      "website": null,
+      "address": "3804 Oakwood Ave., Huntsville, AL 35810"
+    },
+    {
+      "id": "zLFuFbsAQl88CkIaCrXB",
+      "name": "Victory World Outreach",
+      "phone": null,
+      "website": null,
+      "address": "4901 N. Memorial Parkway, Huntsville, AL 35810"
+    },
+    {
+      "id": "zxAclBhj1I7fG1h6PqzD",
+      "name": "Harvest SDA",
+      "phone": null,
+      "website": null,
+      "address": "348 Lockhart Road, Harvest, AL 35749"
+    }
+  ]
+}

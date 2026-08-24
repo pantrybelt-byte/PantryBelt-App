@@ -1,0 +1,64 @@
+{
+  "batch": "49",
+  "counties": [
+    "Monroe"
+  ],
+  "rows": [
+    {
+      "id": "2gcI9FCp9aH563798HNt",
+      "name": "Jabezz Ministry",
+      "phone": "(251) 267-3663",
+      "website": null,
+      "address": "4200 Bowden Street, Frisco City, AL 36445"
+    },
+    {
+      "id": "4FiRdkF80c0MyX12HqPP",
+      "name": "Uriah United Methodist Church - The Shepard's Pantry",
+      "phone": "(717) 486-7543",
+      "website": null,
+      "address": "26 County Road 3, Uriah, AL 36480"
+    },
+    {
+      "id": "MOmsTXTjzZ1cu3DOv6N9",
+      "name": "Annunciation Catholic Church",
+      "phone": "(251) 575-2644",
+      "website": null,
+      "address": "565 Whetstone Street, Monroeville, AL 36460"
+    },
+    {
+      "id": "Ug61xV9MxbM2AJ7yHWK7",
+      "name": "Kingdom Works Inc.",
+      "phone": "(251) 244-0357",
+      "website": null,
+      "address": "225 Legion Drive, Monroeville, AL 36460"
+    },
+    {
+      "id": "b70BOK2Y4mG8YmrlRDTk",
+      "name": "Empowerment Tabernacle Christian Center",
+      "phone": "(251) 267-3822",
+      "website": null,
+      "address": "3823 Bowden St., Frisco City, AL 36445"
+    },
+    {
+      "id": "mrei5qENkTNOgyNJlUOu",
+      "name": "Excel Assembly of God",
+      "phone": "(251) 765-2597",
+      "website": null,
+      "address": "1014 Highway 136 West, Excel, AL 36439"
+    },
+    {
+      "id": "szznxMjzv1SvXorIXyWP",
+      "name": "Our Place Youth and Family Center",
+      "phone": "(251) 575-7060",
+      "website": null,
+      "address": "271 Park Drive, Monroeville, AL 36460"
+    },
+    {
+      "id": "zOsObZq8Et7yIURrQUtY",
+      "name": "Camp Yahweh",
+      "phone": "(251) 593-0054",
+      "website": null,
+      "address": "355 Wilcox Street, Monroeville, AL 36460"
+    }
+  ]
+}

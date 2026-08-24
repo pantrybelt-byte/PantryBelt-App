@@ -1,0 +1,92 @@
+{
+  "batch": "41",
+  "counties": [
+    "Marengo"
+  ],
+  "rows": [
+    {
+      "id": "BACCMBEbApOnNuYj3PsS",
+      "name": "Friends of Theo Ratlif",
+      "phone": "(334) 654-4457",
+      "website": null,
+      "address": "940 Martha Drive, Demopolis, AL"
+    },
+    {
+      "id": "E7Uk23dRXFOzQSy4ILEu",
+      "name": "Operation Homecare",
+      "phone": "(205) 392-9292",
+      "website": null,
+      "address": "300 Kentucky Ave, York, AL, York, AL"
+    },
+    {
+      "id": "GUNvtJa269kO1hNbyaVK",
+      "name": "T.E.E.L.A",
+      "phone": "(334) 375-0162",
+      "website": null,
+      "address": "1120 7th Avenue, Thomaston, AL"
+    },
+    {
+      "id": "Sl1C0cvKq8re3OHjQRIq",
+      "name": "Linden Baptist Church",
+      "phone": "(334) 295-4278",
+      "website": null,
+      "address": "100 Abbott Street, Linden, AL"
+    },
+    {
+      "id": "Tt50hVko18ktBqrsRGVN",
+      "name": "BBCF",
+      "phone": "(334) 654-4807",
+      "website": null,
+      "address": "2420 East Coats Avenue, Linden, AL"
+    },
+    {
+      "id": "ZQ8uoYSqTyVDM5WWnwHc",
+      "name": "Braxton Senior Care Facility, Inc.",
+      "phone": "(334) 289-2421",
+      "website": null,
+      "address": "307 South Cherry Street, Demopolis, AL"
+    },
+    {
+      "id": "bCmyKCmcPVIvSHEqBVHU",
+      "name": "Central Baptist",
+      "phone": "(334) 992-2351",
+      "website": null,
+      "address": "3620 County Road 6, Dixon's Mill, AL"
+    },
+    {
+      "id": "iUvTO8Ihlhfws3bNWX31",
+      "name": "Demopolis Food Pantry",
+      "phone": "(334) 289-3363",
+      "website": null,
+      "address": "410 N Main Ave, Demopolis, AL, Demopolis, AL"
+    },
+    {
+      "id": "m4ewTiaDJv6Px9ICMzdB",
+      "name": "Bethel Baptist Association",
+      "phone": "(334) 295-8805",
+      "website": null,
+      "address": "308 E Coats Avenue, Linden, AL"
+    },
+    {
+      "id": "npb2fX2CRCZyGYVlevOY",
+      "name": "Christian Chapel Baptist Church",
+      "phone": "(334) 289-0332",
+      "website": null,
+      "address": "500 West Decatur Street, Demopolis, AL"
+    },
+    {
+      "id": "ublxNadpy2zNr7Cv9jmd",
+      "name": "Eastern Star Baptist Church",
+      "phone": "(334) 289-0807",
+      "website": null,
+      "address": "940 Martha Drive, Demopolis, AL"
+    },
+    {
+      "id": "xXntx18CyykKhdNWEMSz",
+      "name": "TUCCA",
+      "phone": "(334) 216-1385",
+      "website": null,
+      "address": "2400 E Coats Avenue, Linden, AL"
+    }
+  ]
+}

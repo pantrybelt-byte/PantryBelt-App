@@ -1,0 +1,127 @@
+{
+  "batch": "25",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "AHPIchLJZmOf9PGSLsIe",
+      "name": "Greater 14th Baptist Senior Grocery Program",
+      "phone": null,
+      "website": null,
+      "address": "418 14th Street S, Bessemer, AL 35020"
+    },
+    {
+      "id": "ANWBfgEvxHj30JJjCKGX",
+      "name": "Sixth Ave Baptist Church Pantry & Backpack",
+      "phone": "(703) 850-9926",
+      "website": null,
+      "address": "337 10th Ave SW, Birmingham, AL 35211"
+    },
+    {
+      "id": "AmLpQIF9yKh4OyGInaiD",
+      "name": "Titusville Development Corp Pantry",
+      "phone": "(205) 925-0958",
+      "website": null,
+      "address": "401 Omega Street, Birmingham, AL 35205"
+    },
+    {
+      "id": "BOQgFGpPjRLejy7ltQzK",
+      "name": "Leeds First Methodist Church Pantry",
+      "phone": "(205) 699-8575",
+      "website": null,
+      "address": "1189 6th Street, Leeds, AL 35094"
+    },
+    {
+      "id": "BRHXGWVtc3PWgw9of3KN",
+      "name": "Fairfield High Preparatory School - School Pantry Program",
+      "phone": null,
+      "website": null,
+      "address": "610 Valley Rd, Fairfield, AL 35064"
+    },
+    {
+      "id": "BrLCr7O5PYWY25Oz2szj",
+      "name": "CSFP - East Lake House",
+      "phone": "(205) 833-1798",
+      "website": null,
+      "address": "7901 1st Ave S, Birmingham, AL 35206"
+    },
+    {
+      "id": "CckjgaFt0t55dihStMWJ",
+      "name": "New Pilgrim Baptist Church Pantry",
+      "phone": "(205) 335-1626",
+      "website": null,
+      "address": "708 Goldwire Place SW, Birmingham, AL 35211"
+    },
+    {
+      "id": "CmxxjQyzdKakhFpnrM5G",
+      "name": "The HUB Community Development Corporation, Inc. Pantry",
+      "phone": "(205) 230-4290",
+      "website": null,
+      "address": "7555 Dickey Springs Road, Bessemer, AL 35022"
+    },
+    {
+      "id": "DJvWhDHl56trqKcXfvKi",
+      "name": "Calvary Resurrection Christian Pantry",
+      "phone": "(205) 836-8022",
+      "website": null,
+      "address": "356 Killough Springs Road, Birmingham, AL 35215"
+    },
+    {
+      "id": "FpxoqMbvLXH5lV4intz8",
+      "name": "Green Valley Baptist Church Pantry & Backpack",
+      "phone": "(205) 585-8483",
+      "website": null,
+      "address": "1815 Patton Chapel Road, Hoover, AL 35226"
+    },
+    {
+      "id": "GcGWkhLHVrCASUiMrVW8",
+      "name": "Trinity United Methodist Church Pantry & Backpack",
+      "phone": "(205) 879-1737",
+      "website": null,
+      "address": "914 Oak Grove Road, Birmingham, AL 35209"
+    },
+    {
+      "id": "GxKmYpNTlubWyP8sAhQU",
+      "name": "South Highland Presbyterian Church Pantry",
+      "phone": "(205) 240-9130",
+      "website": null,
+      "address": "2035 Highland Ave S, Birmingham, AL 35205"
+    },
+    {
+      "id": "GyuTuHDSqYfjWxeY8Tze",
+      "name": "True Vine Evangelical Pantry",
+      "phone": "(205) 836-1512",
+      "website": null,
+      "address": "4030 40th Terrace North, Birmingham, AL 35217"
+    },
+    {
+      "id": "IKXVY6lN0eWYAraJMe1V",
+      "name": "Revelation Knowledge Bible Church Pantry",
+      "phone": "(205) 415-0024",
+      "website": null,
+      "address": "3314 Sweeney Hollow Rd, Birmingham, AL 35215"
+    },
+    {
+      "id": "IcAignvPXRbtTVvuYZ70",
+      "name": "Birmingham AIDS Outreach Pantry",
+      "phone": "(205) 322-4197",
+      "website": null,
+      "address": "205 32nd Street South, Birmingham, AL 35233"
+    },
+    {
+      "id": "If5F7rmcxzoiXAbaIzJ3",
+      "name": "Cahaba Medical Care Pantry",
+      "phone": "(205) 679-6325",
+      "website": null,
+      "address": "7000 Grasselli Rd, Fairfield, AL 35064"
+    },
+    {
+      "id": "JPAzlvAg27tFoEP8kwSY",
+      "name": "Groveland Baptist Church",
+      "phone": "(205) 529-3602",
+      "website": null,
+      "address": "5437 5th Ave S, Birmingham, AL 35212"
+    }
+  ]
+}

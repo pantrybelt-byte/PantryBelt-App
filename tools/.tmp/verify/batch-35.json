@@ -1,0 +1,107 @@
+{
+  "batch": "35",
+  "counties": [
+    "Limestone",
+    "Lowndes"
+  ],
+  "rows": [
+    {
+      "id": "6aWjQmL4UXinuELvMBAj",
+      "name": "Macedonia Primitive Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "13376 Dupree, Worthy Harvest, AL 35749"
+    },
+    {
+      "id": "7JvPzQbhx74meExL7ZrI",
+      "name": "Belmor Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "5895 Mooresville Rd., Mooresville, AL 35649"
+    },
+    {
+      "id": "Js8yzX4uerurdXMKqUmc",
+      "name": "Trinity SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "823 Brownsferry St., Athens, AL 35611"
+    },
+    {
+      "id": "MTEWNCGOyIuFuQVmoDRL",
+      "name": "Christians Helping Others",
+      "phone": null,
+      "website": null,
+      "address": "26469 1st Street, Ardmore, AL 35739"
+    },
+    {
+      "id": "dtmPv0mmlsgIFtLmswWi",
+      "name": "Athens SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "1207 Pryor Street East, Athens, AL 35611"
+    },
+    {
+      "id": "kyczUFqTWlHEYyG7dsws",
+      "name": "Ebenezer Missionary Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1911 Hine Street, Athens, AL 35611"
+    },
+    {
+      "id": "kzJlxkXIIQg92Nf71XcV",
+      "name": "Limestone County Churches Involved",
+      "phone": null,
+      "website": null,
+      "address": "201 North Jefferson St, Athens, AL 35611"
+    },
+    {
+      "id": "sX4rfW4XXfkd0JNybF8b",
+      "name": "Little Ezekiel MB Church",
+      "phone": null,
+      "website": null,
+      "address": "16439 Lindsey Rd., Tanner, AL 35671"
+    },
+    {
+      "id": "uTpl2KMnSAwpAqmWMC50",
+      "name": "First Church- Athens",
+      "phone": null,
+      "website": null,
+      "address": "17175 Lucas Ferry Rd., Athens, AL 35611"
+    },
+    {
+      "id": "z1iMBhMBL0mhxm8wlEPF",
+      "name": "Full Gospel Tabernacle",
+      "phone": null,
+      "website": null,
+      "address": "17470 Seven Mile Post Road, Athens, AL 35611"
+    },
+    {
+      "id": "2M73pHHCv0SFYD30DZkb",
+      "name": "Jonathan's House of Prayer (JHOP)",
+      "phone": "(334) 221-7215",
+      "website": null,
+      "address": "60 Curve Dr., Hayneville, AL 36040"
+    },
+    {
+      "id": "CmBf5AcJg7PB28UJAcUp",
+      "name": "Mt. Olive Missionary Baptist Church - Burkeville",
+      "phone": "(334) 300-2793",
+      "website": null,
+      "address": "1716 Frederick Douglass Road, Burkville, AL 36752"
+    },
+    {
+      "id": "KAddEt9JR1IaEHyJGpCR",
+      "name": "Lowndes County Food Pantry",
+      "phone": "(334) 548-2515",
+      "website": null,
+      "address": "Hayneville, AL, Hayneville, AL"
+    },
+    {
+      "id": "nmQwj0OAQ2sFrlCoSsvC",
+      "name": "Friendship Missionary Baptist Church-Hayneville",
+      "phone": "(334) 312-3019",
+      "website": null,
+      "address": "1882 State Highway 97 South, Hayneville, AL 36040"
+    }
+  ]
+}

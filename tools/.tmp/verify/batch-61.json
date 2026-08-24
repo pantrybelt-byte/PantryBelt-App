@@ -1,0 +1,129 @@
+{
+  "batch": "61",
+  "counties": [
+    "Washington",
+    "Wilcox",
+    "Winston"
+  ],
+  "rows": [
+    {
+      "id": "C9bzq6JWmEKj1f5h4vw4",
+      "name": "Washington Baptist Association",
+      "phone": "(251) 847-2753",
+      "website": null,
+      "address": "14810 St. Stephens Avenue, Chatom, AL 36518"
+    },
+    {
+      "id": "LRtKH9wFvSE5tw7VueOM",
+      "name": "Lilly Grove Baptist Church",
+      "phone": "(251) 847-3673",
+      "website": null,
+      "address": "98 Martin Luther King Avenue, Chatom, AL 36518"
+    },
+    {
+      "id": "PM7FHen9kaL5TxHqS3k3",
+      "name": "Prestwick Community Outreach",
+      "phone": "(251) 246-3982",
+      "website": null,
+      "address": "53 Train Track Road, Leroy, AL 36548"
+    },
+    {
+      "id": "PaBBudu1Z9t2chNlV70R",
+      "name": "Millry Baptist Church",
+      "phone": "(251) 846-2263",
+      "website": null,
+      "address": "70 5th Avenue, Millry, AL 36558"
+    },
+    {
+      "id": "UT2R9mqBu3lanmUI1yFi",
+      "name": "Tibbie Baptist Church",
+      "phone": "(251) 847-2889",
+      "website": null,
+      "address": "160 Tibbie Church Road, Tibbie, AL 36583"
+    },
+    {
+      "id": "WUWLGgN5DxwR8axhi3Kf",
+      "name": "Copeland Assembly of God",
+      "phone": "(251) 846-2638",
+      "website": null,
+      "address": "468 Copeland-Buckatunna Road, Millry, AL 36558"
+    },
+    {
+      "id": "Y7OmMijSc8XcHILOXU0D",
+      "name": "The Friends Center Inc.",
+      "phone": "(251) 829-6507",
+      "website": null,
+      "address": "66 Academy Lane, McIntosh, AL 36553"
+    },
+    {
+      "id": "HqKXhBerOiiruQzOIe4j",
+      "name": "St Thomas AME Church",
+      "phone": "(334) 564-0808",
+      "website": null,
+      "address": "323 St Thomas Church Road, Lower Peach Tree, AL"
+    },
+    {
+      "id": "IW2yblAgXAHBhsjnTybF",
+      "name": "Pine Hill Mission",
+      "phone": "(334) 419-7008",
+      "website": null,
+      "address": "3915 Broad Street, Pinehill, AL"
+    },
+    {
+      "id": "OEqfciJp42dGSKivjf5h",
+      "name": "Yellow Bluff Baptist Church",
+      "phone": "(334) 830-3419",
+      "website": null,
+      "address": "387 County Road 18, Pine Hill, AL"
+    },
+    {
+      "id": "e2cGcfjxYlFEYoebr6zV",
+      "name": "Wilcox County Food Bank",
+      "phone": "(334) 682-9515",
+      "website": null,
+      "address": "Camden, AL, Camden, AL"
+    },
+    {
+      "id": "qrkOtUnkTZqlyznjuhNh",
+      "name": "Blackbelt Central Alabama Housing",
+      "phone": "(334) 874-7907",
+      "website": null,
+      "address": "211 Claiborne Street, Camden, AL"
+    },
+    {
+      "id": "vfnv4LqQoBv2rbShhQWM",
+      "name": "St. Wisdom Baptist Church",
+      "phone": "(334) 682-5986",
+      "website": null,
+      "address": "245 Washington Court, Camden, AL"
+    },
+    {
+      "id": "5PsZde2hFtQsIpm3vPfn",
+      "name": "Main Street Ministries Pantry",
+      "phone": "(205) 272-1356",
+      "website": null,
+      "address": "991 Hwy 33, Double Springs, AL 35553"
+    },
+    {
+      "id": "UuGNAT7799UmJL1ECPSf",
+      "name": "First Baptist Church Haleyville Pantry",
+      "phone": "(205) 486-0961",
+      "website": null,
+      "address": "1117 20th St, Haleyville, AL 35565"
+    },
+    {
+      "id": "VHF8jLPk5l2tLQDbAWmR",
+      "name": "Addison First Baptist Church Pantry",
+      "phone": "(256) 747-6470",
+      "website": null,
+      "address": "115 2nd Street S, Addison, AL 35540"
+    },
+    {
+      "id": "hUuv6bgPA5dtPFP2kZmQ",
+      "name": "Community Bs Auxiliary Client Choice Senior Grocery Program",
+      "phone": "(205) 893-5250",
+      "website": null,
+      "address": "29 Heck St, Lynn, AL 35575"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "batch": "29",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "hsq0epGqeS4UOQZJlWCf",
+      "name": "Redeemed Christian Church of God Pantry",
+      "phone": "(205) 240-3096",
+      "website": null,
+      "address": "213 1st Ave N, Birmingham, AL 35204"
+    },
+    {
+      "id": "iBiX50oXUaxRdqRL39jF",
+      "name": "UAB Blazer Kitchen Pantry",
+      "phone": "(205) 934-1581",
+      "website": null,
+      "address": "1613 11th Ave S, Birmingham, AL 35205"
+    },
+    {
+      "id": "ik9BivtNXgDL01pIHheM",
+      "name": "YWCA/Interfaith Hospitality House Pantry",
+      "phone": "(205) 591-4302",
+      "website": null,
+      "address": "5916 1st Avenue South, Birmingham, AL 35212"
+    },
+    {
+      "id": "j9ci9UOilxKZYZoRTiDh",
+      "name": "Urban Ministry, Inc. Pantry",
+      "phone": null,
+      "website": null,
+      "address": "1229 Cotton Ave, Birmingham, AL 35211"
+    },
+    {
+      "id": "jNPpcjWlUnNULx0NNdlr",
+      "name": "Emergency Food Boxes Food Bank",
+      "phone": null,
+      "website": null,
+      "address": "107 Walter Davis Drive, Birmingham, AL 35209"
+    },
+    {
+      "id": "lc0NWxItcWQgMY7u1f9x",
+      "name": "East Lake United Methodist Church Pantry",
+      "phone": "(205) 370-3193",
+      "website": null,
+      "address": "7753 1st Avenue South, Birmingham, AL 35206"
+    },
+    {
+      "id": "lhfBVveG6S0uQvem9o6V",
+      "name": "Family Worship Center Pantry",
+      "phone": "(205) 623-7289",
+      "website": null,
+      "address": "8301 8th Ave S, Birmingham, AL 35206"
+    },
+    {
+      "id": "mxXCy5oPtPIP2C68ezai",
+      "name": "The Coleman's Redevelopment House Pantry",
+      "phone": "(205) 966-6273",
+      "website": null,
+      "address": "901 17th Street Southwest, Birmingham, AL 35211"
+    },
+    {
+      "id": "nd5qh43KXRmFwVJwKSwM",
+      "name": "Waterstone Church Pantry",
+      "phone": "(205) 647-7475",
+      "website": null,
+      "address": "210 Brake Street S, Warrior, AL 35180"
+    },
+    {
+      "id": "nletOlwibjiFTgoymknV",
+      "name": "Crumly Chapel United Methodist Church Pantry",
+      "phone": "(205) 703-4542",
+      "website": null,
+      "address": "341 Crumly Chapel Rd., Birmingham, AL 35214"
+    },
+    {
+      "id": "oC2N8mtgdU058gva3ASe",
+      "name": "CSFP - Project Hopewell",
+      "phone": "(205) 243-7070",
+      "website": null,
+      "address": "4817 Jefferson Ave SW, Birmingham, AL 35221"
+    },
+    {
+      "id": "oYfLs0G09IullGtAaRr7",
+      "name": "Kingdom Ministries Pantry",
+      "phone": "(205) 496-4150",
+      "website": null,
+      "address": "2129 Center Point Parkway, Birmingham, AL 35235"
+    },
+    {
+      "id": "oimPbl15aCaeokSc5q9u",
+      "name": "PATCH",
+      "phone": "(205) 987-9226",
+      "website": null,
+      "address": "2440 Minor Pkwy, Adamsville, AL 35005"
+    },
+    {
+      "id": "p8rnzRnXMyGFkIXsQ8tj",
+      "name": "Miracle Academy Pantry",
+      "phone": "(205) 923-3483",
+      "website": null,
+      "address": "3420 Hickory Avenue SouthWest, Birmingham, AL 35221"
+    },
+    {
+      "id": "pZaRDfwvTnYCfT1fzUMN",
+      "name": "Open Door Church Pantry",
+      "phone": "(205) 519-5474",
+      "website": null,
+      "address": "1012 McDonald Chapel Road, Birmingham, AL 35224"
+    },
+    {
+      "id": "qnhF5Lbyt1wREI129RoX",
+      "name": "CSFP - Villa Maria",
+      "phone": "(205) 838-2313",
+      "website": null,
+      "address": "500 82nd St S., Birmingham, AL 35206"
+    },
+    {
+      "id": "rcMz3KB391ZvhZvNxkIa",
+      "name": "St. Mark's Episcopal Church Pantry",
+      "phone": "(205) 919-7608",
+      "website": null,
+      "address": "228 Dennison Ave SW, Birmingham, AL 35211"
+    }
+  ]
+}

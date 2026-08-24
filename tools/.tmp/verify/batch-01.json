@@ -1,0 +1,71 @@
+{
+  "batch": "01",
+  "counties": [
+    "Autauga"
+  ],
+  "rows": [
+    {
+      "id": "Hqj2DbqCK5bq767pL4j5",
+      "name": "Safe Harbor Outreach Center",
+      "phone": "(334) 365-4108",
+      "website": null,
+      "address": "820 Selma Highway, Prattville, AL 36067"
+    },
+    {
+      "id": "NIEUFSlRrDj0KsRwkidi",
+      "name": "Old Kingston Outreach Ministry",
+      "phone": "(334) 568-8342",
+      "website": null,
+      "address": "963 County Road 40 W, Prattville, AL 36067"
+    },
+    {
+      "id": "OhCsAocIO8XxT32wlY6d",
+      "name": "Autauga Interfaith Care Center (AICC)",
+      "phone": "(334) 365-4050",
+      "website": null,
+      "address": "163 W. Third St., Prattville, AL 36067"
+    },
+    {
+      "id": "TO7Fr1zUFsQY0Rj84n6T",
+      "name": "Prattville Church of Christ",
+      "phone": "(334) 365-4201",
+      "website": null,
+      "address": "344 E. Main Street, Prattville, AL 36067"
+    },
+    {
+      "id": "UQzjEeMdjrk2m3PmLigC",
+      "name": "Autaugaville Food Pantry (Autaugaville UMC)",
+      "phone": "(334) 300-2314",
+      "website": null,
+      "address": "2416 Dutch Bend St., Autaugaville, AL 36003"
+    },
+    {
+      "id": "UuoR02mHIIL3XGaupt8B",
+      "name": "Petra Ministries, Inc.",
+      "phone": "(334) 590-0086",
+      "website": null,
+      "address": "122 Tichnor Ave., Prattville, AL 36067"
+    },
+    {
+      "id": "ZfKXgRQvpMF89fUTQFvw",
+      "name": "Anointed Warrior Hill Baptist Church",
+      "phone": "(334) 819-9763",
+      "website": null,
+      "address": "1 Pine Level Lane, Pine Level, AL 36065"
+    },
+    {
+      "id": "gzw8c4hQHsCV6dFA5LEX",
+      "name": "Spring Hill A.M.E. Zion Church (Prattville)",
+      "phone": "(205) 217-1334",
+      "website": null,
+      "address": "303 County Rd. 4 East, Prattville, AL 36067"
+    },
+    {
+      "id": "uMIxpFkZ3znPDncWWncO",
+      "name": "Wadsworth Baptist Church",
+      "phone": "(334) 569-2851",
+      "website": null,
+      "address": "2780 Hwy 143, Deatsville, AL 36022"
+    }
+  ]
+}

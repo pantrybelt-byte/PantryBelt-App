@@ -1,0 +1,113 @@
+{
+  "batch": "12",
+  "counties": [
+    "Cullman"
+  ],
+  "rows": [
+    {
+      "id": "69TqeNs1dg7nCyITCFJv",
+      "name": "Hillside Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "23564 US Hwy 31, Falkville, AL 35622"
+    },
+    {
+      "id": "7ixgA7hjtt5Ve7FVE2sI",
+      "name": "Hamby's Chapel United Methodist",
+      "phone": null,
+      "website": null,
+      "address": "8063 County Road 1435, Vinemont, AL 35179"
+    },
+    {
+      "id": "BAN0oITCjZJmLX0jEHHh",
+      "name": "Cullman Caring For Kids",
+      "phone": null,
+      "website": null,
+      "address": "402 Arnold Street NE, Cullman, AL 35056"
+    },
+    {
+      "id": "BFdTszEUxIrfLZoPLv63",
+      "name": "Unsheltered International",
+      "phone": null,
+      "website": null,
+      "address": "479 County Road 827, Cullman, AL 35057"
+    },
+    {
+      "id": "Br1YTFeb3N92jnrx5Omk",
+      "name": "The Link / Master's Hands Food Pantry",
+      "phone": null,
+      "website": null,
+      "address": "708 9th St SE, Cullman, AL 35055"
+    },
+    {
+      "id": "EXbzrnz0Z5CNSF85O8nC",
+      "name": "Eidson Chapel",
+      "phone": null,
+      "website": null,
+      "address": "2680 CR 1725, Holly Pond, AL 35083"
+    },
+    {
+      "id": "J87k2YnOTEvCrHZaDI5u",
+      "name": "The Crossing",
+      "phone": null,
+      "website": null,
+      "address": "1503 2nd Street SW, Cullman, AL 35055"
+    },
+    {
+      "id": "PRjn44xL6yzPOYV11bx6",
+      "name": "Garden City Church Of God",
+      "phone": null,
+      "website": null,
+      "address": "134 Short St., Garden City, AL 35070"
+    },
+    {
+      "id": "TBS0meTT89jWt8nYi8RD",
+      "name": "Mt. Zion Methodist Church",
+      "phone": null,
+      "website": null,
+      "address": "17478 US 31 N., Cullman, AL 35058"
+    },
+    {
+      "id": "X9o1SFOAy9tRyDtLUDuW",
+      "name": "Northside Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1310 Katherine St NW, Cullman, AL 35055"
+    },
+    {
+      "id": "Z8ESJdn9FarvjtdbQqMG",
+      "name": "Hanceville First UMC",
+      "phone": null,
+      "website": null,
+      "address": "704 Commercial St., Hanceville, AL 35077"
+    },
+    {
+      "id": "fFl5KZP1sh2pCb1Jlnyc",
+      "name": "Parkside Outreach Program",
+      "phone": null,
+      "website": null,
+      "address": "12756 AL Hwy. 69, Baileyton, AL 35019"
+    },
+    {
+      "id": "iZrA0yCLhvzJtdZoNau1",
+      "name": "Spirit Life Church of God",
+      "phone": null,
+      "website": null,
+      "address": "1650 St. Joseph Drive NW, Cullman, AL 35055"
+    },
+    {
+      "id": "o3Uc9WohY0M7dxldP65e",
+      "name": "Sacred Heart Conference -SVDP Cullman",
+      "phone": null,
+      "website": null,
+      "address": "201 3rd Avenue SE, Cullman, AL 35055"
+    },
+    {
+      "id": "zW7xtz0bVVOoJVKPiFce",
+      "name": "Northbrook Baptist Church (The Caring Center)",
+      "phone": null,
+      "website": null,
+      "address": "1629 Second Ave. NW, Cullman, AL 35055"
+    }
+  ]
+}

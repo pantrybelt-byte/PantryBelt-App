@@ -1,0 +1,127 @@
+{
+  "batch": "28",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "Y9MGEujxFcbeNDCwt0wp",
+      "name": "Pleasant Hill United Methodist Church Pantry",
+      "phone": "(205) 910-9383",
+      "website": null,
+      "address": "4809 Bell Hill Road, Bessemer, AL 35022"
+    },
+    {
+      "id": "YNmi63x5lnTeP4KIJ31W",
+      "name": "Mt. Pilgrim People's Development Center Pantry",
+      "phone": "(205) 780-5099",
+      "website": null,
+      "address": "6748 Grasselli Road, Fairfield, AL 35064"
+    },
+    {
+      "id": "YvsUUbT12YoGkjawbg0T",
+      "name": "Woodlawn Community Table",
+      "phone": "(205) 595-3776",
+      "website": null,
+      "address": "139 54th St N, Birmingham, AL 35212"
+    },
+    {
+      "id": "ZNR31EFedYki9BoVyxRq",
+      "name": "Jesus Said Feed the Hungry Soup Kitchen",
+      "phone": "(205) 200-7336",
+      "website": null,
+      "address": "1016 19th Street South, Birmingham, AL 35205"
+    },
+    {
+      "id": "aMZnk2EYwUFilGRN5CHB",
+      "name": "Triumph Youth & Adult Community Development Corporation Pantry",
+      "phone": "(205) 238-8590",
+      "website": null,
+      "address": "1431 13th Ave N, Bessemer, AL 35020"
+    },
+    {
+      "id": "bvR8CxDhs7urfaechvTo",
+      "name": "CSFP - CJFS",
+      "phone": "(205) 879-3438",
+      "website": null,
+      "address": "3794 Crosshaven Dr, Vestavia, AL 35223"
+    },
+    {
+      "id": "d7XGte15gRerd0zjV3aq",
+      "name": "Salvation Army City Command Pantry",
+      "phone": "(205) 328-2420",
+      "website": null,
+      "address": "2015 26th Ave N, Birmingham, AL 35234"
+    },
+    {
+      "id": "ddRCa57XLfPHNrTV7fzH",
+      "name": "Gardendale First Baptist Church Pantry",
+      "phone": "(205) 531-4008",
+      "website": null,
+      "address": "940 Main Street, Gardendale, AL 35071"
+    },
+    {
+      "id": "dx8Etr6nMkDjw159PXgf",
+      "name": "The Community Kitchens of Birmingham Soup Kitchen",
+      "phone": "(205) 251-3569",
+      "website": null,
+      "address": "1024 12th St S, Birmingham, AL 35205"
+    },
+    {
+      "id": "e0fX6SK7qJg4TmhmpHki",
+      "name": "Holy Rosary Food Pantry",
+      "phone": "(205) 266-3065",
+      "website": null,
+      "address": "7414 Georgia Rd, Birmingham, AL 35212"
+    },
+    {
+      "id": "fOg80rscXG8J1WpVdfj0",
+      "name": "Life Changers Christian Church Pantry",
+      "phone": "(205) 566-1367",
+      "website": null,
+      "address": "1529 Tomahawk Road, Forestdale, AL 35214"
+    },
+    {
+      "id": "fXsR0fkmvVfCjhUwTj6S",
+      "name": "James B and Vah's Emporium CDC, Inc Pantry",
+      "phone": "(205) 249-3851",
+      "website": null,
+      "address": "3004 Westview Drive, Adamsville, AL 35005"
+    },
+    {
+      "id": "gHtSW8P5DnJV9BfLFa1W",
+      "name": "Ministries of Deliverance Pantry",
+      "phone": "(205) 425-8340",
+      "website": null,
+      "address": "2531 9th Avenue North, Bessemer, AL 35020"
+    },
+    {
+      "id": "gvFAHeqJNhKelBuwtGAB",
+      "name": "Grace Episcopal Church Pantry",
+      "phone": "(205) 458-9534",
+      "website": null,
+      "address": "5712 1st Avenue North, Birmingham, AL 35212"
+    },
+    {
+      "id": "hE3oehY5SDBQhIugykz5",
+      "name": "Palmerdale Methodist Church Pantry",
+      "phone": "(205) 681-3940",
+      "website": null,
+      "address": "7776 Highway 75, Pinson, AL 35126"
+    },
+    {
+      "id": "hGsyQUDjcx4108Y8RXdS",
+      "name": "I.J. Community Development Pantry",
+      "phone": "(205) 240-6872",
+      "website": null,
+      "address": "1027 11th Street North, Bessemer, AL 35020"
+    },
+    {
+      "id": "hWvnpfTislQjuxdTPyt0",
+      "name": "CSFP - Princeton Towers",
+      "phone": "(205) 777-3833",
+      "website": null,
+      "address": "622-692 10th St. SW, Birmingham, AL 35211"
+    }
+  ]
+}

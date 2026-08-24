@@ -1,0 +1,92 @@
+{
+  "batch": "23",
+  "counties": [
+    "Jackson"
+  ],
+  "rows": [
+    {
+      "id": "3q6sgNfeVQPF1CAmwmN1",
+      "name": "Flat Rock Community Center",
+      "phone": null,
+      "website": null,
+      "address": "894 County Road 326, Flat Rock, AL 35966"
+    },
+    {
+      "id": "DMvUSLD6zrVGFhyEf1sN",
+      "name": "Roaches Cove Baptist",
+      "phone": null,
+      "website": null,
+      "address": "1000 County Road 55, Fackler, AL 35746"
+    },
+    {
+      "id": "Ez11KQT2kA9ekpF1au9L",
+      "name": "Salvation Army-Scottsboro",
+      "phone": null,
+      "website": null,
+      "address": "1501 E. Willow St, Scottsboro, AL 35768"
+    },
+    {
+      "id": "KTs9dFuUQF1awHablWUT",
+      "name": "Paint Rock Missionary Baptist",
+      "phone": null,
+      "website": null,
+      "address": "2911 Hwy 72, Paint Rock, AL 35764"
+    },
+    {
+      "id": "XT4cMXWtEJQv5yI4UPjw",
+      "name": "Macklin Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "16846 AL 71, Pisgah, AL 35765"
+    },
+    {
+      "id": "bivszCHo6eFwjkL0TVw4",
+      "name": "Living Word Ministries",
+      "phone": null,
+      "website": null,
+      "address": "9545 Alabama Hwy. 79, Scottsboro, AL 35768"
+    },
+    {
+      "id": "dPyaXY5C5aC5jCBeEqIJ",
+      "name": "Pleasant View Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1825 County Road 378, Dutton, AL 35744"
+    },
+    {
+      "id": "eeug3pY8BaCL2TVBzw7B",
+      "name": "Rosalie Baptist Ch.",
+      "phone": null,
+      "website": null,
+      "address": "15049 Ala. Hwy. 71, Pisgah, AL 35765"
+    },
+    {
+      "id": "f54kwZLzYLwAVzdrlhqu",
+      "name": "The Well Family Worship Center",
+      "phone": null,
+      "website": null,
+      "address": "3513 S. Broad St., Scottsboro, AL 35769"
+    },
+    {
+      "id": "ipPgUnWXQjA73XXjEOCs",
+      "name": "First UMC Scottsboro",
+      "phone": null,
+      "website": null,
+      "address": "1105 South Broad Street, Scottsboro, AL 35768"
+    },
+    {
+      "id": "qjE9R0wnoadI5M4K8Bjw",
+      "name": "Jacob's Well Ministry",
+      "phone": null,
+      "website": null,
+      "address": "311 County Road 25, Scottsboro, AL 35768"
+    },
+    {
+      "id": "vjn4ySTkHSm2gqHXZ3yv",
+      "name": "St. Luke's Episcopal Church",
+      "phone": null,
+      "website": null,
+      "address": "402 Scott St., Scottsboro, AL 35768"
+    }
+  ]
+}

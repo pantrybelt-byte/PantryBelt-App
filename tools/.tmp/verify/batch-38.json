@@ -1,0 +1,127 @@
+{
+  "batch": "38",
+  "counties": [
+    "Madison"
+  ],
+  "rows": [
+    {
+      "id": "LJKonSaJ9SsUZ8toFXyX",
+      "name": "Abundant Life Food Pantry",
+      "phone": null,
+      "website": null,
+      "address": "3637 Winchester Road NE, New Market, AL 35761"
+    },
+    {
+      "id": "LJXDCQy6ObFN01wSNnUm",
+      "name": "Life Church Huntsville",
+      "phone": null,
+      "website": null,
+      "address": "2300 S. Memorial Parkway SW, Huntsville, AL 35801"
+    },
+    {
+      "id": "LYLqx2cFO0lKkPEQPHKM",
+      "name": "FBNA Market",
+      "phone": null,
+      "website": null,
+      "address": "2000 B Vernon Avenue, Huntsville, AL 35805"
+    },
+    {
+      "id": "MBdjEiI1ifmwqCpMoD0j",
+      "name": "First Baptist Church, Madison",
+      "phone": null,
+      "website": null,
+      "address": "4257 Sullivan St., Madison, AL 35758"
+    },
+    {
+      "id": "Mc8foWZzcQLm1MGO4vaW",
+      "name": "St. Joseph Catholic Church- St. Vincent dePaul",
+      "phone": null,
+      "website": null,
+      "address": "2300 Beasley Avenue, Huntsville, AL 35816"
+    },
+    {
+      "id": "OsRb3FYBTyUhCXSqxDpJ",
+      "name": "Huntsville Assistance Program (HAP)",
+      "phone": null,
+      "website": null,
+      "address": "1001 Monroe St. SW, Huntsville, AL 35801"
+    },
+    {
+      "id": "PU3WVmHmHcbtFAW9uCHm",
+      "name": "Manna House",
+      "phone": null,
+      "website": null,
+      "address": "2110 Memorial Pkwy. SW, Huntsville, AL 35801"
+    },
+    {
+      "id": "Q1gxkqxZm5ylgsX8aYEE",
+      "name": "Madison Mission SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "183 Shelton Rd., Madison, AL 35758"
+    },
+    {
+      "id": "SCYPbPy2OIteH2cLOGRH",
+      "name": "Huntsville Assistance Program (HAP) - Madison",
+      "phone": null,
+      "website": null,
+      "address": "103 Gin Oak Court, Madison, AL 35758"
+    },
+    {
+      "id": "UGRPyyET2Ka0jwuQFH2i",
+      "name": "Oakley Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "540 Oakley Chapel Road, New Market, AL 35761"
+    },
+    {
+      "id": "VROdXC99uxIBHtEuoZrq",
+      "name": "Women of Excellence Fellowship",
+      "phone": null,
+      "website": null,
+      "address": "5074 Meridian St N, Huntsville, AL 35810"
+    },
+    {
+      "id": "VfRy2xs5IaCtdrDKmUuK",
+      "name": "Hurricane Valley Assembly Church",
+      "phone": null,
+      "website": null,
+      "address": "2671 Hurricane Road, New Market, AL 35671"
+    },
+    {
+      "id": "W8HnBVVb3mFw8MY7hbLI",
+      "name": "Redemption Church - The Blessings Closet",
+      "phone": null,
+      "website": null,
+      "address": "9512 US Hwy 431 S, Owens Cross Roads, AL 35763"
+    },
+    {
+      "id": "XRP2IAfUA8z0AQgTbGrg",
+      "name": "St. Paul United Methodist Church",
+      "phone": null,
+      "website": null,
+      "address": "3250 Dunn Drive, Huntsville, AL 35805"
+    },
+    {
+      "id": "YNrR76NfdXM6gtKk3kym",
+      "name": "Wears Chapel Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "938 Ryland Pike, Huntsville, AL 35811"
+    },
+    {
+      "id": "YkqNmR25pYl2OOjRHeue",
+      "name": "St. Luke Christian Church",
+      "phone": null,
+      "website": null,
+      "address": "1800 Sparkman Drive, Huntsville, AL 35816"
+    },
+    {
+      "id": "av21xMxb0AfruFbJJ67E",
+      "name": "Little Flock Primitive Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "599 Brock Road, Gurley, AL 35748"
+    }
+  ]
+}

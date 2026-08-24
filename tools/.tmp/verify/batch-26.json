@@ -1,0 +1,127 @@
+{
+  "batch": "26",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "JV8VAa2Mrs5stjyX0A1Q",
+      "name": "Highlands United Methodist Church Soup Kitchen",
+      "phone": "(205) 933-8751",
+      "website": null,
+      "address": "1045 20th Street South, Birmingham, AL 35205"
+    },
+    {
+      "id": "KYz4fYXEcL31xZnhpqji",
+      "name": "St. Andrew's Episcopal Church Pantry",
+      "phone": "(205) 639-9652",
+      "website": null,
+      "address": "1024 12th Street South, Birmingham, AL 35205"
+    },
+    {
+      "id": "L2fY2RAwo9v1XOkXYLP4",
+      "name": "Birmingham Hispanic SDA Church Pantry",
+      "phone": "(601) 286-0221",
+      "website": null,
+      "address": "42 5th Ave S, Birmingham, AL 35205"
+    },
+    {
+      "id": "LSMGngcaNZ9EBTuBVvbd",
+      "name": "Huffman High School - School Pantry Program",
+      "phone": null,
+      "website": null,
+      "address": "900 Springville RD, Birmingham, AL 35215"
+    },
+    {
+      "id": "LcM4tG0i0kYcUWUF6mv7",
+      "name": "Tabernacle Baptist Church Pantry",
+      "phone": "(205) 283-4822",
+      "website": null,
+      "address": "600 Center Street, Birmingham, AL 35204"
+    },
+    {
+      "id": "LuuRxfM6pZUEYaAT0Qq5",
+      "name": "Meals on Wheels Pantry & Soup Kitchen",
+      "phone": null,
+      "website": null,
+      "address": "3620 8th Ave South, Birmingham, AL 35232"
+    },
+    {
+      "id": "Mutqlft0W7Amj8Abjb8Z",
+      "name": "Adventist Community - South Park Pantry",
+      "phone": "(205) 903-0849",
+      "website": null,
+      "address": "414 South Park Road, Birmingham, AL 35211"
+    },
+    {
+      "id": "Naf0z0QdPDf9zKmE3OSk",
+      "name": "Word of Faith/Project Noah Pantry",
+      "phone": "(205) 720-7115",
+      "website": null,
+      "address": "5326 South Oporto-Madrid Blvd, Birmingham, AL 35210"
+    },
+    {
+      "id": "NcdoNgBNRdAmUY1lQ2Hu",
+      "name": "CJ Donald Middle School - School Based Pantry",
+      "phone": null,
+      "website": null,
+      "address": "715 Valley Rd, Fairfield, AL 35064"
+    },
+    {
+      "id": "ON9FJCSzJxP5DyBklTBv",
+      "name": "First Seventh Day Adventist Adamsville Pantry",
+      "phone": "(205) 502-6166",
+      "website": null,
+      "address": "4205 Main St, Adamsville, AL 35005"
+    },
+    {
+      "id": "OZj138zJcYSj0FziasoT",
+      "name": "Church of the Highlands Dream Center Pantry",
+      "phone": "(205) 591-1700",
+      "website": null,
+      "address": "5705 1st Ave N, Birmingham, AL 35212"
+    },
+    {
+      "id": "P3EfY97EjAB9JRYu9XcZ",
+      "name": "CSFP - Highland Manor",
+      "phone": null,
+      "website": null,
+      "address": "2040 Highland Ave #1600, Birmingham, AL 35205"
+    },
+    {
+      "id": "PlclOBuUGLNK9E1zUNMR",
+      "name": "Full Deliverance Church of God Pantry",
+      "phone": "(205) 567-9411",
+      "website": null,
+      "address": "1117 Rutledge Drive, Midfield, AL 35228"
+    },
+    {
+      "id": "Pnavlx3Ujb24t5dRVnHQ",
+      "name": "Community Care Development Network Pantry",
+      "phone": "(205) 586-0740",
+      "website": null,
+      "address": "1920 Old Springville Road, Center Point, AL 35215"
+    },
+    {
+      "id": "PoSFhJ1659aLgEbLtg1j",
+      "name": "Jefferson State Pioneer Food Pantry",
+      "phone": "(205) 856-7913",
+      "website": null,
+      "address": "2601 Carson Road, Birmingham, AL 35215"
+    },
+    {
+      "id": "Pvj6Fe0EuULsJ2b1ToiO",
+      "name": "Christian Service Mission Pantry",
+      "phone": "(205) 397-9997",
+      "website": null,
+      "address": "3600 3rd Ave S, Birmingham, AL 35222"
+    },
+    {
+      "id": "R1nDgelzNheADbvpPM3e",
+      "name": "ROSS Birmingham Pantry & Soup Kitchen",
+      "phone": "(205) 920-0790",
+      "website": null,
+      "address": "3608 7th Court S, Birmingham, AL 35222"
+    }
+  ]
+}

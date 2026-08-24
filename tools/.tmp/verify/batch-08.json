@@ -1,0 +1,115 @@
+{
+  "batch": "08",
+  "counties": [
+    "Cherokee",
+    "Chilton",
+    "Choctaw"
+  ],
+  "rows": [
+    {
+      "id": "5u8IUbaDXcxNP8Jhs5n4",
+      "name": "Cedar Bluff First United Methodist Church Pantry",
+      "phone": "(256) 201-3704",
+      "website": null,
+      "address": "3600 Old Hwy 9, Cedar Bluff, AL 35959"
+    },
+    {
+      "id": "E2d77oZxmzgQM5bJJ3aP",
+      "name": "CSFP - Cherokee Manor",
+      "phone": "(256) 927-4581",
+      "website": null,
+      "address": "394 Northwood Dr, Centre, AL 35906"
+    },
+    {
+      "id": "E6VeMFpGR4FqtErSC1iH",
+      "name": "Clearview Worship Center Pantry",
+      "phone": "(256) 557-5348",
+      "website": null,
+      "address": "901 Cedar Bluff Rd, Centre, AL 35960"
+    },
+    {
+      "id": "ydA7YLK30Ussj1XxcIGZ",
+      "name": "Family Care Center Pantry",
+      "phone": "(256) 557-2891",
+      "website": null,
+      "address": "1250 West Main Street, Centre, AL 35960"
+    },
+    {
+      "id": "KfaJSGY9iYMFzHeZdI6d",
+      "name": "Mt. Pisgah United Methodist Church",
+      "phone": "(205) 688-6248",
+      "website": null,
+      "address": "2930 County Road 49, Clanton, AL 35045"
+    },
+    {
+      "id": "Mo8eQoRVskqQf55ohD2U",
+      "name": "Triumph Church of Chilton County",
+      "phone": "(205) 217-0448",
+      "website": null,
+      "address": "5066 Co. Rd. 49, Clanton, AL 35045"
+    },
+    {
+      "id": "OXmQtw8noJWjTqtybVE7",
+      "name": "Maplesville Baptist Church",
+      "phone": "(334) 410-0681",
+      "website": null,
+      "address": "9391 AL HWY 22, Maplesville, AL 35040"
+    },
+    {
+      "id": "drMagrPseDUyYXsPeoz2",
+      "name": "Trinity Episcopal Church",
+      "phone": "(205) 217-6955",
+      "website": null,
+      "address": "503 Second Ave South, Clanton, AL 35045"
+    },
+    {
+      "id": "gXlXs7HyRhJ0OMKBwo6z",
+      "name": "Clanton Seventh Day Adventist Church",
+      "phone": "(334) 201-9118",
+      "website": null,
+      "address": "401 18th St N, Clanton, AL 35045"
+    },
+    {
+      "id": "kuG0xfCYmDwCboAOQjPJ",
+      "name": "First UMC - Clanton (Chilton Bread of Life FP)",
+      "phone": "(205) 389-2141",
+      "website": null,
+      "address": "1111 Lay Dam Road, Clanton, AL 35045"
+    },
+    {
+      "id": "yN1cH2rw7FHmjYKKn1aO",
+      "name": "United Prison Ministries International",
+      "phone": "(562) 322-8271",
+      "website": null,
+      "address": "890 County Road 93, Verbena, AL 36091"
+    },
+    {
+      "id": "QjuijwQpM4qTRHIAZM4T",
+      "name": "F.A.I.T.H. Groceries",
+      "phone": "(205) 457-2637",
+      "website": null,
+      "address": "817 West Pushmataha Street, Butler, AL 36904"
+    },
+    {
+      "id": "dGQ5qqKGw7276Ig1TvOs",
+      "name": "Lusk Assembly of God",
+      "phone": "(205) 691-1019",
+      "website": null,
+      "address": "655 Lusk Road, Gilbertown, AL 36908"
+    },
+    {
+      "id": "wFDTgPVyx9J1cEQetSz6",
+      "name": "Community Action Agency",
+      "phone": "(205) 459-3232",
+      "website": null,
+      "address": "Butler, AL, Butler, AL"
+    },
+    {
+      "id": "xAVd7wGFjfikrX4SVwSZ",
+      "name": "Gilbertown Food Bank",
+      "phone": "(251) 769-6425",
+      "website": null,
+      "address": "95 West Main Street, Gilbertown, AL 36908"
+    }
+  ]
+}

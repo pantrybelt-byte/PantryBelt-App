@@ -1,0 +1,127 @@
+{
+  "batch": "18",
+  "counties": [
+    "Etowah"
+  ],
+  "rows": [
+    {
+      "id": "2dfP6OzLfK7dti6uPXXX",
+      "name": "North Glencoe Baptist Church Pantry & Backpack",
+      "phone": "(256) 492-1910",
+      "website": null,
+      "address": "1119 Chastain Blvd, Gadsden, AL 35905"
+    },
+    {
+      "id": "31LyvLMRYTANLQYy1mTa",
+      "name": "Mt. Pisgah Baptist Church Pantry",
+      "phone": "(256) 572-2791",
+      "website": null,
+      "address": "7400 Tabor Road, Gadsden, AL 35904"
+    },
+    {
+      "id": "4ePu8z3HEz6DTqqxQdTo",
+      "name": "A Servant's Heart Mission Pantry",
+      "phone": "(256) 441-4780",
+      "website": null,
+      "address": "11431 U.S. Hwy. 278 East, Piedmont, AL 36272"
+    },
+    {
+      "id": "6SgN8Q2zFWV6HAXvKN4K",
+      "name": "CSFP - Baptist Retirement",
+      "phone": "(256) 494-9400",
+      "website": null,
+      "address": "1315 Coats St., Gadsden, AL 35903"
+    },
+    {
+      "id": "8ChfPRBSIrLi0g9xgYsy",
+      "name": "Catholic Center of Concern Pantry",
+      "phone": "(256) 546-0028",
+      "website": null,
+      "address": "612 Chestnut Street, Gadsden, AL 35901"
+    },
+    {
+      "id": "96JeBCdU4gymfHyFZcyO",
+      "name": "Aurora Missionary Baptist Church Pantry",
+      "phone": "(205) 493-6198",
+      "website": null,
+      "address": "5005 Hwy 179, Boaz, AL 35956"
+    },
+    {
+      "id": "EHiNqyC06yWf5UaesM3I",
+      "name": "First Church of the Nazarene Rainbow City Pantry",
+      "phone": "(256) 393-6055",
+      "website": null,
+      "address": "3867 Rainbow Drive, Rainbow City, AL 35906"
+    },
+    {
+      "id": "IzNsEMgZMBT3UwbeEH85",
+      "name": "White Springs Baptist Church Pantry",
+      "phone": "(256) 393-6345",
+      "website": null,
+      "address": "4411 Rainbow Drive, Rainbow City, AL 35906"
+    },
+    {
+      "id": "OFl0xLzEiJN3rDekrEde",
+      "name": "Gadsden Christian Fellowship Pantry",
+      "phone": "(256) 613-3005",
+      "website": null,
+      "address": "719 Nunnally Ave, Gadsden, AL 35903"
+    },
+    {
+      "id": "UVg2zwJRM4TnHxtYbkBg",
+      "name": "Way of the Cross Soup Kitchen",
+      "phone": "(256) 390-0134",
+      "website": null,
+      "address": "101 N. 24th St., Gadsden, AL 35904"
+    },
+    {
+      "id": "Y9TGXsZGBCrDxKAKUMBA",
+      "name": "First United Methodist Church Attalla Pantry",
+      "phone": "(256) 390-2287",
+      "website": null,
+      "address": "601 4th St NW, Attalla, AL 35954"
+    },
+    {
+      "id": "cJvTLcOf2zY3qiwYNjf9",
+      "name": "Etowah Baptist Missions Center Pantry",
+      "phone": "(256) 546-2980",
+      "website": null,
+      "address": "215 Wall Street, Gadsden, AL 35904"
+    },
+    {
+      "id": "eV7xKVWaleFz9hpqbOQd",
+      "name": "Rainbow Church of Christ Pantry",
+      "phone": "(256) 390-5592",
+      "website": null,
+      "address": "2201 Rainbow Dr, Gadsden, AL 35901"
+    },
+    {
+      "id": "mlxlvjsTfo3nJwfVUVKz",
+      "name": "First Baptist Church Gadsden Pantry",
+      "phone": "(256) 547-6828",
+      "website": null,
+      "address": "235 South 5th Street, Gadsden, AL 35901"
+    },
+    {
+      "id": "tFEquqWaO4KlT0jIF0A8",
+      "name": "ROSS Gadsden Pantry & Soup Kitchen",
+      "phone": "(205) 920-0790",
+      "website": null,
+      "address": "1024 1st Ave, Gadsden, AL 35901"
+    },
+    {
+      "id": "vAkQQHfuHdUGKV3qtq5f",
+      "name": "Etowah Baptist Association Pantry",
+      "phone": "(256) 547-1691",
+      "website": null,
+      "address": "9462 Hwy 278 W., Altoona, AL 35952"
+    },
+    {
+      "id": "yNCF8FbPo7sLqGVOUHKN",
+      "name": "Salvation Army Gadsden Residential & Pantry",
+      "phone": "(256) 546-4673",
+      "website": null,
+      "address": "114 N. 11th St, Gadsden, AL 35901"
+    }
+  ]
+}

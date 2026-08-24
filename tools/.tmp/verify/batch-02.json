@@ -1,0 +1,127 @@
+{
+  "batch": "02",
+  "counties": [
+    "Baldwin"
+  ],
+  "rows": [
+    {
+      "id": "18JMtFnU8GBCLgOlTB0x",
+      "name": "Christian Life Church",
+      "phone": "(251) 967-4840",
+      "website": null,
+      "address": "25550 Canal Road, Orange Beach, AL 36561"
+    },
+    {
+      "id": "2k2LwZ3Pazz6YB7YlgSG",
+      "name": "McGhee Memorial Church of God in Christ",
+      "phone": "(251) 937-3600",
+      "website": null,
+      "address": "500 Martin Luther King Blvd, Bay Minette, AL 36507"
+    },
+    {
+      "id": "5bRcbHjME6HCOZMMFPsL",
+      "name": "Greenwood Community Covenant Church",
+      "phone": "(251) 989-6495",
+      "website": null,
+      "address": "21950 County Road 36, Summerdale, AL 36580"
+    },
+    {
+      "id": "AxZGdBwzBao2uqH0S1Vi",
+      "name": "Swift Presbyterian Church",
+      "phone": "(251) 943-8367",
+      "website": null,
+      "address": "23208 Swift Church Road, Foley, AL 36535"
+    },
+    {
+      "id": "Ba2v0XSnCLHO3dYcwYIf",
+      "name": "Christian Service Center",
+      "phone": "(251) 968-5256",
+      "website": null,
+      "address": "317 Dolphin Avenue, Gulf Shores, AL 36547"
+    },
+    {
+      "id": "E5j1wrMo1e0T8qMOHVCG",
+      "name": "Shepherd of the Bay Lutheran Church",
+      "phone": "(251) 962-7682",
+      "website": null,
+      "address": "12851 Perdido Street, Lillian, AL 36549"
+    },
+    {
+      "id": "LpjPJJPtozS0rWf1FpuT",
+      "name": "St. Joseph Conference of Society of St. Vincent de Paul",
+      "phone": "(251) 473-3761",
+      "website": null,
+      "address": "12688 Santa Piedro Road, Lillian, AL 36549"
+    },
+    {
+      "id": "NwB0Wovzyet3Nw3p8g9x",
+      "name": "Miflin Baptist Church",
+      "phone": "(251) 238-7777",
+      "website": null,
+      "address": "24687 County Road 20, Elberta, AL 36530"
+    },
+    {
+      "id": "Xi5mp28ncvjIB6WTdzgs",
+      "name": "Morning Dove Baptist Church",
+      "phone": "(251) 580-3674",
+      "website": null,
+      "address": "54681 Lottie Road, Perdido, AL 36562"
+    },
+    {
+      "id": "ZrJSzvhZeEKdOjFCMAmf",
+      "name": "Community Action Agency of South Alabama",
+      "phone": "(251) 626-2646",
+      "website": null,
+      "address": "26440 North Pollard Road, Daphne, AL 36526"
+    },
+    {
+      "id": "dfo3xYGagqFETPBGFPhb",
+      "name": "New Life in Christ Church",
+      "phone": "(251) 943-2225",
+      "website": null,
+      "address": "102 East Berry Avenue, Foley, AL 36536"
+    },
+    {
+      "id": "h2VNgXnOVZ1isqHE0MFp",
+      "name": "Turning Point Church",
+      "phone": "(850) 207-0765",
+      "website": null,
+      "address": "32450 US Hwy-90, Seminole, AL 36574"
+    },
+    {
+      "id": "ilnj43kdo2ij7Vm4IJAv",
+      "name": "The Shoulder",
+      "phone": "(251) 626-2199",
+      "website": null,
+      "address": "31214 Coleman Lane, Spanish Fort, AL 36577"
+    },
+    {
+      "id": "jtLnyfAjFmAa5ZLyyyMz",
+      "name": "African Universal Church",
+      "phone": "(251) 626-6056",
+      "website": null,
+      "address": "8355 Jonesboro Road, Daphne, AL 36526"
+    },
+    {
+      "id": "pfxuEqmmCsHhPhWpa8JG",
+      "name": "South Baldwin Christian Church",
+      "phone": "(251) 981-1000",
+      "website": null,
+      "address": "19489 Keller Road, Foley, AL 36535"
+    },
+    {
+      "id": "qz1T2MIZo9MfTgRM8wFB",
+      "name": "Prodisee Pantry",
+      "phone": "(251) 626-1720",
+      "website": null,
+      "address": "9315 Spanish Fort Boulevard, Spanish Fort, AL 36527"
+    },
+    {
+      "id": "rzRVXXuTBpAAvgY7TByA",
+      "name": "Faith Factory",
+      "phone": "(251) 401-5345",
+      "website": null,
+      "address": "17927 Samantha Drive, Foley, AL 36535"
+    }
+  ]
+}

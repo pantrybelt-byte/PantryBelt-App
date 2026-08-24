@@ -1,0 +1,57 @@
+{
+  "batch": "06",
+  "counties": [
+    "Butler"
+  ],
+  "rows": [
+    {
+      "id": "7jnLBOShKc98hKb5u1W4",
+      "name": "Bethlehem Missionary Baptist Church - Greenville",
+      "phone": "(334) 437-1166",
+      "website": null,
+      "address": "748 Bethlehem Rd., Greenville, AL 36037"
+    },
+    {
+      "id": "MEOdy9bUAYZT1vtP05ZK",
+      "name": "Butler County DHR",
+      "phone": "(334) 382-2652",
+      "website": null,
+      "address": "Greenville, AL, Greenville, AL"
+    },
+    {
+      "id": "NPglgQkprgLcvmlaeZEk",
+      "name": "Long Creek Missionary Baptist Church",
+      "phone": "(334) 549-4805",
+      "website": null,
+      "address": "3665 Shows Road, Georgiana, AL 36033"
+    },
+    {
+      "id": "ZLnPOzXJQAwSYAYWetkZ",
+      "name": "Joseph Ministries",
+      "phone": "(334) 437-3611",
+      "website": null,
+      "address": "112 Adams Street, Greenville, AL 36037"
+    },
+    {
+      "id": "d2C7hS1mivXcn0W5znE5",
+      "name": "Southside Bapt. Ch. - Greenville - Shepherd's Table",
+      "phone": "(334) 525-0085",
+      "website": null,
+      "address": "211 King St, Greenville, AL 36037"
+    },
+    {
+      "id": "fsU8P1asuccD96N5UgCy",
+      "name": "Old Elam Baptist Church",
+      "phone": "(334) 368-0569",
+      "website": null,
+      "address": "958 Pettibone Rd, Greenville, AL 36037"
+    },
+    {
+      "id": "ouwWtzJWxZKR9mK3AfjS",
+      "name": "Walnut Street Church of Christ",
+      "phone": "(334) 382-3001",
+      "website": null,
+      "address": "306 Walnut Street, Greenville, AL 36037"
+    }
+  ]
+}

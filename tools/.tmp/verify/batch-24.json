@@ -1,0 +1,127 @@
+{
+  "batch": "24",
+  "counties": [
+    "Jefferson"
+  ],
+  "rows": [
+    {
+      "id": "0VVF3WdhyUhDpUry0KA1",
+      "name": "CSFP - McMillon Estates",
+      "phone": null,
+      "website": null,
+      "address": "1001 57th Street West, Birmingham, AL 35228"
+    },
+    {
+      "id": "0pNqDCDmt2aLY4J1X8yj",
+      "name": "I Care Christian Ministries Pantry",
+      "phone": "(205) 335-3815",
+      "website": null,
+      "address": "2241 Forestdale Blvd, Forestdale, AL 35214"
+    },
+    {
+      "id": "2FikpmqF0FksGADwSKhq",
+      "name": "Metro West Ministries Pantry",
+      "phone": "(205) 423-5757",
+      "website": null,
+      "address": "4912 Lloyd Noland Parkway, Fairfield, AL 35064"
+    },
+    {
+      "id": "3R8nlXwUPQLRnHcEjvam",
+      "name": "New Life Interfaith Ministries, Inc Pantry",
+      "phone": "(205) 425-4735",
+      "website": null,
+      "address": "1622 7th Avenue North, Bessemer, AL 35020"
+    },
+    {
+      "id": "3RiPbsBsmtuxV7xZ0koa",
+      "name": "The Leaf Pantry and Urban Farm",
+      "phone": "(205) 999-1854",
+      "website": null,
+      "address": "910 9th Street, Midfield, AL 35228"
+    },
+    {
+      "id": "4EJJw5l3lSbW5lGvA0FS",
+      "name": "Bethel United Methodist Church Pantry",
+      "phone": "(205) 283-1383",
+      "website": null,
+      "address": "9417 Thermal Road, Warrior, AL 35180"
+    },
+    {
+      "id": "60wznP9trSEVweeNzmvH",
+      "name": "Homewood Church of Christ Pantry",
+      "phone": "(205) 942-5683",
+      "website": null,
+      "address": "265 W Oxmoor Road, Birmingham, AL 35209"
+    },
+    {
+      "id": "6RYQuxvLstyNsvadfNI9",
+      "name": "Serving You Ministries, Inc. Pantry",
+      "phone": "(205) 908-6216",
+      "website": null,
+      "address": "6523 1st Avenue N, Birmingham, AL 35206"
+    },
+    {
+      "id": "6bEJXybVLKZCJ283KMkc",
+      "name": "Connecting Pointe Pantry",
+      "phone": "(205) 541-0661",
+      "website": null,
+      "address": "2305 Old Alton Rd, Irondale, AL 35210"
+    },
+    {
+      "id": "6oqxx1j9yy8vWFHedEVr",
+      "name": "Greater Birmingham Ministries Pantry",
+      "phone": "(205) 326-6821",
+      "website": null,
+      "address": "2304 12th Avenue North, Birmingham, AL 35234"
+    },
+    {
+      "id": "8NGgm3DrVTXvdeFHAUD3",
+      "name": "Church of the Reconciler Pantry",
+      "phone": "(208) 861-1205",
+      "website": null,
+      "address": "4601 Gary Avenue, Fairfield, AL 35064"
+    },
+    {
+      "id": "8TVnxej0fJ0XbECGcgdW",
+      "name": "First Methodist Church Hueytown Pantry",
+      "phone": "(205) 305-4186",
+      "website": null,
+      "address": "110 Sunset Drive, Hueytown, AL 35023"
+    },
+    {
+      "id": "8iPxghY8rWp4udObJjIp",
+      "name": "Cane Creek Missionary Baptist Pantry",
+      "phone": "(205) 238-1879",
+      "website": null,
+      "address": "963 Warrior Jasper Road, Warrior, AL 35180"
+    },
+    {
+      "id": "8nnwTPmKIaAAQx3tugP0",
+      "name": "Kikstart Incorporated Pantry",
+      "phone": "(623) 570-7616",
+      "website": null,
+      "address": "1250 Powder Plant Rd, Bessemer, AL 35022"
+    },
+    {
+      "id": "9ts4hix0vFWPDlMGWClj",
+      "name": "Paul Mitchell Ministries Pantry",
+      "phone": "(205) 612-6403",
+      "website": null,
+      "address": "1425 Lomb Ave., Birmingham, AL 35211"
+    },
+    {
+      "id": "9vZctReMcYWf22c3SuXP",
+      "name": "Smithfield Backpack Buddies Agency Backpack",
+      "phone": "(205) 602-2846",
+      "website": null,
+      "address": "300 4th Court North, Birmingham, AL 35204"
+    },
+    {
+      "id": "ADmp7BIXaRdfVci4Ip1s",
+      "name": "North Jefferson Baptist Caring Center Pantry",
+      "phone": "(205) 608-3112",
+      "website": null,
+      "address": "3396 Mt. Olive Road, Mt. Olive, AL 35117"
+    }
+  ]
+}

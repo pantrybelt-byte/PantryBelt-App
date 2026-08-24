@@ -1,0 +1,115 @@
+{
+  "batch": "09",
+  "counties": [
+    "Clarke",
+    "Clay",
+    "Cleburne"
+  ],
+  "rows": [
+    {
+      "id": "F8uz325Y3DVgANdKuhzk",
+      "name": "Catholic Social Services of Clarke County",
+      "phone": "(251) 246-0131",
+      "website": null,
+      "address": "1206 College Ave., Jackson, AL 36545"
+    },
+    {
+      "id": "LP8jaXstJkerEXUAppRV",
+      "name": "Thomasville Church of God in Christ",
+      "phone": "(334) 636-2728",
+      "website": null,
+      "address": "1200 Church Drive, Thomasville, AL 36784"
+    },
+    {
+      "id": "bQXugcZH2i15OSSkUFnx",
+      "name": "The Open Door",
+      "phone": "(251) 843-5644",
+      "website": null,
+      "address": "27915 Hwy 69 North, Coffeeville, AL 36524"
+    },
+    {
+      "id": "nJF5aMhYkT8RF8l7ME3i",
+      "name": "Labor of Love Association",
+      "phone": "(251) 744-1520",
+      "website": null,
+      "address": "22 Church Street, Coffeeville, AL 36524"
+    },
+    {
+      "id": "pbI4itM3J02cgwjEIDNY",
+      "name": "Liberty Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "7759 Old Hwy 5 South, Thomasville, AL 36784"
+    },
+    {
+      "id": "rU9Cv9RnZujiJZWvu7NB",
+      "name": "First United Methodist Church",
+      "phone": "(251) 246-2224",
+      "website": null,
+      "address": "146 College Ave, Jackson, AL 36545"
+    },
+    {
+      "id": "1RmBcFF9aRkBWyiJRMc1",
+      "name": "CSFP - Ashland Housing Authority",
+      "phone": "(256) 354-2661",
+      "website": null,
+      "address": "128 1st St N, Ashland, AL 36251"
+    },
+    {
+      "id": "2Egt34xgTDLSI4yaXOqA",
+      "name": "Lineville Baptist Church Pantry & Soup Kitchen",
+      "phone": "(256) 282-7156",
+      "website": null,
+      "address": "60315 Hwy 49, Lineville, AL 36266"
+    },
+    {
+      "id": "3JnFB2tImaeg8ZI69gvU",
+      "name": "First United Methodist Church Lineville",
+      "phone": "(256) 684-1287",
+      "website": null,
+      "address": "60220 AL-49, Lineville, AL 36266"
+    },
+    {
+      "id": "L6TGZm2iCRJBc9pGCcPl",
+      "name": "Lineville Mobile Pantry (Clay County Farmers Market)",
+      "phone": "(256) 640-2433",
+      "website": null,
+      "address": "86838 AL-9, Lineville, AL 36266"
+    },
+    {
+      "id": "aW9ZiviFPvIIx7VVjS1L",
+      "name": "Coosa Community Services Pantry & Soup Kitchen",
+      "phone": "(256) 276-4177",
+      "website": null,
+      "address": "51 Wesobulga Street, Lineville, AL 36266"
+    },
+    {
+      "id": "pcvw9uug44KDpWbjaP9X",
+      "name": "Ashland First Methodist Church - Clay Co. Food Bank Pantry",
+      "phone": "(256) 283-0757",
+      "website": null,
+      "address": "192 2nd Avenue South, Ashland, AL 36251"
+    },
+    {
+      "id": "73i03CMjda3oYLPf5zzO",
+      "name": "Feeding Cleburne Pantry",
+      "phone": "(770) 550-9767",
+      "website": null,
+      "address": "21393 Main Street, Ranburne, AL 36273"
+    },
+    {
+      "id": "VpUyX8tM6oOLqBRTMcoO",
+      "name": "HEARTS of Cleburne Pantry",
+      "phone": "(256) 926-5544",
+      "website": null,
+      "address": "129 Almon Street, Heflin, AL 36264"
+    },
+    {
+      "id": "ZIDkaR7XO2csWRO4nMjC",
+      "name": "Vise Grove SDA Pantry",
+      "phone": "(678) 673-9444",
+      "website": null,
+      "address": "303 County Road 116, Heflin, AL 36264"
+    }
+  ]
+}

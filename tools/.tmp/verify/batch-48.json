@@ -1,0 +1,92 @@
+{
+  "batch": "48",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "t6UfoZb0RvXkNOCe5qPO",
+      "name": "Kingswood United Methodist Church",
+      "phone": "(251) 661-0420",
+      "website": null,
+      "address": "5200 Perin Road, Mobile, AL 36693"
+    },
+    {
+      "id": "unfYWNdF33veuGIwCtjF",
+      "name": "Kushla Assembly of God",
+      "phone": "(251) 263-3392",
+      "website": null,
+      "address": "6025 Hwy 45, Eight Mile, AL 36613"
+    },
+    {
+      "id": "vDpJCzTtBKx91gh8Hj2o",
+      "name": "Triumph Ministries, Inc.",
+      "phone": "(251) 866-5530",
+      "website": null,
+      "address": "17980 Celeste Road, Citronelle, AL 36522"
+    },
+    {
+      "id": "vRH14fbo7zSBp3ue4EQc",
+      "name": "A Servant's Love",
+      "phone": "(251) 895-6967",
+      "website": null,
+      "address": "2200 Cody Road South, Mobile, AL 36695"
+    },
+    {
+      "id": "vTXMSzr18jhqZ99QRQWL",
+      "name": "Wings of Life",
+      "phone": "(251) 432-5245",
+      "website": null,
+      "address": "800 St. Louis Street, Mobile, AL 36602"
+    },
+    {
+      "id": "vyHxTkIbN132tMNihSJR",
+      "name": "Mt. Hebron Missionary Baptist Church",
+      "phone": "(251) 457-9900",
+      "website": null,
+      "address": "2531 Berkley Avenue, Mobile, AL 36610"
+    },
+    {
+      "id": "vyy6p1H8FBN5qQvjoJRs",
+      "name": "True Light Missionary Baptist Church",
+      "phone": "(251) 456-3155",
+      "website": null,
+      "address": "2001 West Main Street, Prichard, AL 36610"
+    },
+    {
+      "id": "wbO0S2lVMmC10mIt8Fch",
+      "name": "Outbreak Christian Ministries",
+      "phone": "(251) 287-7059",
+      "website": null,
+      "address": "150 North Craft Hwy, Chickasaw, AL 36611"
+    },
+    {
+      "id": "wwDyT5lwjvBOpPiuOa33",
+      "name": "True Glory Church of the Lord Jesus Christ",
+      "phone": "(251) 457-0900",
+      "website": null,
+      "address": "401 Whistler Street, Prichard, AL 36610"
+    },
+    {
+      "id": "wzBs8nYskwK11gZruc4W",
+      "name": "Regency Church of Christ",
+      "phone": "(251) 345-8050",
+      "website": null,
+      "address": "501 University Boulevard South, Mobile, AL 36609"
+    },
+    {
+      "id": "xt0SgRUWRzg5mGe6bg3L",
+      "name": "New Hope Outreach Ministries",
+      "phone": "(251) 442-7905",
+      "website": null,
+      "address": "1007 Springhill Ave., Mobile, AL 36604"
+    },
+    {
+      "id": "zD7TRUUIaig2iyRlAT77",
+      "name": "The Lift Worldwide Corp",
+      "phone": "(601) 508-8853",
+      "website": null,
+      "address": "19645 3rd North Street, Citronelle, AL 36522"
+    }
+  ]
+}

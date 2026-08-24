@@ -1,0 +1,113 @@
+{
+  "batch": "50",
+  "counties": [
+    "Morgan"
+  ],
+  "rows": [
+    {
+      "id": "3xiYRQ0Qi1cKvbsKkuSo",
+      "name": "Calvary Assembly of God - Decatur Dream Center",
+      "phone": null,
+      "website": null,
+      "address": "312 8th Street SW, Decatur, AL 35601"
+    },
+    {
+      "id": "6YsALjR8FRwavnaF5mQR",
+      "name": "Trinity Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "1281 Old Hwy 24, Trinity, AL 35673"
+    },
+    {
+      "id": "70OtZeJUAQ5H776IogPt",
+      "name": "Life Source",
+      "phone": null,
+      "website": null,
+      "address": "1577 Highway 36 East, Hartselle, AL 35640"
+    },
+    {
+      "id": "9mJE5DQppiREzM9brjCv",
+      "name": "Central Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "2801 Highway 31 South, Decatur, AL 35603"
+    },
+    {
+      "id": "Hip5YLjUbDT1AMLSa0Bg",
+      "name": "Share House",
+      "phone": null,
+      "website": null,
+      "address": "643 Farm Supply Road, Lacey's Spring, AL 35754"
+    },
+    {
+      "id": "KYqjQ59aE1aMISrBkbm4",
+      "name": "Hartselle Church Of The Nazarene",
+      "phone": null,
+      "website": null,
+      "address": "739 W Main St., Hartselle, AL 35640"
+    },
+    {
+      "id": "MbTi36KpSO45HBwZ3YT9",
+      "name": "South Decatur Church of God",
+      "phone": null,
+      "website": null,
+      "address": "3103 Spring Avenue SW, Decatur, AL 35603"
+    },
+    {
+      "id": "PnEzfPW2ts4Pq46LHjDU",
+      "name": "Decatur SDA Church",
+      "phone": null,
+      "website": null,
+      "address": "540 Beltline Road, Decatur, AL 35601"
+    },
+    {
+      "id": "QMSjhVzDveoCGdj8Xrah",
+      "name": "St. Andrew Church of Grace",
+      "phone": null,
+      "website": null,
+      "address": "109 Memorial Drive NW, Decatur, AL 35601"
+    },
+    {
+      "id": "XXkwCd46t4GGWP7kZaUL",
+      "name": "Good Samaritan Food Pantry (Hartselle)",
+      "phone": null,
+      "website": null,
+      "address": "209 Hickory Street SE, Hartselle, AL 35640"
+    },
+    {
+      "id": "XkD353gEFDS9MM81rm1p",
+      "name": "Annunciation of the Lord Catholic Church",
+      "phone": null,
+      "website": null,
+      "address": "3910 Spring Avenue SW, Decatur, AL 35603"
+    },
+    {
+      "id": "ZQ4mDUtvlxrsTyofNxWe",
+      "name": "Hartselle-Decatur SDA Hispanic Church",
+      "phone": null,
+      "website": null,
+      "address": "1708 Vest Road, Hartselle, AL 35640"
+    },
+    {
+      "id": "cLfKu1f9M1bETO8bMtRf",
+      "name": "Salvation Army - Decatur",
+      "phone": null,
+      "website": null,
+      "address": "114 14th St., Decatur, AL 35601"
+    },
+    {
+      "id": "fwC1kLdfrVsxuawDe4Yn",
+      "name": "Committee on Church Cooperation",
+      "phone": null,
+      "website": null,
+      "address": "119 1st Ave NE, Decatur, AL 35601"
+    },
+    {
+      "id": "oFeAozryUjMzdM3Dkl6I",
+      "name": "St. John's Episcopal Church",
+      "phone": null,
+      "website": null,
+      "address": "202 Gordon Drive SE, Decatur, AL 35601"
+    }
+  ]
+}

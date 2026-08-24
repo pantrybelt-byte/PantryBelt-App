@@ -1,0 +1,92 @@
+{
+  "batch": "59",
+  "counties": [
+    "Tuscaloosa"
+  ],
+  "rows": [
+    {
+      "id": "j2pvycOWHhj3ZlOVgxvN",
+      "name": "Maranatha SDA- I Care Food Bank",
+      "phone": "(973) 600-7459",
+      "website": null,
+      "address": "2614 Herman Ave, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "jSx0lAMj9XtK7DNQalIa",
+      "name": "Pleasant Grove Baptist Association-Christian Ministry Center of Brookwood",
+      "phone": "(205) 999-3870",
+      "website": null,
+      "address": "16914 Hwy 216, Brookwood, AL 35444"
+    },
+    {
+      "id": "piaITQTCckZnkp030SAi",
+      "name": "Christian Community Church",
+      "phone": "(205) 248-4400",
+      "website": null,
+      "address": "5600 18th AVE, Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "sBX8Md7IPO7ps0l2y0oW",
+      "name": "Coaling Baptist Church",
+      "phone": "(205) 556-2775",
+      "website": null,
+      "address": "11209 Hagler Coaling Rd, Coaling, AL 35453"
+    },
+    {
+      "id": "sqyAV6Aun9Lmh7m1K3we",
+      "name": "Temporary Emergency Services",
+      "phone": "(205) 758-5535",
+      "website": null,
+      "address": "1705 15th St, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "tb7I5PvlKYAd2sRsUtLe",
+      "name": "Salvation Army-Center of Hope",
+      "phone": "(205) 632-3691",
+      "website": null,
+      "address": "2902 Greensboro Ave, Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "u9uOIrz6GONnClysOzTk",
+      "name": "Grace Church",
+      "phone": null,
+      "website": null,
+      "address": "2112 Hargrove Rd E, Tuscaloosa, AL 35405"
+    },
+    {
+      "id": "v8Y438dLr4zHV2yh5gw7",
+      "name": "Grace Presbyterian Church-Table of Grace",
+      "phone": "(205) 469-7811",
+      "website": null,
+      "address": "201 Hargrove Road, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "vsMfof5h1XeDU3hi9Zto",
+      "name": "First Community Church Outreach",
+      "phone": "(205) 765-5307",
+      "website": null,
+      "address": "2700 18th ST, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "wO0SYqZef50qMnr9TQAB",
+      "name": "New Heights Community Resource Center",
+      "phone": "(205) 759-3534",
+      "website": null,
+      "address": "3834 21st Street, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "wlWl7lVGkHSFVxd0cOst",
+      "name": "Bailey Tabernacle CME Church",
+      "phone": "(205) 799-4795",
+      "website": null,
+      "address": "1117 23rd Ave, Tuscaloosa, AL 35401"
+    },
+    {
+      "id": "wspDI2ll8QBbowuMw7dS",
+      "name": "Saint Vincent De Paul",
+      "phone": "(205) 561-0282",
+      "website": null,
+      "address": "733 James Harrison Jr PKWY E, Tuscaloosa, AL 35476"
+    }
+  ]
+}

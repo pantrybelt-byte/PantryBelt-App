@@ -1,0 +1,22 @@
+{
+  "batch": "03",
+  "counties": [
+    "Baldwin"
+  ],
+  "rows": [
+    {
+      "id": "tfbWEhVmUcQMZuG80tDv",
+      "name": "Foley Hispanic Seventh Day Adventist Church",
+      "phone": "(662) 266-9370",
+      "website": null,
+      "address": "817 North Cedar Street, Foley, AL 36535"
+    },
+    {
+      "id": "wm9Husl9o66t7Y5uFMmf",
+      "name": "Mt. Aid Missionary Baptist Church",
+      "phone": "(251) 626-0020",
+      "website": null,
+      "address": "9470 US Hwy 90, Daphne, AL 36532"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "batch": "16",
+  "counties": [
+    "DeKalb",
+    "Elmore"
+  ],
+  "rows": [
+    {
+      "id": "1MG0XWluHIyrX2IVW4Bu",
+      "name": "Our Lady of the Valley Catholic Church",
+      "phone": null,
+      "website": null,
+      "address": "2910 Gault Ave. N, Fort Payne, AL 35967"
+    },
+    {
+      "id": "CjgxrRrEZFT2ru6qrPNy",
+      "name": "Henagar Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "10240 HWY 40, Henagar, AL 35978"
+    },
+    {
+      "id": "QU1dBFIWOCCh1CNlaGPA",
+      "name": "First Methodist Church-Ft Payne",
+      "phone": null,
+      "website": null,
+      "address": "206 Grand Ave., Ft. Payne, AL 35967"
+    },
+    {
+      "id": "RhR2OgQZeOxBgxCBn8nu",
+      "name": "St. Joseph on the Mountain",
+      "phone": null,
+      "website": null,
+      "address": "21145 Scenic Drive, Mentone, AL 35984"
+    },
+    {
+      "id": "lwIx2QRrtGjJbyUPLknD",
+      "name": "Bread of Life",
+      "phone": null,
+      "website": null,
+      "address": "100 Alabama Avenue NW, Fort Payne, AL 35967"
+    },
+    {
+      "id": "oHtPbBiamdFGJZJo0UaT",
+      "name": "Upper Sand Mountain Parish",
+      "phone": null,
+      "website": null,
+      "address": "24474 Alabama Hwy. 75, Sylvania, AL 35988"
+    },
+    {
+      "id": "4R8OJYKZcKA8k0zYbhKQ",
+      "name": "Lake Elam Missionary Baptist Church",
+      "phone": "(334) 221-3226",
+      "website": null,
+      "address": "4060 Gober Rd., Millbrook, AL 36054"
+    },
+    {
+      "id": "5F7asmVfSsDGlW0ENPLO",
+      "name": "Mt. Zion Chapel AME Zion",
+      "phone": "(334) 324-3682",
+      "website": null,
+      "address": "2493 Crenshaw Road, Wetumpka, AL 36092"
+    },
+    {
+      "id": "7IgMEeuvngihwIxUZ1yx",
+      "name": "Elmore County Food Pantry",
+      "phone": "(334) 567-3232",
+      "website": null,
+      "address": "515 W. Boundary St., Wetumpka, AL 36092"
+    },
+    {
+      "id": "CfizBnu2lZX9GuCSCRjJ",
+      "name": "Jackson Chapel AME Zion Church",
+      "phone": "(334) 322-5239",
+      "website": null,
+      "address": "4885 Coosada Road, Coosada, AL 36020"
+    },
+    {
+      "id": "OvDMfH5Tzdg5W1sGpZ2A",
+      "name": "Holy Assembly of Jesus",
+      "phone": "(205) 283-7948",
+      "website": null,
+      "address": "417 Gossom Pass, Wetumpka, AL 36092"
+    },
+    {
+      "id": "PA5MMeYQlhUuuEyzSRi2",
+      "name": "Courts of Praise",
+      "phone": "(334) 799-7590",
+      "website": null,
+      "address": "4717 Coosada Parkway, Elmore, AL 36025"
+    },
+    {
+      "id": "XR9E6id7oMLWNTJxT0Lf",
+      "name": "Iglesia del Nazareno Monantial de Vida",
+      "phone": "(786) 616-5046",
+      "website": null,
+      "address": "3251 Browns Rd., Millbrook, AL 36054"
+    }
+  ]
+}

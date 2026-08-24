@@ -1,0 +1,127 @@
+{
+  "batch": "44",
+  "counties": [
+    "Mobile"
+  ],
+  "rows": [
+    {
+      "id": "DgzLZEcuCLTh5Yzz4BVG",
+      "name": "St. James Major Parish",
+      "phone": "(251) 456-6842",
+      "website": null,
+      "address": "714 North College Street, Prichard, AL 36610"
+    },
+    {
+      "id": "EbyZgteFAT8fDFKbBwVL",
+      "name": "Airport Boulevard Baptist Church",
+      "phone": "(251) 342-3280",
+      "website": null,
+      "address": "6301 Airport Boulevard, Mobile, AL 36608"
+    },
+    {
+      "id": "FkxFRTSoNyntiJgJro0K",
+      "name": "First Baptist Church of Dawes",
+      "phone": "(251) 633-7331",
+      "website": null,
+      "address": "3941 Dawes Road, Mobile, AL 36695"
+    },
+    {
+      "id": "GdGXmUth0cMqhRpE42SZ",
+      "name": "Bayou Recovery Project",
+      "phone": "(251) 824-1550",
+      "website": null,
+      "address": "8720 Downey Street, Bayou La Batre, AL 36509"
+    },
+    {
+      "id": "HErpyiQQ2ENKH26iwDf6",
+      "name": "First Baptist Tillman's Corner",
+      "phone": "(251) 661-0114",
+      "website": null,
+      "address": "5660 Three Notch Road, Mobile, AL 36619"
+    },
+    {
+      "id": "HZycpWzqqaAGzCzs9EC5",
+      "name": "Central Presbyterian Church",
+      "phone": "(251) 432-0591",
+      "website": null,
+      "address": "1260 Dauphin Street, Mobile, AL 36604"
+    },
+    {
+      "id": "HrJl5EdMO8EJMvEkQPRQ",
+      "name": "South Alabama Worship Center",
+      "phone": "(251) 721-8610",
+      "website": null,
+      "address": "2811 Schillinger Road South, Semmes, AL 36575"
+    },
+    {
+      "id": "I4QkzdNYQ6QjFll7KPcd",
+      "name": "St. Vincent DePaul Conference of the St. Vincent De Paul Society",
+      "phone": "(251) 223-7947",
+      "website": null,
+      "address": "6625 Three Notch Road, Mobile, AL 36619"
+    },
+    {
+      "id": "INgU2cyL6fyLRfFiidV3",
+      "name": "Providence Presbyterian Church",
+      "phone": "(256) 405-8697",
+      "website": null,
+      "address": "2320 Schillinger Road South, Mobile, AL 36695"
+    },
+    {
+      "id": "IOe7UsGlACZLTEvFNJXV",
+      "name": "Salvation Army",
+      "phone": "(251) 438-1625",
+      "website": null,
+      "address": "1009 Dauphin Street, Mobile, AL 36604"
+    },
+    {
+      "id": "K4F7I261zW1DKc1sxzdt",
+      "name": "First Baptist Church of Baltimore Street",
+      "phone": "(251) 433-8492",
+      "website": null,
+      "address": "1200 Baltimore Street, Mobile, AL 36605"
+    },
+    {
+      "id": "O4jZoalOd1LVqGQhXy0J",
+      "name": "Waterfront Rescue Mission",
+      "phone": "(251) 433-1847",
+      "website": null,
+      "address": "279-A North Washington Ave., Mobile, AL 36603"
+    },
+    {
+      "id": "PWFDdhknvGbUOLNqpuQK",
+      "name": "The New Pleasant View Baptist Church",
+      "phone": "(251) 456-2374",
+      "website": null,
+      "address": "1517 Katye St., Mobile, AL 36617"
+    },
+    {
+      "id": "PWpxW1nGy4tzJMFeDAUr",
+      "name": "Mulherin Custodial Home",
+      "phone": "(251) 471-1998",
+      "website": null,
+      "address": "2496 Halls Mill Road, Mobile, AL 36606"
+    },
+    {
+      "id": "Q7xKhjk34m140LEwNHv9",
+      "name": "Calvary Baptist Church",
+      "phone": "(251) 866-7501",
+      "website": null,
+      "address": "21276 Highway 45, Citronelle, AL 36522"
+    },
+    {
+      "id": "QLDItuywkzk7atlbuRCQ",
+      "name": "St. Mark United Methodist Church Society of St. Stephen",
+      "phone": "(251) 342-5861",
+      "website": null,
+      "address": "439 Azalea Road, Mobile, AL 36609"
+    },
+    {
+      "id": "Qk0SAOPLk4MgQhdUBxiF",
+      "name": "Azalea City Church of Christ",
+      "phone": "(251) 649-2436",
+      "website": null,
+      "address": "3550 Schillinger Road North, Semmes, AL 36575"
+    }
+  ]
+}

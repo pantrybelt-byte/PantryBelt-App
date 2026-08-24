@@ -1,0 +1,64 @@
+{
+  "batch": "32",
+  "counties": [
+    "Lawrence"
+  ],
+  "rows": [
+    {
+      "id": "1AV1Q2w28JQpqB4egPEV",
+      "name": "Living Way Apostolic Church",
+      "phone": null,
+      "website": null,
+      "address": "4430 Alabama Hwy 20, Town Creek, AL 35672"
+    },
+    {
+      "id": "2kXPzVzxoKQC620DmBh9",
+      "name": "Mt. Hope Baptist Church",
+      "phone": null,
+      "website": null,
+      "address": "7771 County Road 23, Mt. Hope, AL 35651"
+    },
+    {
+      "id": "6maUiNjFTHGrcambTQCQ",
+      "name": "Lawrence County Dream Center",
+      "phone": null,
+      "website": null,
+      "address": "1167 County Road 265, Town Creek, AL 35672"
+    },
+    {
+      "id": "FxtDh4M93xdFcpmF5OYC",
+      "name": "The Helping Hand",
+      "phone": null,
+      "website": null,
+      "address": "23271 Ala. Hwy. 157, Town Creek, AL 35672"
+    },
+    {
+      "id": "R1rCnyLFiqMRjwGXUr31",
+      "name": "Foster Outreach Ministries",
+      "phone": null,
+      "website": null,
+      "address": "407 Tennessee St, Courtland, AL 35618"
+    },
+    {
+      "id": "R6gLS7FxSMNZNUr2LngT",
+      "name": "Moulton Dream Center",
+      "phone": null,
+      "website": null,
+      "address": "14055 Al Hwy 157, Moulton, AL 35650"
+    },
+    {
+      "id": "RDsvRWf2vgNUaml1jU7k",
+      "name": "The Good Samaritan",
+      "phone": null,
+      "website": null,
+      "address": "144 Medical Circle, Moulton, AL 35650"
+    },
+    {
+      "id": "cQXW2C3txHIDR5BNyHs1",
+      "name": "Oak Grove FCM Church",
+      "phone": null,
+      "website": null,
+      "address": "284 Co. Rd. 356, Trinity, AL 35673"
+    }
+  ]
+}

@@ -1,0 +1,554 @@
+[
+  {
+    "id": "oNAmVHQE9ulYSPGogIPt",
+    "name": "All Saints Kingdom Church",
+    "phone": "(334) 322-2198",
+    "website": null,
+    "address": "4732 Narrow Lane Rd, Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "5jrqFyIs9PBCiZNz6nGW",
+    "name": "Amazing Grace Health Ministries, Inc.",
+    "phone": "(334) 590-2812",
+    "website": null,
+    "address": "5911 Monticello Dr, Montgomery, AL 36117",
+    "verified": false
+  },
+  {
+    "id": "2OgsuC5f1ftetDquFetF",
+    "name": "Beacon Light Ministries",
+    "phone": "(334) 262-8382",
+    "website": null,
+    "address": "874 Martha St., Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "xdSgQe5fR5Qqf0PLbSOH",
+    "name": "Beulah Baptist Church",
+    "phone": "(334) 265-2697",
+    "website": null,
+    "address": ", Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "2QuZ3qxN4kOIbDZyJtVg",
+    "name": "Bible Verse Church",
+    "phone": "(334) 245-3447",
+    "website": null,
+    "address": "2601 East S. Blvd., Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "qsvgFXWBZV31BXbSGPFj",
+    "name": "Catholic Social Services",
+    "phone": "(334) 288-8890",
+    "website": null,
+    "address": ", Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "3CFxBamdMRHWXRNLVxTu",
+    "name": "Catoma Baptist Church",
+    "phone": "(334) 265-2881",
+    "website": null,
+    "address": ", Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "2f6qJLf5yNzCJ7UlzoWa",
+    "name": "Church of Christ",
+    "phone": "(334) 265-2253",
+    "website": null,
+    "address": ", Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "ZVx3oJpk131ldIGZ5BHW",
+    "name": "Church of the Ascension",
+    "phone": "(334) 462-5166",
+    "website": null,
+    "address": "315 Clanton Ave., Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "vaO4h9whQuEWMfmQqmdn",
+    "name": "Church of the Highlands",
+    "phone": "(256) 848-4292",
+    "website": null,
+    "address": "4255 Taylor Rd., Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "gLX1awXVXvX2ayhLJKJR",
+    "name": "Community of Hope",
+    "phone": "(334) 235-2634",
+    "website": null,
+    "address": ", Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "WvNYrYKm4qwPLOyDxQGQ",
+    "name": "Dalraida Church of Christ",
+    "phone": "(706) 616-2694",
+    "website": null,
+    "address": "3740 Atlanta Highway, Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "aPPZ3vCsED97JrgrI071",
+    "name": "Dalraida United Methodist Church",
+    "phone": "(334) 272-2190",
+    "website": null,
+    "address": ", Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "gBhqc7UImceKonD2qFUD",
+    "name": "East Lake Community Development",
+    "phone": "(205) 639-5083",
+    "website": null,
+    "address": "135 S. Panama St., Montgomery, AL 36107",
+    "verified": false
+  },
+  {
+    "id": "PS3wotg27xes7bMdPcUp",
+    "name": "Eastern Hills Baptist Church",
+    "phone": "(334) 538-1136",
+    "website": null,
+    "address": "3604 Pleasant Ridge Rd., Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "o5c3O5pUwA2gGFv9mbF8",
+    "name": "Episcopal Church of the Holy Comforter",
+    "phone": "(334) 281-1337",
+    "website": null,
+    "address": ", Montgomery, AL 36111",
+    "verified": false
+  },
+  {
+    "id": "2Dxzn8HFcdrTRNR9i3yf",
+    "name": "Eternal Fountain Ministries",
+    "phone": "(706) 304-7527",
+    "website": null,
+    "address": "3368 Harrison Rd., Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "jvYpAPiqYLVa91BNljFr",
+    "name": "Evangel Church",
+    "phone": "(334) 233-6569",
+    "website": null,
+    "address": "3975 Vaughn Road, Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "LAjr15rXcGKf5jU2nN6K",
+    "name": "Family Guidance Center of Alabama",
+    "phone": "(334) 270-4100",
+    "website": null,
+    "address": ", Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "S9OawMShN0rymTy8bbj9",
+    "name": "FBC Community Ministries",
+    "phone": "(334) 241-5141",
+    "website": null,
+    "address": "380 Arba Street, Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "gQJGmtyCAAoZnTBQyIyX",
+    "name": "Feeding the Multitude",
+    "phone": "(334) 387-2563",
+    "website": null,
+    "address": "Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "UDBkk8kAz9a05xCoDHw2",
+    "name": "First Baptist Church - Greater Washington Park",
+    "phone": "(334) 467-4181",
+    "website": null,
+    "address": "2813 E. 3rd St., Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "6lFquHuKRXqboEiA92Ht",
+    "name": "First Baptist Church Community Ministries",
+    "phone": "(334) 262-2273",
+    "website": null,
+    "address": ", Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "6PO4ASilX9OcbKc6EWBc",
+    "name": "First Baptist Church Mission Center",
+    "phone": "(334) 263-6369",
+    "website": null,
+    "address": ", Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "bYBmOfugbvbSADHW0Jj8",
+    "name": "First Christian Church",
+    "phone": "(334) 546-1178",
+    "website": null,
+    "address": "1705 Taylor Road, Montgomery, AL 36117",
+    "verified": false
+  },
+  {
+    "id": "XY4NamEy9yTieTbN1n0y",
+    "name": "First Montgomery S.D.A. Church",
+    "phone": "(334) 669-7803",
+    "website": null,
+    "address": "4233 Atlanta Highway, Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "H1f0DSdjDPHiak7XNGdQ",
+    "name": "Forest Park Baptist Ministry Center",
+    "phone": "(334) 269-5726",
+    "website": null,
+    "address": ", Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "wn5dpPntDHkh6TdBKCDA",
+    "name": "Frazer Community Ministries",
+    "phone": "(334) 260-3656",
+    "website": null,
+    "address": "Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "JMhwRiC5Sjvqn51FuBtY",
+    "name": "Freewill Baptist Church",
+    "phone": "(334) 262-2205",
+    "website": null,
+    "address": ", Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "UUjazLiQFsbv9YP4QGGf",
+    "name": "Fresh Oil Revival Center",
+    "phone": "(334) 531-0057",
+    "website": null,
+    "address": "6004-D E. Shirley Lane, Montgomery, AL 36105",
+    "verified": false
+  },
+  {
+    "id": "00wRhSviyITKfRKOfaLo",
+    "name": "Grace Community Church",
+    "phone": "(334) 652-4723",
+    "website": null,
+    "address": ", Montgomery, AL 36123",
+    "verified": false
+  },
+  {
+    "id": "WjRk7dFEwsXsK7hiEeJc",
+    "name": "Hands of Christ Ministry",
+    "phone": "(334) 262-6438",
+    "website": null,
+    "address": "Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "Glz6k65UsRQARa9ua5Mx",
+    "name": "Heart of Alabama Food Bank",
+    "phone": "(334) 263-3784",
+    "website": "https://hafb.org",
+    "address": "521 Trade Center St, Montgomery, AL, Montgomery, AL",
+    "verified": true
+  },
+  {
+    "id": "DYGi7Ex7ORK0dcAuARzz",
+    "name": "Holt Street Church of Christ",
+    "phone": "(334) 265-2253",
+    "website": null,
+    "address": ", Montgomery, AL 36105",
+    "verified": false
+  },
+  {
+    "id": "58Rbezz7rdWnzPHTHkas",
+    "name": "Holy Spirit Catholic Church",
+    "phone": "(334) 546-9252",
+    "website": null,
+    "address": "8570 Vaughn Rd, Montgomery, AL 36117",
+    "verified": false
+  },
+  {
+    "id": "S5VDh8C1jwUJDYIcAxl5",
+    "name": "Jericho A.M.E. Zion Church",
+    "phone": "(334) 284-3354",
+    "website": null,
+    "address": "5251 Hobbie Road, Snowdoun, AL 36105",
+    "verified": false
+  },
+  {
+    "id": "z1hI11PRjhgduMavp1Mg",
+    "name": "King Hill Baptist Family Life Center",
+    "phone": "(334) 262-1260",
+    "website": null,
+    "address": ", Montgomery, AL 36107",
+    "verified": false
+  },
+  {
+    "id": "tX1I09PtyDpNL6PE93lY",
+    "name": "Lord Saving Many Solutions",
+    "phone": "(334) 440-6071",
+    "website": null,
+    "address": "935 Early St., Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "lL3JuY3fApV9dpqeOoGn",
+    "name": "Love Center Full Gospel",
+    "phone": "(770) 907-9877",
+    "website": null,
+    "address": ", Montgomery, AL 36111",
+    "verified": false
+  },
+  {
+    "id": "pmyulmt5U0nWV2uIuMJn",
+    "name": "Love Loud River Region",
+    "phone": "(334) 271-2525",
+    "website": null,
+    "address": "Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "ldOSLukb1pGBze2DKE2A",
+    "name": "Maggie Street Missionary Baptist Church",
+    "phone": "(334) 590-2558",
+    "website": null,
+    "address": "642 Maggie Street, Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "6a5OFiKxdcV3C16RZQKV",
+    "name": "MBA Love Loud (Mobile)",
+    "phone": "(334) 269-5726",
+    "website": null,
+    "address": "20 Interstate Park Dr., Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "EYh1rCuePrwAUHRNuhuq",
+    "name": "MBA- Love Loud- Montgomery County",
+    "phone": "(334) 269-5726",
+    "website": null,
+    "address": "1551 East Ann Street, Montgomery, AL 36107",
+    "verified": false
+  },
+  {
+    "id": "88GG6Cl7DkYoIhARRGJw",
+    "name": "Mercy House",
+    "phone": "(334) 649-1534",
+    "website": null,
+    "address": ", Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "OKqL9xexSDU9A5lATSem",
+    "name": "Metropolitan United Methodist Church",
+    "phone": "(334) 263-0950",
+    "website": null,
+    "address": "3091 Gaston Avenue, Montgomery, AL 36105",
+    "verified": false
+  },
+  {
+    "id": "V1P1q1ksi26J3MK5fKVl",
+    "name": "Mount Zion A M E Zion Church",
+    "phone": "(334) 265-9361",
+    "website": null,
+    "address": ", Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "EJDb9mua1py0w4yb8iVU",
+    "name": "New Harvest Church of Christ",
+    "phone": "(334) 286-8000",
+    "website": null,
+    "address": ", Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "eZIhgyEZ8eTDIcWkOGd5",
+    "name": "New Providence Baptist Church -- Ramer",
+    "phone": "(334) 558-6613",
+    "website": null,
+    "address": "15840 Woodley Rd., Ramer, AL 36064",
+    "verified": false
+  },
+  {
+    "id": "xGsznl1ytwqc8K59kr91",
+    "name": "Newtown Church of Christ",
+    "phone": "(334) 262-5519",
+    "website": null,
+    "address": ", Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "YP2RtAgowxEI8AKZFH0R",
+    "name": "Old Augusta Baptist Church",
+    "phone": "(334) 279-7245",
+    "website": null,
+    "address": ", Montgomery, AL 36117",
+    "verified": false
+  },
+  {
+    "id": "rS00RJkGnPG3GH7sd0QL",
+    "name": "Old Mount Pleasant Missionary Baptist Church",
+    "phone": "(334) 467-0793",
+    "website": null,
+    "address": "25169 Troy Hwy., Pine Level, AL 36065",
+    "verified": false
+  },
+  {
+    "id": "cC8CVnLEP3R589plNwEe",
+    "name": "Paul Outreach Service",
+    "phone": "(334) 233-0771",
+    "website": null,
+    "address": ", Montgomery, AL 36108",
+    "verified": false
+  },
+  {
+    "id": "vrPhxAceOlayyB2aZ0ji",
+    "name": "Pilgrim Rest Baptist Church",
+    "phone": "(334) 265-1807",
+    "website": null,
+    "address": ", Montgomery, AL 36107",
+    "verified": false
+  },
+  {
+    "id": "pB83lyW3RtFsuKbULaId",
+    "name": "Reaching Out Mission Outreach (St. Jude the Apostle)",
+    "phone": "(334) 277-0182",
+    "website": null,
+    "address": ", Montgomery, AL 36107",
+    "verified": false
+  },
+  {
+    "id": "FkyCBpAcxEjxPOLakqyK",
+    "name": "Resurrection Catholic Missions",
+    "phone": "(334) 230-1961",
+    "website": null,
+    "address": ", Montgomery, AL 36110",
+    "verified": false
+  },
+  {
+    "id": "J2ciiZZxQ8RvpOzVBkoC",
+    "name": "Salvation Army (Montgomery River Region)",
+    "phone": "(334) 801-8258",
+    "website": null,
+    "address": "4250 Lomac St., Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "nYhVYKPcrNSc0RcZxJKK",
+    "name": "Seventh Day Adventist Church",
+    "phone": "(334) 277-4164",
+    "website": null,
+    "address": ", Montgomery, AL 36109",
+    "verified": false
+  },
+  {
+    "id": "p42kNfjf05gkoSjkWa51",
+    "name": "Shepherds Ministries, Inc",
+    "phone": "(334) 288-6650",
+    "website": null,
+    "address": ", Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "i7jxQcH4u6cDPBkTJJSo",
+    "name": "Snowdoun Baptist Church",
+    "phone": "(334) 315-3499",
+    "website": null,
+    "address": "6564 Norman Bridge Road, Montgomery, AL 36105",
+    "verified": false
+  },
+  {
+    "id": "rBM55mNLnxMnXBgKXshx",
+    "name": "St Johns A M E Church",
+    "phone": "(334) 265-4136",
+    "website": null,
+    "address": ", Montgomery, AL 36104",
+    "verified": false
+  },
+  {
+    "id": "F0ikqmmeh0nMgl7PDq16",
+    "name": "St. Bede Catholic Church",
+    "phone": "(334) 272-3463",
+    "website": null,
+    "address": "Montgomery, AL, Montgomery, AL",
+    "verified": false
+  },
+  {
+    "id": "mY3r5pKMGYrDiQPt9f9o",
+    "name": "St. James Missionary Baptist Church",
+    "phone": "(334) 657-3290",
+    "website": null,
+    "address": "491 St. James Church Loop, Pike Road, AL 36064",
+    "verified": false
+  },
+  {
+    "id": "ktn6zMLcohSfsBebpppR",
+    "name": "St. Margaret's Services, Inc.",
+    "phone": "(334) 233-9688",
+    "website": null,
+    "address": "4455 Narrow Lane Road, Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "ukoSRnDVWcK6IqPyflPg",
+    "name": "St. Paul AME Church",
+    "phone": "(334) 324-2931",
+    "website": null,
+    "address": "706 East Patton St., Montgomery, AL 36111",
+    "verified": false
+  },
+  {
+    "id": "JOb1t4wSBvFTQyvPYygJ",
+    "name": "Sunshine Ministries, Inc",
+    "phone": "(334) 669-2010",
+    "website": null,
+    "address": "2750 Tremont Street, Montgomery, AL 36110",
+    "verified": false
+  },
+  {
+    "id": "0ptce1gKG5vbkxkzCswZ",
+    "name": "True Divine Community Development, Inc.",
+    "phone": "(334) 220-4582",
+    "website": null,
+    "address": "4601 Troy Highway, Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "Rr7UXhMGRGXvm7tDgilN",
+    "name": "We Care Ministries",
+    "phone": "(334) 832-9511",
+    "website": null,
+    "address": ", Montgomery, AL 36106",
+    "verified": false
+  },
+  {
+    "id": "uJ4NgpLafrfJV2lrADkR",
+    "name": "Westside Church of Christ",
+    "phone": "(334) 543-6837",
+    "website": null,
+    "address": "1301 East South Boulevard, Montgomery, AL 36116",
+    "verified": false
+  },
+  {
+    "id": "QdpZdrgTla7eFyd1YLAs",
+    "name": "Woodland Methodist Church",
+    "phone": "(334) 301-1445",
+    "website": null,
+    "address": "4428 Wallahatchie Rd., Pike Road, AL 36064",
+    "verified": false
+  }
+]

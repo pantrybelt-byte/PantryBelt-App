@@ -1,0 +1,114 @@
+{
+  "batch": "52",
+  "counties": [
+    "Randolph",
+    "Russell"
+  ],
+  "rows": [
+    {
+      "id": "58nKNUAbf3fBwPKUYJW0",
+      "name": "Favored Families Food Pantry",
+      "phone": null,
+      "website": null,
+      "address": ", AL"
+    },
+    {
+      "id": "PnLr10R6rr7gHnx0uwzi",
+      "name": "Wedowee Lighthouse Community Kitchen",
+      "phone": null,
+      "website": null,
+      "address": "17 2nd Street West, Wedowee, AL 36278"
+    },
+    {
+      "id": "YeYoVtXpW4hCNVsyLxXv",
+      "name": "Community Life Church",
+      "phone": "(334) 863-5433",
+      "website": null,
+      "address": "220 County Road 79, Roanoke, AL 36274"
+    },
+    {
+      "id": "iAU9rLe5rCxpWqJ6b5Kp",
+      "name": "Wadley Cooperative Parish",
+      "phone": "(334) 646-2365",
+      "website": null,
+      "address": "393 Highland Avenue, Wadley, AL 36276"
+    },
+    {
+      "id": "qG2YufBV71IxAVyjNEsr",
+      "name": "Roanoke First Methodist Church",
+      "phone": "(334) 863-2253",
+      "website": null,
+      "address": "806 Main Street, Roanoke, AL 36274"
+    },
+    {
+      "id": "1sAzWkohrD87PJI6jwr6",
+      "name": "Lakewood Baptist Church",
+      "phone": "(334) 298-6433",
+      "website": "https://www.lbcpc.org/outreach",
+      "address": "4011 Lakewood Dr, Phenix City, AL, Phenix City, AL"
+    },
+    {
+      "id": "31CVInQljNsghg889kod",
+      "name": "Church On The Rock",
+      "phone": null,
+      "website": null,
+      "address": "4 Crawford Church Road, Phenix City, AL 36869"
+    },
+    {
+      "id": "3XAXcEWWGPCQW9ypGbvo",
+      "name": "Bethlehem Missionary Baptist Church",
+      "phone": "(334) 298-1403",
+      "website": null,
+      "address": "3694 US Highway 80 West, Phenix City, AL 36869"
+    },
+    {
+      "id": "4EWelLqeYFetqIKGLeeg",
+      "name": "St. Patrick Lazarus Pantry",
+      "phone": "(334) 298-8552",
+      "website": "https://stpatsphenixcity.org/news/lazarus-outreach-center",
+      "address": "607 16th Street, Phenix City, AL, Phenix City, AL"
+    },
+    {
+      "id": "MgIHywoYvIjltxFj2A1O",
+      "name": "John 23rd Center",
+      "phone": "(334) 667-7362",
+      "website": null,
+      "address": "16 Sussex Street, Hurtsboro, AL, Hurtsboro, AL"
+    },
+    {
+      "id": "OHHe6MgKJ1CITzQcRR59",
+      "name": "Open Door Tabernacle",
+      "phone": "(334) 703-6548",
+      "website": null,
+      "address": "2089 Lee Rd 42, Opelika, AL, Opelika, AL"
+    },
+    {
+      "id": "QzFHHAQ4LZ7gAhQMgTok",
+      "name": "Potter's House Baptist",
+      "phone": "(334) 298-4416",
+      "website": null,
+      "address": "124 Highway 165, Phenix City, AL, Phenix City, AL"
+    },
+    {
+      "id": "Vcmte8v2ystNaVDTVoPM",
+      "name": "Phenix City SDA Church",
+      "phone": "334-298-951",
+      "website": null,
+      "address": "4016 US-80 West, Phenix City, AL 36870"
+    },
+    {
+      "id": "wbG3AGKwenYm6b8TgcIG",
+      "name": "Summerville Baptist Church",
+      "phone": "(334) 298-4416",
+      "website": null,
+      "address": "3500 Summerville Road, Phenix City, AL 36867"
+    },
+    {
+      "id": "zJ7OGqzOnSkQWngW6h0l",
+      "name": "Children & Family Connection",
+      "phone": "(334) 448-1010",
+      "website": null,
+      "address": "910 13th Street, Phenix City, AL 36868"
+    }
+  ]
+}

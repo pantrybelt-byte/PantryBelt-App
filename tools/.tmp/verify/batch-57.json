@@ -1,0 +1,78 @@
+{
+  "batch": "57",
+  "counties": [
+    "Tallapoosa"
+  ],
+  "rows": [
+    {
+      "id": "0ibtuLGeZ6D8698Mwi0U",
+      "name": "Food Pantry of the First Baptist Church Dadeville",
+      "phone": "(334) 559-8053",
+      "website": null,
+      "address": "178 Tallassee Street, Dadeville, AL 36853"
+    },
+    {
+      "id": "0nj4TGnRlN4417jzwBWk",
+      "name": "First Universalist Church of Camp Hill",
+      "phone": "(334) 497-0868",
+      "website": null,
+      "address": "Camp Hill, AL 36850"
+    },
+    {
+      "id": "4JNCBOL4BJurFw3BkmnC",
+      "name": "House of Restoration Pentecostal Church",
+      "phone": "(256) 524-0951",
+      "website": null,
+      "address": "519 Slaughter Avenue, Camp Hill, AL 36850"
+    },
+    {
+      "id": "FapJ4ERjgbnsB57xVmaj",
+      "name": "Loaves & Fishes Ministry",
+      "phone": null,
+      "website": null,
+      "address": "337 Hatcher Street, Dadeville, AL 36853"
+    },
+    {
+      "id": "HtdQjffafzhoTr72hwE0",
+      "name": "Family Worship Center of Alex City",
+      "phone": "(256) 392-4331",
+      "website": null,
+      "address": "427 E. Church Street, Alexander City, AL 35010"
+    },
+    {
+      "id": "JwWYp1453fmEj0EUuRk4",
+      "name": "River of Life Worship Center",
+      "phone": null,
+      "website": null,
+      "address": "1715 Tallapoosa Street, Alexander City, AL 35010"
+    },
+    {
+      "id": "bGpv9UKJn4p8cbN2AxEJ",
+      "name": "Carrville Baptist Church",
+      "phone": "(334) 283-2221",
+      "website": null,
+      "address": "2436 Notasulga Road, Tallassee, AL 36078"
+    },
+    {
+      "id": "kljcW1mnQQZR6Gz0J8zQ",
+      "name": "Early Rose Missionary Baptist Church",
+      "phone": "(256) 794-0952",
+      "website": null,
+      "address": "57 E Street, Alexander City, AL 35010"
+    },
+    {
+      "id": "tCltp0eY3oynoOovznTj",
+      "name": "Tallapoosa Christian Crisis Center",
+      "phone": "(256) 329-3327",
+      "website": null,
+      "address": "4425 Dadeville Road, Alexander City, AL 35011"
+    },
+    {
+      "id": "zLwNmo3VlZf3GM2tc4t4",
+      "name": "Pentecostals of Dadeville",
+      "phone": "(256) 596-3411",
+      "website": null,
+      "address": "800 Horseshoe Bend Road, Dadeville, AL 36853"
+    }
+  ]
+}
