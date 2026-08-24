@@ -323,7 +323,7 @@ export default function MapScreen() {
     if (loading) return (
         <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
             <ActivityIndicator size="large" color="#b52525" />
-            <Text style={[styles.loadingText, { color: theme.subtext }]}>Loading pantries from Firebase...</Text>
+            <Text style={[styles.loadingText, { color: theme.subtext }]}>Finding pantries near you!</Text>
         </View>
     );
 
@@ -353,7 +353,7 @@ export default function MapScreen() {
                 showsBuildings
                 pitchEnabled
                 rotateEnabled
-                camera={DEFAULT_CAMERA}
+                initialCamera={DEFAULT_CAMERA}
                 onMapReady={() => setMapReady(true)}
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
