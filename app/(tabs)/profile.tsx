@@ -231,6 +231,24 @@ export default function ProfileScreen() {
                 ))}
             </View>
 
+            {/* Legal */}
+            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Legal</Text>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
+                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/privacy-policy')}>
+                    <View style={styles.linkTextWrap}>
+                        <Text style={[styles.linkText, { color: theme.text }]}>Privacy Policy</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/terms-of-service')}>
+                    <View style={styles.linkTextWrap}>
+                        <Text style={[styles.linkText, { color: theme.text }]}>Terms of Service</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+            </View>
+
             {/* About */}
             <View style={[styles.aboutCard, { backgroundColor: theme.card }]}>
                 <Text style={[styles.aboutTitle, { color: theme.text }]}>About AccessBelt</Text>
