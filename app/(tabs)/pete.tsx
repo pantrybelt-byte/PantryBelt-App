@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import {
-    Alert,
     Image,
     ImageBackground,
     KeyboardAvoidingView,
@@ -48,7 +47,7 @@ const RESPONSES: Record<string, string> = {
         "Selma\n" +
         "Selma Area Food Bank — (334) 872-4114\n" +
         "American Red Cross Selma — (334) 875-7565\n\n" +
-        "Use the Map tab to see all 884 pantries across 67 Alabama counties with directions. Need urgent help? Call 211 — free, 24/7.",
+        "Use the Map tab to see all 40+ pantries with directions. Need urgent help? Call 211 — free, 24/7.",
 
     snap_ebt:
         "SNAP (also called food stamps or EBT) can help your family buy groceries each month.\n\n" +
@@ -279,18 +278,16 @@ export default function PeteScreen() {
             >
 
             {/* Header */}
-            <View style={[styles.header, { backgroundColor: theme.card, borderBottomColor: theme.border }]}>
+            <View style={styles.header}>
                 <Image source={require('../../assets/pete.png')} style={styles.avatar} resizeMode="cover" />
                 <View style={styles.headerText}>
-                    <Text style={[styles.headerName, { color: theme.text }]}>Pete</Text>
+                    <Text style={styles.headerName}>Pete</Text>
                     <Text style={styles.headerStatus}>● Powered by Gemini AI</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.callBtn}
                     onPress={async () => {
-                        Linking.openURL('tel:211').catch(() => {
-                            Alert.alert('Calling not supported on this device', 'Dial 211 from any phone — free, 24/7.');
-                        });
+                        Linking.openURL('tel:211');
                         // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
                         const county = await getLastKnownCounty();
                         logReferral('emergency_211', 'pete', county);
@@ -334,9 +331,7 @@ export default function PeteScreen() {
                                             {p.phone && (
                                                 <TouchableOpacity
                                                     style={styles.pantryCallRow}
-                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, '')).catch(() => {
-                                                        Alert.alert('Calling not supported on this device', `Dial ${p.phone} from your phone.`);
-                                                    })}
+                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, ''))}
                                                 >
                                                     <Ionicons name="call-outline" size={13} color="#16a34a" />
                                                     <Text style={styles.pantryCallText}>{p.phone}</Text>
@@ -357,7 +352,7 @@ export default function PeteScreen() {
                                         </TouchableOpacity>
                                     ) : (
                                         <Text style={[styles.pantryFooterText, { color: theme.subtext }]}>
-                                            See all 884 pantries across 67 Alabama counties with directions on the Map tab. Need urgent help? Call 211 — free, 24/7.
+                                            See all 40+ pantries with directions on the Map tab. Need urgent help? Call 211 — free, 24/7.
                                         </Text>
                                     )}
                                 </View>
@@ -383,7 +378,7 @@ export default function PeteScreen() {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={[styles.quickWrap, { backgroundColor: theme.card, borderTopColor: theme.border }]}
+                style={styles.quickWrap}
                 contentContainerStyle={styles.quickContent}
             >
                 {QUICK_QUESTIONS.map(q => (

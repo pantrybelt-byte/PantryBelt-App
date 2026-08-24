@@ -1,0 +1,860 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - link "Skip to main content" [ref=f1e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - complementary "Dashboard sidebar" [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - generic [ref=f1e8]:
+          - generic [ref=f1e9]:
+            - generic [ref=f1e10]: AB
+            - generic [ref=f1e12]:
+              - generic [ref=f1e13]: AccessBelt
+              - text: Analytics
+          - button "Collapse sidebar" [ref=f1e14] [cursor=pointer]
+        - navigation "Main navigation" [ref=f1e17]:
+          - list [ref=f1e18]:
+            - listitem [ref=f1e19]:
+              - heading "Analytics" [level=2] [ref=f1e20]
+              - list "Analytics" [ref=f1e21]:
+                - listitem [ref=f1e22]:
+                  - link "Overview" [ref=f1e23] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=f1e30]:
+                  - link "Demographics" [ref=f1e31] [cursor=pointer]:
+                    - /url: /demographics
+                - listitem [ref=f1e38]:
+                  - link "Food Deserts" [ref=f1e39] [cursor=pointer]:
+                    - /url: /food-deserts
+                - listitem [ref=f1e43]:
+                  - link "Pantry Interactions" [ref=f1e44] [cursor=pointer]:
+                    - /url: /interactions
+            - listitem [ref=f1e52]:
+              - heading "Insights" [level=2] [ref=f1e53]
+              - list "Insights" [ref=f1e54]:
+                - listitem [ref=f1e55]:
+                  - link "Most Requested" [ref=f1e56] [cursor=pointer]:
+                    - /url: /most-requested
+            - listitem [ref=f1e64]:
+              - heading "Modules" [level=2] [ref=f1e65]
+              - list "Modules" [ref=f1e66]:
+                - listitem [ref=f1e67]:
+                  - link "SDOH & Medicaid" [ref=f1e68] [cursor=pointer]:
+                    - /url: /modules/sdoh
+                - listitem [ref=f1e73]:
+                  - link "IRS CHNA Audit, locked add-on module" [ref=f1e74] [cursor=pointer]:
+                    - /url: /modules/chna
+                    - generic [ref=f1e78]: IRS CHNA Audit
+                - listitem [ref=f1e82]:
+                  - link "Corporate CSR, locked add-on module" [ref=f1e83] [cursor=pointer]:
+                    - /url: /modules/csr
+                    - generic [ref=f1e88]: Corporate CSR
+                - listitem [ref=f1e92]:
+                  - link "Disaster Logistics" [ref=f1e93] [cursor=pointer]:
+                    - /url: /modules/disaster
+            - listitem [ref=f1e100]:
+              - heading "Reports" [level=2] [ref=f1e101]
+              - list "Reports" [ref=f1e102]:
+                - listitem [ref=f1e103]:
+                  - link "Reports & Export" [ref=f1e104] [cursor=pointer]:
+                    - /url: /reports
+            - listitem [ref=f1e109]:
+              - heading "Account" [level=2] [ref=f1e110]
+              - list "Account" [ref=f1e111]:
+                - listitem [ref=f1e112]:
+                  - link "Plan & Modules" [ref=f1e113] [cursor=pointer]:
+                    - /url: /billing
+                - listitem [ref=f1e117]:
+                  - link "Settings" [ref=f1e118] [cursor=pointer]:
+                    - /url: /settings
+      - button "Sign out" [ref=f1e124] [cursor=pointer]
+    - generic [ref=f1e129]:
+      - banner [ref=f1e130]:
+        - generic [ref=f1e131]:
+          - generic [ref=f1e133]:
+            - generic [ref=f1e134]:
+              - heading "Food Deserts" [level=1] [ref=f1e135]
+              - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f1e136] [cursor=pointer]':
+                - generic [ref=f1e138]: Demo Data
+                - status [ref=f1e144]
+              - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f1e146] [cursor=pointer]':
+                - generic [ref=f1e150]: As USDA Food & Nutrition Service
+            - paragraph [ref=f1e153]: Food access analysis by county & census tract
+            - paragraph [ref=f1e154]: Scoped to Lowndes County
+          - generic [ref=f1e155]:
+            - button "Grant & Impact" [ref=f1e157] [cursor=pointer]
+            - button "Copy a link to this view, including the current filters" [ref=f1e163] [cursor=pointer]:
+              - generic [ref=f1e170]: Share
+            - button "Notifications, 1 unread" [ref=f1e172] [cursor=pointer]
+            - button "Account menu for Dr. Patricia Hawkins" [ref=f1e178] [cursor=pointer]:
+              - generic [ref=f1e179]: DPH
+              - generic [ref=f1e180]:
+                - generic [ref=f1e181]: Dr. Patricia Hawkins
+                - generic [ref=f1e182]: United Way River Region
+        - generic [ref=f1e185]:
+          - generic [ref=f1e186]:
+            - generic [ref=f1e187]: Limit the dashboard to a single county
+            - combobox "Limit the dashboard to a single county" [ref=f1e192] [cursor=pointer]:
+              - option "All Assigned Counties (Central Alabama River Region)"
+              - option "Montgomery County"
+              - option "Autauga County"
+              - option "Elmore County"
+              - option "Lowndes County" [selected]
+              - option "Macon County"
+              - option "Dallas County"
+              - option "Wilcox County"
+              - option "Perry County"
+          - generic [ref=f1e194]:
+            - group "Reporting period" [ref=f1e195]:
+              - button "Last 7 days" [ref=f1e198] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=f1e199] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=f1e200] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=f1e201] [cursor=pointer]: YTD
+              - button "Custom" [ref=f1e202] [cursor=pointer]
+            - button "Compare against the previous period" [ref=f1e203] [cursor=pointer]:
+              - generic [ref=f1e209]: Compare
+              - generic [ref=f1e210]: against the previous period
+      - main [ref=f1e211]:
+        - generic [ref=f1e219]:
+          - generic [ref=f1e220]:
+            - generic [ref=f1e225]:
+              - heading "Alabama Food Desert Vulnerability Index" [level=2] [ref=f1e226]
+              - paragraph [ref=f1e227]: 67-county vector heatmap and GIS pantry pins, derived from USDA and Census access metrics.
+            - generic [ref=f1e228]:
+              - generic [ref=f1e229]:
+                - button "County Choropleth" [ref=f1e230] [cursor=pointer]
+                - button "GIS Pantry Map" [ref=f1e235] [cursor=pointer]
+              - button "Export CSV" [ref=f1e238] [cursor=pointer]
+          - generic [ref=f1e242]:
+            - generic [ref=f1e243]:
+              - generic [ref=f1e244]: Location pin integrity
+              - generic [ref=f1e245]:
+                - generic [ref=f1e246]: Level 3 field verified pin
+                - generic [ref=f1e250]: "18"
+                - generic [ref=f1e251]: Level 2 satellite pin dragged
+                - generic [ref=f1e258]: "7"
+                - generic [ref=f1e259]: Level 1 unverified address
+                - generic [ref=f1e262]: "3"
+            - generic [ref=f1e263]: 92.8% of Black Belt locations satellite-confirmed
+          - generic [ref=f1e264]:
+            - generic [ref=f1e270]:
+              - paragraph [ref=f1e271]: "12"
+              - paragraph [ref=f1e272]: Critical Zones (< 25 Access Score)
+            - generic [ref=f1e279]:
+              - paragraph [ref=f1e280]: "19"
+              - paragraph [ref=f1e281]: At-Risk Alabama Counties
+            - generic [ref=f1e288]:
+              - paragraph [ref=f1e289]: 7.9 mi
+              - paragraph [ref=f1e290]: Statewide Avg Pantry Distance
+          - region [ref=f1e291]:
+            - generic [ref=f1e293]:
+              - heading "Interactive Alabama County Heatmap" [level=2] [ref=f1e294]
+              - paragraph [ref=f1e295]: Albers equal-area projection · Hover or focus a county to inspect metrics · Select one to expand its detail below
+            - generic [ref=f1e296]:
+              - generic [ref=f1e297]:
+                - group "Choose which metric shades the map" [ref=f1e298]:
+                  - generic [ref=f1e300]: "Shading metric:"
+                  - button "Food Access Score" [pressed] [ref=f1e301] [cursor=pointer]
+                  - button "Poverty Rate (%)" [ref=f1e302] [cursor=pointer]
+                  - button "Nearest Pantry Distance" [ref=f1e303] [cursor=pointer]
+                - generic [ref=f1e304]:
+                  - generic [ref=f1e305]:
+                    - generic [ref=f1e308]: Filter counties by region
+                    - combobox "Filter counties by region" [ref=f1e309] [cursor=pointer]:
+                      - option "All 67 counties" [selected]
+                      - option "River Region (primary focus)"
+                      - option "River Region & Black Belt"
+                      - option "Critical zones only (< 25)"
+                  - generic [ref=f1e310]:
+                    - generic [ref=f1e311]: Search counties by name, abbreviation or ZIP code
+                    - searchbox "Search counties by name, abbreviation or ZIP code" [ref=f1e312]
+              - generic [ref=f1e313]:
+                - generic [ref=f1e314]:
+                  - button "Zoom in" [ref=f1e315] [cursor=pointer]
+                  - button "Zoom out" [disabled] [ref=f1e319]
+                  - button "Reset zoom to whole state" [ref=f1e323] [cursor=pointer]
+                - generic [ref=f1e327]: Alabama · 67 counties
+                - paragraph [ref=f1e330]: 67 of 67 counties shown, 12 in critical status.
+                - generic [ref=f1e331]:
+                  - group "Alabama food access by county" [ref=f1e332]:
+                    - button "Greene County. Food access score 16 out of 100, Critical. Population 7,700. Poverty rate 36.4 percent. Nearest pantry 15.8 miles. 1 active pantry. Top need Fresh Produce Box." [ref=f1e334] [cursor=pointer]:
+                      - generic: Gre
+                    - button "Sumter County. Food access score 17 out of 100, Critical. Population 12,300. Poverty rate 35.2 percent. Nearest pantry 14.5 miles. 1 active pantry. Top need White Rice (5lb)." [ref=f1e336] [cursor=pointer]:
+                      - generic: Sum
+                    - button "Wilcox County. Food access score 17 out of 100, Critical. Population 10,600. Poverty rate 33.6 percent. Nearest pantry 15.8 miles. 1 active pantry. Top need Fresh Produce Box." [ref=f1e338] [cursor=pointer]:
+                      - generic: Wil
+                    - button "Montgomery County. Food access score 18 out of 100, Critical. Population 228,954. Poverty rate 19.4 percent. Nearest pantry 3.2 miles. 8 active pantries. Top need Canned Black Beans." [ref=f1e340] [cursor=pointer]:
+                      - generic: Mon
+                    - button "Lowndes County. Food access score 18 out of 100, Critical. Population 9,726. Poverty rate 34.8 percent. Nearest pantry 14.2 miles. 1 active pantry. Top need Fresh Produce Box." [ref=f1e342] [cursor=pointer]:
+                      - generic: Low
+                    - button "Perry County. Food access score 19 out of 100, Critical. Population 8,520. Poverty rate 35.1 percent. Nearest pantry 13.8 miles. 1 active pantry. Top need Cooking Oil." [ref=f1e344] [cursor=pointer]:
+                      - generic: Per
+                    - button "Baldwin County. Food access score 19 out of 100, Critical. Population 239,000. Poverty rate 9.8 percent. Nearest pantry 3.8 miles. 9 active pantries. Top need Fresh Produce Box." [ref=f1e346] [cursor=pointer]:
+                      - generic: Bal
+                    - button "Hale County. Food access score 21 out of 100, Critical. Population 14,700. Poverty rate 27.4 percent. Nearest pantry 12.8 miles. 2 active pantries. Top need Canned Black Beans." [ref=f1e348] [cursor=pointer]:
+                      - generic: Hal
+                    - button "Tuscaloosa County. Food access score 22 out of 100, Critical. Population 227,000. Poverty rate 21.8 percent. Nearest pantry 4.8 miles. 9 active pantries. Top need Infant Formula." [ref=f1e350] [cursor=pointer]:
+                      - generic: Tus
+                    - button "Mobile County. Food access score 22 out of 100, Critical. Population 414,254. Poverty rate 18.9 percent. Nearest pantry 3.5 miles. 14 active pantries. Top need Canned Black Beans." [ref=f1e352] [cursor=pointer]:
+                      - generic: Mob
+                    - button "Shelby County. Food access score 23 out of 100, Critical. Population 223,000. Poverty rate 8.2 percent. Nearest pantry 3.1 miles. 11 active pantries. Top need Fresh Apples." [ref=f1e354] [cursor=pointer]:
+                      - generic: She
+                    - button "Macon County. Food access score 24 out of 100, Critical. Population 18,068. Poverty rate 31.2 percent. Nearest pantry 11.8 miles. 2 active pantries. Top need Rice." [ref=f1e356] [cursor=pointer]:
+                      - generic: Mac
+                    - button "Houston County. Food access score 26 out of 100, At Risk. Population 107,202. Poverty rate 22.4 percent. Nearest pantry 4.8 miles. 6 active pantries. Top need Infant Formula." [ref=f1e358] [cursor=pointer]:
+                      - generic: Hou
+                    - button "Lee County. Food access score 27 out of 100, At Risk. Population 174,000. Poverty rate 20.1 percent. Nearest pantry 3.8 miles. 8 active pantries. Top need Whole Milk." [ref=f1e360] [cursor=pointer]:
+                      - generic: Lee
+                    - button "Coosa County. Food access score 28 out of 100, At Risk. Population 10,700. Poverty rate 22.4 percent. Nearest pantry 12.4 miles. 1 active pantry. Top need Canned Soup." [ref=f1e362] [cursor=pointer]:
+                      - generic: Coo
+                    - button "Conecuh County. Food access score 29 out of 100, At Risk. Population 11,200. Poverty rate 28.1 percent. Nearest pantry 12.4 miles. 1 active pantry. Top need Rice (5lb)." [ref=f1e364] [cursor=pointer]:
+                      - generic: Con
+                    - button "Dallas County. Food access score 31 out of 100, At Risk. Population 38,462. Poverty rate 28.6 percent. Nearest pantry 8.4 miles. 3 active pantries. Top need Frozen Meals." [active] [ref=f1e366] [cursor=pointer]:
+                      - generic: Dal
+                    - button "Pickens County. Food access score 32 out of 100, At Risk. Population 19,100. Poverty rate 24.8 percent. Nearest pantry 11.2 miles. 2 active pantries. Top need Rice (5lb)." [ref=f1e368] [cursor=pointer]:
+                      - generic: Pic
+                    - button "Clarke County. Food access score 34 out of 100, At Risk. Population 23,000. Poverty rate 23.2 percent. Nearest pantry 10.8 miles. 2 active pantries. Top need Eggs (1 dozen)." [ref=f1e370] [cursor=pointer]:
+                      - generic: Cla
+                    - button "Dale County. Food access score 34 out of 100, At Risk. Population 49,300. Poverty rate 18.2 percent. Nearest pantry 6.2 miles. 4 active pantries. Top need Fresh Apples." [ref=f1e372] [cursor=pointer]:
+                      - generic: Dal
+                    - button "Geneva County. Food access score 34 out of 100, At Risk. Population 26,600. Poverty rate 21.5 percent. Nearest pantry 9.1 miles. 2 active pantries. Top need Canned Meat." [ref=f1e374] [cursor=pointer]:
+                      - generic: Gen
+                    - button "Calhoun County. Food access score 35 out of 100, At Risk. Population 113,600. Poverty rate 21.4 percent. Nearest pantry 6.8 miles. 6 active pantries. Top need Peanut Butter." [ref=f1e376] [cursor=pointer]:
+                      - generic: Cal
+                    - button "Barbour County. Food access score 35 out of 100, At Risk. Population 24,800. Poverty rate 26.5 percent. Nearest pantry 9.8 miles. 2 active pantries. Top need Rice." [ref=f1e378] [cursor=pointer]:
+                      - generic: Bar
+                    - button "Monroe County. Food access score 35 out of 100, At Risk. Population 20,600. Poverty rate 26.1 percent. Nearest pantry 11.2 miles. 2 active pantries. Top need Fresh Vegetables." [ref=f1e380] [cursor=pointer]:
+                      - generic: Mon
+                    - button "Escambia County. Food access score 35 out of 100, At Risk. Population 36,700. Poverty rate 22.9 percent. Nearest pantry 8.4 miles. 3 active pantries. Top need Peanut Butter." [ref=f1e382] [cursor=pointer]:
+                      - generic: Esc
+                    - button "Russell County. Food access score 36 out of 100, At Risk. Population 59,100. Poverty rate 21.2 percent. Nearest pantry 6.5 miles. 4 active pantries. Top need Frozen Chicken." [ref=f1e384] [cursor=pointer]:
+                      - generic: Rus
+                    - button "Coffee County. Food access score 36 out of 100, At Risk. Population 53,400. Poverty rate 16.8 percent. Nearest pantry 5.8 miles. 4 active pantries. Top need Whole Milk." [ref=f1e386] [cursor=pointer]:
+                      - generic: Cof
+                    - button "Walker County. Food access score 37 out of 100, At Risk. Population 63,500. Poverty rate 20.2 percent. Nearest pantry 7.9 miles. 4 active pantries. Top need Fresh Apples." [ref=f1e388] [cursor=pointer]:
+                      - generic: Wal
+                    - button "Pike County. Food access score 37 out of 100, At Risk. Population 33,000. Poverty rate 24.2 percent. Nearest pantry 7.2 miles. 3 active pantries. Top need Chicken Breasts." [ref=f1e390] [cursor=pointer]:
+                      - generic: Pik
+                    - button "Etowah County. Food access score 38 out of 100, At Risk. Population 102,400. Poverty rate 19.4 percent. Nearest pantry 7.2 miles. 5 active pantries. Top need Canned Black Beans." [ref=f1e392] [cursor=pointer]:
+                      - generic: Eto
+                    - button "Talladega County. Food access score 39 out of 100, At Risk. Population 79,800. Poverty rate 20.8 percent. Nearest pantry 7.4 miles. 5 active pantries. Top need Ground Beef." [ref=f1e394] [cursor=pointer]:
+                      - generic: Tal
+                    - button "Clay County. Food access score 42 out of 100, Moderate. Population 13,200. Poverty rate 19.2 percent. Nearest pantry 10.2 miles. 2 active pantries. Top need Canned Black Beans." [ref=f1e396] [cursor=pointer]:
+                      - generic: Cla
+                    - button "Lamar County. Food access score 43 out of 100, Moderate. Population 13,800. Poverty rate 19.5 percent. Nearest pantry 9.5 miles. 2 active pantries. Top need Whole Wheat Bread." [ref=f1e398] [cursor=pointer]:
+                      - generic: Lam
+                    - button "Winston County. Food access score 44 out of 100, Moderate. Population 23,600. Poverty rate 19.1 percent. Nearest pantry 8.4 miles. 2 active pantries. Top need Canned Meat." [ref=f1e400] [cursor=pointer]:
+                      - generic: Win
+                    - button "Fayette County. Food access score 45 out of 100, Moderate. Population 16,300. Poverty rate 18.9 percent. Nearest pantry 8.8 miles. 2 active pantries. Top need Eggs (1 dozen)." [ref=f1e402] [cursor=pointer]:
+                      - generic: Fay
+                    - button "Marion County. Food access score 46 out of 100, Moderate. Population 29,800. Poverty rate 18.5 percent. Nearest pantry 7.8 miles. 3 active pantries. Top need White Rice (5lb)." [ref=f1e404] [cursor=pointer]:
+                      - generic: Mar
+                    - button "Randolph County. Food access score 46 out of 100, Moderate. Population 22,700. Poverty rate 18.1 percent. Nearest pantry 9.2 miles. 3 active pantries. Top need Fresh Vegetables." [ref=f1e406] [cursor=pointer]:
+                      - generic: Ran
+                    - button "Cherokee County. Food access score 47 out of 100, Moderate. Population 25,000. Poverty rate 17.1 percent. Nearest pantry 8.1 miles. 2 active pantries. Top need Infant Formula." [ref=f1e408] [cursor=pointer]:
+                      - generic: Che
+                    - button "Lawrence County. Food access score 48 out of 100, Moderate. Population 33,100. Poverty rate 17.4 percent. Nearest pantry 7.5 miles. 3 active pantries. Top need Peanut Butter." [ref=f1e410] [cursor=pointer]:
+                      - generic: Law
+                    - button "Cleburne County. Food access score 48 out of 100, Moderate. Population 14,900. Poverty rate 17.9 percent. Nearest pantry 9.1 miles. 2 active pantries. Top need Canned Soup." [ref=f1e412] [cursor=pointer]:
+                      - generic: Cle
+                    - button "Choctaw County. Food access score 48 out of 100, Moderate. Population 12,600. Poverty rate 21.8 percent. Nearest pantry 12.1 miles. 1 active pantry. Top need Canned Meat." [ref=f1e414] [cursor=pointer]:
+                      - generic: Cho
+                    - button "DeKalb County. Food access score 49 out of 100, Moderate. Population 71,800. Poverty rate 18.2 percent. Nearest pantry 6.1 miles. 4 active pantries. Top need Whole Wheat Bread." [ref=f1e416] [cursor=pointer]:
+                      - generic: DeK
+                    - button "Chambers County. Food access score 49 out of 100, Moderate. Population 33,200. Poverty rate 19.8 percent. Nearest pantry 7.8 miles. 3 active pantries. Top need Whole Milk." [ref=f1e418] [cursor=pointer]:
+                      - generic: Cha
+                    - button "Franklin County. Food access score 51 out of 100, Moderate. Population 32,100. Poverty rate 17.8 percent. Nearest pantry 6.9 miles. 3 active pantries. Top need Ground Beef." [ref=f1e420] [cursor=pointer]:
+                      - generic: Fra
+                    - button "Tallapoosa County. Food access score 51 out of 100, Moderate. Population 41,200. Poverty rate 18.6 percent. Nearest pantry 6.9 miles. 3 active pantries. Top need Chicken Breasts." [ref=f1e422] [cursor=pointer]:
+                      - generic: Tal
+                    - button "Washington County. Food access score 51 out of 100, Moderate. Population 16,100. Poverty rate 19.8 percent. Nearest pantry 11.8 miles. 2 active pantries. Top need Canned Soup." [ref=f1e424] [cursor=pointer]:
+                      - generic: Was
+                    - button "Jackson County. Food access score 52 out of 100, Moderate. Population 52,500. Poverty rate 16.8 percent. Nearest pantry 6.8 miles. 4 active pantries. Top need Canned Black Beans." [ref=f1e426] [cursor=pointer]:
+                      - generic: Jac
+                    - button "Bibb County. Food access score 52 out of 100, Moderate. Population 22,100. Poverty rate 17.5 percent. Nearest pantry 8.2 miles. 2 active pantries. Top need Peanut Butter." [ref=f1e428] [cursor=pointer]:
+                      - generic: Bib
+                    - button "Marengo County. Food access score 52 out of 100, Moderate. Population 18,800. Poverty rate 24.1 percent. Nearest pantry 10.4 miles. 2 active pantries. Top need Whole Milk." [ref=f1e430] [cursor=pointer]:
+                      - generic: Mar
+                    - button "Henry County. Food access score 52 out of 100, Moderate. Population 17,200. Poverty rate 18.8 percent. Nearest pantry 8.5 miles. 2 active pantries. Top need Canned Black Beans." [ref=f1e432] [cursor=pointer]:
+                      - generic: Hen
+                    - button "Covington County. Food access score 53 out of 100, Moderate. Population 37,000. Poverty rate 19.8 percent. Nearest pantry 7.8 miles. 3 active pantries. Top need Ground Beef." [ref=f1e434] [cursor=pointer]:
+                      - generic: Cov
+                    - button "Jefferson County. Food access score 54 out of 100, Moderate. Population 674,721. Poverty rate 16.1 percent. Nearest pantry 2.8 miles. 22 active pantries. Top need Chicken Breasts." [ref=f1e436] [cursor=pointer]:
+                      - generic: Jef
+                    - button "Bullock County. Food access score 54 out of 100, Moderate. Population 10,100. Poverty rate 29.8 percent. Nearest pantry 11.5 miles. 1 active pantry. Top need Canned Soup." [ref=f1e438] [cursor=pointer]:
+                      - generic: Bul
+                    - button "Crenshaw County. Food access score 54 out of 100, Moderate. Population 13,800. Poverty rate 20.5 percent. Nearest pantry 9.1 miles. 2 active pantries. Top need Whole Wheat Bread." [ref=f1e440] [cursor=pointer]:
+                      - generic: Cre
+                    - button "Marshall County. Food access score 56 out of 100, Moderate. Population 97,600. Poverty rate 16.5 percent. Nearest pantry 5.2 miles. 5 active pantries. Top need Canned Soup." [ref=f1e442] [cursor=pointer]:
+                      - generic: Mar
+                    - button "Butler County. Food access score 56 out of 100, Moderate. Population 19,000. Poverty rate 25.4 percent. Nearest pantry 8.9 miles. 2 active pantries. Top need Peanut Butter." [ref=f1e444] [cursor=pointer]:
+                      - generic: But
+                    - button "Chilton County. Food access score 57 out of 100, Moderate. Population 45,000. Poverty rate 16.2 percent. Nearest pantry 5.9 miles. 4 active pantries. Top need Fresh Peaches." [ref=f1e446] [cursor=pointer]:
+                      - generic: Chi
+                    - button "Blount County. Food access score 58 out of 100, Moderate. Population 59,100. Poverty rate 14.6 percent. Nearest pantry 5.5 miles. 4 active pantries. Top need Canned Tuna." [ref=f1e448] [cursor=pointer]:
+                      - generic: Blo
+                    - button "Colbert County. Food access score 61 out of 100, Adequate. Population 57,200. Poverty rate 15.1 percent. Nearest pantry 4.8 miles. 4 active pantries. Top need White Rice (5lb)." [ref=f1e450] [cursor=pointer]:
+                      - generic: Col
+                    - button "Autauga County. Food access score 62 out of 100, Adequate. Population 58,805. Poverty rate 12.8 percent. Nearest pantry 4.8 miles. 3 active pantries. Top need Infant Formula." [ref=f1e452] [cursor=pointer]:
+                      - generic: Aut
+                    - button "Cullman County. Food access score 63 out of 100, Adequate. Population 89,100. Poverty rate 13.1 percent. Nearest pantry 4.2 miles. 6 active pantries. Top need Fresh Vegetables." [ref=f1e454] [cursor=pointer]:
+                      - generic: Cul
+                    - button "St. Clair County. Food access score 64 out of 100, Adequate. Population 91,100. Poverty rate 12.9 percent. Nearest pantry 4.5 miles. 5 active pantries. Top need Whole Milk." [ref=f1e456] [cursor=pointer]:
+                      - generic: St.
+                    - button "Morgan County. Food access score 65 out of 100, Adequate. Population 123,000. Poverty rate 13.8 percent. Nearest pantry 3.5 miles. 8 active pantries. Top need Eggs (1 dozen)." [ref=f1e458] [cursor=pointer]:
+                      - generic: Mor
+                    - button "Lauderdale County. Food access score 68 out of 100, Adequate. Population 93,500. Poverty rate 14.2 percent. Nearest pantry 4.1 miles. 6 active pantries. Top need Fresh Apples." [ref=f1e460] [cursor=pointer]:
+                      - generic: Lau
+                    - button "Elmore County. Food access score 71 out of 100, Adequate. Population 87,977. Poverty rate 10.2 percent. Nearest pantry 5.1 miles. 4 active pantries. Top need Canned Soup." [ref=f1e462] [cursor=pointer]:
+                      - generic: Elm
+                    - button "Limestone County. Food access score 74 out of 100, Adequate. Population 107,000. Poverty rate 11.5 percent. Nearest pantry 3.2 miles. 7 active pantries. Top need Whole Milk." [ref=f1e464] [cursor=pointer]:
+                      - generic: Lim
+                    - button "Madison County. Food access score 79 out of 100, Adequate. Population 388,153. Poverty rate 11.4 percent. Nearest pantry 2.1 miles. 14 active pantries. Top need Chicken Breasts." [ref=f1e466] [cursor=pointer]:
+                      - generic: Mad
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - heading "Dallas County" [level=4]
+                          - generic: River Region · FIPS 01047
+                        - generic: At Risk
+                      - generic:
+                        - generic: "31"
+                        - generic: / 100 food access score
+                      - generic:
+                        - generic:
+                          - paragraph: Population
+                          - paragraph: 38,462
+                        - generic:
+                          - paragraph: Below poverty
+                          - paragraph: 28.6%
+                        - generic:
+                          - paragraph: Nearest pantry
+                          - paragraph: 8.4 mi
+                        - generic:
+                          - paragraph: Active pantries
+                          - paragraph: "3"
+                      - generic:
+                        - generic: "Top need:"
+                        - generic: Frozen Meals
+                - generic [ref=f1e468]:
+                  - generic [ref=f1e469]:
+                    - generic [ref=f1e470]: "Severity scale:"
+                    - generic [ref=f1e471]: Critical (< 25)
+                    - generic [ref=f1e474]: At risk (25–39)
+                    - generic [ref=f1e477]: Moderate (40–59)
+                    - generic [ref=f1e480]: Adequate (60+)
+                  - generic [ref=f1e483]: Hover or focus a county for its metrics · Arrow keys navigate · Enter opens detail
+          - region [ref=f1e484]:
+            - generic [ref=f1e485]:
+              - generic [ref=f1e486]:
+                - heading "Food Access Score by County (Lowest to Highest)" [level=2] [ref=f1e487]
+                - paragraph [ref=f1e488]: Lower scores indicate severe food desert vulnerability
+              - button "Export CSV" [ref=f1e490] [cursor=pointer]
+            - application [ref=f1e497]:
+              - generic [ref=f1e566]:
+                - generic [ref=f1e567]:
+                  - generic [ref=f1e568]: Greene
+                  - generic [ref=f1e570]: Sumter
+                  - generic [ref=f1e572]: Wilcox
+                  - generic [ref=f1e574]: Montgomery
+                  - generic [ref=f1e576]: Lowndes
+                  - generic [ref=f1e578]: Perry
+                  - generic [ref=f1e580]: Baldwin
+                  - generic [ref=f1e582]: Hale
+                  - generic [ref=f1e584]: Tuscaloosa
+                  - generic [ref=f1e586]: Mobile
+                  - generic [ref=f1e588]: Shelby
+                  - generic [ref=f1e590]: Macon
+                  - generic [ref=f1e592]: Houston
+                  - generic [ref=f1e594]: Lee
+                  - generic [ref=f1e596]: Coosa
+                  - generic [ref=f1e598]: Conecuh
+                  - generic [ref=f1e600]: Dallas
+                  - generic [ref=f1e602]: Pickens
+                  - generic [ref=f1e604]: Clarke
+                  - generic [ref=f1e606]: Dale
+                - generic [ref=f1e608]:
+                  - generic [ref=f1e609]: "0"
+                  - generic [ref=f1e611]: "25"
+                  - generic [ref=f1e613]: "50"
+                  - generic [ref=f1e615]: "75"
+                  - generic [ref=f1e617]: "100"
+          - region [ref=f1e619]:
+            - generic [ref=f1e621]:
+              - heading "County Census Metrics & ZIP Tracts" [level=2] [ref=f1e622]
+              - paragraph [ref=f1e623]: Click any county in the heatmap to view metrics
+            - generic [ref=f1e624]:
+              - button [ref=f1e626] [cursor=pointer]:
+                - generic [ref=f1e629]:
+                  - paragraph [ref=f1e630]: Greene County (Gre.)
+                  - paragraph [ref=f1e631]: "Black Belt · Pop. 7,700 · ZIPs: 35462, 35443"
+                - generic [ref=f1e633]:
+                  - paragraph [ref=f1e634]: 16/100
+                  - text: Critical
+              - button [ref=f1e638] [cursor=pointer]:
+                - generic [ref=f1e641]:
+                  - paragraph [ref=f1e642]: Sumter County (Sum.)
+                  - paragraph [ref=f1e643]: "Black Belt · Pop. 12,300 · ZIPs: 35470, 35460"
+                - generic [ref=f1e645]:
+                  - paragraph [ref=f1e646]: 17/100
+                  - text: Critical
+              - button [ref=f1e650] [cursor=pointer]:
+                - generic [ref=f1e653]:
+                  - paragraph [ref=f1e654]: Wilcox County (Wil.)
+                  - paragraph [ref=f1e655]: "Black Belt · Pop. 10,600 · ZIPs: 36726, 36769, 36728"
+                - generic [ref=f1e657]:
+                  - paragraph [ref=f1e658]: 17/100
+                  - text: Critical
+              - button [ref=f1e662] [cursor=pointer]:
+                - generic [ref=f1e665]:
+                  - paragraph [ref=f1e666]: Montgomery County (Mon.)
+                  - paragraph [ref=f1e667]: "River Region · Pop. 228,954 · ZIPs: 36104, 36116, 36108"
+                - generic [ref=f1e669]:
+                  - paragraph [ref=f1e670]: 18/100
+                  - text: Critical
+              - button [ref=f1e674] [cursor=pointer]:
+                - generic [ref=f1e677]:
+                  - paragraph [ref=f1e678]: Lowndes County (Low.)
+                  - paragraph [ref=f1e679]: "River Region · Pop. 9,726 · ZIPs: 36040, 36032, 36047"
+                - generic [ref=f1e681]:
+                  - paragraph [ref=f1e682]: 18/100
+                  - text: Critical
+              - button [ref=f1e686] [cursor=pointer]:
+                - generic [ref=f1e689]:
+                  - paragraph [ref=f1e690]: Perry County (Per.)
+                  - paragraph [ref=f1e691]: "River Region · Pop. 8,520 · ZIPs: 36756, 36793"
+                - generic [ref=f1e693]:
+                  - paragraph [ref=f1e694]: 19/100
+                  - text: Critical
+              - button [ref=f1e698] [cursor=pointer]:
+                - generic [ref=f1e701]:
+                  - paragraph [ref=f1e702]: Baldwin County (Bal.)
+                  - paragraph [ref=f1e703]: "South Alabama · Pop. 239,000 · ZIPs: 36532, 36542"
+                - generic [ref=f1e705]:
+                  - paragraph [ref=f1e706]: 19/100
+                  - text: Critical
+              - button [ref=f1e710] [cursor=pointer]:
+                - generic [ref=f1e713]:
+                  - paragraph [ref=f1e714]: Hale County (Hal.)
+                  - paragraph [ref=f1e715]: "Black Belt · Pop. 14,700 · ZIPs: 36744, 36773"
+                - generic [ref=f1e717]:
+                  - paragraph [ref=f1e718]: 21/100
+                  - text: Critical
+              - button [ref=f1e722] [cursor=pointer]:
+                - generic [ref=f1e725]:
+                  - paragraph [ref=f1e726]: Tuscaloosa County (Tus.)
+                  - paragraph [ref=f1e727]: "Central Alabama · Pop. 227,000 · ZIPs: 35401, 35404"
+                - generic [ref=f1e729]:
+                  - paragraph [ref=f1e730]: 22/100
+                  - text: Critical
+              - button [ref=f1e734] [cursor=pointer]:
+                - generic [ref=f1e737]:
+                  - paragraph [ref=f1e738]: Mobile County (Mob.)
+                  - paragraph [ref=f1e739]: "South Alabama · Pop. 414,254 · ZIPs: 36602, 36608"
+                - generic [ref=f1e741]:
+                  - paragraph [ref=f1e742]: 22/100
+                  - text: Critical
+              - button [ref=f1e746] [cursor=pointer]:
+                - generic [ref=f1e749]:
+                  - paragraph [ref=f1e750]: Shelby County (She.)
+                  - paragraph [ref=f1e751]: "Central Alabama · Pop. 223,000 · ZIPs: 35124, 35043"
+                - generic [ref=f1e753]:
+                  - paragraph [ref=f1e754]: 23/100
+                  - text: Critical
+              - button [ref=f1e758] [cursor=pointer]:
+                - generic [ref=f1e761]:
+                  - paragraph [ref=f1e762]: Macon County (Mac.)
+                  - paragraph [ref=f1e763]: "River Region · Pop. 18,068 · ZIPs: 36083, 36089"
+                - generic [ref=f1e765]:
+                  - paragraph [ref=f1e766]: 24/100
+                  - text: Critical
+              - button [ref=f1e770] [cursor=pointer]:
+                - generic [ref=f1e773]:
+                  - paragraph [ref=f1e774]: Houston County (Hou.)
+                  - paragraph [ref=f1e775]: "South Alabama · Pop. 107,202 · ZIPs: 36301, 36303"
+                - generic [ref=f1e777]:
+                  - paragraph [ref=f1e778]: 26/100
+                  - text: At Risk
+              - button [ref=f1e782] [cursor=pointer]:
+                - generic [ref=f1e785]:
+                  - paragraph [ref=f1e786]: Lee County (Lee.)
+                  - paragraph [ref=f1e787]: "Central Alabama · Pop. 174,000 · ZIPs: 36801, 36830"
+                - generic [ref=f1e789]:
+                  - paragraph [ref=f1e790]: 27/100
+                  - text: At Risk
+              - button [ref=f1e794] [cursor=pointer]:
+                - generic [ref=f1e797]:
+                  - paragraph [ref=f1e798]: Coosa County (Coo.)
+                  - paragraph [ref=f1e799]: "Central Alabama · Pop. 10,700 · ZIPs: 35089, 35072"
+                - generic [ref=f1e801]:
+                  - paragraph [ref=f1e802]: 28/100
+                  - text: At Risk
+              - button [ref=f1e806] [cursor=pointer]:
+                - generic [ref=f1e809]:
+                  - paragraph [ref=f1e810]: Conecuh County (Con.)
+                  - paragraph [ref=f1e811]: "South Alabama · Pop. 11,200 · ZIPs: 36401, 36439"
+                - generic [ref=f1e813]:
+                  - paragraph [ref=f1e814]: 29/100
+                  - text: At Risk
+              - button [ref=f1e818] [cursor=pointer]:
+                - generic [ref=f1e821]:
+                  - paragraph [ref=f1e822]: Dallas County (Dal.)
+                  - paragraph [ref=f1e823]: "River Region · Pop. 38,462 · ZIPs: 36701, 36703"
+                - generic [ref=f1e825]:
+                  - paragraph [ref=f1e826]: 31/100
+                  - text: At Risk
+              - button [ref=f1e830] [cursor=pointer]:
+                - generic [ref=f1e833]:
+                  - paragraph [ref=f1e834]: Pickens County (Pic.)
+                  - paragraph [ref=f1e835]: "Black Belt · Pop. 19,100 · ZIPs: 35447, 35466"
+                - generic [ref=f1e837]:
+                  - paragraph [ref=f1e838]: 32/100
+                  - text: At Risk
+              - button [ref=f1e842] [cursor=pointer]:
+                - generic [ref=f1e845]:
+                  - paragraph [ref=f1e846]: Clarke County (Cla.)
+                  - paragraph [ref=f1e847]: "South Alabama · Pop. 23,000 · ZIPs: 36451, 36545"
+                - generic [ref=f1e849]:
+                  - paragraph [ref=f1e850]: 34/100
+                  - text: At Risk
+              - button [ref=f1e854] [cursor=pointer]:
+                - generic [ref=f1e857]:
+                  - paragraph [ref=f1e858]: Dale County (Dal.)
+                  - paragraph [ref=f1e859]: "South Alabama · Pop. 49,300 · ZIPs: 36360, 36303"
+                - generic [ref=f1e861]:
+                  - paragraph [ref=f1e862]: 34/100
+                  - text: At Risk
+              - button [ref=f1e866] [cursor=pointer]:
+                - generic [ref=f1e869]:
+                  - paragraph [ref=f1e870]: Geneva County (Gen.)
+                  - paragraph [ref=f1e871]: "South Alabama · Pop. 26,600 · ZIPs: 36340, 36375"
+                - generic [ref=f1e873]:
+                  - paragraph [ref=f1e874]: 34/100
+                  - text: At Risk
+              - button [ref=f1e878] [cursor=pointer]:
+                - generic [ref=f1e881]:
+                  - paragraph [ref=f1e882]: Calhoun County (Cal.)
+                  - paragraph [ref=f1e883]: "Central Alabama · Pop. 113,600 · ZIPs: 36201, 36207"
+                - generic [ref=f1e885]:
+                  - paragraph [ref=f1e886]: 35/100
+                  - text: At Risk
+              - button [ref=f1e890] [cursor=pointer]:
+                - generic [ref=f1e893]:
+                  - paragraph [ref=f1e894]: Barbour County (Bar.)
+                  - paragraph [ref=f1e895]: "South Alabama · Pop. 24,800 · ZIPs: 36027, 36016"
+                - generic [ref=f1e897]:
+                  - paragraph [ref=f1e898]: 35/100
+                  - text: At Risk
+              - button [ref=f1e902] [cursor=pointer]:
+                - generic [ref=f1e905]:
+                  - paragraph [ref=f1e906]: Monroe County (Mon.)
+                  - paragraph [ref=f1e907]: "South Alabama · Pop. 20,600 · ZIPs: 36460, 36471"
+                - generic [ref=f1e909]:
+                  - paragraph [ref=f1e910]: 35/100
+                  - text: At Risk
+              - button [ref=f1e914] [cursor=pointer]:
+                - generic [ref=f1e917]:
+                  - paragraph [ref=f1e918]: Escambia County (Esc.)
+                  - paragraph [ref=f1e919]: "South Alabama · Pop. 36,700 · ZIPs: 36426, 36502"
+                - generic [ref=f1e921]:
+                  - paragraph [ref=f1e922]: 35/100
+                  - text: At Risk
+              - button [ref=f1e926] [cursor=pointer]:
+                - generic [ref=f1e929]:
+                  - paragraph [ref=f1e930]: Russell County (Rus.)
+                  - paragraph [ref=f1e931]: "Central Alabama · Pop. 59,100 · ZIPs: 36867, 36869"
+                - generic [ref=f1e933]:
+                  - paragraph [ref=f1e934]: 36/100
+                  - text: At Risk
+              - button [ref=f1e938] [cursor=pointer]:
+                - generic [ref=f1e941]:
+                  - paragraph [ref=f1e942]: Coffee County (Cof.)
+                  - paragraph [ref=f1e943]: "South Alabama · Pop. 53,400 · ZIPs: 36330, 36322"
+                - generic [ref=f1e945]:
+                  - paragraph [ref=f1e946]: 36/100
+                  - text: At Risk
+              - button [ref=f1e950] [cursor=pointer]:
+                - generic [ref=f1e953]:
+                  - paragraph [ref=f1e954]: Walker County (Wal.)
+                  - paragraph [ref=f1e955]: "Central Alabama · Pop. 63,500 · ZIPs: 35501, 35504"
+                - generic [ref=f1e957]:
+                  - paragraph [ref=f1e958]: 37/100
+                  - text: At Risk
+              - button [ref=f1e962] [cursor=pointer]:
+                - generic [ref=f1e965]:
+                  - paragraph [ref=f1e966]: Pike County (Pik.)
+                  - paragraph [ref=f1e967]: "South Alabama · Pop. 33,000 · ZIPs: 36081, 36079"
+                - generic [ref=f1e969]:
+                  - paragraph [ref=f1e970]: 37/100
+                  - text: At Risk
+              - button [ref=f1e974] [cursor=pointer]:
+                - generic [ref=f1e977]:
+                  - paragraph [ref=f1e978]: Etowah County (Eto.)
+                  - paragraph [ref=f1e979]: "North Alabama · Pop. 102,400 · ZIPs: 35901, 35904"
+                - generic [ref=f1e981]:
+                  - paragraph [ref=f1e982]: 38/100
+                  - text: At Risk
+              - button [ref=f1e986] [cursor=pointer]:
+                - generic [ref=f1e989]:
+                  - paragraph [ref=f1e990]: Talladega County (Tal.)
+                  - paragraph [ref=f1e991]: "Central Alabama · Pop. 79,800 · ZIPs: 35160, 35150"
+                - generic [ref=f1e993]:
+                  - paragraph [ref=f1e994]: 39/100
+                  - text: At Risk
+              - button [ref=f1e998] [cursor=pointer]:
+                - generic [ref=f1e1001]:
+                  - paragraph [ref=f1e1002]: Clay County (Cla.)
+                  - paragraph [ref=f1e1003]: "Central Alabama · Pop. 13,200 · ZIPs: 36251, 36268"
+                - generic [ref=f1e1005]:
+                  - paragraph [ref=f1e1006]: 42/100
+                  - text: Moderate
+              - button [ref=f1e1010] [cursor=pointer]:
+                - generic [ref=f1e1013]:
+                  - paragraph [ref=f1e1014]: Lamar County (Lam.)
+                  - paragraph [ref=f1e1015]: "North Alabama · Pop. 13,800 · ZIPs: 35592, 35593"
+                - generic [ref=f1e1017]:
+                  - paragraph [ref=f1e1018]: 43/100
+                  - text: Moderate
+              - button [ref=f1e1022] [cursor=pointer]:
+                - generic [ref=f1e1025]:
+                  - paragraph [ref=f1e1026]: Winston County (Win.)
+                  - paragraph [ref=f1e1027]: "North Alabama · Pop. 23,600 · ZIPs: 35553, 35541"
+                - generic [ref=f1e1029]:
+                  - paragraph [ref=f1e1030]: 44/100
+                  - text: Moderate
+              - button [ref=f1e1034] [cursor=pointer]:
+                - generic [ref=f1e1037]:
+                  - paragraph [ref=f1e1038]: Fayette County (Fay.)
+                  - paragraph [ref=f1e1039]: "North Alabama · Pop. 16,300 · ZIPs: 35555, 35546"
+                - generic [ref=f1e1041]:
+                  - paragraph [ref=f1e1042]: 45/100
+                  - text: Moderate
+              - button [ref=f1e1046] [cursor=pointer]:
+                - generic [ref=f1e1049]:
+                  - paragraph [ref=f1e1050]: Marion County (Mar.)
+                  - paragraph [ref=f1e1051]: "North Alabama · Pop. 29,800 · ZIPs: 35570, 35594"
+                - generic [ref=f1e1053]:
+                  - paragraph [ref=f1e1054]: 46/100
+                  - text: Moderate
+              - button [ref=f1e1058] [cursor=pointer]:
+                - generic [ref=f1e1061]:
+                  - paragraph [ref=f1e1062]: Randolph County (Ran.)
+                  - paragraph [ref=f1e1063]: "Central Alabama · Pop. 22,700 · ZIPs: 36274, 36278"
+                - generic [ref=f1e1065]:
+                  - paragraph [ref=f1e1066]: 46/100
+                  - text: Moderate
+              - button [ref=f1e1070] [cursor=pointer]:
+                - generic [ref=f1e1073]:
+                  - paragraph [ref=f1e1074]: Cherokee County (Che.)
+                  - paragraph [ref=f1e1075]: "North Alabama · Pop. 25,000 · ZIPs: 35960, 35983"
+                - generic [ref=f1e1077]:
+                  - paragraph [ref=f1e1078]: 47/100
+                  - text: Moderate
+              - button [ref=f1e1082] [cursor=pointer]:
+                - generic [ref=f1e1085]:
+                  - paragraph [ref=f1e1086]: Lawrence County (Law.)
+                  - paragraph [ref=f1e1087]: "North Alabama · Pop. 33,100 · ZIPs: 35650, 35672"
+                - generic [ref=f1e1089]:
+                  - paragraph [ref=f1e1090]: 48/100
+                  - text: Moderate
+              - button [ref=f1e1094] [cursor=pointer]:
+                - generic [ref=f1e1097]:
+                  - paragraph [ref=f1e1098]: Cleburne County (Cle.)
+                  - paragraph [ref=f1e1099]: "Central Alabama · Pop. 14,900 · ZIPs: 36264, 36266"
+                - generic [ref=f1e1101]:
+                  - paragraph [ref=f1e1102]: 48/100
+                  - text: Moderate
+              - button [ref=f1e1106] [cursor=pointer]:
+                - generic [ref=f1e1109]:
+                  - paragraph [ref=f1e1110]: Choctaw County (Cho.)
+                  - paragraph [ref=f1e1111]: "Black Belt · Pop. 12,600 · ZIPs: 36904, 36910"
+                - generic [ref=f1e1113]:
+                  - paragraph [ref=f1e1114]: 48/100
+                  - text: Moderate
+              - button [ref=f1e1118] [cursor=pointer]:
+                - generic [ref=f1e1121]:
+                  - paragraph [ref=f1e1122]: DeKalb County (DeK.)
+                  - paragraph [ref=f1e1123]: "North Alabama · Pop. 71,800 · ZIPs: 35967, 35978"
+                - generic [ref=f1e1125]:
+                  - paragraph [ref=f1e1126]: 49/100
+                  - text: Moderate
+              - button [ref=f1e1130] [cursor=pointer]:
+                - generic [ref=f1e1133]:
+                  - paragraph [ref=f1e1134]: Chambers County (Cha.)
+                  - paragraph [ref=f1e1135]: "Central Alabama · Pop. 33,200 · ZIPs: 36863, 36854"
+                - generic [ref=f1e1137]:
+                  - paragraph [ref=f1e1138]: 49/100
+                  - text: Moderate
+              - button [ref=f1e1142] [cursor=pointer]:
+                - generic [ref=f1e1145]:
+                  - paragraph [ref=f1e1146]: Franklin County (Fra.)
+                  - paragraph [ref=f1e1147]: "North Alabama · Pop. 32,100 · ZIPs: 35581, 35570"
+                - generic [ref=f1e1149]:
+                  - paragraph [ref=f1e1150]: 51/100
+                  - text: Moderate
+              - button [ref=f1e1154] [cursor=pointer]:
+                - generic [ref=f1e1157]:
+                  - paragraph [ref=f1e1158]: Tallapoosa County (Tal.)
+                  - paragraph [ref=f1e1159]: "Central Alabama · Pop. 41,200 · ZIPs: 35010, 35072"
+                - generic [ref=f1e1161]:
+                  - paragraph [ref=f1e1162]: 51/100
+                  - text: Moderate
+              - button [ref=f1e1166] [cursor=pointer]:
+                - generic [ref=f1e1169]:
+                  - paragraph [ref=f1e1170]: Washington County (Was.)
+                  - paragraph [ref=f1e1171]: "South Alabama · Pop. 16,100 · ZIPs: 36518, 36558"
+                - generic [ref=f1e1173]:
+                  - paragraph [ref=f1e1174]: 51/100
+                  - text: Moderate
+              - button [ref=f1e1178] [cursor=pointer]:
+                - generic [ref=f1e1181]:
+                  - paragraph [ref=f1e1182]: Jackson County (Jac.)
+                  - paragraph [ref=f1e1183]: "North Alabama · Pop. 52,500 · ZIPs: 35768, 35752"
+                - generic [ref=f1e1185]:
+                  - paragraph [ref=f1e1186]: 52/100
+                  - text: Moderate
+              - button [ref=f1e1190] [cursor=pointer]:
+                - generic [ref=f1e1193]:
+                  - paragraph [ref=f1e1194]: Bibb County (Bib.)
+                  - paragraph [ref=f1e1195]: "Central Alabama · Pop. 22,100 · ZIPs: 35034, 35188"
+                - generic [ref=f1e1197]:
+                  - paragraph [ref=f1e1198]: 52/100
+                  - text: Moderate
+              - button [ref=f1e1202] [cursor=pointer]:
+                - generic [ref=f1e1205]:
+                  - paragraph [ref=f1e1206]: Marengo County (Mar.)
+                  - paragraph [ref=f1e1207]: "Black Belt · Pop. 18,800 · ZIPs: 36732, 36748"
+                - generic [ref=f1e1209]:
+                  - paragraph [ref=f1e1210]: 52/100
+                  - text: Moderate
+              - button [ref=f1e1214] [cursor=pointer]:
+                - generic [ref=f1e1217]:
+                  - paragraph [ref=f1e1218]: Henry County (Hen.)
+                  - paragraph [ref=f1e1219]: "South Alabama · Pop. 17,200 · ZIPs: 36310, 36345"
+                - generic [ref=f1e1221]:
+                  - paragraph [ref=f1e1222]: 52/100
+                  - text: Moderate
+              - button [ref=f1e1226] [cursor=pointer]:
+                - generic [ref=f1e1229]:
+                  - paragraph [ref=f1e1230]: Covington County (Cov.)
+                  - paragraph [ref=f1e1231]: "South Alabama · Pop. 37,000 · ZIPs: 36420, 36467"
+                - generic [ref=f1e1233]:
+                  - paragraph [ref=f1e1234]: 53/100
+                  - text: Moderate
+              - button [ref=f1e1238] [cursor=pointer]:
+                - generic [ref=f1e1241]:
+                  - paragraph [ref=f1e1242]: Jefferson County (Jef.)
+                  - paragraph [ref=f1e1243]: "Central Alabama · Pop. 674,721 · ZIPs: 35203, 35205"
+                - generic [ref=f1e1245]:
+                  - paragraph [ref=f1e1246]: 54/100
+                  - text: Moderate
+              - button [ref=f1e1250] [cursor=pointer]:
+                - generic [ref=f1e1253]:
+                  - paragraph [ref=f1e1254]: Bullock County (Bul.)
+                  - paragraph [ref=f1e1255]: "Black Belt · Pop. 10,100 · ZIPs: 36089, 36061"
+                - generic [ref=f1e1257]:
+                  - paragraph [ref=f1e1258]: 54/100
+                  - text: Moderate
+              - button [ref=f1e1262] [cursor=pointer]:
+                - generic [ref=f1e1265]:
+                  - paragraph [ref=f1e1266]: Crenshaw County (Cre.)
+                  - paragraph [ref=f1e1267]: "South Alabama · Pop. 13,800 · ZIPs: 36049, 36017"
+                - generic [ref=f1e1269]:
+                  - paragraph [ref=f1e1270]: 54/100
+                  - text: Moderate
+              - button [ref=f1e1274] [cursor=pointer]:
+                - generic [ref=f1e1277]:
+                  - paragraph [ref=f1e1278]: Marshall County (Mar.)
+                  - paragraph [ref=f1e1279]: "North Alabama · Pop. 97,600 · ZIPs: 35976, 35950"
+                - generic [ref=f1e1281]:
+                  - paragraph [ref=f1e1282]: 56/100
+                  - text: Moderate
+              - button [ref=f1e1286] [cursor=pointer]:
+                - generic [ref=f1e1289]:
+                  - paragraph [ref=f1e1290]: Butler County (But.)
+                  - paragraph [ref=f1e1291]: "South Alabama · Pop. 19,000 · ZIPs: 36037, 36032"
+                - generic [ref=f1e1293]:
+                  - paragraph [ref=f1e1294]: 56/100
+                  - text: Moderate
+              - button [ref=f1e1298] [cursor=pointer]:
+                - generic [ref=f1e1301]:
+                  - paragraph [ref=f1e1302]: Chilton County (Chi.)
+                  - paragraph [ref=f1e1303]: "Central Alabama · Pop. 45,000 · ZIPs: 35045, 35085"
+                - generic [ref=f1e1305]:
+                  - paragraph [ref=f1e1306]: 57/100
+                  - text: Moderate
+              - button [ref=f1e1310] [cursor=pointer]:
+                - generic [ref=f1e1313]:
+                  - paragraph [ref=f1e1314]: Blount County (Blo.)
+                  - paragraph [ref=f1e1315]: "Central Alabama · Pop. 59,100 · ZIPs: 35079, 35121"
+                - generic [ref=f1e1317]:
+                  - paragraph [ref=f1e1318]: 58/100
+                  - text: Moderate
+              - button [ref=f1e1322] [cursor=pointer]:
+                - generic [ref=f1e1325]:
+                  - paragraph [ref=f1e1326]: Colbert County (Col.)
+                  - paragraph [ref=f1e1327]: "North Alabama · Pop. 57,200 · ZIPs: 35661, 35674"
+                - generic [ref=f1e1329]:
+                  - paragraph [ref=f1e1330]: 61/100
+                  - text: Adequate
+              - button [ref=f1e1334] [cursor=pointer]:
+                - generic [ref=f1e1337]:
+                  - paragraph [ref=f1e1338]: Autauga County (Aut.)
+                  - paragraph [ref=f1e1339]: "River Region · Pop. 58,805 · ZIPs: 36067, 36066"
+                - generic [ref=f1e1341]:
+                  - paragraph [ref=f1e1342]: 62/100
+                  - text: Adequate
+              - button [ref=f1e1346] [cursor=pointer]:
+                - generic [ref=f1e1349]:
+                  - paragraph [ref=f1e1350]: Cullman County (Cul.)
+                  - paragraph [ref=f1e1351]: "Central Alabama · Pop. 89,100 · ZIPs: 35055, 35077"
+                - generic [ref=f1e1353]:
+                  - paragraph [ref=f1e1354]: 63/100
+                  - text: Adequate
+              - button [ref=f1e1358] [cursor=pointer]:
+                - generic [ref=f1e1361]:
+                  - paragraph [ref=f1e1362]: St. Clair County (St..)
+                  - paragraph [ref=f1e1363]: "Central Alabama · Pop. 91,100 · ZIPs: 35125, 35128"
+                - generic [ref=f1e1365]:
+                  - paragraph [ref=f1e1366]: 64/100
+                  - text: Adequate
+              - button [ref=f1e1370] [cursor=pointer]:
+                - generic [ref=f1e1373]:
+                  - paragraph [ref=f1e1374]: Morgan County (Mor.)
+                  - paragraph [ref=f1e1375]: "North Alabama · Pop. 123,000 · ZIPs: 35601, 35640"
+                - generic [ref=f1e1377]:
+                  - paragraph [ref=f1e1378]: 65/100
+                  - text: Adequate
+              - button [ref=f1e1382] [cursor=pointer]:
+                - generic [ref=f1e1385]:
+                  - paragraph [ref=f1e1386]: Lauderdale County (Lau.)
+                  - paragraph [ref=f1e1387]: "North Alabama · Pop. 93,500 · ZIPs: 35630, 35633"
+                - generic [ref=f1e1389]:
+                  - paragraph [ref=f1e1390]: 68/100
+                  - text: Adequate
+              - button [ref=f1e1394] [cursor=pointer]:
+                - generic [ref=f1e1397]:
+                  - paragraph [ref=f1e1398]: Elmore County (Elm.)
+                  - paragraph [ref=f1e1399]: "River Region · Pop. 87,977 · ZIPs: 36092, 36054"
+                - generic [ref=f1e1401]:
+                  - paragraph [ref=f1e1402]: 71/100
+                  - text: Adequate
+              - button [ref=f1e1406] [cursor=pointer]:
+                - generic [ref=f1e1409]:
+                  - paragraph [ref=f1e1410]: Limestone County (Lim.)
+                  - paragraph [ref=f1e1411]: "North Alabama · Pop. 107,000 · ZIPs: 35611, 35613"
+                - generic [ref=f1e1413]:
+                  - paragraph [ref=f1e1414]: 74/100
+                  - text: Adequate
+              - button [ref=f1e1418] [cursor=pointer]:
+                - generic [ref=f1e1421]:
+                  - paragraph [ref=f1e1422]: Madison County (Mad.)
+                  - paragraph [ref=f1e1423]: "North Alabama · Pop. 388,153 · ZIPs: 35801, 35806"
+                - generic [ref=f1e1425]:
+                  - paragraph [ref=f1e1426]: 79/100
+                  - text: Adequate
+      - contentinfo [ref=f1e215]:
+        - generic [ref=f1e216]:
+          - paragraph [ref=f1e217]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+          - paragraph [ref=f1e218]: Partnered with United Way River Region & USDA
+  - generic [ref=f1e1429]: "0"

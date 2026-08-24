@@ -1,11 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { Alert, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { db } from '../../config/firebase';
-import { useAuthReady } from '../../context/AuthReadyContext';
-import { useTheme } from '../../context/ThemeContext';
+import React from 'react';
+import { Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { getLastKnownCounty } from '../../utils/userLocation';
 
@@ -18,44 +14,20 @@ const QUICK_LINKS = [
     { id: '6', title: 'MyPlate Guide', icon: 'nutrition-outline' as const, color: '#f0fdf4', iconColor: '#15803d', url: 'https://www.myplate.gov' },
 ];
 
+const STATS = [
+    { label: 'Pantries', value: '60+', icon: 'storefront-outline' as const },
+    { label: 'Counties', value: '15+', icon: 'map-outline' as const },
+    { label: 'Free', value: '100%', icon: 'heart-outline' as const },
+];
 
 export default function HomeScreen() {
     const router = useRouter();
-    const theme = useTheme();
-    const { authReady } = useAuthReady();
-    const [pantryCount, setPantryCount] = useState('—');
-    const [countyCount, setCountyCount] = useState('—');
-
-    useEffect(() => {
-        if (!authReady) return;
-        (async () => {
-            try {
-                const q = query(collection(db, 'resources'), where('status', '==', 'active'));
-                const snapshot = await getDocs(q);
-                const counties = new Set<string>();
-                snapshot.docs.forEach(d => {
-                    const county = d.data().county;
-                    if (county) counties.add(county);
-                });
-                setPantryCount(String(snapshot.size));
-                setCountyCount(String(counties.size));
-            } catch {
-                setPantryCount('880+');
-                setCountyCount('67');
-            }
-        })();
-    }, [authReady]);
 
     const handleQuickLink = async (item: typeof QUICK_LINKS[0]) => {
         if (item.id === '5') {
             router.push('/(tabs)/map');
         } else if (item.url) {
-            Linking.openURL(item.url).catch(() => {
-                Alert.alert(
-                    item.url!.startsWith('tel:') ? 'Calling not supported on this device' : 'Could not open link',
-                    item.url!.startsWith('tel:') ? 'Dial 211 from any phone — free, 24/7.' : 'Please try again later.'
-                );
-            });
+            Linking.openURL(item.url);
         }
         // GAP 2 — SNAP/WIC Referral Count (USDA FNS / Alabama DHR)
         // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
@@ -74,7 +46,7 @@ export default function HomeScreen() {
     };
 
     return (
-        <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
             {/* Header with background pattern + real logo */}
             <ImageBackground
                 source={require('../../assets/background.png')}
@@ -100,41 +72,33 @@ export default function HomeScreen() {
             </ImageBackground>
 
             {/* Stats */}
-            <View style={[styles.statsBar, { backgroundColor: theme.card }]}>
-                <View style={[styles.statItem, styles.statDivider, { borderRightColor: theme.border }]}>
-                    <Ionicons name="storefront-outline" size={26} color="#b52525" />
-                    <Text style={[styles.statValue, { color: theme.text }]}>{pantryCount}</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
-                </View>
-                <View style={[styles.statItem, styles.statDivider, { borderRightColor: theme.border }]}>
-                    <Ionicons name="map-outline" size={26} color="#b52525" />
-                    <Text style={[styles.statValue, { color: theme.text }]}>{countyCount}</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
-                </View>
-                <View style={styles.statItem}>
-                    <Ionicons name="heart-outline" size={26} color="#b52525" />
-                    <Text style={[styles.statValue, { color: theme.text }]}>100%</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Free</Text>
-                </View>
+            <View style={styles.statsBar}>
+                {STATS.map((stat, i) => (
+                    <View key={i} style={[styles.statItem, i < STATS.length - 1 && styles.statDivider]}>
+                        <Ionicons name={stat.icon} size={26} color="#b52525" />
+                        <Text style={styles.statValue}>{stat.value}</Text>
+                        <Text style={styles.statLabel}>{stat.label}</Text>
+                    </View>
+                ))}
             </View>
 
             {/* Announcement */}
             <View style={styles.section}>
-                <Text style={[styles.sectionTitle, { color: theme.text }]}>Announcements</Text>
-                <View style={[styles.announcementCard, { backgroundColor: theme.card }]}>
+                <Text style={styles.sectionTitle}>Announcements</Text>
+                <View style={styles.announcementCard}>
                     <View style={styles.announcementHeader}>
                         <View style={styles.badgeRow}>
                             <Ionicons name="megaphone-outline" size={14} color="#fff" />
-                            <Text style={styles.announcementBadge}>UPDATE</Text>
+                            <Text style={styles.announcementBadge}>NEW</Text>
                         </View>
-                        <Text style={[styles.announcementDate, { color: theme.subtext }]}>Aug 2026</Text>
+                        <Text style={styles.announcementDate}>Apr 8, 2026</Text>
                     </View>
-                    <Text style={[styles.announcementTitle, { color: theme.text }]}>AccessBelt is Live!</Text>
-                    <Text style={[styles.announcementBody, { color: theme.subtext }]}>
-                        AccessBelt now features an improved map that zooms to your location, clearer verified and unverified pantry labels, and our AI assistant Pete. Thank you for being part of our mission!
+                    <Text style={styles.announcementTitle}>AccessBelt Wins 2nd Place!</Text>
+                    <Text style={styles.announcementBody}>
+                        AccessBelt won 2nd place and a $3,000 prize at The Alabama Collective's HBCU App Build & Pitch Competition on April 8, 2026!! Thank you for your support!
                     </Text>
                     <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
-                        <Text style={styles.learnMoreText}>Explore the Map</Text>
+                        <Text style={styles.learnMoreText}>Explore the App</Text>
                         <Ionicons name="arrow-forward" size={14} color="#b52525" />
                     </TouchableOpacity>
                 </View>
@@ -142,18 +106,18 @@ export default function HomeScreen() {
 
             {/* Quick Resources */}
             <View style={styles.section}>
-                <Text style={[styles.sectionTitle, { color: theme.text }]}>Quick Resources</Text>
+                <Text style={styles.sectionTitle}>Quick Resources</Text>
                 <View style={styles.grid}>
                     {QUICK_LINKS.map(link => (
                         <TouchableOpacity
                             key={link.id}
-                            style={[styles.gridCard, { backgroundColor: theme.dark ? theme.card : link.color }]}
+                            style={[styles.gridCard, { backgroundColor: link.color }]}
                             onPress={() => handleQuickLink(link)}
                         >
                             <View style={[styles.iconCircle, { backgroundColor: link.iconColor + '22' }]}>
                                 <Ionicons name={link.icon} size={26} color={link.iconColor} />
                             </View>
-                            <Text style={[styles.gridTitle, { color: theme.text }]}>{link.title}</Text>
+                            <Text style={styles.gridTitle}>{link.title}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -161,8 +125,8 @@ export default function HomeScreen() {
 
             {/* Visiting Tips */}
             <View style={styles.section}>
-                <Text style={[styles.sectionTitle, { color: theme.text }]}>Visiting a Pantry</Text>
-                <View style={[styles.tipCard, { backgroundColor: theme.card }]}>
+                <Text style={styles.sectionTitle}>Visiting a Pantry</Text>
+                <View style={styles.tipCard}>
                     {[
                         { icon: 'id-card-outline' as const, text: 'Bring a valid photo ID and proof of address (like a utility bill).' },
                         { icon: 'bag-handle-outline' as const, text: 'Bring your own reusable bags or boxes if possible.' },
@@ -171,23 +135,20 @@ export default function HomeScreen() {
                     ].map((tip, i, arr) => (
                         <View key={i}>
                             <View style={styles.tipRow}>
-                                <View style={[styles.tipIconCircle, { backgroundColor: theme.dark ? 'rgba(181,37,37,0.22)' : 'rgba(181,37,37,0.08)' }]}>
+                                <View style={styles.tipIconCircle}>
                                     <Ionicons name={tip.icon} size={20} color="#b52525" />
                                 </View>
-                                <Text style={[styles.tipText, { color: theme.text }]}>{tip.text}</Text>
+                                <Text style={styles.tipText}>{tip.text}</Text>
                             </View>
-                            {i < arr.length - 1 && <View style={[styles.tipDivider, { backgroundColor: theme.border }]} />}
+                            {i < arr.length - 1 && <View style={styles.tipDivider} />}
                         </View>
                     ))}
                 </View>
             </View>
 
             {/* Ask Pete banner */}
-            <TouchableOpacity
-                style={[styles.peteBanner, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4', borderColor: theme.dark ? '#16a34a4d' : '#bbf7d0' }]}
-                onPress={() => router.push('/(tabs)/pete')}
-            >
-                <View style={[styles.peteBannerIcon, { backgroundColor: theme.dark ? '#16a34a40' : '#dcfce7' }]}>
+            <TouchableOpacity style={styles.peteBanner} onPress={() => router.push('/(tabs)/pete')}>
+                <View style={styles.peteBannerIcon}>
                     <Ionicons name="chatbubble-ellipses" size={22} color="#15803d" />
                 </View>
                 <View style={{ flex: 1 }}>

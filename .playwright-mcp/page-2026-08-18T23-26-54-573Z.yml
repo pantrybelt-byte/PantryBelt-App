@@ -1,0 +1,220 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: AccessBelt
+        - button "Collapse navigation" [ref=e9]
+      - generic [ref=e12]:
+        - generic [ref=e13]: Active location
+        - combobox "Active location" [ref=e14] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=e15]:
+      - generic [ref=e17]:
+        - link "Dashboard" [ref=e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=e25] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=e33] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=e39] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=e44]:
+        - paragraph [ref=e45]: Communication
+        - link "Broadcasts" [ref=e47] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: Settings
+        - generic [ref=e54]:
+          - link "Pantry profile" [ref=e55] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=e61] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=e68]:
+        - paragraph [ref=e69]: Support
+        - link "Getting started" [ref=e71] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - generic [ref=e77]: Verified 501(c)(3)
+        - paragraph [ref=e82]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=e83]
+  - generic [ref=e88]:
+    - banner [ref=e89]:
+      - generic [ref=e90]:
+        - button "Open" [ref=e91]
+        - generic [ref=e96]: Closes automatically at 16:00
+      - generic [ref=e97]:
+        - link "Open shift mode" [ref=e98] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=e105]: Shift mode
+        - button "Sarah Jenkins" [ref=e108]
+    - main [ref=e113]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - heading "Inventory" [level=1] [ref=e117]
+            - paragraph [ref=e118]: Stock levels shown to families in the app
+          - generic [ref=e119]:
+            - button "Export CSV" [ref=e120] [cursor=pointer]
+            - button "Print sheet" [ref=e125] [cursor=pointer]
+            - button "Add item" [ref=e131] [cursor=pointer]
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - textbox "Search inventory…" [ref=e140]
+            - generic [ref=e141]:
+              - button "All" [ref=e142]
+              - button "In Stock" [ref=e143]
+              - button "Low Stock" [ref=e144]
+              - button "Out of Stock" [ref=e145]
+          - generic [ref=e146]:
+            - button "All" [ref=e147]
+            - button "Fresh Produce" [ref=e148]
+            - button "Canned Goods" [ref=e149]
+            - button "Dairy & Refrigerated" [ref=e150]
+            - button "Bakery & Grains" [ref=e151]
+            - button "Proteins & Meat" [ref=e152]
+            - button "Baby & Hygiene" [ref=e153]
+            - button "Prepared Meals" [ref=e154]
+        - table [ref=e157]:
+          - rowgroup [ref=e158]:
+            - row [ref=e159]:
+              - columnheader "Item" [ref=e160]
+              - columnheader "Category" [ref=e161]
+              - columnheader "Status" [ref=e162]
+              - columnheader "Quantity" [ref=e163]
+              - columnheader "Updated" [ref=e164]
+              - columnheader "Actions" [ref=e165]
+          - rowgroup [ref=e166]:
+            - row [ref=e167]:
+              - cell [ref=e168]:
+                - paragraph [ref=e169]: Fresh Apples & Pears
+                - paragraph [ref=e170]: Donated by Orchard Valley Farms
+              - cell "Fresh Produce" [ref=e171]
+              - cell [ref=e172]:
+                - button "In Stock" [ref=e173] [cursor=pointer]
+              - cell "− 350 lbs +" [ref=e176]:
+                - generic [ref=e177]:
+                  - button "−" [ref=e178] [cursor=pointer]
+                  - generic [ref=e179]:
+                    - generic [ref=e180]: "350"
+                    - generic [ref=e181]: lbs
+                  - button "+" [ref=e182] [cursor=pointer]
+              - cell "Today, 9:30 AM" [ref=e183]
+              - cell [ref=e184]:
+                - button "Remove" [ref=e185] [cursor=pointer]
+            - row [ref=e189]:
+              - cell [ref=e190]:
+                - paragraph [ref=e191]: Whole Milk (Gallons)
+                - paragraph [ref=e192]: High demand today
+              - cell "Dairy & Refrigerated" [ref=e193]
+              - cell [ref=e194]:
+                - button "Low Stock" [ref=e195] [cursor=pointer]
+              - cell "− 18 units +" [ref=e198]:
+                - generic [ref=e199]:
+                  - button "−" [ref=e200] [cursor=pointer]
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: "18"
+                    - generic [ref=e203]: units
+                  - button "+" [ref=e204] [cursor=pointer]
+              - cell "Today, 11:15 AM" [ref=e205]
+              - cell [ref=e206]:
+                - button "Remove" [ref=e207] [cursor=pointer]
+            - row [ref=e211]:
+              - cell [ref=e212]:
+                - paragraph [ref=e213]: Canned Black Beans (15 oz)
+              - cell "Canned Goods" [ref=e214]
+              - cell [ref=e215]:
+                - button "In Stock" [ref=e216] [cursor=pointer]
+              - cell "− 420 cans +" [ref=e219]:
+                - generic [ref=e220]:
+                  - button "−" [ref=e221] [cursor=pointer]
+                  - generic [ref=e222]:
+                    - generic [ref=e223]: "420"
+                    - generic [ref=e224]: cans
+                  - button "+" [ref=e225] [cursor=pointer]
+              - cell "Yesterday, 4:00 PM" [ref=e226]
+              - cell [ref=e227]:
+                - button "Remove" [ref=e228] [cursor=pointer]
+            - row [ref=e232]:
+              - cell [ref=e233]:
+                - paragraph [ref=e234]: Artisan Whole Wheat Bread
+              - cell "Bakery & Grains" [ref=e235]
+              - cell [ref=e236]:
+                - button "In Stock" [ref=e237] [cursor=pointer]
+              - cell "− 65 boxes +" [ref=e240]:
+                - generic [ref=e241]:
+                  - button "−" [ref=e242] [cursor=pointer]
+                  - generic [ref=e243]:
+                    - generic [ref=e244]: "65"
+                    - generic [ref=e245]: boxes
+                  - button "+" [ref=e246] [cursor=pointer]
+              - cell "Today, 8:00 AM" [ref=e247]
+              - cell [ref=e248]:
+                - button "Remove" [ref=e249] [cursor=pointer]
+            - row [ref=e253]:
+              - cell [ref=e254]:
+                - paragraph [ref=e255]: Frozen Chicken Breasts
+                - paragraph [ref=e256]: Expected delivery tomorrow morning
+              - cell "Proteins & Meat" [ref=e257]
+              - cell [ref=e258]:
+                - button "Out of Stock" [ref=e259] [cursor=pointer]
+              - cell "− 0 lbs +" [ref=e262]:
+                - generic [ref=e263]:
+                  - button "−" [ref=e264] [cursor=pointer]
+                  - generic [ref=e265]:
+                    - generic [ref=e266]: "0"
+                    - generic [ref=e267]: lbs
+                  - button "+" [ref=e268] [cursor=pointer]
+              - cell "Today, 1:45 PM" [ref=e269]
+              - cell [ref=e270]:
+                - button "Remove" [ref=e271] [cursor=pointer]
+            - row [ref=e275]:
+              - cell [ref=e276]:
+                - paragraph [ref=e277]: Infant Formula (Stage 1)
+              - cell "Baby & Hygiene" [ref=e278]
+              - cell [ref=e279]:
+                - button "In Stock" [ref=e280] [cursor=pointer]
+              - cell "− 45 units +" [ref=e283]:
+                - generic [ref=e284]:
+                  - button "−" [ref=e285] [cursor=pointer]
+                  - generic [ref=e286]:
+                    - generic [ref=e287]: "45"
+                    - generic [ref=e288]: units
+                  - button "+" [ref=e289] [cursor=pointer]
+              - cell "Aug 8, 2026" [ref=e290]
+              - cell [ref=e291]:
+                - button "Remove" [ref=e292] [cursor=pointer]
+            - row [ref=e296]:
+              - cell [ref=e297]:
+                - paragraph [ref=e298]: Hot Prepared Soup Kits
+              - cell "Prepared Meals" [ref=e299]
+              - cell [ref=e300]:
+                - button "In Stock" [ref=e301] [cursor=pointer]
+              - cell "− 80 boxes +" [ref=e304]:
+                - generic [ref=e305]:
+                  - button "−" [ref=e306] [cursor=pointer]
+                  - generic [ref=e307]:
+                    - generic [ref=e308]: "80"
+                    - generic [ref=e309]: boxes
+                  - button "+" [ref=e310] [cursor=pointer]
+              - cell "Today, 10:00 AM" [ref=e311]
+              - cell [ref=e312]:
+                - button "Remove" [ref=e313] [cursor=pointer]
+            - row [ref=e317]:
+              - cell [ref=e318]:
+                - paragraph [ref=e319]: Peanut Butter (16 oz)
+              - cell "Canned Goods" [ref=e320]
+              - cell [ref=e321]:
+                - button "Low Stock" [ref=e322] [cursor=pointer]
+              - cell "− 12 units +" [ref=e325]:
+                - generic [ref=e326]:
+                  - button "−" [ref=e327] [cursor=pointer]
+                  - generic [ref=e328]:
+                    - generic [ref=e329]: "12"
+                    - generic [ref=e330]: units
+                  - button "+" [ref=e331] [cursor=pointer]
+              - cell "Today, 2:00 PM" [ref=e332]
+              - cell [ref=e333]:
+                - button "Remove" [ref=e334] [cursor=pointer]

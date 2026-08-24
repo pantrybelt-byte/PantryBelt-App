@@ -1,0 +1,125 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - generic [ref=f2e6]:
+        - generic [ref=f2e7]: AccessBelt
+        - button "Collapse navigation" [ref=f2e9]
+      - generic [ref=f2e12]:
+        - generic [ref=f2e13]: Active location
+        - combobox "Active location" [ref=f2e14] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=f2e15]:
+      - generic [ref=f2e17]:
+        - link "Dashboard" [ref=f2e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=f2e25] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=f2e33] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f2e39] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=f2e44]:
+        - paragraph [ref=f2e45]: Communication
+        - link "Broadcasts" [ref=f2e47] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=f2e52]:
+        - paragraph [ref=f2e53]: Settings
+        - generic [ref=f2e54]:
+          - link "Pantry profile" [ref=f2e55] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=f2e61] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=f2e68]:
+        - paragraph [ref=f2e69]: Support
+        - link "Getting started" [ref=f2e71] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=f2e75]:
+      - generic [ref=f2e76]:
+        - generic [ref=f2e77]: Verified 501(c)(3)
+        - paragraph [ref=f2e82]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=f2e83]
+  - generic [ref=f2e88]:
+    - banner [ref=f2e89]:
+      - generic [ref=f2e90]:
+        - button "Open" [ref=f2e91]
+        - generic [ref=f2e96]: Closes automatically at 16:00
+      - generic [ref=f2e97]:
+        - link "Open shift mode" [ref=f2e98] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f2e105]: Shift mode
+        - button "Sarah Jenkins" [ref=f2e108]
+    - main [ref=f2e113]:
+      - generic [ref=f2e114]:
+        - generic [ref=f2e115]:
+          - heading "Team & access" [level=1] [ref=f2e116]
+          - paragraph [ref=f2e117]: Manage who can update this pantry and what they are allowed to change
+        - generic [ref=f2e118]:
+          - generic [ref=f2e120]:
+            - heading "Members" [level=2] [ref=f2e121]
+            - paragraph [ref=f2e122]: 3 active · unlimited seats included
+          - list [ref=f2e123]:
+            - listitem [ref=f2e124]:
+              - generic [ref=f2e125]:
+                - generic [ref=f2e126]: SJ
+                - generic [ref=f2e127]:
+                  - paragraph [ref=f2e128]: Sarah Jenkins
+                  - paragraph [ref=f2e129]: sarah.j@hopecommunitypantry.org
+              - generic [ref=f2e130]:
+                - generic [ref=f2e131]: Now
+                - generic [ref=f2e132]: Manager
+                - generic [ref=f2e133]: Active
+                - button "Manage Sarah Jenkins" [ref=f2e134]
+            - listitem [ref=f2e139]:
+              - generic [ref=f2e140]:
+                - generic [ref=f2e141]: MR
+                - generic [ref=f2e142]:
+                  - paragraph [ref=f2e143]: Mark Ramirez
+                  - paragraph [ref=f2e144]: mark.r@hopecommunitypantry.org
+              - generic [ref=f2e145]:
+                - generic [ref=f2e146]: 2 hours ago
+                - generic [ref=f2e147]: Shift Lead
+                - generic [ref=f2e148]: Active
+                - button "Manage Mark Ramirez" [ref=f2e149]
+            - listitem [ref=f2e154]:
+              - generic [ref=f2e155]:
+                - generic [ref=f2e156]: ER
+                - generic [ref=f2e157]:
+                  - paragraph [ref=f2e158]: Elena Rostova
+                  - paragraph [ref=f2e159]: elena.v@hopecommunitypantry.org
+              - generic [ref=f2e160]:
+                - generic [ref=f2e161]: Yesterday
+                - generic [ref=f2e162]: Volunteer
+                - generic [ref=f2e163]: Active
+                - button "Manage Elena Rostova" [ref=f2e164]
+        - generic [ref=f2e169]:
+          - generic [ref=f2e170]:
+            - heading "Invite a team member" [level=2] [ref=f2e171]
+            - generic [ref=f2e172]:
+              - generic [ref=f2e173]:
+                - generic [ref=f2e174]: Email address
+                - textbox "Email address" [ref=f2e175]:
+                  - /placeholder: volunteer@organization.org
+              - generic [ref=f2e176]:
+                - generic [ref=f2e177]: Role
+                - combobox "Role" [ref=f2e178]:
+                  - option "Volunteer" [selected]
+                  - option "Shift Lead"
+                  - option "Manager"
+              - button "Send invitation" [ref=f2e180] [cursor=pointer]
+          - generic [ref=f2e184]:
+            - heading "What each role can do" [level=2] [ref=f2e185]
+            - list [ref=f2e186]:
+              - listitem [ref=f2e187]:
+                - paragraph [ref=f2e188]: Manager
+                - paragraph [ref=f2e189]: Full access. Can edit the pantry profile, manage the team, and change verification details.
+              - listitem [ref=f2e190]:
+                - paragraph [ref=f2e191]: Shift Lead
+                - paragraph [ref=f2e192]: Can set status, update inventory, edit operating hours, and send broadcasts during a shift.
+              - listitem [ref=f2e193]:
+                - paragraph [ref=f2e194]: Volunteer
+                - paragraph [ref=f2e195]: Can set status and update stock availability. Cannot send broadcasts.
+        - generic [ref=f2e201]:
+          - paragraph [ref=f2e202]: No cost to your pantry
+          - paragraph [ref=f2e203]: AccessBelt is funded by regional agency partners. There is no billing, no seat limit, and no payment method on file.

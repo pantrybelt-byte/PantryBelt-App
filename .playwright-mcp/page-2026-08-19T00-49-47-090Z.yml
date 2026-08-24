@@ -1,0 +1,101 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: AB
+          - generic [ref=e12]:
+            - generic [ref=e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=e17]:
+        - list [ref=e18]:
+          - listitem [ref=e19]:
+            - heading "Analytics" [level=2] [ref=e20]
+            - list "Analytics" [ref=e21]:
+              - listitem [ref=e22]:
+                - link "Overview" [ref=e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e30]:
+                - link "Demographics" [ref=e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=e38]:
+                - link "Food Deserts" [ref=e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=e43]:
+                - link "Pantry Interactions" [ref=e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=e52]:
+            - heading "Insights" [level=2] [ref=e53]
+            - list "Insights" [ref=e54]:
+              - listitem [ref=e55]:
+                - link "Most Requested" [ref=e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=e64]:
+            - heading "Reports" [level=2] [ref=e65]
+            - list "Reports" [ref=e66]:
+              - listitem [ref=e67]:
+                - link "Reports & Export" [ref=e68] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=e73]:
+            - heading "Account" [level=2] [ref=e74]
+            - list "Account" [ref=e75]:
+              - listitem [ref=e76]:
+                - link "Billing & Subscription" [ref=e77] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=e81]:
+                - link "Settings" [ref=e82] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=e88] [cursor=pointer]
+  - generic [ref=e93]:
+    - banner [ref=e94]:
+      - generic [ref=e95]:
+        - generic:
+          - generic:
+            - generic:
+              - heading "Overview" [level=1]
+              - 'button "Data source: Demo Data. Refresh dashboard data." [ref=e96] [cursor=pointer]':
+                - generic [ref=e98]: Demo Data
+                - status [ref=e104]
+            - paragraph: Region-wide analytics & period comparison
+        - generic [ref=e105]:
+          - button "Grant & Impact" [ref=e107] [cursor=pointer]
+          - generic [ref=e114]:
+            - group "Reporting period" [ref=e115]:
+              - button "Last 7 days" [ref=e118] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=e119] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=e120] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=e121] [cursor=pointer]: YTD
+              - button "Custom" [ref=e122] [cursor=pointer]
+            - button "Compare against the previous period" [ref=e123] [cursor=pointer]:
+              - generic [ref=e129]: Compare
+              - generic [ref=e130]: against the previous period
+          - button "Copy a link to this view, including the current filters" [ref=e131] [cursor=pointer]:
+            - generic [ref=e138]: Share
+          - button "Notifications, 1 unread" [ref=e140] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=e146] [cursor=pointer]:
+            - generic [ref=e147]: DPH
+            - generic [ref=e148]:
+              - generic [ref=e149]: Dr. Patricia Hawkins
+              - generic [ref=e150]: United Way River Region
+      - generic [ref=e154]:
+        - generic [ref=e155]: Limit the dashboard to a single county
+        - combobox "Limit the dashboard to a single county" [ref=e160] [cursor=pointer]:
+          - option "All Assigned Counties (Central Alabama River Region)" [selected]
+          - option "Montgomery County"
+          - option "Autauga County"
+          - option "Elmore County"
+          - option "Lowndes County"
+          - option "Macon County"
+          - option "Dallas County"
+          - option "Wilcox County"
+          - option "Perry County"
+    - main [ref=e161]:
+      - status [ref=e162]:
+        - generic [ref=e164]: Loading
+    - contentinfo [ref=e165]:
+      - generic [ref=e166]:
+        - paragraph [ref=e167]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=e168]: Partnered with United Way River Region & USDA

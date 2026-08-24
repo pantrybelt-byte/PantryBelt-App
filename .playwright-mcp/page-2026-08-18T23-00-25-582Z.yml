@@ -1,0 +1,142 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]:
+        - generic [ref=f4e7]:
+          - generic [ref=f4e8]:
+            - img "AccessBelt" [ref=f4e10]
+            - generic [ref=f4e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f4e12]
+        - combobox [ref=f4e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f4e17]:
+        - link "Dashboard" [ref=f4e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f4e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f4e28]: Shift mode
+          - generic [ref=f4e29]: Live
+        - link "Inventory" [ref=f4e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f4e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f4e41]: Communication
+        - link "Broadcasts" [ref=f4e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f4e47]: Settings
+        - link "Pantry profile" [ref=f4e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f4e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f4e58]: Free Services ($0)
+          - generic [ref=f4e59]: $0 Free
+        - paragraph [ref=f4e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f4e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f4e65]: Onboarding Guide
+          - generic [ref=f4e66]: New
+    - button "Sign out" [ref=f4e68]
+  - generic [ref=f4e73]:
+    - banner [ref=f4e74]:
+      - generic [ref=f4e75]:
+        - button "Open" [ref=f4e76] [cursor=pointer]
+        - generic [ref=f4e81]: Auto-closes at 16:00
+      - generic [ref=f4e82]:
+        - generic [ref=f4e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f4e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f4e91]
+        - button [ref=f4e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f4e100]
+          - paragraph [ref=f4e102]: Sarah Jenkins
+    - main [ref=f4e105]:
+      - generic [ref=f4e106]:
+        - generic [ref=f4e107]:
+          - generic [ref=f4e108]:
+            - heading "Pantry profile" [level=1] [ref=f4e109]
+            - paragraph [ref=f4e110]: Manage your location pinpoint, verification status, and public listing details
+          - button "Save changes" [ref=f4e111] [cursor=pointer]
+        - generic [ref=f4e117]:
+          - generic [ref=f4e118]:
+            - generic [ref=f4e119]:
+              - heading "Verification & Non-Profit Status" [level=2] [ref=f4e124]
+              - generic [ref=f4e125]:
+                - generic [ref=f4e126]:
+                  - generic [ref=f4e127]: 501(c)(3) Tax ID / EIN
+                  - textbox [ref=f4e128]: 36-4829102
+                - generic [ref=f4e129]:
+                  - generic [ref=f4e130]: Verification Status
+                  - generic [ref=f4e131]: Verified 501(c)(3) ($0 Free Community Access)
+            - generic [ref=f4e136]:
+              - generic [ref=f4e137]:
+                - heading "Interactive Location Pinpoint" [level=2] [ref=f4e142]
+                - button "Locating..." [disabled] [ref=f4e143] [cursor=pointer]
+              - paragraph [ref=f4e147]: Rural addresses often geocode to highway midpoints or fields. Click or drag the marker directly onto your actual building structure or distribution door on the live map below.
+              - generic [ref=f4e149]:
+                - generic:
+                  - button "Marker" [ref=f4e150] [cursor=pointer]
+                  - generic [ref=f4e151]:
+                    - generic [ref=f4e152]: Exact Pantry Door PinDrag marker to exact distribution entrance.
+                    - button "Close popup" [ref=f4e155] [cursor=pointer]: ×
+                - generic:
+                  - generic [ref=f4e156]:
+                    - button "Zoom in" [ref=f4e157] [cursor=pointer]: +
+                    - button "Zoom out" [ref=f4e158] [cursor=pointer]: −
+                  - generic [ref=f4e159]:
+                    - link "Leaflet" [ref=f4e160] [cursor=pointer]:
+                      - /url: https://leafletjs.com
+                    - text: "| © OpenStreetMap contributors"
+              - generic [ref=f4e165]:
+                - generic [ref=f4e166]: "Lat: 32.3792 | Lng: -86.3077"
+                - generic [ref=f4e167]: Detecting your physical GPS location...
+              - generic [ref=f4e168]:
+                - generic [ref=f4e169]: Landmark & Physical Entrance Notes
+                - textbox "e.g. Distribution takes place around back at Fellowship Hall door near blue awning." [ref=f4e170]: Distribution takes place around back at the Fellowship Hall door near the blue awning.
+                - paragraph [ref=f4e171]: Helps citizens and delivery drivers find the exact door on large church or warehouse campuses.
+            - generic [ref=f4e172]:
+              - heading "Organization details" [level=2] [ref=f4e178]
+              - generic [ref=f4e179]:
+                - generic [ref=f4e180]:
+                  - generic [ref=f4e181]: Pantry name
+                  - textbox [ref=f4e182]: Hope Community Food Pantry
+                - generic [ref=f4e183]:
+                  - generic [ref=f4e184]: Organization
+                  - textbox [ref=f4e185]: AccessBelt Network - Region 4
+              - generic [ref=f4e186]:
+                - generic [ref=f4e187]: Description
+                - textbox [ref=f4e188]: Providing fresh produce, staples, and emergency nutritional assistance to families in Central Pine County.
+            - generic [ref=f4e189]:
+              - heading "Address & contact" [level=2] [ref=f4e194]
+              - generic [ref=f4e195]:
+                - generic [ref=f4e196]: Street address
+                - textbox [ref=f4e197]: 1428 Elmwood Drive
+              - generic [ref=f4e198]:
+                - generic [ref=f4e199]:
+                  - generic [ref=f4e200]: City
+                  - textbox [ref=f4e201]: Pine Creek
+                - generic [ref=f4e202]:
+                  - generic [ref=f4e203]: State
+                  - textbox [ref=f4e204]: IL
+                - generic [ref=f4e205]:
+                  - generic [ref=f4e206]: ZIP
+                  - textbox [ref=f4e207]: "61701"
+          - generic [ref=f4e208]:
+            - generic [ref=f4e209]:
+              - heading "App listing preview" [level=2] [ref=f4e210]
+              - generic [ref=f4e211]:
+                - generic [ref=f4e212]:
+                  - generic [ref=f4e213]: Verified Organization ($0 Free)
+                  - heading "Hope Community Food Pantry" [level=3] [ref=f4e217]
+                  - paragraph [ref=f4e218]: Pine Creek, IL
+                - generic [ref=f4e219]: Open now
+                - paragraph [ref=f4e222]: "📍 Coordinates: 32.3792, -86.3077"
+                - paragraph [ref=f4e223]: "\"Distribution takes place around back at the Fellowship Hall door near the blue awning.\""
+            - generic [ref=f4e224]:
+              - heading "Pantry Entrance Poster" [level=2] [ref=f4e225]
+              - paragraph [ref=f4e226]: Print a flyer with your AccessBelt QR Code for your entrance so waiting families can scan for live stock.
+              - generic [ref=f4e227]:
+                - img "AccessBelt QR Code" [ref=f4e229]
+                - paragraph [ref=f4e230]: Scan for Live Stock & Updates
+              - button "🖨️ Print Entrance Poster" [ref=f4e231] [cursor=pointer]

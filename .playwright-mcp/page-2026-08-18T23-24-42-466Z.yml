@@ -1,0 +1,136 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - generic [ref=f5e6]:
+        - generic [ref=f5e7]: AccessBelt
+        - button "Collapse navigation" [ref=f5e9]
+      - generic [ref=f5e12]:
+        - generic [ref=f5e13]: Active location
+        - combobox "Active location" [ref=f5e14] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=f5e15]:
+      - generic [ref=f5e17]:
+        - link "Dashboard" [ref=f5e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=f5e25] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=f5e33] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f5e39] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=f5e44]:
+        - paragraph [ref=f5e45]: Communication
+        - link "Broadcasts" [ref=f5e47] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=f5e52]:
+        - paragraph [ref=f5e53]: Settings
+        - generic [ref=f5e54]:
+          - link "Pantry profile" [ref=f5e55] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=f5e61] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=f5e68]:
+        - paragraph [ref=f5e69]: Support
+        - link "Getting started" [ref=f5e71] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=f5e75]:
+      - generic [ref=f5e76]:
+        - generic [ref=f5e77]: Verified 501(c)(3)
+        - paragraph [ref=f5e82]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=f5e83]
+  - generic [ref=f5e88]:
+    - banner [ref=f5e89]:
+      - generic [ref=f5e90]:
+        - button "Open" [ref=f5e91]
+        - generic [ref=f5e96]: Closes automatically at 16:00
+      - generic [ref=f5e97]:
+        - link "Open shift mode" [ref=f5e98] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f5e105]: Shift mode
+        - button "Sarah Jenkins" [ref=f5e108]
+    - main [ref=f5e113]:
+      - generic [ref=f5e114]:
+        - generic [ref=f5e115]:
+          - generic [ref=f5e116]:
+            - heading "Pantry profile" [level=1] [ref=f5e117]
+            - paragraph [ref=f5e118]: How your pantry appears to families in the AccessBelt app
+          - button "Save changes" [ref=f5e119] [cursor=pointer]
+        - generic [ref=f5e124]:
+          - generic [ref=f5e125]:
+            - generic [ref=f5e126]:
+              - heading "Verification" [level=2] [ref=f5e127]
+              - generic [ref=f5e128]:
+                - generic [ref=f5e129]:
+                  - generic [ref=f5e130]: 501(c)(3) tax ID (EIN)
+                  - textbox [ref=f5e131]: 36-4829102
+                - generic [ref=f5e132]:
+                  - generic [ref=f5e133]: Status
+                  - generic [ref=f5e134]: Verified 501(c)(3)
+            - generic [ref=f5e139]:
+              - generic [ref=f5e140]:
+                - heading "Map location" [level=2] [ref=f5e141]
+                - button "Finding…" [disabled] [ref=f5e142]
+              - paragraph [ref=f5e146]: Rural addresses often land on a highway midpoint rather than a building. Drag the pin onto the door families should walk or drive up to.
+              - generic [ref=f5e148]:
+                - button "Marker" [ref=f5e149] [cursor=pointer]
+                - generic:
+                  - generic [ref=f5e150]:
+                    - button "Zoom in" [ref=f5e151] [cursor=pointer]: +
+                    - button "Zoom out" [ref=f5e152] [cursor=pointer]: −
+                  - generic [ref=f5e153]:
+                    - link "Leaflet" [ref=f5e154] [cursor=pointer]:
+                      - /url: https://leafletjs.com
+                    - text: "| © OpenStreetMap contributors"
+              - generic [ref=f5e159]:
+                - generic [ref=f5e160]: 32.3792, -86.3077
+                - generic [ref=f5e161]: Finding your location…
+              - generic [ref=f5e162]:
+                - generic [ref=f5e163]: Landmark & Physical Entrance Notes
+                - textbox "e.g. Distribution takes place around back at Fellowship Hall door near blue awning." [ref=f5e164]: Distribution takes place around back at the Fellowship Hall door near the blue awning.
+                - paragraph [ref=f5e165]: Helps citizens and delivery drivers find the exact door on large church or warehouse campuses.
+            - generic [ref=f5e166]:
+              - heading "Organization details" [level=2] [ref=f5e167]
+              - generic [ref=f5e168]:
+                - generic [ref=f5e169]:
+                  - generic [ref=f5e170]: Pantry name
+                  - textbox [ref=f5e171]: Hope Community Food Pantry
+                - generic [ref=f5e172]:
+                  - generic [ref=f5e173]: Organization
+                  - textbox [ref=f5e174]: AccessBelt Network - Region 4
+              - generic [ref=f5e175]:
+                - generic [ref=f5e176]: Description
+                - textbox [ref=f5e177]: Providing fresh produce, staples, and emergency nutritional assistance to families in Central Pine County.
+            - generic [ref=f5e178]:
+              - heading "Address & contact" [level=2] [ref=f5e179]
+              - generic [ref=f5e180]:
+                - generic [ref=f5e181]: Street address
+                - textbox [ref=f5e182]: 1428 Elmwood Drive
+              - generic [ref=f5e183]:
+                - generic [ref=f5e184]:
+                  - generic [ref=f5e185]: City
+                  - textbox [ref=f5e186]: Pine Creek
+                - generic [ref=f5e187]:
+                  - generic [ref=f5e188]: State
+                  - textbox [ref=f5e189]: IL
+                - generic [ref=f5e190]:
+                  - generic [ref=f5e191]: ZIP
+                  - textbox [ref=f5e192]: "61701"
+          - generic [ref=f5e193]:
+            - generic [ref=f5e194]:
+              - heading "App listing preview" [level=2] [ref=f5e195]
+              - generic [ref=f5e196]:
+                - generic [ref=f5e197]:
+                  - generic [ref=f5e198]: Verified organization
+                  - heading "Hope Community Food Pantry" [level=3] [ref=f5e202]
+                  - paragraph [ref=f5e203]: Pine Creek, IL
+                - generic [ref=f5e204]: Open now
+                - paragraph [ref=f5e207]: Distribution takes place around back at the Fellowship Hall door near the blue awning.
+            - generic [ref=f5e208]:
+              - heading "Entrance poster" [level=2] [ref=f5e209]
+              - paragraph [ref=f5e210]: Print a sign for your entrance. Families waiting outside can scan it to see current stock and hours.
+              - generic [ref=f5e211]:
+                - img "AccessBelt QR Code" [ref=f5e213]
+                - paragraph [ref=f5e214]: Scan for current stock and hours
+              - button "Print poster" [ref=f5e215] [cursor=pointer]

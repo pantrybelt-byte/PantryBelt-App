@@ -1,0 +1,165 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - generic [ref=f7e5]:
+      - generic [ref=f7e6]:
+        - generic [ref=f7e7]:
+          - generic [ref=f7e8]:
+            - img "AccessBelt" [ref=f7e10]
+            - generic [ref=f7e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f7e12]
+        - combobox [ref=f7e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f7e17]:
+        - link "Dashboard" [ref=f7e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f7e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f7e28]: Shift mode
+          - generic [ref=f7e29]: Live
+        - link "Inventory" [ref=f7e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f7e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f7e41]: Communication
+        - link "Broadcasts" [ref=f7e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f7e47]: Settings
+        - link "Pantry profile" [ref=f7e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f7e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f7e58]: Free Services ($0)
+          - generic [ref=f7e59]: $0 Free
+        - paragraph [ref=f7e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f7e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f7e65]: Onboarding Guide
+          - generic [ref=f7e66]: New
+    - button "Sign out" [ref=f7e68]
+  - generic [ref=f7e73]:
+    - banner [ref=f7e74]:
+      - generic [ref=f7e75]:
+        - button "Open" [ref=f7e76] [cursor=pointer]
+        - generic [ref=f7e81]: Auto-closes at 16:00
+      - generic [ref=f7e82]:
+        - generic [ref=f7e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f7e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f7e91]
+        - button [ref=f7e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f7e100]
+          - paragraph [ref=f7e102]: Sarah Jenkins
+    - main [ref=f7e105]:
+      - generic [ref=f7e106]:
+        - generic [ref=f7e107]:
+          - generic [ref=f7e113]:
+            - paragraph [ref=f7e114]: New to AccessBelt? Take the 2-Minute Quick Guide
+            - paragraph [ref=f7e115]: Learn how to switch live status, use 1-tap shift mode, and send neighborhood push alerts.
+          - generic [ref=f7e116]:
+            - button "Start 2-Min Guide" [ref=f7e117] [cursor=pointer]
+            - button "Dismiss banner" [ref=f7e118] [cursor=pointer]
+        - generic [ref=f7e122]:
+          - heading "Good afternoon, Hope Community" [level=1] [ref=f7e123]
+          - paragraph [ref=f7e124]: Here's an overview of your pantry operations
+        - generic [ref=f7e125]:
+          - generic [ref=f7e126]:
+            - paragraph [ref=f7e127]: Status
+            - generic [ref=f7e128]:
+              - generic [ref=f7e129]: Open
+              - button "Toggle" [ref=f7e132] [cursor=pointer]
+          - generic [ref=f7e133]:
+            - paragraph [ref=f7e134]: Inventory items
+            - generic [ref=f7e135]:
+              - paragraph [ref=f7e136]: "8"
+              - paragraph [ref=f7e137]: 990 units in stock
+          - generic [ref=f7e138]:
+            - paragraph [ref=f7e139]: Families served
+            - generic [ref=f7e140]:
+              - paragraph [ref=f7e141]: "342"
+              - paragraph [ref=f7e142]: +14% vs last week
+          - generic [ref=f7e146]:
+            - paragraph [ref=f7e147]: Capacity
+            - paragraph [ref=f7e149]: 78%
+        - generic [ref=f7e152]:
+          - generic [ref=f7e153]:
+            - paragraph [ref=f7e154]: Pantry Free Default Services
+            - paragraph [ref=f7e155]: Broadcast emergency needs, share extra food surplus, or export board impact reports.
+          - generic [ref=f7e156]:
+            - button "Broadcast Need / Surplus" [ref=f7e157] [cursor=pointer]
+            - button "🖨️ Export Board Report PDF" [ref=f7e162] [cursor=pointer]
+        - generic [ref=f7e163]:
+          - generic [ref=f7e164]:
+            - generic [ref=f7e165]:
+              - heading "Quick actions" [level=2] [ref=f7e166]
+              - generic [ref=f7e167]:
+                - link "Update stock" [ref=f7e168] [cursor=pointer]:
+                  - /url: /inventory
+                - link "Send broadcast" [ref=f7e175] [cursor=pointer]:
+                  - /url: /notifications
+                - link "Set schedule" [ref=f7e181] [cursor=pointer]:
+                  - /url: /hours
+                - link "Edit profile" [ref=f7e187] [cursor=pointer]:
+                  - /url: /profile
+            - generic [ref=f7e193]:
+              - generic [ref=f7e194]:
+                - generic [ref=f7e198]:
+                  - heading "Low stock items" [level=3] [ref=f7e199]
+                  - paragraph [ref=f7e200]: 3 items need restocking
+                - link "View all" [ref=f7e201] [cursor=pointer]:
+                  - /url: /inventory
+              - generic [ref=f7e204]:
+                - generic [ref=f7e205]:
+                  - generic [ref=f7e206]:
+                    - paragraph [ref=f7e207]: Whole Milk (Gallons)
+                    - paragraph [ref=f7e208]: Dairy & Refrigerated
+                  - generic [ref=f7e209]: 18 units
+                - generic [ref=f7e210]:
+                  - generic [ref=f7e211]:
+                    - paragraph [ref=f7e212]: Frozen Chicken Breasts
+                    - paragraph [ref=f7e213]: Proteins & Meat
+                  - generic [ref=f7e214]: 0 lbs
+                - generic [ref=f7e215]:
+                  - generic [ref=f7e216]:
+                    - paragraph [ref=f7e217]: Peanut Butter (16 oz)
+                    - paragraph [ref=f7e218]: Canned Goods
+                  - generic [ref=f7e219]: 12 units
+          - generic [ref=f7e220]:
+            - heading "Recent activity" [level=3] [ref=f7e221]
+            - generic [ref=f7e222]:
+              - generic [ref=f7e225]:
+                - paragraph [ref=f7e226]: Updated Status
+                - paragraph [ref=f7e227]: "Set Pantry status to OPEN with note: \"Walk-ins welcome until 4:00 PM today.\""
+                - generic [ref=f7e228]:
+                  - generic [ref=f7e229]: Sarah Jenkins
+                  - generic [ref=f7e230]: ·
+                  - generic [ref=f7e231]: 10 mins ago
+              - generic [ref=f7e234]:
+                - paragraph [ref=f7e235]: Stock Adjustment
+                - paragraph [ref=f7e236]: Marked "Frozen Chicken Breasts" as Out of Stock (0 lbs)
+                - generic [ref=f7e237]:
+                  - generic [ref=f7e238]: Mark Ramirez
+                  - generic [ref=f7e239]: ·
+                  - generic [ref=f7e240]: 45 mins ago
+              - generic [ref=f7e243]:
+                - paragraph [ref=f7e244]: Broadcasted Alert
+                - paragraph [ref=f7e245]: "Sent mobile notification: \"Fresh Produce Drop arriving at 2:00 PM\""
+                - generic [ref=f7e246]:
+                  - generic [ref=f7e247]: Sarah Jenkins
+                  - generic [ref=f7e248]: ·
+                  - generic [ref=f7e249]: 2 hours ago
+              - generic [ref=f7e252]:
+                - paragraph [ref=f7e253]: Inventory Restock
+                - paragraph [ref=f7e254]: Added 350 lbs of "Fresh Apples & Pears"
+                - generic [ref=f7e255]:
+                  - generic [ref=f7e256]: Sarah Jenkins
+                  - generic [ref=f7e257]: ·
+                  - generic [ref=f7e258]: 3 hours ago
+              - generic [ref=f7e261]:
+                - paragraph [ref=f7e262]: Schedule Modified
+                - paragraph [ref=f7e263]: Updated Wednesday operating hours to 8:00 AM - 6:00 PM
+                - generic [ref=f7e264]:
+                  - generic [ref=f7e265]: Sarah Jenkins
+                  - generic [ref=f7e266]: ·
+                  - generic [ref=f7e267]: Yesterday

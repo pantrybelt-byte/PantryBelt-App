@@ -11,21 +11,18 @@
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { initAppSecurity, subscribeToAccountLabel } from '../utils/auth';
+import { initAppSecurity } from '../utils/auth';
 import { logSession } from '../utils/analytics';
 import { flushFeedbackQueue, incrementFeedbackSessionCount } from '../utils/feedback';
 
 type AuthReadyContextType = {
     authReady: boolean;
-    /** Signed-in account's display label ("@username" or an email), or null if anonymous. */
-    accountLabel: string | null;
 };
 
-const AuthReadyContext = createContext<AuthReadyContextType>({ authReady: false, accountLabel: null });
+const AuthReadyContext = createContext<AuthReadyContextType>({ authReady: false });
 
 export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
     const [authReady, setAuthReady] = useState(false);
-    const [accountLabel, setAccountLabel] = useState<string | null>(null);
 
     useEffect(() => {
         // 🔒 TIER 1 + TIER 3A: Anonymous auth + session bootstrap
@@ -48,15 +45,8 @@ export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
             });
     }, []);
 
-    useEffect(() => {
-        // Reactive, not a one-time read: screens must never freeze on a stale
-        // "anonymous" label if they mount before the persisted session finishes
-        // restoring, or miss a sign-in/sign-out that happens while off-screen.
-        return subscribeToAccountLabel(setAccountLabel);
-    }, []);
-
     return (
-        <AuthReadyContext.Provider value={{ authReady, accountLabel }}>
+        <AuthReadyContext.Provider value={{ authReady }}>
             {children}
         </AuthReadyContext.Provider>
     );

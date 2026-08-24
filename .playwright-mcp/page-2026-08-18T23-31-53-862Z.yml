@@ -1,0 +1,21 @@
+- generic [ref=f6e264]:
+  - generic [ref=f6e265]:
+    - img "AccessBelt" [ref=f6e267]
+    - heading "Sign in to AccessBelt" [level=1] [ref=f6e268]
+    - paragraph [ref=f6e269]: Operator portal
+  - generic [ref=f6e270]:
+    - generic [ref=f6e271]:
+      - generic [ref=f6e272]:
+        - generic [ref=f6e273]: Email address
+        - textbox "you@organization.org" [ref=f6e278]: sarah.j@hopecommunitypantry.org
+      - generic [ref=f6e279]:
+        - generic [ref=f6e280]:
+          - generic [ref=f6e281]: Password
+          - link "Forgot password?" [ref=f6e282] [cursor=pointer]:
+            - /url: "#forgot"
+        - textbox "••••••••" [ref=f6e287]: ••••••••••••
+      - button "Sign in" [ref=f6e288] [cursor=pointer]
+    - generic [ref=f6e292]:
+      - generic [ref=f6e293]: Demo mode
+      - button "Autofill credentials" [ref=f6e294] [cursor=pointer]
+  - paragraph [ref=f6e295]: AccessBelt Network · 2026

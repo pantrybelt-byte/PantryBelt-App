@@ -27,11 +27,6 @@
       "android": {
         "serviceAccountKeyPath": "./google-service-account.json",
         "track": "internal"
-      },
-      "ios": {
-        "appleId": "clarke.matthew95@gmail.com",
-        "ascAppId": "6800192694",
-        "appleTeamId": "G8VHN2YTZ8"
       }
     }
   }

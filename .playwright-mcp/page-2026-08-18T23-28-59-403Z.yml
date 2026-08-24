@@ -1,0 +1,172 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - generic [ref=f2e6]:
+        - generic [ref=f2e7]: AccessBelt
+        - button "Collapse navigation" [ref=f2e9]
+      - generic [ref=f2e12]:
+        - generic [ref=f2e13]: Active location
+        - combobox "Active location" [ref=f2e14] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=f2e15]:
+      - generic [ref=f2e17]:
+        - link "Dashboard" [ref=f2e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=f2e25] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=f2e33] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f2e39] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=f2e44]:
+        - paragraph [ref=f2e45]: Communication
+        - link "Broadcasts" [ref=f2e47] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=f2e52]:
+        - paragraph [ref=f2e53]: Settings
+        - generic [ref=f2e54]:
+          - link "Pantry profile" [ref=f2e55] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=f2e61] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=f2e68]:
+        - paragraph [ref=f2e69]: Support
+        - link "Getting started" [ref=f2e71] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=f2e75]:
+      - generic [ref=f2e76]:
+        - generic [ref=f2e77]: Verified 501(c)(3)
+        - paragraph [ref=f2e82]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=f2e83]
+  - generic [ref=f2e88]:
+    - banner [ref=f2e89]:
+      - generic [ref=f2e90]:
+        - button "Open" [ref=f2e91]
+        - generic [ref=f2e96]: Closes automatically at 16:00
+      - generic [ref=f2e97]:
+        - link "Open shift mode" [ref=f2e98] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f2e105]: Shift mode
+        - button "Sarah Jenkins" [ref=f2e108]
+    - main [ref=f2e113]:
+      - generic [ref=f2e114]:
+        - generic [ref=f2e115]:
+          - generic [ref=f2e116]:
+            - heading "Operating hours" [level=1] [ref=f2e117]
+            - paragraph [ref=f2e118]: Set your weekly schedule and holiday closures
+          - button "Save schedule" [ref=f2e119] [cursor=pointer]
+        - generic [ref=f2e125]:
+          - generic [ref=f2e126]:
+            - heading "Weekly schedule" [level=2] [ref=f2e127]
+            - generic [ref=f2e128]:
+              - generic [ref=f2e129]:
+                - generic [ref=f2e130]:
+                  - button [ref=f2e131] [cursor=pointer]
+                  - generic [ref=f2e133]:
+                    - paragraph [ref=f2e134]: Monday
+                    - text: Open
+                - generic [ref=f2e135]:
+                  - generic [ref=f2e136]:
+                    - generic [ref=f2e137]: Opens
+                    - textbox [ref=f2e138]: 08:00
+                  - generic [ref=f2e139]:
+                    - generic [ref=f2e140]: Closes
+                    - textbox [ref=f2e141]: 16:00
+                - textbox "Add a note…" [ref=f2e143]: Senior hours 8am-9am
+              - generic [ref=f2e144]:
+                - generic [ref=f2e145]:
+                  - button [ref=f2e146] [cursor=pointer]
+                  - generic [ref=f2e148]:
+                    - paragraph [ref=f2e149]: Tuesday
+                    - text: Open
+                - generic [ref=f2e150]:
+                  - generic [ref=f2e151]:
+                    - generic [ref=f2e152]: Opens
+                    - textbox [ref=f2e153]: 08:00
+                  - generic [ref=f2e154]:
+                    - generic [ref=f2e155]: Closes
+                    - textbox [ref=f2e156]: 16:00
+                - textbox "Add a note…" [ref=f2e158]
+              - generic [ref=f2e159]:
+                - generic [ref=f2e160]:
+                  - button [ref=f2e161] [cursor=pointer]
+                  - generic [ref=f2e163]:
+                    - paragraph [ref=f2e164]: Wednesday
+                    - text: Open
+                - generic [ref=f2e165]:
+                  - generic [ref=f2e166]:
+                    - generic [ref=f2e167]: Opens
+                    - textbox [ref=f2e168]: 08:00
+                  - generic [ref=f2e169]:
+                    - generic [ref=f2e170]: Closes
+                    - textbox [ref=f2e171]: 18:00
+                - textbox "Add a note…" [ref=f2e173]: Extended evening shift
+              - generic [ref=f2e174]:
+                - generic [ref=f2e175]:
+                  - button [ref=f2e176] [cursor=pointer]
+                  - generic [ref=f2e178]:
+                    - paragraph [ref=f2e179]: Thursday
+                    - text: Open
+                - generic [ref=f2e180]:
+                  - generic [ref=f2e181]:
+                    - generic [ref=f2e182]: Opens
+                    - textbox [ref=f2e183]: 08:00
+                  - generic [ref=f2e184]:
+                    - generic [ref=f2e185]: Closes
+                    - textbox [ref=f2e186]: 16:00
+                - textbox "Add a note…" [ref=f2e188]
+              - generic [ref=f2e189]:
+                - generic [ref=f2e190]:
+                  - button [ref=f2e191] [cursor=pointer]
+                  - generic [ref=f2e193]:
+                    - paragraph [ref=f2e194]: Friday
+                    - text: Open
+                - generic [ref=f2e195]:
+                  - generic [ref=f2e196]:
+                    - generic [ref=f2e197]: Opens
+                    - textbox [ref=f2e198]: 08:00
+                  - generic [ref=f2e199]:
+                    - generic [ref=f2e200]: Closes
+                    - textbox [ref=f2e201]: 15:00
+                - textbox "Add a note…" [ref=f2e203]: Weekend distribution prep
+              - generic [ref=f2e204]:
+                - generic [ref=f2e205]:
+                  - button [ref=f2e206] [cursor=pointer]
+                  - generic [ref=f2e208]:
+                    - paragraph [ref=f2e209]: Saturday
+                    - text: Open
+                - generic [ref=f2e210]:
+                  - generic [ref=f2e211]:
+                    - generic [ref=f2e212]: Opens
+                    - textbox [ref=f2e213]: 09:00
+                  - generic [ref=f2e214]:
+                    - generic [ref=f2e215]: Closes
+                    - textbox [ref=f2e216]: 13:00
+                - textbox "Add a note…" [ref=f2e218]: First & third Sat of month
+              - generic [ref=f2e219]:
+                - generic [ref=f2e220]:
+                  - button [ref=f2e221] [cursor=pointer]
+                  - generic [ref=f2e223]:
+                    - paragraph [ref=f2e224]: Sunday
+                    - text: Closed
+                - generic [ref=f2e225]: Closed for distribution
+                - textbox "Add a note…" [ref=f2e227]: Closed for restocking
+          - generic [ref=f2e228]:
+            - generic [ref=f2e229]:
+              - heading "Closures" [level=2] [ref=f2e230]
+              - button "Add" [ref=f2e231]
+            - generic [ref=f2e233]:
+              - generic [ref=f2e235]:
+                - generic [ref=f2e236]:
+                  - paragraph [ref=f2e237]: Labor Day Holiday
+                  - paragraph [ref=f2e238]: September 7, 2026
+                  - paragraph [ref=f2e239]: National Holiday — Emergency pantry box pickups available upon request.
+                - button [ref=f2e240] [cursor=pointer]
+              - generic [ref=f2e245]:
+                - generic [ref=f2e246]:
+                  - paragraph [ref=f2e247]: Facility Maintenance & Deep Cleaning
+                  - paragraph [ref=f2e248]: September 21, 2026
+                  - paragraph [ref=f2e249]: Annual freezer unit servicing and sanitation.
+                - button [ref=f2e250] [cursor=pointer]

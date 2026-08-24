@@ -1,0 +1,321 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e3]:
+    - link "Skip to main content" [ref=f7e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - complementary "Dashboard sidebar" [ref=f7e5]:
+      - generic [ref=f7e6]:
+        - generic [ref=f7e8]:
+          - generic [ref=f7e9]:
+            - generic [ref=f7e10]: AB
+            - generic [ref=f7e12]:
+              - generic [ref=f7e13]: AccessBelt
+              - text: Analytics
+          - button "Collapse sidebar" [ref=f7e14] [cursor=pointer]
+        - navigation "Main navigation" [ref=f7e17]:
+          - list [ref=f7e18]:
+            - listitem [ref=f7e19]:
+              - heading "Analytics" [level=2] [ref=f7e20]
+              - list "Analytics" [ref=f7e21]:
+                - listitem [ref=f7e22]:
+                  - link "Overview" [ref=f7e23] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=f7e30]:
+                  - link "Demographics" [ref=f7e31] [cursor=pointer]:
+                    - /url: /demographics
+                - listitem [ref=f7e38]:
+                  - link "Food Deserts" [ref=f7e39] [cursor=pointer]:
+                    - /url: /food-deserts
+                - listitem [ref=f7e43]:
+                  - link "Pantry Interactions" [ref=f7e44] [cursor=pointer]:
+                    - /url: /interactions
+            - listitem [ref=f7e52]:
+              - heading "Insights" [level=2] [ref=f7e53]
+              - list "Insights" [ref=f7e54]:
+                - listitem [ref=f7e55]:
+                  - link "Most Requested" [ref=f7e56] [cursor=pointer]:
+                    - /url: /most-requested
+            - listitem [ref=f7e64]:
+              - heading "Modules" [level=2] [ref=f7e65]
+              - list "Modules" [ref=f7e66]:
+                - listitem [ref=f7e67]:
+                  - link "SDOH & Medicaid" [ref=f7e68] [cursor=pointer]:
+                    - /url: /modules/sdoh
+                - listitem [ref=f7e73]:
+                  - link "IRS CHNA Audit, locked add-on module" [ref=f7e74] [cursor=pointer]:
+                    - /url: /modules/chna
+                    - generic [ref=f7e78]: IRS CHNA Audit
+                - listitem [ref=f7e82]:
+                  - link "Corporate CSR, locked add-on module" [ref=f7e83] [cursor=pointer]:
+                    - /url: /modules/csr
+                    - generic [ref=f7e88]: Corporate CSR
+                - listitem [ref=f7e92]:
+                  - link "Disaster Logistics" [ref=f7e93] [cursor=pointer]:
+                    - /url: /modules/disaster
+            - listitem [ref=f7e100]:
+              - heading "Reports" [level=2] [ref=f7e101]
+              - list "Reports" [ref=f7e102]:
+                - listitem [ref=f7e103]:
+                  - link "Reports & Export" [ref=f7e104] [cursor=pointer]:
+                    - /url: /reports
+            - listitem [ref=f7e109]:
+              - heading "Account" [level=2] [ref=f7e110]
+              - list "Account" [ref=f7e111]:
+                - listitem [ref=f7e112]:
+                  - link "Plan & Modules" [ref=f7e113] [cursor=pointer]:
+                    - /url: /billing
+                - listitem [ref=f7e117]:
+                  - link "Settings" [ref=f7e118] [cursor=pointer]:
+                    - /url: /settings
+      - button "Sign out" [ref=f7e124] [cursor=pointer]
+    - generic [ref=f7e129]:
+      - banner [ref=f7e130]:
+        - generic [ref=f7e131]:
+          - generic [ref=f7e133]:
+            - generic [ref=f7e134]:
+              - heading "Plan & Modules" [level=1]
+              - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f7e135] [cursor=pointer]':
+                - generic [ref=f7e137]: Demo Data
+                - status [ref=f7e143]
+              - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f7e145] [cursor=pointer]':
+                - generic [ref=f7e149]: As USDA Food & Nutrition Service
+            - paragraph [ref=f7e152]: Base platform, purchased analytics modules, and invoicing
+          - generic [ref=f7e153]:
+            - button "Grant & Impact" [ref=f7e155] [cursor=pointer]
+            - generic [ref=f7e162]:
+              - group "Reporting period" [ref=f7e163]:
+                - button "Last 7 days" [ref=f7e166] [cursor=pointer]: 7 Days
+                - button "Last 30 days" [pressed] [ref=f7e167] [cursor=pointer]: 30 Days
+                - button "Last 90 days" [ref=f7e168] [cursor=pointer]: 90 Days
+                - button "Year to date" [ref=f7e169] [cursor=pointer]: YTD
+                - button "Custom" [ref=f7e170] [cursor=pointer]
+              - button "Compare against the previous period" [ref=f7e171] [cursor=pointer]:
+                - generic [ref=f7e177]: Compare
+                - generic [ref=f7e178]: against the previous period
+            - button "Copy a link to this view, including the current filters" [ref=f7e179] [cursor=pointer]:
+              - generic [ref=f7e186]: Share
+            - button "Notifications, 1 unread" [ref=f7e188] [cursor=pointer]
+            - button "Account menu for Dr. Patricia Hawkins" [ref=f7e194] [cursor=pointer]:
+              - generic [ref=f7e195]: DPH
+              - generic [ref=f7e196]:
+                - generic [ref=f7e197]: Dr. Patricia Hawkins
+                - generic [ref=f7e198]: United Way River Region
+        - generic [ref=f7e202]:
+          - generic [ref=f7e203]: Limit the dashboard to a single county
+          - combobox "Limit the dashboard to a single county" [ref=f7e208] [cursor=pointer]:
+            - option "All Assigned Counties (Central Alabama River Region)" [selected]
+            - option "Montgomery County"
+            - option "Autauga County"
+            - option "Elmore County"
+            - option "Lowndes County"
+            - option "Macon County"
+            - option "Dallas County"
+            - option "Wilcox County"
+            - option "Perry County"
+      - main [ref=f7e209]:
+        - generic [ref=f7e699]:
+          - generic [ref=f7e700]:
+            - generic [ref=f7e705]:
+              - generic [ref=f7e706]:
+                - heading "Agency subscription & billing" [level=2] [ref=f7e707]
+                - generic [ref=f7e708]: Grant Eligible
+              - paragraph [ref=f7e709]: "Two ways to pay: purchase order with Net-30 terms, or self-service card subscription."
+            - button "Manage Stripe Portal" [ref=f7e710] [cursor=pointer]
+          - region [ref=f7e715]:
+            - generic [ref=f7e716]:
+              - generic [ref=f7e721]:
+                - generic [ref=f7e722]:
+                  - heading "QuickBooks Net-30 & W-9 vendor support" [level=2] [ref=f7e723]
+                  - generic [ref=f7e724]: Grant eligible
+                - paragraph [ref=f7e725]: Non-profits, hospital systems and government agencies can request a formal purchase order invoice on Net-30 terms, paid by ACH bank deposit. We provide a signed W-9 and vendor registration packet for your finance office.
+                - generic [ref=f7e726]:
+                  - generic [ref=f7e727]:
+                    - term [ref=f7e728]: Payment terms
+                    - definition [ref=f7e729]: Net-30
+                  - generic [ref=f7e730]:
+                    - term [ref=f7e731]: Method
+                    - definition [ref=f7e732]: ACH deposit
+                  - generic [ref=f7e733]:
+                    - term [ref=f7e734]: Tax ID (W-9)
+                    - definition [ref=f7e735]: On request
+                  - generic [ref=f7e736]:
+                    - term [ref=f7e737]: PO minimum
+                    - definition [ref=f7e738]: $2,500
+              - generic [ref=f7e739]:
+                - button "Request PO invoice" [ref=f7e740] [cursor=pointer]
+                - button "Download W-9" [ref=f7e744] [cursor=pointer]
+                - link "Contact accounts team" [ref=f7e748] [cursor=pointer]:
+                  - /url: mailto:accounts@accessbelt.org
+            - paragraph [ref=f7e752]:
+              - text: Smaller agencies can skip procurement entirely and subscribe by card below, from
+              - generic [ref=f7e757]: $400
+              - text: to
+              - generic [ref=f7e758]: $500
+              - text: per month.
+          - region [ref=f7e759]:
+            - generic [ref=f7e760]:
+              - generic [ref=f7e761]:
+                - generic [ref=f7e762]:
+                  - generic [ref=f7e763]: Coverage Tier
+                  - generic [ref=f7e764]: "Primary: Montgomery County (Demo Default)"
+                - heading "Expand Regional County Coverage" [level=2] [ref=f7e765]
+                - paragraph [ref=f7e766]: Base Subscription ($400/mo) includes 1 primary assigned county. Add individual adjacent counties for +$150/mo per extra county, or unlock full statewide coverage.
+              - generic [ref=f7e767]:
+                - generic [ref=f7e768]: +$150 / mo per extra county
+                - button "+ Add Extra County ($150/mo)" [ref=f7e769]
+          - region [ref=f7e770]:
+            - generic [ref=f7e771]:
+              - generic [ref=f7e772]:
+                - text: Active
+                - heading "AccessBelt Base Platform" [level=2] [ref=f7e773]
+                - paragraph [ref=f7e774]: 1 primary assigned county of your choice (Montgomery default for demo)
+              - generic [ref=f7e775]:
+                - paragraph [ref=f7e776]: $400
+                - paragraph [ref=f7e777]: per month · $4,000/yr billed annually
+          - region [ref=f7e778]:
+            - generic [ref=f7e779]:
+              - heading "Analytics modules" [level=2] [ref=f7e780]
+              - paragraph [ref=f7e781]: Purchased individually and priced by contract. Each unlocks a dedicated view and its own export.
+            - generic [ref=f7e782]:
+              - article [ref=f7e783]:
+                - generic [ref=f7e784]:
+                  - generic [ref=f7e790]:
+                    - heading "SDOH Health & Medicaid Audit" [level=3] [ref=f7e791]
+                    - paragraph [ref=f7e792]: Blue Cross Blue Shield of AL · Viva Health · UnitedHealthcare
+                  - generic [ref=f7e793]: Module active
+                - paragraph [ref=f7e797]: Member ZIP vulnerability overlay, HEDIS social needs screening compliance, and closed-loop referral tracking.
+                - list [ref=f7e798]:
+                  - listitem [ref=f7e799]: Member ZIP vulnerability overlay
+                  - listitem [ref=f7e800]: CMS HEDIS screening compliance
+                  - listitem [ref=f7e801]: Closed-loop referral counter
+                  - listitem [ref=f7e802]: Plan network gap analysis
+                - generic [ref=f7e803]:
+                  - paragraph [ref=f7e804]: $25k–$75k / year
+                  - link "Open module" [ref=f7e805] [cursor=pointer]:
+                    - /url: /modules/sdoh
+              - article [ref=f7e808]:
+                - generic [ref=f7e809]:
+                  - generic [ref=f7e815]:
+                    - heading "IRS CHNA Hospital Compliance Audit" [level=3] [ref=f7e816]
+                    - paragraph [ref=f7e817]: Baptist Health Montgomery · Jackson Hospital · UAB Medicine
+                  - generic [ref=f7e818]: Locked add-on module
+                - paragraph [ref=f7e822]: Service-radius food security trends and community investment logging for the triennial CHNA filing.
+                - list [ref=f7e823]:
+                  - listitem [ref=f7e824]: 25-mile service radius selector
+                  - listitem [ref=f7e825]: 3-year food security trend
+                  - listitem [ref=f7e826]: Form 501(r) investment log
+                  - listitem [ref=f7e827]: Community benefit attribution
+                - generic [ref=f7e828]:
+                  - paragraph [ref=f7e829]: $10k–$25k / report
+                  - button "Request pricing" [ref=f7e830] [cursor=pointer]
+              - article [ref=f7e833]:
+                - generic [ref=f7e834]:
+                  - generic [ref=f7e841]:
+                    - heading "Corporate CSR Sponsor Overview" [level=3] [ref=f7e842]
+                    - paragraph [ref=f7e843]: Alabama Power Foundation · Regions Bank Foundation · Publix Charities
+                  - generic [ref=f7e844]: Locked add-on module
+                - paragraph [ref=f7e848]: Co-branded reach and growth reporting for foundation sponsors and corporate giving committees.
+                - list [ref=f7e849]:
+                  - listitem [ref=f7e850]: Total families reached counter
+                  - listitem [ref=f7e851]: Co-branded sponsor header
+                  - listitem [ref=f7e852]: Sponsored county growth
+                  - listitem [ref=f7e853]: Volunteer hours attribution
+                - generic [ref=f7e854]:
+                  - paragraph [ref=f7e855]: $5k–$20k / year
+                  - button "Request pricing" [ref=f7e856] [cursor=pointer]
+              - article [ref=f7e859]:
+                - generic [ref=f7e860]:
+                  - generic [ref=f7e868]:
+                    - heading "Disaster & Emergency Logistics Feed" [level=3] [ref=f7e869]
+                    - paragraph [ref=f7e870]: Alabama Emergency Management Agency · County EMAs
+                  - generic [ref=f7e871]: Module active
+                - paragraph [ref=f7e875]: Live points of distribution status, stockout red zones, and the emergency supply request stream.
+                - list [ref=f7e876]:
+                  - listitem [ref=f7e877]: Live POD status map
+                  - listitem [ref=f7e878]: Crisis stockout red zones
+                  - listitem [ref=f7e879]: Emergency SOS alert stream
+                  - listitem [ref=f7e880]: Resupply routing priority
+                - generic [ref=f7e881]:
+                  - paragraph [ref=f7e882]: $15k–$50k / year
+                  - link "Open module" [ref=f7e883] [cursor=pointer]:
+                    - /url: /modules/disaster
+          - generic [ref=f7e886]:
+            - region [ref=f7e887]:
+              - generic [ref=f7e889]:
+                - heading "Payment Methods & Invoicing" [level=2] [ref=f7e890]
+                - paragraph [ref=f7e891]: Stripe Customer Portal details
+              - generic [ref=f7e892]:
+                - generic [ref=f7e893]:
+                  - generic [ref=f7e894]:
+                    - generic [ref=f7e895]: VISA
+                    - generic [ref=f7e896]:
+                      - paragraph [ref=f7e897]: Corporate Visa ending in 4242
+                      - paragraph [ref=f7e898]: United Way River Region · Expires 12/28
+                  - generic [ref=f7e899]: Primary
+                - generic [ref=f7e900]:
+                  - generic [ref=f7e901]:
+                    - generic [ref=f7e902]: PO
+                    - generic [ref=f7e903]:
+                      - paragraph [ref=f7e904]: Government grant purchase order
+                      - paragraph [ref=f7e905]: USDA / State Grant Direct Invoicing (30-day terms)
+                  - generic [ref=f7e906]: Active
+                - button "Add Payment Method in Stripe Portal" [ref=f7e907] [cursor=pointer]
+            - region [ref=f7e910]:
+              - generic [ref=f7e912]:
+                - heading "Stripe API Configuration" [level=2] [ref=f7e913]
+                - paragraph [ref=f7e914]: Webhook & keys status for developer handoff
+              - generic [ref=f7e915]:
+                - generic [ref=f7e916]:
+                  - generic [ref=f7e922]:
+                    - paragraph [ref=f7e923]: Stripe Webhook Endpoint
+                    - paragraph [ref=f7e924]: Listening for customer.subscription.updated
+                  - generic [ref=f7e925]: READY
+                - generic [ref=f7e926]:
+                  - generic [ref=f7e927]:
+                    - generic [ref=f7e928]: "VITE_STRIPE_PUBLISHABLE_KEY:"
+                    - generic [ref=f7e929]: pk_live_51P...90X
+                  - generic [ref=f7e930]:
+                    - generic [ref=f7e931]: "STRIPE_WEBHOOK_SECRET:"
+                    - generic [ref=f7e932]: whsec_89f...21a
+          - region [ref=f7e933]:
+            - generic [ref=f7e935]:
+              - heading "Billing & Invoice History" [level=2] [ref=f7e936]
+              - paragraph [ref=f7e937]: Download PDF receipts for grant auditing
+            - table [ref=f7e939]:
+              - rowgroup [ref=f7e940]:
+                - row [ref=f7e941]:
+                  - columnheader "Invoice ID" [ref=f7e942]
+                  - columnheader "Date" [ref=f7e943]
+                  - columnheader "Plan" [ref=f7e944]
+                  - columnheader "Amount" [ref=f7e945]
+                  - columnheader "Status" [ref=f7e946]
+                  - columnheader "Receipt" [ref=f7e947]
+              - rowgroup [ref=f7e948]:
+                - row [ref=f7e949]:
+                  - cell "INV-2026-008" [ref=f7e950]
+                  - cell "Aug 1, 2026" [ref=f7e951]
+                  - cell "Base platform — monthly" [ref=f7e952]
+                  - cell "$400.00" [ref=f7e953]
+                  - cell "Paid" [ref=f7e954]
+                  - cell [ref=f7e955]:
+                    - button "Download PDF Invoice" [ref=f7e956] [cursor=pointer]
+                - row [ref=f7e960]:
+                  - cell "INV-2026-007" [ref=f7e961]
+                  - cell "Jul 1, 2026" [ref=f7e962]
+                  - cell "Base platform — monthly" [ref=f7e963]
+                  - cell "$400.00" [ref=f7e964]
+                  - cell "Paid" [ref=f7e965]
+                  - cell [ref=f7e966]:
+                    - button "Download PDF Invoice" [ref=f7e967] [cursor=pointer]
+                - row [ref=f7e971]:
+                  - cell "INV-2026-006" [ref=f7e972]
+                  - cell "Jun 1, 2026" [ref=f7e973]
+                  - cell "Corporate CSR module — annual contract" [ref=f7e974]
+                  - cell "$8,500.00" [ref=f7e975]
+                  - cell "Paid" [ref=f7e976]
+                  - cell [ref=f7e977]:
+                    - button "Download PDF Invoice" [ref=f7e978] [cursor=pointer]
+      - contentinfo [ref=f7e213]:
+        - generic [ref=f7e214]:
+          - paragraph [ref=f7e215]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+          - paragraph [ref=f7e216]: Partnered with United Way River Region & USDA
+  - generic [ref=f7e698]: "0"

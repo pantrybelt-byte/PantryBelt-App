@@ -72,7 +72,7 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
                 pointerEvents="box-none"
             >
                 <View style={[styles.card, { backgroundColor: theme.card }]}>
-                    <View style={[styles.handle, { backgroundColor: theme.border }]} />
+                    <View style={styles.handle} />
 
                     {submitted ? (
                         <View style={styles.thankYouWrap}>

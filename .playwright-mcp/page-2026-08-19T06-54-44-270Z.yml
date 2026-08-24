@@ -1,0 +1,119 @@
+- generic [ref=f7e3]:
+  - link "Skip to main content" [ref=f7e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=f7e5]:
+    - generic [ref=f7e6]:
+      - generic [ref=f7e8]:
+        - generic [ref=f7e9]:
+          - generic [ref=f7e10]: AB
+          - generic [ref=f7e12]:
+            - generic [ref=f7e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=f7e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=f7e17]:
+        - list [ref=f7e18]:
+          - listitem [ref=f7e19]:
+            - heading "Analytics" [level=2] [ref=f7e20]
+            - list "Analytics" [ref=f7e21]:
+              - listitem [ref=f7e22]:
+                - link "Overview" [ref=f7e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f7e30]:
+                - link "Demographics" [ref=f7e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=f7e38]:
+                - link "Food Deserts" [ref=f7e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=f7e43]:
+                - link "Pantry Interactions" [ref=f7e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=f7e52]:
+            - heading "Insights" [level=2] [ref=f7e53]
+            - list "Insights" [ref=f7e54]:
+              - listitem [ref=f7e55]:
+                - link "Most Requested" [ref=f7e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=f7e64]:
+            - heading "Modules" [level=2] [ref=f7e65]
+            - list "Modules" [ref=f7e66]:
+              - listitem [ref=f7e67]:
+                - link "SDOH & Medicaid" [ref=f7e68] [cursor=pointer]:
+                  - /url: /modules/sdoh
+              - listitem [ref=f7e73]:
+                - link "IRS CHNA Audit, locked add-on module" [ref=f7e74] [cursor=pointer]:
+                  - /url: /modules/chna
+                  - generic [ref=f7e78]: IRS CHNA Audit
+              - listitem [ref=f7e82]:
+                - link "Corporate CSR, locked add-on module" [ref=f7e83] [cursor=pointer]:
+                  - /url: /modules/csr
+                  - generic [ref=f7e88]: Corporate CSR
+              - listitem [ref=f7e92]:
+                - link "Disaster Logistics" [ref=f7e93] [cursor=pointer]:
+                  - /url: /modules/disaster
+          - listitem [ref=f7e100]:
+            - heading "Reports" [level=2] [ref=f7e101]
+            - list "Reports" [ref=f7e102]:
+              - listitem [ref=f7e103]:
+                - link "Reports & Export" [ref=f7e104] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=f7e109]:
+            - heading "Account" [level=2] [ref=f7e110]
+            - list "Account" [ref=f7e111]:
+              - listitem [ref=f7e112]:
+                - link "Plan & Modules" [ref=f7e113] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=f7e117]:
+                - link "Settings" [ref=f7e118] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=f7e124] [cursor=pointer]
+  - generic [ref=f7e129]:
+    - banner [ref=f7e130]:
+      - generic [ref=f7e131]:
+        - generic [ref=f7e133]:
+          - generic [ref=f7e134]:
+            - heading "Food Deserts" [level=1]
+            - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f7e135] [cursor=pointer]':
+              - generic [ref=f7e137]: Demo Data
+              - status [ref=f7e143]
+            - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f7e145] [cursor=pointer]':
+              - generic [ref=f7e149]: As USDA Food & Nutrition Service
+          - paragraph [ref=f7e152]: Food access analysis by county & census tract
+        - generic [ref=f7e153]:
+          - button "Grant & Impact" [ref=f7e155] [cursor=pointer]
+          - generic [ref=f7e162]:
+            - group "Reporting period" [ref=f7e163]:
+              - button "Last 7 days" [ref=f7e166] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=f7e167] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=f7e168] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=f7e169] [cursor=pointer]: YTD
+              - button "Custom" [ref=f7e170] [cursor=pointer]
+            - button "Compare against the previous period" [ref=f7e171] [cursor=pointer]:
+              - generic [ref=f7e177]: Compare
+              - generic [ref=f7e178]: against the previous period
+          - button "Copy a link to this view, including the current filters" [ref=f7e179] [cursor=pointer]:
+            - generic [ref=f7e186]: Share
+          - button "Notifications, 1 unread" [ref=f7e188] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=f7e194] [cursor=pointer]:
+            - generic [ref=f7e195]: DPH
+            - generic [ref=f7e196]:
+              - generic [ref=f7e197]: Dr. Patricia Hawkins
+              - generic [ref=f7e198]: United Way River Region
+      - generic [ref=f7e202]:
+        - generic [ref=f7e203]: Limit the dashboard to a single county
+        - combobox "Limit the dashboard to a single county" [ref=f7e208] [cursor=pointer]:
+          - option "All Assigned Counties (Central Alabama River Region)" [selected]
+          - option "Montgomery County"
+          - option "Autauga County"
+          - option "Elmore County"
+          - option "Lowndes County"
+          - option "Macon County"
+          - option "Dallas County"
+          - option "Wilcox County"
+          - option "Perry County"
+    - main [ref=f7e209]:
+      - status [ref=f7e210]:
+        - generic [ref=f7e212]: Loading
+    - contentinfo [ref=f7e213]:
+      - generic [ref=f7e214]:
+        - paragraph [ref=f7e215]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=f7e216]: Partnered with United Way River Region & USDA

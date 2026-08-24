@@ -1,0 +1,280 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - link "Skip to main content" [ref=f2e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - complementary "Dashboard sidebar" [ref=f2e5]:
+      - generic [ref=f2e6]:
+        - generic [ref=f2e8]:
+          - generic [ref=f2e9]:
+            - generic [ref=f2e10]: AB
+            - generic [ref=f2e12]:
+              - generic [ref=f2e13]: AccessBelt
+              - text: Analytics
+          - button "Collapse sidebar" [ref=f2e14] [cursor=pointer]
+        - navigation "Main navigation" [ref=f2e17]:
+          - list [ref=f2e18]:
+            - listitem [ref=f2e19]:
+              - heading "Analytics" [level=2] [ref=f2e20]
+              - list "Analytics" [ref=f2e21]:
+                - listitem [ref=f2e22]:
+                  - link "Overview" [ref=f2e23] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=f2e30]:
+                  - link "Demographics" [ref=f2e31] [cursor=pointer]:
+                    - /url: /demographics
+                - listitem [ref=f2e38]:
+                  - link "Food Deserts" [ref=f2e39] [cursor=pointer]:
+                    - /url: /food-deserts
+                - listitem [ref=f2e43]:
+                  - link "Pantry Interactions" [ref=f2e44] [cursor=pointer]:
+                    - /url: /interactions
+            - listitem [ref=f2e52]:
+              - heading "Insights" [level=2] [ref=f2e53]
+              - list "Insights" [ref=f2e54]:
+                - listitem [ref=f2e55]:
+                  - link "Most Requested" [ref=f2e56] [cursor=pointer]:
+                    - /url: /most-requested
+            - listitem [ref=f2e64]:
+              - heading "Reports" [level=2] [ref=f2e65]
+              - list "Reports" [ref=f2e66]:
+                - listitem [ref=f2e67]:
+                  - link "Reports & Export" [ref=f2e68] [cursor=pointer]:
+                    - /url: /reports
+            - listitem [ref=f2e73]:
+              - heading "Account" [level=2] [ref=f2e74]
+              - list "Account" [ref=f2e75]:
+                - listitem [ref=f2e76]:
+                  - link "Billing & Subscription" [ref=f2e77] [cursor=pointer]:
+                    - /url: /billing
+                - listitem [ref=f2e81]:
+                  - link "Settings" [ref=f2e82] [cursor=pointer]:
+                    - /url: /settings
+      - button "Sign out" [ref=f2e88] [cursor=pointer]
+    - generic [ref=f2e93]:
+      - banner [ref=f2e94]:
+        - generic [ref=f2e95]:
+          - generic [ref=f2e97]:
+            - generic [ref=f2e98]:
+              - heading "Overview" [level=1] [ref=f2e99]
+              - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f2e100] [cursor=pointer]':
+                - generic [ref=f2e102]: Demo Data
+                - status [ref=f2e108]
+            - paragraph [ref=f2e109]: Region-wide analytics & period comparison
+          - generic [ref=f2e110]:
+            - button "Grant & Impact" [ref=f2e112] [cursor=pointer]
+            - button "Copy a link to this view, including the current filters" [ref=f2e118] [cursor=pointer]:
+              - generic [ref=f2e125]: Share
+            - button "Notifications, 1 unread" [ref=f2e127] [cursor=pointer]
+            - button "Account menu for Dr. Patricia Hawkins" [ref=f2e133] [cursor=pointer]:
+              - generic [ref=f2e134]: DPH
+              - generic [ref=f2e135]:
+                - generic [ref=f2e136]: Dr. Patricia Hawkins
+                - generic [ref=f2e137]: United Way River Region
+        - generic [ref=f2e140]:
+          - generic [ref=f2e141]:
+            - generic [ref=f2e142]: Limit the dashboard to a single county
+            - combobox "Limit the dashboard to a single county" [ref=f2e147] [cursor=pointer]:
+              - option "All Assigned Counties (Central Alabama River Region)" [selected]
+              - option "Montgomery County"
+              - option "Autauga County"
+              - option "Elmore County"
+              - option "Lowndes County"
+              - option "Macon County"
+              - option "Dallas County"
+              - option "Wilcox County"
+              - option "Perry County"
+          - generic [ref=f2e149]:
+            - group "Reporting period" [ref=f2e150]:
+              - button "Last 7 days" [ref=f2e153] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=f2e154] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=f2e155] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=f2e156] [cursor=pointer]: YTD
+              - button "Custom" [ref=f2e157] [cursor=pointer]
+            - button "Compare against the previous period" [ref=f2e158] [cursor=pointer]:
+              - generic [ref=f2e164]: Compare
+              - generic [ref=f2e165]: against the previous period
+        - dialog [ref=f2e553]:
+          - generic [ref=f2e554]:
+            - generic [ref=f2e560]:
+              - heading "Unlock premium analytics module" [level=2] [ref=f2e561]
+              - paragraph [ref=f2e562]: Real-time compliance reporting, SDOH audit feeds, and automated grant exports.
+            - button "Close upgrade dialog" [ref=f2e563]
+          - generic [ref=f2e567]:
+            - heading "SDOH Health & Medicaid Audit" [level=3] [ref=f2e572]
+            - paragraph [ref=f2e573]: Member ZIP vulnerability overlay, HEDIS social needs screening compliance, and closed-loop referral tracking.
+            - generic [ref=f2e574]:
+              - generic [ref=f2e575]:
+                - term [ref=f2e576]: Built for
+                - definition [ref=f2e577]: Blue Cross Blue Shield of AL · Viva Health · UnitedHealthcare
+              - generic [ref=f2e578]:
+                - term [ref=f2e579]: Typical contract
+                - definition [ref=f2e580]: $25k–$75k / yr
+          - list [ref=f2e581]:
+            - listitem [ref=f2e582]: Member ZIP vulnerability overlay
+            - listitem [ref=f2e585]: CMS HEDIS screening compliance
+            - listitem [ref=f2e588]: Closed-loop referral counter
+            - listitem [ref=f2e591]: Plan network gap analysis
+          - generic [ref=f2e594]:
+            - generic [ref=f2e595]: Invoicing
+            - generic [ref=f2e596]: QuickBooks Net-30 or Stripe
+          - status [ref=f2e647]: Upgrade request sent. Our account team will issue your QuickBooks Net-30 invoice.
+      - main [ref=f2e166]:
+        - generic [ref=f2e232]:
+          - region "Grant & Community Impact view" [ref=f2e233]:
+            - generic [ref=f2e234]:
+              - generic [ref=f2e239]:
+                - generic [ref=f2e240]:
+                  - heading "Grant & Community Impact" [level=2] [ref=f2e241]
+                  - generic [ref=f2e242]: Unlocked base view
+                - paragraph [ref=f2e246]: 8 partner pantries across 8 assigned counties.
+                - list [ref=f2e247]:
+                  - listitem [ref=f2e248]: County food desert heatmap
+                  - listitem [ref=f2e249]: Unmet demand statistics
+                  - listitem [ref=f2e250]: ZIP poverty metrics
+                  - listitem [ref=f2e251]: Pantry coverage %
+              - generic [ref=f2e252]:
+                - generic [ref=f2e253]:
+                  - button "Export United Way PDF Grant Impact Report" [ref=f2e254] [cursor=pointer]
+                  - paragraph [ref=f2e258]: Formatted for USDA SNAP-Ed and HUD CDBG applications
+                - button "Dismiss the executive overview notice" [ref=f2e259] [cursor=pointer]
+          - group "Filter figures by demographic segment" [ref=f2e263]:
+            - generic [ref=f2e265]: "Segment:"
+            - generic "Every household served" [ref=f2e271] [cursor=pointer]:
+              - radio "All Families" [checked] [ref=f2e272]
+              - text: All Families
+            - generic "Households including a child under 18" [ref=f2e273] [cursor=pointer]:
+              - radio "Children 0–17" [ref=f2e274]
+              - text: Children 0–17
+            - generic "Households including an adult aged 60 or over" [ref=f2e275] [cursor=pointer]:
+              - radio "Seniors 60+" [ref=f2e276]
+              - text: Seniors 60+
+            - generic "Households receiving assistance for the first time" [ref=f2e277] [cursor=pointer]:
+              - radio "First-Time" [ref=f2e278]
+              - text: First-Time
+            - generic "Households served through emergency distribution" [ref=f2e279] [cursor=pointer]:
+              - radio "Emergency" [ref=f2e280]
+              - text: Emergency
+          - generic [ref=f2e281]:
+            - generic [ref=f2e284]:
+              - paragraph [ref=f2e285]: Families Served
+              - paragraph [ref=f2e286]: 12,027
+              - generic [ref=f2e287]:
+                - generic [ref=f2e291]: +12.4%
+                - generic [ref=f2e292]: vs last period
+            - generic [ref=f2e301]:
+              - paragraph [ref=f2e302]: Active Pantries in Scope
+              - paragraph [ref=f2e303]: 7 / 8
+            - generic [ref=f2e311]:
+              - paragraph [ref=f2e312]: Items Distributed
+              - paragraph [ref=f2e313]: 186,420
+              - generic [ref=f2e314]:
+                - generic [ref=f2e318]: +8.7%
+                - generic [ref=f2e319]: vs last period
+            - generic [ref=f2e327]:
+              - paragraph [ref=f2e328]: Food Desert Score
+              - paragraph [ref=f2e329]: 42.3/100
+          - generic [ref=f2e333]:
+            - region [ref=f2e334]:
+              - generic [ref=f2e336]:
+                - heading "Families Served Over Time" [level=2] [ref=f2e337]
+                - paragraph [ref=f2e338]: 30-day trend across all pantries
+              - application [ref=f2e342]:
+                - generic [ref=f2e353]:
+                  - generic [ref=f2e354]:
+                    - generic [ref=f2e355]: Jul 11
+                    - generic [ref=f2e357]: Jul 16
+                    - generic [ref=f2e359]: Jul 21
+                    - generic [ref=f2e361]: Jul 26
+                    - generic [ref=f2e363]: Jul 31
+                    - generic [ref=f2e365]: Aug 5
+                  - generic [ref=f2e367]:
+                    - generic [ref=f2e368]: "0"
+                    - generic [ref=f2e370]: "150"
+                    - generic [ref=f2e372]: "300"
+                    - generic [ref=f2e374]: "450"
+                    - generic [ref=f2e376]: "600"
+            - region [ref=f2e378]:
+              - generic [ref=f2e380]:
+                - heading "Distribution by Type" [level=2] [ref=f2e381]
+                - paragraph [ref=f2e382]: Pantry distribution methods
+              - generic [ref=f2e383]:
+                - application [ref=f2e386]
+                - generic [ref=f2e402]:
+                  - generic [ref=f2e403]: Walk-in
+                  - generic [ref=f2e406]: Drive-thru
+                  - generic [ref=f2e409]: Walk-in & Drive-thru
+                  - generic [ref=f2e412]: Mobile Distribution
+          - generic [ref=f2e415]:
+            - region [ref=f2e416]:
+              - generic [ref=f2e418]:
+                - heading "Items Distributed by Category" [level=2] [ref=f2e419]
+                - paragraph [ref=f2e420]: Total volume breakdown
+              - application [ref=f2e424]:
+                - generic [ref=f2e456]:
+                  - generic [ref=f2e457]:
+                    - generic [ref=f2e458]: 0k
+                    - generic [ref=f2e460]: 15k
+                    - generic [ref=f2e462]: 30k
+                    - generic [ref=f2e464]: 45k
+                    - generic [ref=f2e466]: 60k
+                  - generic [ref=f2e468]:
+                    - generic [ref=f2e469]: Canned Goods
+                    - generic [ref=f2e471]: Fresh Produce
+                    - generic [ref=f2e473]: Proteins & Meat
+                    - generic [ref=f2e475]: Dairy &Refrigerated
+                    - generic [ref=f2e477]: Bakery & Grains
+                    - generic [ref=f2e479]: Baby & Hygiene
+                    - generic [ref=f2e481]: Beverages
+                    - generic [ref=f2e483]: Prepared Meals
+            - region [ref=f2e485]:
+              - generic [ref=f2e486]:
+                - generic [ref=f2e487]:
+                  - heading "Top Pantries in Scope (All Counties)" [level=2] [ref=f2e488]
+                  - paragraph [ref=f2e489]: Showing 5 pantries
+                - button "Export CSV" [ref=f2e491] [cursor=pointer]
+              - generic [ref=f2e495]:
+                - generic [ref=f2e496]:
+                  - generic [ref=f2e497]: "1"
+                  - generic [ref=f2e498]:
+                    - paragraph [ref=f2e499]: Hope Community Food Pantry
+                    - paragraph [ref=f2e500]: Montgomery County
+                  - generic [ref=f2e501]:
+                    - paragraph [ref=f2e502]: 4,280
+                    - paragraph [ref=f2e503]: +14.2%
+                - generic [ref=f2e507]:
+                  - generic [ref=f2e508]: "2"
+                  - generic [ref=f2e509]:
+                    - paragraph [ref=f2e510]: River Region Food Bank
+                    - paragraph [ref=f2e511]: Montgomery County
+                  - generic [ref=f2e512]:
+                    - paragraph [ref=f2e513]: 3,650
+                    - paragraph [ref=f2e514]: +9.8%
+                - generic [ref=f2e518]:
+                  - generic [ref=f2e519]: "3"
+                  - generic [ref=f2e520]:
+                    - paragraph [ref=f2e521]: Prattville Community Cupboard
+                    - paragraph [ref=f2e522]: Autauga County
+                  - generic [ref=f2e523]:
+                    - paragraph [ref=f2e524]: 1,890
+                    - paragraph [ref=f2e525]: +18.5%
+                - generic [ref=f2e529]:
+                  - generic [ref=f2e530]: "4"
+                  - generic [ref=f2e531]:
+                    - paragraph [ref=f2e532]: Wetumpka Sharing Center
+                    - paragraph [ref=f2e533]: Elmore County
+                  - generic [ref=f2e534]:
+                    - paragraph [ref=f2e535]: 1,420
+                    - paragraph [ref=f2e536]: +7.3%
+                - generic [ref=f2e540]:
+                  - generic [ref=f2e541]: "5"
+                  - generic [ref=f2e542]:
+                    - paragraph [ref=f2e543]: Tuskegee Area Food Ministry
+                    - paragraph [ref=f2e544]: Macon County
+                  - generic [ref=f2e545]:
+                    - paragraph [ref=f2e546]: 1,180
+                    - paragraph [ref=f2e547]: +11.6%
+      - contentinfo [ref=f2e170]:
+        - generic [ref=f2e171]:
+          - paragraph [ref=f2e172]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+          - paragraph [ref=f2e173]: Partnered with United Way River Region & USDA
+  - generic [ref=f2e551]: Canned Goods

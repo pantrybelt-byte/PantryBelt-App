@@ -1,0 +1,232 @@
+- generic [ref=f16e3]:
+  - link "Skip to main content" [ref=f16e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=f16e5]:
+    - generic [ref=f16e6]:
+      - generic [ref=f16e8]:
+        - generic [ref=f16e9]:
+          - generic [ref=f16e10]: AB
+          - generic [ref=f16e12]:
+            - generic [ref=f16e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=f16e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=f16e17]:
+        - list [ref=f16e18]:
+          - listitem [ref=f16e19]:
+            - heading "Analytics" [level=2] [ref=f16e20]
+            - list "Analytics" [ref=f16e21]:
+              - listitem [ref=f16e22]:
+                - link "Overview" [ref=f16e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f16e30]:
+                - link "Demographics" [ref=f16e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=f16e38]:
+                - link "Food Deserts" [ref=f16e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=f16e43]:
+                - link "Pantry Interactions" [ref=f16e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=f16e52]:
+            - heading "Insights" [level=2] [ref=f16e53]
+            - list "Insights" [ref=f16e54]:
+              - listitem [ref=f16e55]:
+                - link "Most Requested" [ref=f16e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=f16e64]:
+            - heading "Modules" [level=2] [ref=f16e65]
+            - list "Modules" [ref=f16e66]:
+              - listitem [ref=f16e67]:
+                - link "SDOH & Medicaid" [ref=f16e68] [cursor=pointer]:
+                  - /url: /modules/sdoh
+              - listitem [ref=f16e73]:
+                - link "IRS CHNA Audit, locked add-on module" [ref=f16e74] [cursor=pointer]:
+                  - /url: /modules/chna
+                  - generic [ref=f16e78]: IRS CHNA Audit
+              - listitem [ref=f16e82]:
+                - link "Corporate CSR, locked add-on module" [ref=f16e83] [cursor=pointer]:
+                  - /url: /modules/csr
+                  - generic [ref=f16e88]: Corporate CSR
+              - listitem [ref=f16e92]:
+                - link "Disaster Logistics" [ref=f16e93] [cursor=pointer]:
+                  - /url: /modules/disaster
+          - listitem [ref=f16e100]:
+            - heading "Reports" [level=2] [ref=f16e101]
+            - list "Reports" [ref=f16e102]:
+              - listitem [ref=f16e103]:
+                - link "Reports & Export" [ref=f16e104] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=f16e109]:
+            - heading "Account" [level=2] [ref=f16e110]
+            - list "Account" [ref=f16e111]:
+              - listitem [ref=f16e112]:
+                - link "Plan & Modules" [ref=f16e113] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=f16e117]:
+                - link "Settings" [ref=f16e118] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=f16e124] [cursor=pointer]
+  - generic [ref=f16e129]:
+    - banner [ref=f16e130]:
+      - generic [ref=f16e131]:
+        - generic [ref=f16e133]:
+          - generic [ref=f16e134]:
+            - heading "Reports & Export" [level=1]
+            - generic "Demonstration rollups generated in the browser. No database is connected." [ref=f16e135]: Demo Data
+            - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f16e139] [cursor=pointer]':
+              - generic [ref=f16e143]: As USDA Food & Nutrition Service
+          - paragraph [ref=f16e146]: Generate and download reports
+        - generic [ref=f16e147]:
+          - button "Grant & Impact" [ref=f16e149] [cursor=pointer]
+          - generic [ref=f16e156]:
+            - group "Reporting period" [ref=f16e157]:
+              - button "Last 7 days" [ref=f16e160] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=f16e161] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=f16e162] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=f16e163] [cursor=pointer]: YTD
+              - button "Custom" [ref=f16e164] [cursor=pointer]
+            - button "Compare against the previous period" [ref=f16e165] [cursor=pointer]:
+              - generic [ref=f16e171]: Compare
+              - generic [ref=f16e172]: against the previous period
+          - button "Copy a link to this view, including the current filters" [ref=f16e173] [cursor=pointer]:
+            - generic [ref=f16e180]: Share
+          - generic [ref=f16e182]:
+            - button "Notifications, 3 threshold alerts triggered" [expanded] [ref=f16e183] [cursor=pointer]
+            - menu "Notifications, 3 threshold alerts triggered" [ref=f16e212]:
+              - generic [ref=f16e213]:
+                - paragraph [ref=f16e214]: Threshold alerts
+                - paragraph [ref=f16e215]: 3 of your 3 alerts have fired.
+              - list [ref=f16e216]:
+                - listitem [ref=f16e217]:
+                  - generic [ref=f16e220]:
+                    - generic [ref=f16e221]: Lowndes County
+                    - generic [ref=f16e222]: Food Access Score below 20 · 2 days ago
+                - listitem [ref=f16e223]:
+                  - generic [ref=f16e226]:
+                    - generic [ref=f16e227]: Millbrook Mercy Center
+                    - generic [ref=f16e228]: Active Status changed to Inactive > 48 hrs · 3 days ago
+                - listitem [ref=f16e229]:
+                  - generic [ref=f16e232]:
+                    - generic [ref=f16e233]: Infant Formula (Stage 1)
+                    - generic [ref=f16e234]: Demand Spike above +30% weekly · 1 day ago
+              - menuitem "Manage threshold alerts" [active] [ref=f16e236] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=f16e189] [cursor=pointer]:
+            - generic [ref=f16e190]: DPH
+            - generic [ref=f16e191]:
+              - generic [ref=f16e192]: Dr. Patricia Hawkins
+              - generic [ref=f16e193]: United Way River Region
+      - generic [ref=f16e197]:
+        - generic [ref=f16e198]: Limit the dashboard to a single county
+        - combobox "Limit the dashboard to a single county" [ref=f16e203] [cursor=pointer]:
+          - option "All Assigned Counties (Central Alabama River Region)" [selected]
+          - option "Montgomery County"
+          - option "Autauga County"
+          - option "Elmore County"
+          - option "Lowndes County"
+          - option "Macon County"
+          - option "Dallas County"
+          - option "Wilcox County"
+          - option "Perry County"
+    - main [ref=f16e204]:
+      - generic [ref=f16e240]:
+        - region [ref=f16e241]:
+          - generic [ref=f16e243]:
+            - heading "Report Templates" [level=2] [ref=f16e244]
+            - paragraph [ref=f16e245]: Select a template to generate a compliance or grant report
+          - generic [ref=f16e246]:
+            - generic [ref=f16e247] [cursor=pointer]:
+              - generic [ref=f16e252]:
+                - paragraph [ref=f16e253]: Monthly Community Impact Summary
+                - generic [ref=f16e254]: Monthly
+              - paragraph [ref=f16e255]: Comprehensive overview of families served, items distributed, and pantry performance across the entire region.
+              - generic [ref=f16e256]:
+                - generic [ref=f16e257]: 6 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e258]
+            - generic [ref=f16e262] [cursor=pointer]:
+              - generic [ref=f16e268]:
+                - paragraph [ref=f16e269]: Food Desert Assessment Report
+                - generic [ref=f16e270]: Quarterly
+              - paragraph [ref=f16e271]: Detailed analysis of food access scores, poverty rates, and grocery store density by county.
+              - generic [ref=f16e272]:
+                - generic [ref=f16e273]: 8 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e274]
+            - generic [ref=f16e278] [cursor=pointer]:
+              - generic [ref=f16e285]:
+                - paragraph [ref=f16e286]: Pantry Performance Scorecard
+                - generic [ref=f16e287]: Monthly
+              - paragraph [ref=f16e288]: Individual pantry metrics including visit trends, item distribution volumes, and growth rates.
+              - generic [ref=f16e289]:
+                - generic [ref=f16e290]: 8 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e291]
+            - generic [ref=f16e295] [cursor=pointer]:
+              - generic [ref=f16e302]:
+                - paragraph [ref=f16e303]: Item Demand & Inventory Intelligence
+                - generic [ref=f16e304]: Monthly
+              - paragraph [ref=f16e305]: Most-requested items, demand trends, and supply gap analysis across all partner pantries.
+              - generic [ref=f16e306]:
+                - generic [ref=f16e307]: 25 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e308]
+            - generic [ref=f16e312] [cursor=pointer]:
+              - generic [ref=f16e318]:
+                - paragraph [ref=f16e319]: Quarterly Grant Impact Report
+                - generic [ref=f16e320]: Quarterly
+              - paragraph [ref=f16e321]: Formatted for grant reporting — includes all required metrics for United Way and USDA submissions.
+              - generic [ref=f16e322]:
+                - generic [ref=f16e323]: 6 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e324]
+            - generic [ref=f16e328] [cursor=pointer]:
+              - generic [ref=f16e332]:
+                - paragraph [ref=f16e333]: Custom Date Range Analysis
+                - generic [ref=f16e334]: Custom
+              - paragraph [ref=f16e335]: Build a custom report for any date range with selected metrics and pantry filters.
+              - generic [ref=f16e336]:
+                - generic [ref=f16e337]: 6 rows · Last 30 days
+                - button "Generate CSV" [ref=f16e338]
+        - generic [ref=f16e342]:
+          - button [ref=f16e343] [cursor=pointer]:
+            - generic [ref=f16e349]:
+              - paragraph [ref=f16e350]: Print Branded PDF
+              - paragraph [ref=f16e351]: Co-branded report header view
+          - button [ref=f16e352] [cursor=pointer]:
+            - generic [ref=f16e356]:
+              - paragraph [ref=f16e357]: Schedule Email Report
+              - paragraph [ref=f16e358]: Automate weekly or monthly delivery
+          - button [ref=f16e359] [cursor=pointer]:
+            - generic [ref=f16e364]:
+              - paragraph [ref=f16e365]: Export Pantry Scorecard
+              - paragraph [ref=f16e366]: Every pantry in scope, for this period
+        - region [ref=f16e367]:
+          - generic [ref=f16e368]:
+            - generic [ref=f16e369]:
+              - heading "Active Automated Email Schedules" [level=2] [ref=f16e370]
+              - paragraph [ref=f16e371]: Automated digests sent to agency stakeholders
+            - button "New Schedule" [ref=f16e373] [cursor=pointer]
+          - generic [ref=f16e375]:
+            - paragraph [ref=f16e380]: No scheduled reports yet
+            - paragraph [ref=f16e381]: Schedule a recurring delivery so grant reports reach your funders without anyone remembering to export them.
+        - region [ref=f16e382]:
+          - generic [ref=f16e384]:
+            - heading "Reports generated this session" [level=2] [ref=f16e385]
+            - paragraph [ref=f16e386]: Re-download any file without rebuilding it
+          - table [ref=f16e388]:
+            - caption [ref=f16e389]: Reports generated during this session
+            - rowgroup [ref=f16e390]:
+              - row [ref=f16e391]:
+                - columnheader "Report" [ref=f16e392]
+                - columnheader "Date range" [ref=f16e393]
+                - columnheader "Generated" [ref=f16e394]
+                - columnheader "Rows" [ref=f16e395]
+                - columnheader "Actions" [ref=f16e396]
+            - rowgroup [ref=f16e397]:
+              - row [ref=f16e398]:
+                - cell [ref=f16e399]:
+                  - paragraph [ref=f16e400]: Monthly Community Impact Summary — Last 30 days
+                - cell "2026-07-21 to 2026-08-19" [ref=f16e401]
+                - cell "Aug 19, 2026, 2:47 AM" [ref=f16e402]
+                - cell "6" [ref=f16e403]
+                - cell [ref=f16e404]:
+                  - button "Download Monthly Community Impact Summary — Last 30 days again" [ref=f16e405] [cursor=pointer]
+    - contentinfo [ref=f16e208]:
+      - generic [ref=f16e209]:
+        - paragraph [ref=f16e210]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=f16e211]: Partnered with United Way River Region & USDA

@@ -1,0 +1,119 @@
+- generic [ref=f3e3]:
+  - link "Skip to main content" [ref=f3e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=f3e5]:
+    - generic [ref=f3e6]:
+      - generic [ref=f3e8]:
+        - generic [ref=f3e9]:
+          - generic [ref=f3e10]: AB
+          - generic [ref=f3e12]:
+            - generic [ref=f3e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=f3e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=f3e17]:
+        - list [ref=f3e18]:
+          - listitem [ref=f3e19]:
+            - heading "Analytics" [level=2] [ref=f3e20]
+            - list "Analytics" [ref=f3e21]:
+              - listitem [ref=f3e22]:
+                - link "Overview" [ref=f3e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f3e30]:
+                - link "Demographics" [ref=f3e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=f3e38]:
+                - link "Food Deserts" [ref=f3e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=f3e43]:
+                - link "Pantry Interactions" [ref=f3e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=f3e52]:
+            - heading "Insights" [level=2] [ref=f3e53]
+            - list "Insights" [ref=f3e54]:
+              - listitem [ref=f3e55]:
+                - link "Most Requested" [ref=f3e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=f3e64]:
+            - heading "Modules" [level=2] [ref=f3e65]
+            - list "Modules" [ref=f3e66]:
+              - listitem [ref=f3e67]:
+                - link "SDOH & Medicaid, locked add-on module" [ref=f3e68] [cursor=pointer]:
+                  - /url: /modules/sdoh
+                  - generic [ref=f3e72]: SDOH & Medicaid
+              - listitem [ref=f3e76]:
+                - link "IRS CHNA Audit, locked add-on module" [ref=f3e77] [cursor=pointer]:
+                  - /url: /modules/chna
+                  - generic [ref=f3e81]: IRS CHNA Audit
+              - listitem [ref=f3e85]:
+                - link "Corporate CSR" [ref=f3e86] [cursor=pointer]:
+                  - /url: /modules/csr
+              - listitem [ref=f3e92]:
+                - link "Disaster Logistics, locked add-on module" [ref=f3e93] [cursor=pointer]:
+                  - /url: /modules/disaster
+                  - generic [ref=f3e99]: Disaster Logistics
+          - listitem [ref=f3e103]:
+            - heading "Reports" [level=2] [ref=f3e104]
+            - list "Reports" [ref=f3e105]:
+              - listitem [ref=f3e106]:
+                - link "Reports & Export" [ref=f3e107] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=f3e112]:
+            - heading "Account" [level=2] [ref=f3e113]
+            - list "Account" [ref=f3e114]:
+              - listitem [ref=f3e115]:
+                - link "Plan & Modules" [ref=f3e116] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=f3e120]:
+                - link "Settings" [ref=f3e121] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=f3e127] [cursor=pointer]
+  - generic [ref=f3e132]:
+    - banner [ref=f3e133]:
+      - generic [ref=f3e134]:
+        - generic [ref=f3e136]:
+          - generic [ref=f3e137]:
+            - heading "Billing & Subscription" [level=1] [ref=f3e138]
+            - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f3e139] [cursor=pointer]':
+              - generic [ref=f3e141]: Demo Data
+              - status [ref=f3e147]
+          - paragraph [ref=f3e148]: Manage agency plan, Stripe customer portal & invoices
+        - generic [ref=f3e149]:
+          - button "Grant & Impact" [ref=f3e151] [cursor=pointer]
+          - button "Copy a link to this view, including the current filters" [ref=f3e157] [cursor=pointer]:
+            - generic [ref=f3e164]: Share
+          - button "Notifications, 1 unread" [ref=f3e166] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=f3e172] [cursor=pointer]:
+            - generic [ref=f3e173]: DPH
+            - generic [ref=f3e174]:
+              - generic [ref=f3e175]: Dr. Patricia Hawkins
+              - generic [ref=f3e176]: United Way River Region
+      - generic [ref=f3e179]:
+        - generic [ref=f3e180]:
+          - generic [ref=f3e181]: Limit the dashboard to a single county
+          - combobox "Limit the dashboard to a single county" [ref=f3e186] [cursor=pointer]:
+            - option "All Assigned Counties (Central Alabama River Region)" [selected]
+            - option "Montgomery County"
+            - option "Autauga County"
+            - option "Elmore County"
+            - option "Lowndes County"
+            - option "Macon County"
+            - option "Dallas County"
+            - option "Wilcox County"
+            - option "Perry County"
+        - generic [ref=f3e188]:
+          - group "Reporting period" [ref=f3e189]:
+            - button "Last 7 days" [ref=f3e192] [cursor=pointer]: 7 Days
+            - button "Last 30 days" [pressed] [ref=f3e193] [cursor=pointer]: 30 Days
+            - button "Last 90 days" [ref=f3e194] [cursor=pointer]: 90 Days
+            - button "Year to date" [ref=f3e195] [cursor=pointer]: YTD
+            - button "Custom" [ref=f3e196] [cursor=pointer]
+          - button "Compare against the previous period" [ref=f3e197] [cursor=pointer]:
+            - generic [ref=f3e203]: Compare
+            - generic [ref=f3e204]: against the previous period
+    - main [ref=f3e205]:
+      - status [ref=f3e206]:
+        - generic [ref=f3e208]: Loading
+    - contentinfo [ref=f3e209]:
+      - generic [ref=f3e210]:
+        - paragraph [ref=f3e211]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=f3e212]: Partnered with United Way River Region & USDA

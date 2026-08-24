@@ -1,0 +1,117 @@
+- generic [ref=f17e3]:
+  - link "Skip to main content" [ref=f17e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=f17e5]:
+    - generic [ref=f17e6]:
+      - generic [ref=f17e8]:
+        - generic [ref=f17e9]:
+          - generic [ref=f17e10]: AB
+          - generic [ref=f17e12]:
+            - generic [ref=f17e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=f17e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=f17e17]:
+        - list [ref=f17e18]:
+          - listitem [ref=f17e19]:
+            - heading "Analytics" [level=2] [ref=f17e20]
+            - list "Analytics" [ref=f17e21]:
+              - listitem [ref=f17e22]:
+                - link "Overview" [ref=f17e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f17e30]:
+                - link "Demographics" [ref=f17e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=f17e38]:
+                - link "Food Deserts" [ref=f17e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=f17e43]:
+                - link "Pantry Interactions" [ref=f17e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=f17e52]:
+            - heading "Insights" [level=2] [ref=f17e53]
+            - list "Insights" [ref=f17e54]:
+              - listitem [ref=f17e55]:
+                - link "Most Requested" [ref=f17e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=f17e64]:
+            - heading "Modules" [level=2] [ref=f17e65]
+            - list "Modules" [ref=f17e66]:
+              - listitem [ref=f17e67]:
+                - link "SDOH & Medicaid" [ref=f17e68] [cursor=pointer]:
+                  - /url: /modules/sdoh
+              - listitem [ref=f17e73]:
+                - link "IRS CHNA Audit, locked add-on module" [ref=f17e74] [cursor=pointer]:
+                  - /url: /modules/chna
+                  - generic [ref=f17e78]: IRS CHNA Audit
+              - listitem [ref=f17e82]:
+                - link "Corporate CSR, locked add-on module" [ref=f17e83] [cursor=pointer]:
+                  - /url: /modules/csr
+                  - generic [ref=f17e88]: Corporate CSR
+              - listitem [ref=f17e92]:
+                - link "Disaster Logistics" [ref=f17e93] [cursor=pointer]:
+                  - /url: /modules/disaster
+          - listitem [ref=f17e100]:
+            - heading "Reports" [level=2] [ref=f17e101]
+            - list "Reports" [ref=f17e102]:
+              - listitem [ref=f17e103]:
+                - link "Reports & Export" [ref=f17e104] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=f17e109]:
+            - heading "Account" [level=2] [ref=f17e110]
+            - list "Account" [ref=f17e111]:
+              - listitem [ref=f17e112]:
+                - link "Plan & Modules" [ref=f17e113] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=f17e117]:
+                - link "Settings" [ref=f17e118] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=f17e124] [cursor=pointer]
+  - generic [ref=f17e129]:
+    - banner [ref=f17e130]:
+      - generic [ref=f17e131]:
+        - generic [ref=f17e133]:
+          - generic [ref=f17e134]:
+            - heading "Overview" [level=1]
+            - generic "Demonstration rollups generated in the browser. No database is connected." [ref=f17e135]: Demo Data
+            - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f17e139] [cursor=pointer]':
+              - generic [ref=f17e143]: As USDA Food & Nutrition Service
+          - paragraph [ref=f17e146]: Region-wide analytics & period comparison
+        - generic [ref=f17e147]:
+          - button "Grant & Impact" [ref=f17e149] [cursor=pointer]
+          - generic [ref=f17e156]:
+            - group "Reporting period" [ref=f17e157]:
+              - button "Last 7 days" [ref=f17e160] [cursor=pointer]: 7 Days
+              - button "Last 30 days" [pressed] [ref=f17e161] [cursor=pointer]: 30 Days
+              - button "Last 90 days" [ref=f17e162] [cursor=pointer]: 90 Days
+              - button "Year to date" [ref=f17e163] [cursor=pointer]: YTD
+              - button "Custom" [ref=f17e164] [cursor=pointer]
+            - button "Compare against the previous period" [ref=f17e165] [cursor=pointer]:
+              - generic [ref=f17e171]: Compare
+              - generic [ref=f17e172]: against the previous period
+          - button "Copy a link to this view, including the current filters" [ref=f17e173] [cursor=pointer]:
+            - generic [ref=f17e180]: Share
+          - button "Notifications, 3 threshold alerts triggered" [ref=f17e183] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=f17e189] [cursor=pointer]:
+            - generic [ref=f17e190]: DPH
+            - generic [ref=f17e191]:
+              - generic [ref=f17e192]: Dr. Patricia Hawkins
+              - generic [ref=f17e193]: United Way River Region
+      - generic [ref=f17e197]:
+        - generic [ref=f17e198]: Limit the dashboard to a single county
+        - combobox "Limit the dashboard to a single county" [ref=f17e203] [cursor=pointer]:
+          - option "All Assigned Counties (Central Alabama River Region)" [selected]
+          - option "Montgomery County"
+          - option "Autauga County"
+          - option "Elmore County"
+          - option "Lowndes County"
+          - option "Macon County"
+          - option "Dallas County"
+          - option "Wilcox County"
+          - option "Perry County"
+    - main [ref=f17e204]:
+      - status [ref=f17e205]:
+        - generic [ref=f17e207]: Loading
+    - contentinfo [ref=f17e208]:
+      - generic [ref=f17e209]:
+        - paragraph [ref=f17e210]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=f17e211]: Partnered with United Way River Region & USDA

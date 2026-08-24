@@ -1,0 +1,146 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]:
+          - generic [ref=f1e8]:
+            - img "AccessBelt" [ref=f1e10]
+            - generic [ref=f1e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f1e12]
+        - combobox [ref=f1e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f1e17]:
+        - link "Dashboard" [ref=f1e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f1e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f1e28]: Shift mode
+          - generic [ref=f1e29]: Live
+        - link "Inventory" [ref=f1e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f1e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f1e41]: Communication
+        - link "Broadcasts" [ref=f1e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f1e47]: Settings
+        - link "Pantry profile" [ref=f1e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f1e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f1e58]: Free Services ($0)
+          - generic [ref=f1e59]: $0 Free
+        - paragraph [ref=f1e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f1e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f1e65]: Onboarding Guide
+          - generic [ref=f1e66]: New
+    - button "Sign out" [ref=f1e68]
+  - generic [ref=f1e73]:
+    - banner [ref=f1e74]:
+      - generic [ref=f1e75]:
+        - button "Open" [ref=f1e76] [cursor=pointer]
+        - generic [ref=f1e81]: Auto-closes at 16:00
+      - generic [ref=f1e82]:
+        - generic [ref=f1e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f1e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f1e91]
+        - button [ref=f1e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f1e100]
+          - paragraph [ref=f1e102]: Sarah Jenkins
+    - main [ref=f1e105]:
+      - generic [ref=f1e106]:
+        - generic [ref=f1e107]:
+          - generic [ref=f1e112]:
+            - generic [ref=f1e113]:
+              - heading "Shift Mode" [level=1] [ref=f1e114]
+              - generic [ref=f1e115]: Live Distribution
+            - paragraph [ref=f1e116]: High-contrast, 1-tap controls for active open hours
+          - link "Exit Shift Mode" [ref=f1e117] [cursor=pointer]:
+            - /url: /
+        - generic [ref=f1e121]:
+          - generic [ref=f1e122]:
+            - generic [ref=f1e123]: Live App Status
+            - generic [ref=f1e124]: OPEN TO PUBLIC
+          - generic [ref=f1e127]:
+            - button "SET OPEN Visible on AccessBelt app" [ref=f1e128] [cursor=pointer]:
+              - generic [ref=f1e132]: SET OPEN
+              - generic [ref=f1e133]: Visible on AccessBelt app
+            - button "SET CLOSED Hidden on AccessBelt app" [ref=f1e134] [cursor=pointer]:
+              - generic [ref=f1e139]: SET CLOSED
+              - generic [ref=f1e140]: Hidden on AccessBelt app
+          - generic [ref=f1e141]:
+            - generic [ref=f1e142]: 1-Tap Emergency Status Presets
+            - generic [ref=f1e143]:
+              - button "Normal Walk-ins" [ref=f1e144] [cursor=pointer]
+              - button "At Capacity" [ref=f1e145] [cursor=pointer]
+              - button "Out of Fresh Produce" [ref=f1e146] [cursor=pointer]
+              - button "Drive-Thru Only" [ref=f1e147] [cursor=pointer]
+              - button "Early Closure (Weather)" [ref=f1e148] [cursor=pointer]
+          - generic [ref=f1e149]:
+            - generic [ref=f1e150]: Current App Notice
+            - generic [ref=f1e151]: "\"Walk-ins welcome until 4:00 PM today. Drive-thru lane active.\""
+        - generic [ref=f1e152]:
+          - generic [ref=f1e153]:
+            - generic [ref=f1e154]:
+              - heading "Instant Stock Flippers" [level=2] [ref=f1e155]
+              - paragraph [ref=f1e156]: 1-tap toggle between In Stock and Out of Stock during shifts
+            - generic [ref=f1e157]: 7 Available
+          - generic [ref=f1e158]:
+            - generic [ref=f1e159] [cursor=pointer]:
+              - generic [ref=f1e160]:
+                - paragraph [ref=f1e161]: Fresh Apples & Pears
+                - paragraph [ref=f1e162]: Fresh Produce · 350 lbs
+              - button "IN STOCK" [ref=f1e163]
+            - generic [ref=f1e164] [cursor=pointer]:
+              - generic [ref=f1e165]:
+                - paragraph [ref=f1e166]: Whole Milk (Gallons)
+                - paragraph [ref=f1e167]: Dairy & Refrigerated · 18 units
+              - button "IN STOCK" [ref=f1e168]
+            - generic [ref=f1e169] [cursor=pointer]:
+              - generic [ref=f1e170]:
+                - paragraph [ref=f1e171]: Canned Black Beans (15 oz)
+                - paragraph [ref=f1e172]: Canned Goods · 420 cans
+              - button "IN STOCK" [ref=f1e173]
+            - generic [ref=f1e174] [cursor=pointer]:
+              - generic [ref=f1e175]:
+                - paragraph [ref=f1e176]: Artisan Whole Wheat Bread
+                - paragraph [ref=f1e177]: Bakery & Grains · 65 boxes
+              - button "IN STOCK" [ref=f1e178]
+            - generic [ref=f1e179] [cursor=pointer]:
+              - generic [ref=f1e180]:
+                - paragraph [ref=f1e181]: Frozen Chicken Breasts
+                - paragraph [ref=f1e182]: Proteins & Meat · 0 lbs
+              - button "OUT OF STOCK" [ref=f1e183]
+            - generic [ref=f1e184] [cursor=pointer]:
+              - generic [ref=f1e185]:
+                - paragraph [ref=f1e186]: Infant Formula (Stage 1)
+                - paragraph [ref=f1e187]: Baby & Hygiene · 45 units
+              - button "IN STOCK" [ref=f1e188]
+            - generic [ref=f1e189] [cursor=pointer]:
+              - generic [ref=f1e190]:
+                - paragraph [ref=f1e191]: Hot Prepared Soup Kits
+                - paragraph [ref=f1e192]: Prepared Meals · 80 boxes
+              - button "IN STOCK" [ref=f1e193]
+            - generic [ref=f1e194] [cursor=pointer]:
+              - generic [ref=f1e195]:
+                - paragraph [ref=f1e196]: Peanut Butter (16 oz)
+                - paragraph [ref=f1e197]: Canned Goods · 12 units
+              - button "IN STOCK" [ref=f1e198]
+        - generic [ref=f1e199]:
+          - generic [ref=f1e201]:
+            - heading "Quick App Alerts" [level=2] [ref=f1e202]
+            - paragraph [ref=f1e203]: Send instant notifications to waiting app users
+          - generic [ref=f1e204]:
+            - button [ref=f1e205] [cursor=pointer]:
+              - paragraph [ref=f1e206]: 🍎 Fresh Food Arrived
+              - paragraph [ref=f1e207]: Notify waiting line
+            - button [ref=f1e208] [cursor=pointer]:
+              - paragraph [ref=f1e209]: 🚗 Drive-Thru Queue
+              - paragraph [ref=f1e210]: Traffic & line update
+            - button [ref=f1e211] [cursor=pointer]:
+              - paragraph [ref=f1e212]: ⏳ Final Call (30m left)
+              - paragraph [ref=f1e213]: Closing notice

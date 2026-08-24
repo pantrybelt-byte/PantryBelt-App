@@ -15,30 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const COUNTY_KEY = '@pb_last_known_county';
 const PENDING_SEARCH_KEY = '@pb_pending_search_outcome';
 const PENDING_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
-const LOCATION_ENABLED_KEY = '@pb_location_enabled';
-
-/**
- * User's in-app Location Services preference (Profile screen toggle).
- * Defaults to true (unset) so existing installs keep today's behavior.
- * map.tsx must check this BEFORE calling Location.requestForegroundPermissionsAsync()
- * — otherwise the toggle is cosmetic and the app requests location regardless.
- */
-export async function getLocationPreference(): Promise<boolean> {
-    try {
-        const val = await AsyncStorage.getItem(LOCATION_ENABLED_KEY);
-        return val === null ? true : val === 'true';
-    } catch {
-        return true;
-    }
-}
-
-export async function setLocationPreference(enabled: boolean): Promise<void> {
-    try {
-        await AsyncStorage.setItem(LOCATION_ENABLED_KEY, enabled ? 'true' : 'false');
-    } catch {
-        // Silent — worst case the toggle doesn't persist across restarts
-    }
-}
 
 export async function setLastKnownCounty(county: string | null | undefined): Promise<void> {
     if (!county) return;

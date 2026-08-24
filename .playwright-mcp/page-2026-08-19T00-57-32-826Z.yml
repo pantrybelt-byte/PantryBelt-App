@@ -1,0 +1,101 @@
+- generic [ref=f3e3]:
+  - link "Skip to main content" [ref=f3e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=f3e5]:
+    - generic [ref=f3e6]:
+      - generic [ref=f3e8]:
+        - generic [ref=f3e9]:
+          - generic [ref=f3e10]: AB
+          - generic [ref=f3e12]:
+            - generic [ref=f3e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=f3e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=f3e17]:
+        - list [ref=f3e18]:
+          - listitem [ref=f3e19]:
+            - heading "Analytics" [level=2] [ref=f3e20]
+            - list "Analytics" [ref=f3e21]:
+              - listitem [ref=f3e22]:
+                - link "Overview" [ref=f3e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f3e30]:
+                - link "Demographics" [ref=f3e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=f3e38]:
+                - link "Food Deserts" [ref=f3e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=f3e43]:
+                - link "Pantry Interactions" [ref=f3e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=f3e52]:
+            - heading "Insights" [level=2] [ref=f3e53]
+            - list "Insights" [ref=f3e54]:
+              - listitem [ref=f3e55]:
+                - link "Most Requested" [ref=f3e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=f3e64]:
+            - heading "Reports" [level=2] [ref=f3e65]
+            - list "Reports" [ref=f3e66]:
+              - listitem [ref=f3e67]:
+                - link "Reports & Export" [ref=f3e68] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=f3e73]:
+            - heading "Account" [level=2] [ref=f3e74]
+            - list "Account" [ref=f3e75]:
+              - listitem [ref=f3e76]:
+                - link "Billing & Subscription" [ref=f3e77] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=f3e81]:
+                - link "Settings" [ref=f3e82] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=f3e88] [cursor=pointer]
+  - generic [ref=f3e93]:
+    - banner [ref=f3e94]:
+      - generic [ref=f3e95]:
+        - generic [ref=f3e97]:
+          - generic [ref=f3e98]:
+            - heading "Billing & Subscription" [level=1] [ref=f3e99]
+            - 'button "Data source: Demo Data. Refresh dashboard data." [ref=f3e100] [cursor=pointer]':
+              - generic [ref=f3e102]: Demo Data
+              - status [ref=f3e108]
+          - paragraph [ref=f3e109]: Manage agency plan, Stripe customer portal & invoices
+        - generic [ref=f3e110]:
+          - button "Grant & Impact" [ref=f3e112] [cursor=pointer]
+          - button "Copy a link to this view, including the current filters" [ref=f3e118] [cursor=pointer]:
+            - generic [ref=f3e125]: Share
+          - button "Notifications, 1 unread" [ref=f3e127] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=f3e133] [cursor=pointer]:
+            - generic [ref=f3e134]: DPH
+            - generic [ref=f3e135]:
+              - generic [ref=f3e136]: Dr. Patricia Hawkins
+              - generic [ref=f3e137]: United Way River Region
+      - generic [ref=f3e140]:
+        - generic [ref=f3e141]:
+          - generic [ref=f3e142]: Limit the dashboard to a single county
+          - combobox "Limit the dashboard to a single county" [ref=f3e147] [cursor=pointer]:
+            - option "All Assigned Counties (Central Alabama River Region)" [selected]
+            - option "Montgomery County"
+            - option "Autauga County"
+            - option "Elmore County"
+            - option "Lowndes County"
+            - option "Macon County"
+            - option "Dallas County"
+            - option "Wilcox County"
+            - option "Perry County"
+        - generic [ref=f3e149]:
+          - group "Reporting period" [ref=f3e150]:
+            - button "Last 7 days" [ref=f3e153] [cursor=pointer]: 7 Days
+            - button "Last 30 days" [pressed] [ref=f3e154] [cursor=pointer]: 30 Days
+            - button "Last 90 days" [ref=f3e155] [cursor=pointer]: 90 Days
+            - button "Year to date" [ref=f3e156] [cursor=pointer]: YTD
+            - button "Custom" [ref=f3e157] [cursor=pointer]
+          - button "Compare against the previous period" [ref=f3e158] [cursor=pointer]:
+            - generic [ref=f3e164]: Compare
+            - generic [ref=f3e165]: against the previous period
+    - main [ref=f3e166]:
+      - status [ref=f3e167]:
+        - generic [ref=f3e169]: Loading
+    - contentinfo [ref=f3e170]:
+      - generic [ref=f3e171]:
+        - paragraph [ref=f3e172]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=f3e173]: Partnered with United Way River Region & USDA

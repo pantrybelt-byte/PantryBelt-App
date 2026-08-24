@@ -1,0 +1,97 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - generic [ref=f5e6]:
+        - generic [ref=f5e7]:
+          - generic [ref=f5e8]:
+            - img "AccessBelt" [ref=f5e10]
+            - generic [ref=f5e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f5e12]
+        - combobox [ref=f5e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f5e17]:
+        - link "Dashboard" [ref=f5e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f5e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f5e28]: Shift mode
+          - generic [ref=f5e29]: Live
+        - link "Inventory" [ref=f5e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f5e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f5e41]: Communication
+        - link "Broadcasts" [ref=f5e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f5e47]: Settings
+        - link "Pantry profile" [ref=f5e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f5e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f5e58]: Free Services ($0)
+          - generic [ref=f5e59]: $0 Free
+        - paragraph [ref=f5e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f5e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f5e65]: Onboarding Guide
+          - generic [ref=f5e66]: New
+    - button "Sign out" [ref=f5e68]
+  - generic [ref=f5e73]:
+    - banner [ref=f5e74]:
+      - generic [ref=f5e75]:
+        - button "Open" [ref=f5e76] [cursor=pointer]
+        - generic [ref=f5e81]: Auto-closes at 16:00
+      - generic [ref=f5e82]:
+        - generic [ref=f5e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f5e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f5e91]
+        - button [ref=f5e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f5e100]
+          - paragraph [ref=f5e102]: Sarah Jenkins
+    - main [ref=f5e105]:
+      - generic [ref=f5e106]:
+        - generic [ref=f5e107]:
+          - generic [ref=f5e108]:
+            - generic [ref=f5e109]: $0 Free Forever
+            - generic [ref=f5e110]: Community Standard Tier
+          - heading "Pantry Services & $0 Free Plan" [level=1] [ref=f5e111]
+          - paragraph [ref=f5e112]: AccessBelt is 100% free forever for all community food pantries & distribution centers.
+        - generic [ref=f5e113]:
+          - heading "Why AccessBelt is $0 / Free for Pantries" [level=2] [ref=f5e118]
+          - paragraph [ref=f5e119]: We believe community food pantries should never pay for technology. AccessBelt Operator Portal is 100% free and fully subsidized by regional agency analytics subscriptions (United Way, Health Systems, and State Agencies). You receive full access to all features at zero cost.
+          - generic [ref=f5e120]: No credit card required · No hidden fees · Unlimited usage for pantries
+        - generic [ref=f5e125]:
+          - button "Included Community Offerings ($0)" [ref=f5e126] [cursor=pointer]
+          - button "Volunteer & Staff Seats 3 Active" [ref=f5e127] [cursor=pointer]:
+            - generic [ref=f5e128]: Volunteer & Staff Seats
+            - generic [ref=f5e129]: 3 Active
+        - generic [ref=f5e131]:
+          - heading "Community Standard Suite (All Unlocked)" [level=2] [ref=f5e132]
+          - generic [ref=f5e133]:
+            - generic [ref=f5e134]:
+              - heading "Real-Time Availability & Hours Broadcaster" [level=3] [ref=f5e140]
+              - paragraph [ref=f5e141]: Set live Open/Closed status, holiday schedules, and stock levels to stop desperate calls to personal phones.
+            - generic [ref=f5e142]:
+              - heading "Interactive Satellite Geolocation Pinpoint" [level=3] [ref=f5e148]
+              - paragraph [ref=f5e149]: Drag the map pin directly onto your actual building door or driveway entrance to guide rural drivers.
+            - generic [ref=f5e150]:
+              - heading "Hands-Free SMS Morning Check-In" [level=3] [ref=f5e156]
+              - paragraph [ref=f5e157]: "Daily 8:00 AM text prompt: Reply 1 for Open, 2 for Low Stock, 3 for Closed. Takes 3 seconds on any phone."
+            - generic [ref=f5e158]:
+              - heading "High-Volume 1-Tap Shift Mode" [level=3] [ref=f5e163]
+              - paragraph [ref=f5e164]: Streamlined interface for staff and volunteers during high-pressure distribution hours.
+            - generic [ref=f5e165]:
+              - heading "Unlimited Staff & Volunteer Team Seats" [level=3] [ref=f5e173]
+              - paragraph [ref=f5e174]: Invite as many volunteers and pantry staff as needed with role-based permissions.
+            - generic [ref=f5e175]:
+              - heading "Pantry Surplus & Emergency Alert Network" [level=3] [ref=f5e182]
+              - paragraph [ref=f5e183]: Share expiring food surpluses with neighboring pantries or alert regional food banks of urgent needs.
+            - generic [ref=f5e184]:
+              - heading "Printable QR Code Entrance Flyers" [level=3] [ref=f5e190]
+              - paragraph [ref=f5e191]: Print entrance flyers so waiting families can scan for live inventory updates while in line.
+            - generic [ref=f5e192]:
+              - heading "Free Monthly Board Impact PDF Exports" [level=3] [ref=f5e198]
+              - paragraph [ref=f5e199]: Export 1-page printable impact summaries for church board meetings and grant proposals.

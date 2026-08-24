@@ -1,0 +1,144 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]: AccessBelt
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: Active location
+        - combobox "Active location" [ref=f4e11] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=f4e12]:
+      - generic [ref=f4e14]:
+        - link "Dashboard" [ref=f4e15] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=f4e22] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=f4e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f4e36] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=f4e41]:
+        - paragraph [ref=f4e42]: Communication
+        - link "Broadcasts" [ref=f4e44] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=f4e49]:
+        - paragraph [ref=f4e50]: Settings
+        - generic [ref=f4e51]:
+          - link "Pantry profile" [ref=f4e52] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=f4e58] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=f4e65]:
+        - paragraph [ref=f4e66]: Support
+        - link "Getting started" [ref=f4e68] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=f4e72]:
+      - generic [ref=f4e73]:
+        - generic [ref=f4e74]: Verified 501(c)(3)
+        - paragraph [ref=f4e79]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=f4e80]
+  - generic [ref=f4e85]:
+    - banner [ref=f4e86]:
+      - generic [ref=f4e87]:
+        - button "Open navigation" [ref=f4e88]
+        - button "Open" [ref=f4e90]
+      - generic [ref=f4e95]:
+        - link "Open shift mode" [ref=f4e96] [cursor=pointer]:
+          - /url: /shift
+        - button [ref=f4e104]
+    - main [ref=f4e106]:
+      - generic [ref=f4e107]:
+        - generic [ref=f4e108]:
+          - generic [ref=f4e109]:
+            - heading "Good evening, Sarah" [level=1] [ref=f4e110]
+            - paragraph [ref=f4e111]: Hope Community Food Pantry · updated 10 minutes ago
+          - button "Print summary" [ref=f4e112] [cursor=pointer]
+        - generic [ref=f4e117]:
+          - generic [ref=f4e121]:
+            - paragraph [ref=f4e122]: New to the operator portal?
+            - paragraph [ref=f4e123]: A short guide covers setting your status, running a shift, and sending broadcasts.
+          - generic [ref=f4e124]:
+            - button "Open guide" [ref=f4e125] [cursor=pointer]
+            - button "Dismiss guide" [ref=f4e126]
+        - generic [ref=f4e130]:
+          - generic [ref=f4e131]:
+            - paragraph [ref=f4e132]: Current status
+            - paragraph [ref=f4e133]: Open
+            - button "Switch to closed" [ref=f4e135]
+          - generic [ref=f4e136]:
+            - paragraph [ref=f4e137]: Inventory items
+            - paragraph [ref=f4e138]: "8"
+            - paragraph [ref=f4e139]: 990 units in stock
+          - generic [ref=f4e140]:
+            - paragraph [ref=f4e141]: Families served
+            - paragraph [ref=f4e142]: "342"
+            - paragraph [ref=f4e143]: This week
+          - generic [ref=f4e144]:
+            - paragraph [ref=f4e145]: Capacity used
+            - paragraph [ref=f4e146]: 78%
+            - progressbar "Capacity used" [ref=f4e147]
+        - generic [ref=f4e149]:
+          - generic [ref=f4e150]:
+            - generic [ref=f4e151]:
+              - heading "Quick actions" [level=2] [ref=f4e152]
+              - generic [ref=f4e153]:
+                - link "Update stock" [ref=f4e154] [cursor=pointer]:
+                  - /url: /inventory
+                - link "Send broadcast" [ref=f4e160] [cursor=pointer]:
+                  - /url: /notifications
+                - link "Set schedule" [ref=f4e165] [cursor=pointer]:
+                  - /url: /hours
+                - link "Edit profile" [ref=f4e170] [cursor=pointer]:
+                  - /url: /profile
+            - generic [ref=f4e176]:
+              - generic [ref=f4e177]:
+                - generic [ref=f4e181]:
+                  - heading "Needs restocking" [level=2] [ref=f4e182]
+                  - paragraph [ref=f4e183]: 3 items low or out of stock
+                - link "View all" [ref=f4e184] [cursor=pointer]:
+                  - /url: /inventory
+              - list [ref=f4e187]:
+                - listitem [ref=f4e188]:
+                  - generic [ref=f4e189]:
+                    - paragraph [ref=f4e190]: Whole Milk (Gallons)
+                    - paragraph [ref=f4e191]: Dairy & Refrigerated
+                  - generic [ref=f4e192]: 18 units
+                - listitem [ref=f4e193]:
+                  - generic [ref=f4e194]:
+                    - paragraph [ref=f4e195]: Frozen Chicken Breasts
+                    - paragraph [ref=f4e196]: Proteins & Meat
+                  - generic [ref=f4e197]: 0 lbs
+                - listitem [ref=f4e198]:
+                  - generic [ref=f4e199]:
+                    - paragraph [ref=f4e200]: Peanut Butter (16 oz)
+                    - paragraph [ref=f4e201]: Canned Goods
+                  - generic [ref=f4e202]: 12 units
+          - generic [ref=f4e203]:
+            - heading "Recent activity" [level=2] [ref=f4e204]
+            - list [ref=f4e205]:
+              - listitem [ref=f4e206]:
+                - generic [ref=f4e214]:
+                  - paragraph [ref=f4e215]: Status updated
+                  - paragraph [ref=f4e216]: "Set status to open with note: \"Walk-ins welcome until 4:00 PM today.\""
+                  - paragraph [ref=f4e217]: Sarah Jenkins · 10 mins ago
+              - listitem [ref=f4e218]:
+                - generic [ref=f4e224]:
+                  - paragraph [ref=f4e225]: Stock adjusted
+                  - paragraph [ref=f4e226]: Marked "Frozen Chicken Breasts" as Out of Stock (0 lbs)
+                  - paragraph [ref=f4e227]: Mark Ramirez · 45 mins ago
+              - listitem [ref=f4e228]:
+                - generic [ref=f4e233]:
+                  - paragraph [ref=f4e234]: Broadcast sent
+                  - paragraph [ref=f4e235]: "Sent notification: \"Fresh Produce Drop arriving at 2:00 PM\""
+                  - paragraph [ref=f4e236]: Sarah Jenkins · 2 hours ago
+              - listitem [ref=f4e237]:
+                - generic [ref=f4e243]:
+                  - paragraph [ref=f4e244]: Inventory restocked
+                  - paragraph [ref=f4e245]: Added 350 lbs of "Fresh Apples & Pears"
+                  - paragraph [ref=f4e246]: Sarah Jenkins · 3 hours ago
+              - listitem [ref=f4e247]:
+                - generic [ref=f4e251]:
+                  - paragraph [ref=f4e252]: Schedule updated
+                  - paragraph [ref=f4e253]: Updated Wednesday operating hours to 8:00 AM - 6:00 PM
+                  - paragraph [ref=f4e254]: Sarah Jenkins · Yesterday

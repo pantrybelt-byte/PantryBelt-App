@@ -1,0 +1,21 @@
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - img "AccessBelt" [ref=e8]
+    - heading "Sign in to AccessBelt" [level=1] [ref=e9]
+    - paragraph [ref=e10]: Operator portal
+  - generic [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: Email address
+        - textbox "you@organization.org" [ref=e19]
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Password
+          - link "Forgot password?" [ref=e23] [cursor=pointer]:
+            - /url: "#forgot"
+        - textbox "••••••••" [ref=e28]
+      - button "Sign in" [ref=e29] [cursor=pointer]
+    - generic [ref=e33]:
+      - generic [ref=e34]: Demonstration mode
+      - button "Fill sample details" [ref=e35]
+  - paragraph [ref=e36]: AccessBelt Network · 2026

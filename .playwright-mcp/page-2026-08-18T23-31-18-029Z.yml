@@ -1,0 +1,93 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - generic [ref=f5e6]:
+        - generic [ref=f5e7]: AccessBelt
+        - button "Collapse navigation" [ref=f5e9]
+      - generic [ref=f5e12]:
+        - generic [ref=f5e13]: Active location
+        - combobox "Active location" [ref=f5e14] [cursor=pointer]:
+          - option "Hope Main Campus — Main Warehouse" [selected]
+          - option "Hope Eastside Satellite — Satellite Site"
+          - 'option "Hope Mobile Unit #1 — Mobile Distribution"'
+    - navigation [ref=f5e15]:
+      - generic [ref=f5e17]:
+        - link "Dashboard" [ref=f5e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode" [ref=f5e25] [cursor=pointer]:
+          - /url: /shift
+        - link "Inventory" [ref=f5e33] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f5e39] [cursor=pointer]:
+          - /url: /hours
+      - generic [ref=f5e44]:
+        - paragraph [ref=f5e45]: Communication
+        - link "Broadcasts" [ref=f5e47] [cursor=pointer]:
+          - /url: /notifications
+      - generic [ref=f5e52]:
+        - paragraph [ref=f5e53]: Settings
+        - generic [ref=f5e54]:
+          - link "Pantry profile" [ref=f5e55] [cursor=pointer]:
+            - /url: /profile
+          - link "Team & access" [ref=f5e61] [cursor=pointer]:
+            - /url: /team
+      - generic [ref=f5e68]:
+        - paragraph [ref=f5e69]: Support
+        - link "Getting started" [ref=f5e71] [cursor=pointer]:
+          - /url: /onboarding
+    - generic [ref=f5e75]:
+      - generic [ref=f5e76]:
+        - generic [ref=f5e77]: Verified 501(c)(3)
+        - paragraph [ref=f5e82]: Verified by Sarah Jenkins (Director)
+      - button "Sign out" [ref=f5e83]
+  - generic [ref=f5e88]:
+    - banner [ref=f5e89]:
+      - generic [ref=f5e90]:
+        - button "Open" [ref=f5e91]
+        - generic [ref=f5e96]: Closes automatically at 16:00
+      - generic [ref=f5e97]:
+        - link "Open shift mode" [ref=f5e98] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f5e105]: Shift mode
+        - button "Sarah Jenkins" [ref=f5e108]
+    - main [ref=f5e113]:
+      - generic [ref=f5e114]:
+        - generic [ref=f5e115]:
+          - generic [ref=f5e116]:
+            - heading "Getting started" [level=1] [ref=f5e117]
+            - paragraph [ref=f5e118]: How to set your status, run a shift, track stock, and send broadcasts
+          - button "Print reference sheet" [ref=f5e119] [cursor=pointer]
+        - generic [ref=f5e124]:
+          - button "Step 1" [ref=f5e125] [cursor=pointer]
+          - button "Step 2" [ref=f5e133] [cursor=pointer]
+          - button "Step 3" [ref=f5e137] [cursor=pointer]
+          - button "Step 4" [ref=f5e143] [cursor=pointer]
+          - button "Step 5" [ref=f5e148] [cursor=pointer]
+        - generic [ref=f5e153]:
+          - generic [ref=f5e154]:
+            - generic [ref=f5e163]:
+              - text: Step 1 of 5
+              - heading "Set your status" [level=2] [ref=f5e164]
+              - paragraph [ref=f5e165]: Control how your pantry availability displays on the AccessBelt mobile app.
+            - button "View Dashboard" [ref=f5e166] [cursor=pointer]
+          - generic [ref=f5e175]:
+            - paragraph [ref=f5e176]: The goal
+            - paragraph [ref=f5e177]: Set status to OPEN during distribution hours, and CLOSED when shift ends.
+          - generic [ref=f5e178]:
+            - generic [ref=f5e179]:
+              - generic [ref=f5e180]: Try it
+              - generic [ref=f5e184]: Step Demo
+            - generic [ref=f5e185]:
+              - paragraph [ref=f5e186]: "Select a status to test live portal behavior:"
+              - generic [ref=f5e187]:
+                - button "Open now" [ref=f5e188] [cursor=pointer]
+                - button "Limited" [ref=f5e189] [cursor=pointer]
+                - button "Closed" [ref=f5e190] [cursor=pointer]
+              - generic [ref=f5e191]:
+                - generic [ref=f5e192]:
+                  - generic [ref=f5e194]: open
+                  - generic [ref=f5e195]: "\"Walk-ins welcome until 4:00 PM\""
+                - generic [ref=f5e196]: What families see
+          - generic [ref=f5e197]:
+            - button "Previous" [disabled] [ref=f5e198] [cursor=pointer]
+            - button "Next Step (2 of 5)" [ref=f5e202] [cursor=pointer]

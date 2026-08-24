@@ -1,0 +1,460 @@
+- generic [ref=f10e1]:
+  - generic [ref=f10e3]:
+    - link "Skip to main content" [ref=f10e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - complementary "Dashboard sidebar" [ref=f10e5]:
+      - generic [ref=f10e6]:
+        - generic [ref=f10e8]:
+          - generic [ref=f10e9]:
+            - generic [ref=f10e10]: AB
+            - generic [ref=f10e12]:
+              - generic [ref=f10e13]: AccessBelt
+              - text: Analytics
+          - button "Collapse sidebar" [ref=f10e14] [cursor=pointer]
+        - navigation "Main navigation" [ref=f10e17]:
+          - list [ref=f10e18]:
+            - listitem [ref=f10e19]:
+              - heading "Analytics" [level=2] [ref=f10e20]
+              - list "Analytics" [ref=f10e21]:
+                - listitem [ref=f10e22]:
+                  - link "Overview" [ref=f10e23] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=f10e30]:
+                  - link "Demographics" [ref=f10e31] [cursor=pointer]:
+                    - /url: /demographics
+                - listitem [ref=f10e38]:
+                  - link "Food Deserts" [ref=f10e39] [cursor=pointer]:
+                    - /url: /food-deserts
+                - listitem [ref=f10e43]:
+                  - link "Pantry Interactions" [ref=f10e44] [cursor=pointer]:
+                    - /url: /interactions
+            - listitem [ref=f10e52]:
+              - heading "Insights" [level=2] [ref=f10e53]
+              - list "Insights" [ref=f10e54]:
+                - listitem [ref=f10e55]:
+                  - link "Most Requested" [ref=f10e56] [cursor=pointer]:
+                    - /url: /most-requested
+            - listitem [ref=f10e64]:
+              - heading "Modules" [level=2] [ref=f10e65]
+              - list "Modules" [ref=f10e66]:
+                - listitem [ref=f10e67]:
+                  - link "SDOH & Medicaid" [ref=f10e68] [cursor=pointer]:
+                    - /url: /modules/sdoh
+                - listitem [ref=f10e73]:
+                  - link "IRS CHNA Audit, locked add-on module" [ref=f10e74] [cursor=pointer]:
+                    - /url: /modules/chna
+                    - generic [ref=f10e78]: IRS CHNA Audit
+                - listitem [ref=f10e82]:
+                  - link "Corporate CSR, locked add-on module" [ref=f10e83] [cursor=pointer]:
+                    - /url: /modules/csr
+                    - generic [ref=f10e88]: Corporate CSR
+                - listitem [ref=f10e92]:
+                  - link "Disaster Logistics" [ref=f10e93] [cursor=pointer]:
+                    - /url: /modules/disaster
+            - listitem [ref=f10e100]:
+              - heading "Reports" [level=2] [ref=f10e101]
+              - list "Reports" [ref=f10e102]:
+                - listitem [ref=f10e103]:
+                  - link "Reports & Export" [ref=f10e104] [cursor=pointer]:
+                    - /url: /reports
+            - listitem [ref=f10e109]:
+              - heading "Account" [level=2] [ref=f10e110]
+              - list "Account" [ref=f10e111]:
+                - listitem [ref=f10e112]:
+                  - link "Plan & Modules" [ref=f10e113] [cursor=pointer]:
+                    - /url: /billing
+                - listitem [ref=f10e117]:
+                  - link "Settings" [ref=f10e118] [cursor=pointer]:
+                    - /url: /settings
+      - button "Sign out" [ref=f10e124] [cursor=pointer]
+    - generic [ref=f10e129]:
+      - banner [ref=f10e130]:
+        - generic [ref=f10e131]:
+          - generic [ref=f10e133]:
+            - generic [ref=f10e134]:
+              - heading "Food Deserts" [level=1]
+              - generic "Demonstration rollups generated in the browser. No database is connected." [ref=f10e135]: Demo Data
+              - 'button "Preview mode: USDA Food & Nutrition Service. Change what the dashboard shows." [ref=f10e139] [cursor=pointer]':
+                - generic [ref=f10e143]: As USDA Food & Nutrition Service
+            - paragraph [ref=f10e146]: Food access analysis by county & census tract
+          - generic [ref=f10e147]:
+            - button "Grant & Impact" [ref=f10e149] [cursor=pointer]
+            - generic [ref=f10e156]:
+              - group "Reporting period" [ref=f10e157]:
+                - button "Last 7 days" [ref=f10e160] [cursor=pointer]: 7 Days
+                - button "Last 30 days" [pressed] [ref=f10e161] [cursor=pointer]: 30 Days
+                - button "Last 90 days" [ref=f10e162] [cursor=pointer]: 90 Days
+                - button "Year to date" [ref=f10e163] [cursor=pointer]: YTD
+                - button "Custom" [ref=f10e164] [cursor=pointer]
+              - button "Compare against the previous period" [ref=f10e165] [cursor=pointer]:
+                - generic [ref=f10e171]: Compare
+                - generic [ref=f10e172]: against the previous period
+            - button "Copy a link to this view, including the current filters" [ref=f10e173] [cursor=pointer]:
+              - generic [ref=f10e180]: Share
+            - button "Notifications, 3 threshold alerts triggered" [ref=f10e183] [cursor=pointer]
+            - button "Account menu for Dr. Patricia Hawkins" [ref=f10e189] [cursor=pointer]:
+              - generic [ref=f10e190]: DPH
+              - generic [ref=f10e191]:
+                - generic [ref=f10e192]: Dr. Patricia Hawkins
+                - generic [ref=f10e193]: United Way River Region
+        - generic [ref=f10e197]:
+          - generic [ref=f10e198]: Limit the dashboard to a single county
+          - combobox "Limit the dashboard to a single county" [ref=f10e203] [cursor=pointer]:
+            - option "All Assigned Counties (Central Alabama River Region)" [selected]
+            - option "Montgomery County"
+            - option "Autauga County"
+            - option "Elmore County"
+            - option "Lowndes County"
+            - option "Macon County"
+            - option "Dallas County"
+            - option "Wilcox County"
+            - option "Perry County"
+      - main [ref=f10e204]:
+        - generic [ref=f10e212]:
+          - generic [ref=f10e213]:
+            - generic [ref=f10e218]:
+              - heading "Alabama Food Desert Vulnerability Index" [level=2] [ref=f10e219]
+              - paragraph [ref=f10e220]: 67-county vector heatmap and GIS pantry pins, derived from USDA and Census access metrics.
+            - generic [ref=f10e221]:
+              - generic [ref=f10e222]:
+                - button "County Choropleth" [ref=f10e223] [cursor=pointer]
+                - button "GIS Pantry Map" [ref=f10e228] [cursor=pointer]
+              - button "Export CSV" [ref=f10e231] [cursor=pointer]
+          - generic [ref=f10e235]:
+            - generic [ref=f10e236]:
+              - generic [ref=f10e237]: Location pin integrity
+              - generic [ref=f10e238]:
+                - generic [ref=f10e239]: Level 3 field verified pin
+                - generic [ref=f10e243]: "7"
+                - generic [ref=f10e244]: Level 2 satellite pin dragged
+                - generic [ref=f10e251]: "1"
+                - generic [ref=f10e252]: Level 1 unverified address
+                - generic [ref=f10e255]: "0"
+            - generic [ref=f10e256]:
+              - generic [ref=f10e257]: 87.5%
+              - text: of 8 assigned counties locations field-verified
+          - generic [ref=f10e258]:
+            - generic [ref=f10e264]:
+              - paragraph [ref=f10e265]: "5"
+              - paragraph [ref=f10e266]: Critical Zones (< 25 Access Score) · 8 assigned counties
+            - generic [ref=f10e273]:
+              - paragraph [ref=f10e274]: "1"
+              - paragraph [ref=f10e275]: At-Risk Counties · 8 assigned counties
+            - generic [ref=f10e282]:
+              - paragraph [ref=f10e283]: 9.6 mi
+              - paragraph [ref=f10e284]: Avg Pantry Distance · 8 assigned counties
+          - region [ref=f10e285]:
+            - generic [ref=f10e287]:
+              - heading "Interactive Alabama County Heatmap" [level=2] [ref=f10e288]
+              - paragraph [ref=f10e289]: Albers equal-area projection · 8 assigned counties in colour, counties outside your coverage in grey · select a county to expand its detail below
+            - generic [ref=f10e290]:
+              - generic [ref=f10e291]:
+                - group "Choose which metric shades the map" [ref=f10e292]:
+                  - generic [ref=f10e294]: "Shading metric:"
+                  - button "Food Access Score" [pressed] [ref=f10e295] [cursor=pointer]
+                  - button "Poverty Rate (%)" [ref=f10e296] [cursor=pointer]
+                  - button "Nearest Pantry Distance" [ref=f10e297] [cursor=pointer]
+                - generic [ref=f10e298]:
+                  - generic [ref=f10e299]:
+                    - generic [ref=f10e302]: Filter counties by region
+                    - combobox "Filter counties by region" [ref=f10e303] [cursor=pointer]:
+                      - option "All 67 counties" [selected]
+                      - option "River Region (primary focus)"
+                      - option "River Region & Black Belt"
+                      - option "Critical zones only (< 25)"
+                  - generic [ref=f10e304]:
+                    - generic [ref=f10e305]: Search counties by name, abbreviation or ZIP code
+                    - searchbox "Search counties by name, abbreviation or ZIP code" [ref=f10e306]
+              - generic [ref=f10e307]:
+                - generic [ref=f10e308]:
+                  - button "Zoom in" [ref=f10e309] [cursor=pointer]
+                  - button "Zoom out" [disabled] [ref=f10e313]
+                  - button "Reset zoom to whole state" [ref=f10e317] [cursor=pointer]
+                - generic [ref=f10e321]: Alabama · 67 counties
+                - paragraph [ref=f10e324]: 8 of 67 counties in scope, 5 in critical status, 59 outside your coverage.
+                - generic [ref=f10e325]:
+                  - group "Alabama food access by county" [ref=f10e326]:
+                    - button "Lauderdale County. Outside your agency's county coverage. Select to review adding it." [ref=f10e328] [cursor=pointer]:
+                      - generic: Lau
+                    - button "Limestone County. Outside your agency's county coverage. Select to review adding it." [ref=f10e330] [cursor=pointer]:
+                      - generic: Lim
+                    - button "Madison County. Outside your agency's county coverage. Select to review adding it." [ref=f10e332] [cursor=pointer]:
+                      - generic: Mad
+                    - button "Jackson County. Outside your agency's county coverage. Select to review adding it." [ref=f10e334] [cursor=pointer]:
+                      - generic: Jac
+                    - button "Colbert County. Outside your agency's county coverage. Select to review adding it." [ref=f10e336] [cursor=pointer]:
+                      - generic: Col
+                    - button "Lawrence County. Outside your agency's county coverage. Select to review adding it." [ref=f10e338] [cursor=pointer]:
+                      - generic: Law
+                    - button "Morgan County. Outside your agency's county coverage. Select to review adding it." [ref=f10e340] [cursor=pointer]:
+                      - generic: Mor
+                    - button "Marshall County. Outside your agency's county coverage. Select to review adding it." [ref=f10e342] [cursor=pointer]:
+                      - generic: Mar
+                    - button "DeKalb County. Outside your agency's county coverage. Select to review adding it." [ref=f10e344] [cursor=pointer]:
+                      - generic: DeK
+                    - button "Franklin County. Outside your agency's county coverage. Select to review adding it." [ref=f10e346] [cursor=pointer]:
+                      - generic: Fra
+                    - button "Cullman County. Outside your agency's county coverage. Select to review adding it." [ref=f10e348] [cursor=pointer]:
+                      - generic: Cul
+                    - button "Blount County. Outside your agency's county coverage. Select to review adding it." [ref=f10e350] [cursor=pointer]:
+                      - generic: Blo
+                    - button "Etowah County. Outside your agency's county coverage. Select to review adding it." [ref=f10e352] [cursor=pointer]:
+                      - generic: Eto
+                    - button "Cherokee County. Outside your agency's county coverage. Select to review adding it." [ref=f10e354] [cursor=pointer]:
+                      - generic: Che
+                    - button "Marion County. Outside your agency's county coverage. Select to review adding it." [ref=f10e356] [cursor=pointer]:
+                      - generic: Mar
+                    - button "Winston County. Outside your agency's county coverage. Select to review adding it." [ref=f10e358] [cursor=pointer]:
+                      - generic: Win
+                    - button "Walker County. Outside your agency's county coverage. Select to review adding it." [ref=f10e360] [cursor=pointer]:
+                      - generic: Wal
+                    - button "St. Clair County. Outside your agency's county coverage. Select to review adding it." [ref=f10e362] [cursor=pointer]:
+                      - generic: St.
+                    - button "Calhoun County. Outside your agency's county coverage. Select to review adding it." [ref=f10e364] [cursor=pointer]:
+                      - generic: Cal
+                    - button "Cleburne County. Outside your agency's county coverage. Select to review adding it." [ref=f10e366] [cursor=pointer]:
+                      - generic: Cle
+                    - button "Lamar County. Outside your agency's county coverage. Select to review adding it." [ref=f10e368] [cursor=pointer]:
+                      - generic: Lam
+                    - button "Fayette County. Outside your agency's county coverage. Select to review adding it." [ref=f10e370] [cursor=pointer]:
+                      - generic: Fay
+                    - button "Jefferson County. Outside your agency's county coverage. Select to review adding it." [ref=f10e372] [cursor=pointer]:
+                      - generic: Jef
+                    - button "Talladega County. Outside your agency's county coverage. Select to review adding it." [ref=f10e374] [cursor=pointer]:
+                      - generic: Tal
+                    - button "Clay County. Outside your agency's county coverage. Select to review adding it." [ref=f10e376] [cursor=pointer]:
+                      - generic: Cla
+                    - button "Randolph County. Outside your agency's county coverage. Select to review adding it." [ref=f10e378] [cursor=pointer]:
+                      - generic: Ran
+                    - button "Pickens County. Outside your agency's county coverage. Select to review adding it." [ref=f10e380] [cursor=pointer]:
+                      - generic: Pic
+                    - button "Tuscaloosa County. Outside your agency's county coverage. Select to review adding it." [ref=f10e382] [cursor=pointer]:
+                      - generic: Tus
+                    - button "Shelby County. Outside your agency's county coverage. Select to review adding it." [ref=f10e384] [cursor=pointer]:
+                      - generic: She
+                    - button "Coosa County. Outside your agency's county coverage. Select to review adding it." [ref=f10e386] [cursor=pointer]:
+                      - generic: Coo
+                    - button "Chambers County. Outside your agency's county coverage. Select to review adding it." [ref=f10e388] [cursor=pointer]:
+                      - generic: Cha
+                    - button "Greene County. Outside your agency's county coverage. Select to review adding it." [ref=f10e390] [cursor=pointer]:
+                      - generic: Gre
+                    - button "Bibb County. Outside your agency's county coverage. Select to review adding it." [ref=f10e392] [cursor=pointer]:
+                      - generic: Bib
+                    - button "Chilton County. Outside your agency's county coverage. Select to review adding it." [ref=f10e394] [cursor=pointer]:
+                      - generic: Chi
+                    - button "Tallapoosa County. Outside your agency's county coverage. Select to review adding it." [ref=f10e396] [cursor=pointer]:
+                      - generic: Tal
+                    - button "Elmore County. Food access score 71 out of 100, Adequate. Population 87,977. Poverty rate 10.2 percent. Nearest pantry 5.1 miles. 4 active pantries. Top need Canned Soup." [ref=f10e398] [cursor=pointer]:
+                      - generic: Elm
+                    - button "Lee County. Outside your agency's county coverage. Select to review adding it." [ref=f10e400] [cursor=pointer]:
+                      - generic: Lee
+                    - button "Sumter County. Outside your agency's county coverage. Select to review adding it." [ref=f10e402] [cursor=pointer]:
+                      - generic: Sum
+                    - button "Hale County. Outside your agency's county coverage. Select to review adding it." [ref=f10e404] [cursor=pointer]:
+                      - generic: Hal
+                    - button "Perry County. Food access score 19 out of 100, Critical. Population 8,520. Poverty rate 35.1 percent. Nearest pantry 13.8 miles. 1 active pantry. Top need Cooking Oil." [ref=f10e406] [cursor=pointer]:
+                      - generic: Per
+                    - button "Autauga County. Food access score 62 out of 100, Adequate. Population 58,805. Poverty rate 12.8 percent. Nearest pantry 4.8 miles. 3 active pantries. Top need Infant Formula." [ref=f10e408] [cursor=pointer]:
+                      - generic: Aut
+                    - button "Montgomery County. Food access score 18 out of 100, Critical. Population 228,954. Poverty rate 19.4 percent. Nearest pantry 3.2 miles. 8 active pantries. Top need Canned Black Beans." [ref=f10e410] [cursor=pointer]:
+                      - generic: Mon
+                    - button "Macon County. Food access score 24 out of 100, Critical. Population 18,068. Poverty rate 31.2 percent. Nearest pantry 11.8 miles. 2 active pantries. Top need Rice." [ref=f10e412] [cursor=pointer]:
+                      - generic: Mac
+                    - button "Russell County. Outside your agency's county coverage. Select to review adding it." [ref=f10e414] [cursor=pointer]:
+                      - generic: Rus
+                    - button "Choctaw County. Outside your agency's county coverage. Select to review adding it." [ref=f10e416] [cursor=pointer]:
+                      - generic: Cho
+                    - button "Marengo County. Outside your agency's county coverage. Select to review adding it." [ref=f10e418] [cursor=pointer]:
+                      - generic: Mar
+                    - button "Dallas County. Food access score 31 out of 100, At Risk. Population 38,462. Poverty rate 28.6 percent. Nearest pantry 8.4 miles. 3 active pantries. Top need Frozen Meals." [active] [pressed] [ref=f10e420] [cursor=pointer]:
+                      - generic: Dal
+                    - button "Lowndes County. Food access score 18 out of 100, Critical. Population 9,726. Poverty rate 34.8 percent. Nearest pantry 14.2 miles. 1 active pantry. Top need Fresh Produce Box." [ref=f10e422] [cursor=pointer]:
+                      - generic: Low
+                    - button "Bullock County. Outside your agency's county coverage. Select to review adding it." [ref=f10e424] [cursor=pointer]:
+                      - generic: Bul
+                    - button "Barbour County. Outside your agency's county coverage. Select to review adding it." [ref=f10e426] [cursor=pointer]:
+                      - generic: Bar
+                    - button "Clarke County. Outside your agency's county coverage. Select to review adding it." [ref=f10e428] [cursor=pointer]:
+                      - generic: Cla
+                    - button "Monroe County. Outside your agency's county coverage. Select to review adding it." [ref=f10e430] [cursor=pointer]:
+                      - generic: Mon
+                    - button "Butler County. Outside your agency's county coverage. Select to review adding it." [ref=f10e432] [cursor=pointer]:
+                      - generic: But
+                    - button "Crenshaw County. Outside your agency's county coverage. Select to review adding it." [ref=f10e434] [cursor=pointer]:
+                      - generic: Cre
+                    - button "Pike County. Outside your agency's county coverage. Select to review adding it." [ref=f10e436] [cursor=pointer]:
+                      - generic: Pik
+                    - button "Henry County. Outside your agency's county coverage. Select to review adding it." [ref=f10e438] [cursor=pointer]:
+                      - generic: Hen
+                    - button "Washington County. Outside your agency's county coverage. Select to review adding it." [ref=f10e440] [cursor=pointer]:
+                      - generic: Was
+                    - button "Conecuh County. Outside your agency's county coverage. Select to review adding it." [ref=f10e442] [cursor=pointer]:
+                      - generic: Con
+                    - button "Covington County. Outside your agency's county coverage. Select to review adding it." [ref=f10e444] [cursor=pointer]:
+                      - generic: Cov
+                    - button "Coffee County. Outside your agency's county coverage. Select to review adding it." [ref=f10e446] [cursor=pointer]:
+                      - generic: Cof
+                    - button "Dale County. Outside your agency's county coverage. Select to review adding it." [ref=f10e448] [cursor=pointer]:
+                      - generic: Dal
+                    - button "Houston County. Outside your agency's county coverage. Select to review adding it." [ref=f10e450] [cursor=pointer]:
+                      - generic: Hou
+                    - button "Mobile County. Outside your agency's county coverage. Select to review adding it." [ref=f10e452] [cursor=pointer]:
+                      - generic: Mob
+                    - button "Escambia County. Outside your agency's county coverage. Select to review adding it." [ref=f10e454] [cursor=pointer]:
+                      - generic: Esc
+                    - button "Geneva County. Outside your agency's county coverage. Select to review adding it." [ref=f10e456] [cursor=pointer]:
+                      - generic: Gen
+                    - button "Baldwin County. Outside your agency's county coverage. Select to review adding it." [ref=f10e458] [cursor=pointer]:
+                      - generic: Bal
+                    - button "Wilcox County. Food access score 17 out of 100, Critical. Population 10,600. Poverty rate 33.6 percent. Nearest pantry 15.8 miles. 1 active pantry. Top need Fresh Produce Box." [ref=f10e460] [cursor=pointer]:
+                      - generic: Wil
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - heading "Dallas County" [level=4]
+                          - generic: River Region · FIPS 01047
+                        - generic: At Risk
+                      - generic:
+                        - generic: "31"
+                        - generic: / 100 food access score
+                      - generic:
+                        - generic:
+                          - paragraph: Population
+                          - paragraph: 38,462
+                        - generic:
+                          - paragraph: Below poverty
+                          - paragraph: 28.6%
+                        - generic:
+                          - paragraph: Nearest pantry
+                          - paragraph: 8.4 mi
+                        - generic:
+                          - paragraph: Active pantries
+                          - paragraph: "3"
+                      - generic:
+                        - generic: "Top need:"
+                        - generic: Frozen Meals
+                - generic [ref=f10e462]:
+                  - generic [ref=f10e463]:
+                    - generic [ref=f10e464]: "Severity scale:"
+                    - generic [ref=f10e465]: Critical (< 25)
+                    - generic [ref=f10e468]: At risk (25–39)
+                    - generic [ref=f10e471]: Moderate (40–59)
+                    - generic [ref=f10e474]: Adequate (60+)
+                    - generic [ref=f10e477]: Outside your coverage
+                  - generic [ref=f10e480]: Hover or focus a county for its metrics · Arrow keys navigate · Enter opens detail
+          - generic [ref=f10e481]:
+            - paragraph [ref=f10e484]:
+              - text: Dallas County selected ·
+              - generic [ref=f10e485]: 31/100
+              - text: · At Risk
+            - generic [ref=f10e486]:
+              - button "Scope dashboard to Dallas" [ref=f10e487] [cursor=pointer]
+              - button "Deselect" [ref=f10e490] [cursor=pointer]
+          - region [ref=f10e491]:
+            - generic [ref=f10e492]:
+              - generic [ref=f10e493]:
+                - heading "Food Access Score by County (Lowest to Highest)" [level=2] [ref=f10e494]
+                - paragraph [ref=f10e495]: Lower scores indicate severe food desert vulnerability · 8 assigned counties
+              - button "Export CSV" [ref=f10e497] [cursor=pointer]
+            - application [ref=f10e504]:
+              - generic [ref=f10e537]:
+                - generic [ref=f10e538]:
+                  - generic [ref=f10e539]: Wilcox
+                  - generic [ref=f10e541]: Montgomery
+                  - generic [ref=f10e543]: Lowndes
+                  - generic [ref=f10e545]: Perry
+                  - generic [ref=f10e547]: Macon
+                  - generic [ref=f10e549]: Dallas
+                  - generic [ref=f10e551]: Autauga
+                  - generic [ref=f10e553]: Elmore
+                - generic [ref=f10e555]:
+                  - generic [ref=f10e556]: "0"
+                  - generic [ref=f10e558]: "25"
+                  - generic [ref=f10e560]: "50"
+                  - generic [ref=f10e562]: "75"
+                  - generic [ref=f10e564]: "100"
+          - region [ref=f10e566]:
+            - generic [ref=f10e568]:
+              - heading "County Census Metrics & ZIP Tracts" [level=2] [ref=f10e569]
+              - paragraph [ref=f10e570]: "Selected: Dallas County"
+            - generic [ref=f10e571]:
+              - button [ref=f10e573] [cursor=pointer]:
+                - generic [ref=f10e576]:
+                  - paragraph [ref=f10e577]: Wilcox County (Wil.)
+                  - paragraph [ref=f10e578]: "Black Belt · Pop. 10,600 · ZIPs: 36726, 36769, 36728"
+                - generic [ref=f10e580]:
+                  - paragraph [ref=f10e581]: 17/100
+                  - text: Critical
+              - button [ref=f10e585] [cursor=pointer]:
+                - generic [ref=f10e588]:
+                  - paragraph [ref=f10e589]: Montgomery County (Mon.)
+                  - paragraph [ref=f10e590]: "River Region · Pop. 228,954 · ZIPs: 36104, 36116, 36108"
+                - generic [ref=f10e592]:
+                  - paragraph [ref=f10e593]: 18/100
+                  - text: Critical
+              - button [ref=f10e597] [cursor=pointer]:
+                - generic [ref=f10e600]:
+                  - paragraph [ref=f10e601]: Lowndes County (Low.)
+                  - paragraph [ref=f10e602]: "River Region · Pop. 9,726 · ZIPs: 36040, 36032, 36047"
+                - generic [ref=f10e604]:
+                  - paragraph [ref=f10e605]: 18/100
+                  - text: Critical
+              - button [ref=f10e609] [cursor=pointer]:
+                - generic [ref=f10e612]:
+                  - paragraph [ref=f10e613]: Perry County (Per.)
+                  - paragraph [ref=f10e614]: "River Region · Pop. 8,520 · ZIPs: 36756, 36793"
+                - generic [ref=f10e616]:
+                  - paragraph [ref=f10e617]: 19/100
+                  - text: Critical
+              - button [ref=f10e621] [cursor=pointer]:
+                - generic [ref=f10e624]:
+                  - paragraph [ref=f10e625]: Macon County (Mac.)
+                  - paragraph [ref=f10e626]: "River Region · Pop. 18,068 · ZIPs: 36083, 36089"
+                - generic [ref=f10e628]:
+                  - paragraph [ref=f10e629]: 24/100
+                  - text: Critical
+              - generic [ref=f10e632]:
+                - button [ref=f10e633] [cursor=pointer]:
+                  - generic [ref=f10e636]:
+                    - paragraph [ref=f10e637]: Dallas County (Dal.)
+                    - paragraph [ref=f10e638]: "River Region · Pop. 38,462 · ZIPs: 36701, 36703"
+                  - generic [ref=f10e640]:
+                    - paragraph [ref=f10e641]: 31/100
+                    - text: At Risk
+                - generic [ref=f10e644]:
+                  - generic [ref=f10e645]:
+                    - generic [ref=f10e646]:
+                      - paragraph [ref=f10e651]: Nearest Pantry
+                      - paragraph [ref=f10e652]: 8.4 mi
+                    - generic [ref=f10e653]:
+                      - paragraph [ref=f10e659]: Active Pantries
+                      - paragraph [ref=f10e660]: "3"
+                    - generic [ref=f10e661]:
+                      - paragraph [ref=f10e665]: Median Income
+                      - paragraph [ref=f10e666]: $29,680
+                    - generic [ref=f10e667]:
+                      - paragraph [ref=f10e672]: Below Poverty
+                      - paragraph [ref=f10e673]: 28.6%
+                  - generic [ref=f10e674]:
+                    - paragraph [ref=f10e675]: "Top Requested Need: Frozen Meals"
+                    - button "Set Threshold Alert" [ref=f10e676] [cursor=pointer]
+              - button [ref=f10e681] [cursor=pointer]:
+                - generic [ref=f10e684]:
+                  - paragraph [ref=f10e685]: Autauga County (Aut.)
+                  - paragraph [ref=f10e686]: "River Region · Pop. 58,805 · ZIPs: 36067, 36066"
+                - generic [ref=f10e688]:
+                  - paragraph [ref=f10e689]: 62/100
+                  - text: Adequate
+              - button [ref=f10e693] [cursor=pointer]:
+                - generic [ref=f10e696]:
+                  - paragraph [ref=f10e697]: Elmore County (Elm.)
+                  - paragraph [ref=f10e698]: "River Region · Pop. 87,977 · ZIPs: 36092, 36054"
+                - generic [ref=f10e700]:
+                  - paragraph [ref=f10e701]: 71/100
+                  - text: Adequate
+      - contentinfo [ref=f10e208]:
+        - generic [ref=f10e209]:
+          - paragraph [ref=f10e210]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+          - paragraph [ref=f10e211]: Partnered with United Way River Region & USDA
+  - generic [ref=f10e704]: "0"

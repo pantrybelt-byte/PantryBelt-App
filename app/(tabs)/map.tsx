@@ -14,7 +14,7 @@ import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
-import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
+import { clearPendingSearchOutcome, getLastKnownCounty, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
     id: string;
@@ -46,16 +46,6 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
 }
 
 const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
-
-// Default fallback camera: Alabama center (statewide view)
-const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
-const DEFAULT_CAMERA = {
-    center: ALABAMA_CENTER,
-    pitch: 30,
-    heading: 0,
-    altitude: 550000,
-    zoom: 6,
-};
 
 // GAP 4/6 — Whenever we get a fresh GPS fix (initial load or recenter tap),
 // log the user's county if pantries are nearby, or a food-desert event if not.
@@ -94,9 +84,11 @@ export default function MapScreen() {
     const [pantries, setPantries] = useState<Pantry[]>([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    // REMOVE BEFORE PUBLIC LAUNCH — temporary beta-only diagnostic detail
+    const [errorDetail, setErrorDetail] = useState<{ code?: string; message?: string } | null>(null);
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
-    const [counties, setCounties] = useState<string[]>(['All']);
+    const [cities, setCities] = useState<string[]>(['All']);
     const [selected, setSelected] = useState<Pantry | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     // Tracks the user's coarse location for analytics (county / food desert)
@@ -104,22 +96,12 @@ export default function MapScreen() {
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [feedbackIsAutoPrompt, setFeedbackIsAutoPrompt] = useState(false);
     const [is3D, setIs3D] = useState(true);
-    // True once the native MapView has finished laying out — imperative camera
-    // calls (animateToRegion) are only reliable after this fires on iOS.
-    const [mapReady, setMapReady] = useState(false);
-
-    // Track the visible map region so we only render markers in view
-    const [visibleRegion, setVisibleRegion] = useState<{
-        latitude: number; longitude: number;
-        latitudeDelta: number; longitudeDelta: number;
-    } | null>(null);
-    // Whether we've already animated to the user's location on first load
-    const didCenterOnUser = useRef(false);
 
     // ── Load pantries from Firestore ──────────────────────
     const fetchPantries = useCallback(async () => {
         setLoading(true);
         setFetchError(false);
+        setErrorDetail(null);
         try {
             const q = query(
                 collection(db, 'resources'),
@@ -156,39 +138,30 @@ export default function MapScreen() {
                 );
                 setPantries(valid);
                 setLiveData(true);
-                const uniqueCounties = ['All', ...Array.from(new Set(valid.map(p => p.county).filter(Boolean))).sort()];
-                setCounties(uniqueCounties);
+                const uniqueCities = ['All', ...Array.from(new Set(valid.map(p => p.city).filter(Boolean))).sort()];
+                setCities(uniqueCities);
 
-                // ── Get user location: center map + analytics ──────────
-                // Respects the Location Services toggle in Profile — if the user has
-                // turned it off in-app, we don't even prompt for the OS permission.
+                // ── Analytics: user county + food desert detection ──────────
                 try {
-                    const locationAllowed = await getLocationPreference();
-                    const { status } = locationAllowed
-                        ? await Location.requestForegroundPermissionsAsync()
-                        : { status: 'denied' as const };
+                    const { status } = await Location.requestForegroundPermissionsAsync();
                     if (status === 'granted') {
                         const loc = await Location.getCurrentPositionAsync({
-                            accuracy: Location.Accuracy.High,
+                            accuracy: Location.Accuracy.Balanced,
                         });
                         const userLat = loc.coords.latitude;
                         const userLng = loc.coords.longitude;
-                        // Store the fix; the actual map centering happens in the
-                        // effect below once the MapView has mounted and reported
-                        // ready. (During loading the map isn't rendered yet, so
-                        // mapRef.current would be null and any animate call here
-                        // would be silently dropped.)
                         setUserLocation({ lat: userLat, lng: userLng });
-
                         await trackLocationCoverage(valid, userLat, userLng, 'location');
                     }
                 } catch {
-                    // Location permission denied or unavailable — show statewide view
+                    // Location permission denied or unavailable — silent
                 }
             }
         } catch (err) {
             console.error('Firestore error:', err);
             setFetchError(true);
+            // REMOVE BEFORE PUBLIC LAUNCH — surfaces the real error for beta testers
+            setErrorDetail({ code: (err as any)?.code, message: (err as any)?.message });
         } finally {
             setLoading(false);
         }
@@ -199,21 +172,6 @@ export default function MapScreen() {
     useEffect(() => {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
-
-    // Center on the user's exact location on first load. Runs once we have both
-    // a GPS fix and a mounted/ready map — whichever arrives last triggers it.
-    // Snapchat-style: start zoomed into the user's location (street level).
-    useEffect(() => {
-        if (mapReady && userLocation && !didCenterOnUser.current) {
-            didCenterOnUser.current = true;
-            mapRef.current?.animateToRegion({
-                latitude: userLocation.lat,
-                longitude: userLocation.lng,
-                latitudeDelta: 0.005,   // ~2-3 blocks (street level)
-                longitudeDelta: 0.005,
-            }, 1000);
-        }
-    }, [mapReady, userLocation]);
 
     // GAP 7 — Search-to-Success Rate: if the user arrived here shortly after
     // asking Pete to find a pantry, record that the search led somewhere.
@@ -245,27 +203,15 @@ export default function MapScreen() {
         })();
     }, [loading, fetchError]);
 
-    const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
+    const filtered = filter === 'All' ? pantries : pantries.filter(p => p.city === filter);
 
-    // Only render markers within (or near) the visible map region to avoid
-    // dumping all 884 pins at once — much cleaner UX and better performance.
-    const filtered = visibleRegion
-        ? cityFiltered.filter(p => {
-            const pad = 0.3; // render slightly beyond the visible edge for smooth panning
-            return (
-                Math.abs(p.lat - visibleRegion.latitude)  < visibleRegion.latitudeDelta  / 2 + pad &&
-                Math.abs(p.lng - visibleRegion.longitude) < visibleRegion.longitudeDelta / 2 + pad
-            );
-        })
-        : cityFiltered;
+    const handleFilter = (city: string) => {
+        setFilter(city);
+        const items = city === 'All' ? pantries : pantries.filter(p => p.city === city);
 
-    const handleFilter = (county: string) => {
-        setFilter(county);
-        const items = county === 'All' ? pantries : pantries.filter(p => p.county === county);
-
-        // Log county interaction when user taps a county filter
-        if (county !== 'All' && items.length > 0) {
-            logUserCounty(items[0].county, items[0].city, 'filter_tap');
+        // Log county interaction when user taps a city filter
+        if (city !== 'All' && items.length > 0) {
+            logUserCounty(items[0].county, city, 'filter_tap');
             setLastKnownCounty(items[0].county);
         }
 
@@ -273,8 +219,8 @@ export default function MapScreen() {
             mapRef.current.animateToRegion({
                 latitude: items.reduce((s, p) => s + p.lat, 0) / items.length,
                 longitude: items.reduce((s, p) => s + p.lng, 0) / items.length,
-                latitudeDelta: county === 'All' ? 3.5 : 0.2,
-                longitudeDelta: county === 'All' ? 3.0 : 0.2,
+                latitudeDelta: city === 'All' ? 3.5 : 0.3,
+                longitudeDelta: city === 'All' ? 3.0 : 0.3,
             }, 800);
         }
     };
@@ -289,14 +235,6 @@ export default function MapScreen() {
     // Recenter the map on the user and zoom in close enough to see nearby pantries.
     const recenterOnUser = useCallback(async () => {
         try {
-            const locationAllowed = await getLocationPreference();
-            if (!locationAllowed) {
-                Alert.alert(
-                    'Location Services is off',
-                    'Turn it back on in Profile → Preferences to find pantries near you.'
-                );
-                return;
-            }
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert(
@@ -311,8 +249,8 @@ export default function MapScreen() {
             mapRef.current?.animateToRegion({
                 latitude,
                 longitude,
-                latitudeDelta: 0.005,   // Street level — pinch out to explore
-                longitudeDelta: 0.005,
+                latitudeDelta: 0.15,
+                longitudeDelta: 0.15,
             }, 800);
             await trackLocationCoverage(pantries, latitude, longitude, 'location');
         } catch {
@@ -323,7 +261,7 @@ export default function MapScreen() {
     if (loading) return (
         <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
             <ActivityIndicator size="large" color="#b52525" />
-            <Text style={[styles.loadingText, { color: theme.subtext }]}>Finding pantries near you!</Text>
+            <Text style={[styles.loadingText, { color: theme.subtext }]}>Loading pantries from Firebase...</Text>
         </View>
     );
 
@@ -332,6 +270,12 @@ export default function MapScreen() {
             <Ionicons name="wifi-outline" size={48} color="#b52525" />
             <Text style={[styles.loadingText, { color: theme.text }]}>Could not load pantries</Text>
             <Text style={[styles.errorSubtext, { color: theme.subtext }]}>Check your connection and try again.</Text>
+            {/* REMOVE BEFORE PUBLIC LAUNCH — beta-only diagnostic error detail */}
+            {errorDetail && (
+                <Text style={[styles.errorSubtext, { color: theme.subtext }]}>
+                    {errorDetail.code ?? 'unknown-code'}: {errorDetail.message ?? 'no message'}
+                </Text>
+            )}
             <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries}>
                 <Text style={styles.retryBtnText}>Retry</Text>
             </TouchableOpacity>
@@ -353,90 +297,66 @@ export default function MapScreen() {
                 showsBuildings
                 pitchEnabled
                 rotateEnabled
-                initialCamera={DEFAULT_CAMERA}
-                onMapReady={() => setMapReady(true)}
-                onRegionChangeComplete={(region) => setVisibleRegion(region)}
+                camera={{
+                    center: { latitude: 32.75, longitude: -86.83 },
+                    pitch: 30,
+                    heading: 0,
+                    altitude: 550000,
+                    zoom: 6,
+                }}
             >
-                {filtered.map(pantry => {
-                    const openDetails = () => {
-                        setSelected(pantry);
-                        setModalVisible(true);
-                        // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
-                        logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
-                        updateMonthlySummary(pantry.county, 'pantryViews');
-                        // GAP 7 — close the loop if this view follows a Pete search
-                        (async () => {
-                            const topic = await getPendingSearchOutcome();
-                            if (topic) {
-                                logSearchOutcome(topic, 'pantry_viewed', pantry.county);
-                                await clearPendingSearchOutcome();
-                            }
-                        })();
-                    };
-
-                    return (
-                        <Marker
-                            key={pantry.id}
-                            coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                            pinColor={pantry.verified ? '#b52525' : '#999999'}
-                            onPress={openDetails}
-                        >
-                            <Callout tooltip onPress={openDetails}>
-                                <View style={[styles.callout, { backgroundColor: theme.card }]}>
-                                    <View style={styles.calloutNameRow}>
-                                        <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
-                                        {!pantry.verified && (
-                                            <View style={styles.calloutUnverifiedBadge}>
-                                                <Text style={styles.calloutUnverifiedText}>Unverified</Text>
-                                            </View>
-                                        )}
-                                    </View>
-                                    <Text style={styles.calloutCity}>{pantry.city}</Text>
-                                    <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
-                                </View>
-                            </Callout>
-                        </Marker>
-                    );
-                })}
+                {filtered.map(pantry => (
+                    <Marker
+                        key={pantry.id}
+                        coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
+                        pinColor="#b52525"
+                        onPress={() => {
+                            setSelected(pantry);
+                            setModalVisible(true);
+                            // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
+                            logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
+                            updateMonthlySummary(pantry.county, 'pantryViews');
+                            // GAP 7 — close the loop if this view follows a Pete search
+                            (async () => {
+                                const topic = await getPendingSearchOutcome();
+                                if (topic) {
+                                    logSearchOutcome(topic, 'pantry_viewed', pantry.county);
+                                    await clearPendingSearchOutcome();
+                                }
+                            })();
+                        }}
+                    >
+                        <Callout tooltip>
+                            <View style={styles.callout}>
+                                <Text style={styles.calloutName}>{pantry.name}</Text>
+                                <Text style={styles.calloutCity}>{pantry.city}</Text>
+                                <Text style={styles.calloutTap}>Tap for details</Text>
+                            </View>
+                        </Callout>
+                    </Marker>
+                ))}
             </MapView>
 
-            {/* County filter chips */}
+            {/* City filter chips */}
             <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipContent}>
-                    {counties.map((county, i) => {
-                        const count = county === 'All' ? pantries.length : pantries.filter(p => p.county === county).length;
-                        return (
-                            <TouchableOpacity
-                                key={county ?? `county-${i}`}
-                                style={[styles.chip, { backgroundColor: theme.card }, filter === county && styles.chipActive]}
-                                onPress={() => handleFilter(county)}
-                            >
-                                <Text style={[styles.chipText, { color: theme.text }, filter === county && styles.chipTextActive]}>
-                                    {county === 'All' ? `All (${count})` : `${county} (${count})`}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
+                    {cities.map((city, i) => (
+                        <TouchableOpacity
+                            key={city ?? `city-${i}`}
+                            style={[styles.chip, { backgroundColor: theme.card }, filter === city && styles.chipActive]}
+                            onPress={() => handleFilter(city)}
+                        >
+                            <Text style={[styles.chipText, { color: theme.text }, filter === city && styles.chipTextActive]}>{city}</Text>
+                        </TouchableOpacity>
+                    ))}
                 </ScrollView>
             </View>
 
             {/* Count badge */}
             <View style={styles.countBadge} pointerEvents="none">
                 <Text style={styles.countText}>
-                    {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
+                    {filtered.length} pantries · {liveData ? 'live' : 'offline'}
                 </Text>
-            </View>
-
-            {/* Verified / unverified legend */}
-            <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
-                <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: '#b52525' }]} />
-                    <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
-                </View>
-                <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: '#999999' }]} />
-                    <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
-                </View>
             </View>
 
             {/* 2D / 3D view toggle */}
@@ -463,7 +383,7 @@ export default function MapScreen() {
 
             {/* Feedback floating button */}
             <TouchableOpacity
-                style={[styles.feedbackFloating, { backgroundColor: theme.card }]}
+                style={styles.feedbackFloating}
                 onPress={() => {
                     setFeedbackIsAutoPrompt(false);
                     setFeedbackVisible(true);
@@ -502,7 +422,7 @@ export default function MapScreen() {
                 />
                 {selected && (
                     <View style={[styles.modalCard, { backgroundColor: theme.card }]}>
-                        <View style={[styles.modalHandle, { backgroundColor: theme.border }]} />
+                        <View style={styles.modalHandle} />
 
                         <View style={styles.modalHeader}>
                             <View style={{ flex: 1 }}>
@@ -510,15 +430,10 @@ export default function MapScreen() {
                                     <Text style={[styles.modalCounty, { color: '#b52525' }]}>
                                         {selected.city} · {selected.county}
                                     </Text>
-                                    {selected.verified ? (
-                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
+                                    {selected.verified && (
+                                        <View style={styles.verifiedBadge}>
                                             <Ionicons name="checkmark-circle" size={12} color="#16a34a" />
                                             <Text style={styles.verifiedText}>Verified</Text>
-                                        </View>
-                                    ) : (
-                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#ffffff1a' : '#f5f5f5' }]}>
-                                            <Ionicons name="help-circle" size={12} color="#888" />
-                                            <Text style={[styles.verifiedText, { color: '#888' }]}>Unverified</Text>
                                         </View>
                                     )}
                                 </View>
@@ -535,41 +450,23 @@ export default function MapScreen() {
                         </View>
                         <View style={styles.modalRow}>
                             <Ionicons name="time-outline" size={16} color={theme.subtext} />
-                            <Text style={[styles.modalText, { color: theme.subtext }]}>
-                                {selected.hours !== '' ? selected.hours : 'Call ahead or visit to confirm hours'}
-                            </Text>
+                            <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.hours}</Text>
                         </View>
-                        {selected.eligibility !== '' && (
-                            <View style={styles.modalRow}>
-                                <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
-                                <Text style={[styles.modalText, { color: '#16a34a' }]}>{selected.eligibility}</Text>
-                            </View>
-                        )}
-                        {selected.docs !== '' && (
-                            <View style={styles.modalRow}>
-                                <Ionicons name="document-outline" size={16} color={theme.subtext} />
-                                <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.docs}</Text>
-                            </View>
-                        )}
-
-                        {!selected.verified && (
-                            <View style={[styles.unverifiedBanner, { backgroundColor: theme.dark ? '#ffffff0d' : '#f5f5f5' }]}>
-                                <Ionicons name="information-circle-outline" size={16} color="#888" />
-                                <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
-                                    This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
-                                </Text>
-                            </View>
-                        )}
+                        <View style={styles.modalRow}>
+                            <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
+                            <Text style={[styles.modalText, { color: '#16a34a' }]}>{selected.eligibility}</Text>
+                        </View>
+                        <View style={styles.modalRow}>
+                            <Ionicons name="document-outline" size={16} color={theme.subtext} />
+                            <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.docs}</Text>
+                        </View>
 
                         <View style={styles.modalActions}>
-                            {selected.phone !== '' && (
                             <TouchableOpacity
                                 style={[styles.modalBtn, styles.modalBtnOutline]}
                                 onPress={() => {
                                     const d = selected.phone.replace(/[^0-9]/g, '');
-                                    Linking.openURL('tel:' + d).catch(() => {
-                                        Alert.alert('Calling not supported on this device', `Dial ${selected.phone} from your phone.`);
-                                    });
+                                    Linking.openURL('tel:' + d);
                                     // GAP 1 — Successful Connections (USDA)
                                     // GAP 6 — Pantry-Level Utilization (County Govts)
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'call');
@@ -579,31 +476,10 @@ export default function MapScreen() {
                                 <Ionicons name="call-outline" size={16} color="#b52525" />
                                 <Text style={styles.modalBtnTextOutline}>{selected.phone}</Text>
                             </TouchableOpacity>
-                            )}
                             <TouchableOpacity
                                 style={styles.modalBtn}
-                                onPress={async () => {
-                                    const { lat, lng, name, address } = selected;
-                                    const encodedName = encodeURIComponent(name);
-                                    let opened = false;
-
-                                    if (Platform.OS === 'ios') {
-                                        // Apple Maps driving directions to pantry
-                                        const appleUrl = `http://maps.apple.com/?daddr=${lat},${lng}&dirflg=d`;
-                                        opened = await Linking.canOpenURL(appleUrl);
-                                        if (opened) Linking.openURL(appleUrl);
-                                    } else {
-                                        // Android geo: intent with labeled pin
-                                        const geoUrl = `geo:${lat},${lng}?q=${lat},${lng}(${encodedName})`;
-                                        opened = await Linking.canOpenURL(geoUrl);
-                                        if (opened) Linking.openURL(geoUrl);
-                                    }
-
-                                    // Fallback to Google Maps web URL if no native maps handler
-                                    if (!opened) {
-                                        Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`).catch(() => {});
-                                    }
-
+                                onPress={() => {
+                                    Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(selected.address)}`);
                                     // GAP 1 — Successful Connections (USDA)
                                     // GAP 6 — Pantry-Level Utilization (County Govts)
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'directions');
@@ -619,9 +495,7 @@ export default function MapScreen() {
                             <TouchableOpacity
                                 style={[styles.websiteBtn, { backgroundColor: theme.bg }]}
                                 onPress={() => {
-                                    Linking.openURL(selected.website).catch(() => {
-                                        Alert.alert('Could not open website', 'Please try again later.');
-                                    });
+                                    Linking.openURL(selected.website);
                                     // GAP 6 — Website visit as engagement signal
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'website');
                                 }}
@@ -650,10 +524,6 @@ const styles = StyleSheet.create({
     chipTextActive: { color: '#fff' },
     countBadge: { position: 'absolute', top: 106, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
     countText: { color: '#fff', fontSize: 12, fontWeight: '600' },
-    legend: { position: 'absolute', top: 144, right: 16, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 8, gap: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
-    legendRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-    legendDot: { width: 8, height: 8, borderRadius: 4 },
-    legendText: { fontSize: 11, fontWeight: '600' },
     recenterFloating: { position: 'absolute', bottom: 92, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     viewToggle: { position: 'absolute', bottom: 148, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     viewToggleText: { color: '#2563eb', fontWeight: '800', fontSize: 13 },
@@ -662,9 +532,6 @@ const styles = StyleSheet.create({
     feedbackFloating: { position: 'absolute', bottom: 30, left: 16, backgroundColor: '#fff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
-    calloutNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
-    calloutUnverifiedBadge: { backgroundColor: '#00000010', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
-    calloutUnverifiedText: { fontSize: 9, color: '#888', fontWeight: '700' },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },
     calloutTap: { fontSize: 10, color: '#8e8e93', marginTop: 4 },
@@ -686,8 +553,6 @@ const styles = StyleSheet.create({
     websiteBtnText: { color: '#2563eb', fontWeight: '600', fontSize: 14 },
     verifiedBadge: { flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: '#f0fdf4', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
     verifiedText: { fontSize: 10, color: '#16a34a', fontWeight: '700' },
-    unverifiedBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, padding: 12, borderRadius: 10, marginTop: 4 },
-    unverifiedBannerText: { flex: 1, fontSize: 12, lineHeight: 17 },
     errorSubtext: { fontSize: 14, marginTop: 6 },
     retryBtn: { marginTop: 20, backgroundColor: '#b52525', paddingHorizontal: 28, paddingVertical: 13, borderRadius: 12 },
     retryBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },

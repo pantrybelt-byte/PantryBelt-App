@@ -1,0 +1,148 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - generic [ref=f3e6]:
+        - generic [ref=f3e7]:
+          - generic [ref=f3e8]:
+            - img "AccessBelt" [ref=f3e10]
+            - generic [ref=f3e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f3e12]
+        - combobox [ref=f3e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f3e17]:
+        - link "Dashboard" [ref=f3e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f3e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f3e28]: Shift mode
+          - generic [ref=f3e29]: Live
+        - link "Inventory" [ref=f3e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f3e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f3e41]: Communication
+        - link "Broadcasts" [ref=f3e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f3e47]: Settings
+        - link "Pantry profile" [ref=f3e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f3e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f3e58]: Free Services ($0)
+          - generic [ref=f3e59]: $0 Free
+        - paragraph [ref=f3e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f3e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f3e65]: Onboarding Guide
+          - generic [ref=f3e66]: New
+    - button "Sign out" [ref=f3e68]
+  - generic [ref=f3e73]:
+    - banner [ref=f3e74]:
+      - generic [ref=f3e75]:
+        - button "Open" [ref=f3e76] [cursor=pointer]
+        - generic [ref=f3e81]: Auto-closes at 16:00
+      - generic [ref=f3e82]:
+        - generic [ref=f3e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f3e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f3e91]
+        - button [ref=f3e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f3e100]
+          - paragraph [ref=f3e102]: Sarah Jenkins
+    - main [ref=f3e105]:
+      - generic [ref=f3e106]:
+        - generic [ref=f3e107]:
+          - generic [ref=f3e108]:
+            - heading "Broadcasts" [level=1] [ref=f3e109]
+            - paragraph [ref=f3e110]: Send geofenced push notifications to AccessBelt app users in your area
+          - generic [ref=f3e111]: 15-mile Geofence Active
+        - generic [ref=f3e116]:
+          - generic [ref=f3e117]:
+            - heading "New broadcast" [level=2] [ref=f3e122]
+            - generic [ref=f3e123]: "Daily limit: 1 / 2 sent today"
+          - generic [ref=f3e124]:
+            - paragraph [ref=f3e125]: Templates
+            - generic [ref=f3e126]:
+              - button "🥕 Fresh produce drop" [ref=f3e127] [cursor=pointer]
+              - button "🚨 Emergency pickup" [ref=f3e128] [cursor=pointer]
+              - button "⏰ Extended hours" [ref=f3e129] [cursor=pointer]
+          - generic [ref=f3e130]:
+            - generic [ref=f3e131]:
+              - generic [ref=f3e132]: Title
+              - textbox "e.g. Fresh produce arriving at 2:00 PM" [ref=f3e133]
+            - generic [ref=f3e134]:
+              - generic [ref=f3e135]: Message
+              - textbox "Write details for app users…" [ref=f3e136]
+            - generic [ref=f3e137]:
+              - generic [ref=f3e138]:
+                - generic [ref=f3e139]: Target Language
+                - combobox [ref=f3e140]:
+                  - option "English" [selected]
+                  - option "Spanish (Español)"
+                  - option "Bilingual (English & Spanish)"
+              - generic [ref=f3e141]:
+                - generic [ref=f3e142]: Priority
+                - combobox [ref=f3e143]:
+                  - option "Standard"
+                  - option "Important" [selected]
+                  - option "Urgent"
+              - generic [ref=f3e144]:
+                - generic [ref=f3e145]: Expires
+                - combobox [ref=f3e146]:
+                  - option "6 hours"
+                  - option "12 hours"
+                  - option "24 hours" [selected]
+                  - option "3 days"
+            - generic [ref=f3e147]:
+              - generic [ref=f3e148]: Delivered only to mobile users within 15 miles
+              - button "Send broadcast" [ref=f3e152] [cursor=pointer]
+        - generic [ref=f3e157]:
+          - heading "History" [level=2] [ref=f3e158]
+          - generic [ref=f3e159]:
+            - generic [ref=f3e160]:
+              - generic [ref=f3e161]:
+                - generic [ref=f3e162]:
+                  - generic [ref=f3e163]: important
+                  - heading "Fresh Produce Drop arriving at 2:00 PM" [level=3] [ref=f3e164]
+                - paragraph [ref=f3e165]: We have 500 lbs of fresh sweet corn, tomatoes, and peaches donated by local growers. Available to all app users today!
+                - generic [ref=f3e166]:
+                  - generic [ref=f3e167]: Today at 11:20 AM
+                  - generic [ref=f3e171]: ·
+                  - generic [ref=f3e172]: Expires Today at 6:00 PM
+                  - generic [ref=f3e173]: ·
+                  - generic [ref=f3e174]: 15-mile radius
+              - generic [ref=f3e175]:
+                - generic [ref=f3e176]: "142"
+                - button "Delete" [ref=f3e181] [cursor=pointer]
+            - generic [ref=f3e185]:
+              - generic [ref=f3e186]:
+                - generic [ref=f3e187]:
+                  - generic [ref=f3e188]: urgent
+                  - heading "Emergency Drive-Thru Lane Open Today" [level=3] [ref=f3e189]
+                - paragraph [ref=f3e190]: Drive-thru food package collection is active on the North Entrance lane due to rain.
+                - generic [ref=f3e191]:
+                  - generic [ref=f3e192]: Today at 8:30 AM
+                  - generic [ref=f3e196]: ·
+                  - generic [ref=f3e197]: Expires Today at 4:30 PM
+                  - generic [ref=f3e198]: ·
+                  - generic [ref=f3e199]: 15-mile radius
+              - generic [ref=f3e200]:
+                - generic [ref=f3e201]: "289"
+                - button "Delete" [ref=f3e206] [cursor=pointer]
+            - generic [ref=f3e210]:
+              - generic [ref=f3e211]:
+                - generic [ref=f3e212]:
+                  - generic [ref=f3e213]: normal
+                  - heading "New Infant Formula Distribution Guidelines" [level=3] [ref=f3e214]
+                - paragraph [ref=f3e215]: Families with infants under 12 months can now request up to 3 cans of formula per week.
+                - generic [ref=f3e216]:
+                  - generic [ref=f3e217]: Aug 7, 2026
+                  - generic [ref=f3e221]: ·
+                  - generic [ref=f3e222]: Expires Aug 31, 2026
+                  - generic [ref=f3e223]: ·
+                  - generic [ref=f3e224]: 25-mile radius
+              - generic [ref=f3e225]:
+                - generic [ref=f3e226]: "410"
+                - button "Delete" [ref=f3e231] [cursor=pointer]

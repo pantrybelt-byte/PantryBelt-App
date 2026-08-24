@@ -1,0 +1,21 @@
+- generic [ref=f6e205]:
+  - generic [ref=f6e206]:
+    - img "AccessBelt" [ref=f6e208]
+    - heading "Sign in to AccessBelt" [level=1] [ref=f6e209]
+    - paragraph [ref=f6e210]: Operator portal for pantry management
+  - generic [ref=f6e211]:
+    - generic [ref=f6e212]:
+      - generic [ref=f6e213]:
+        - generic [ref=f6e214]: Email address
+        - textbox "you@organization.org" [ref=f6e219]: sarah.j@hopecommunitypantry.org
+      - generic [ref=f6e220]:
+        - generic [ref=f6e221]:
+          - generic [ref=f6e222]: Password
+          - link "Forgot password?" [ref=f6e223] [cursor=pointer]:
+            - /url: "#forgot"
+        - textbox "••••••••" [ref=f6e228]: ••••••••••••
+      - button "Sign in" [ref=f6e229] [cursor=pointer]
+    - generic [ref=f6e233]:
+      - generic [ref=f6e234]: Demo mode
+      - button "Autofill credentials" [ref=f6e235] [cursor=pointer]
+  - paragraph [ref=f6e236]: AccessBelt Network © 2026

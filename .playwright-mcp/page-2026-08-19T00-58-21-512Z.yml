@@ -1,0 +1,286 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary "Dashboard sidebar" [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: AB
+          - generic [ref=e12]:
+            - generic [ref=e13]: AccessBelt
+            - text: Analytics
+        - button "Collapse sidebar" [ref=e14] [cursor=pointer]
+      - navigation "Main navigation" [ref=e17]:
+        - list [ref=e18]:
+          - listitem [ref=e19]:
+            - heading "Analytics" [level=2] [ref=e20]
+            - list "Analytics" [ref=e21]:
+              - listitem [ref=e22]:
+                - link "Overview" [ref=e23] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e30]:
+                - link "Demographics" [ref=e31] [cursor=pointer]:
+                  - /url: /demographics
+              - listitem [ref=e38]:
+                - link "Food Deserts" [ref=e39] [cursor=pointer]:
+                  - /url: /food-deserts
+              - listitem [ref=e43]:
+                - link "Pantry Interactions" [ref=e44] [cursor=pointer]:
+                  - /url: /interactions
+          - listitem [ref=e52]:
+            - heading "Insights" [level=2] [ref=e53]
+            - list "Insights" [ref=e54]:
+              - listitem [ref=e55]:
+                - link "Most Requested" [ref=e56] [cursor=pointer]:
+                  - /url: /most-requested
+          - listitem [ref=e64]:
+            - heading "Reports" [level=2] [ref=e65]
+            - list "Reports" [ref=e66]:
+              - listitem [ref=e67]:
+                - link "Reports & Export" [ref=e68] [cursor=pointer]:
+                  - /url: /reports
+          - listitem [ref=e73]:
+            - heading "Account" [level=2] [ref=e74]
+            - list "Account" [ref=e75]:
+              - listitem [ref=e76]:
+                - link "Billing & Subscription" [ref=e77] [cursor=pointer]:
+                  - /url: /billing
+              - listitem [ref=e81]:
+                - link "Settings" [ref=e82] [cursor=pointer]:
+                  - /url: /settings
+    - button "Sign out" [ref=e88] [cursor=pointer]
+  - generic [ref=e93]:
+    - banner [ref=e94]:
+      - generic [ref=e95]:
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - heading "Billing & Subscription" [level=1] [ref=e99]
+            - 'button "Data source: Demo Data. Refresh dashboard data." [ref=e100] [cursor=pointer]':
+              - generic [ref=e102]: Demo Data
+              - status [ref=e108]
+          - paragraph [ref=e109]: Manage agency plan, Stripe customer portal & invoices
+        - generic [ref=e110]:
+          - button "Grant & Impact" [ref=e112] [cursor=pointer]
+          - button "Copy a link to this view, including the current filters" [ref=e118] [cursor=pointer]:
+            - generic [ref=e125]: Share
+          - button "Notifications, 1 unread" [ref=e127] [cursor=pointer]
+          - button "Account menu for Dr. Patricia Hawkins" [ref=e133] [cursor=pointer]:
+            - generic [ref=e134]: DPH
+            - generic [ref=e135]:
+              - generic [ref=e136]: Dr. Patricia Hawkins
+              - generic [ref=e137]: United Way River Region
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - generic [ref=e142]: Limit the dashboard to a single county
+          - combobox "Limit the dashboard to a single county" [ref=e147] [cursor=pointer]:
+            - option "All Assigned Counties (Central Alabama River Region)" [selected]
+            - option "Montgomery County"
+            - option "Autauga County"
+            - option "Elmore County"
+            - option "Lowndes County"
+            - option "Macon County"
+            - option "Dallas County"
+            - option "Wilcox County"
+            - option "Perry County"
+        - generic [ref=e149]:
+          - group "Reporting period" [ref=e150]:
+            - button "Last 7 days" [ref=e153] [cursor=pointer]: 7 Days
+            - button "Last 30 days" [pressed] [ref=e154] [cursor=pointer]: 30 Days
+            - button "Last 90 days" [ref=e155] [cursor=pointer]: 90 Days
+            - button "Year to date" [ref=e156] [cursor=pointer]: YTD
+            - button "Custom" [ref=e157] [cursor=pointer]
+          - button "Compare against the previous period" [ref=e158] [cursor=pointer]:
+            - generic [ref=e164]: Compare
+            - generic [ref=e165]: against the previous period
+    - main [ref=e166]:
+      - generic [ref=e167]:
+        - generic [ref=e168]:
+          - generic [ref=e173]:
+            - generic [ref=e174]:
+              - heading "Agency subscription & billing" [level=2] [ref=e175]
+              - generic [ref=e176]: Grant Eligible
+            - paragraph [ref=e177]: "Two ways to pay: purchase order with Net-30 terms, or self-service card subscription."
+          - button "Manage Stripe Portal" [ref=e178] [cursor=pointer]
+        - region [ref=e183]:
+          - generic [ref=e184]:
+            - generic [ref=e189]:
+              - generic [ref=e190]:
+                - heading "QuickBooks Net-30 & W-9 vendor support" [level=2] [ref=e191]
+                - generic [ref=e192]: Grant eligible
+              - paragraph [ref=e193]: Non-profits, hospital systems and government agencies can request a formal purchase order invoice on Net-30 terms, paid by ACH bank deposit. We provide a signed W-9 and vendor registration packet for your finance office.
+              - generic [ref=e194]:
+                - generic [ref=e195]:
+                  - term [ref=e196]: Payment terms
+                  - definition [ref=e197]: Net-30
+                - generic [ref=e198]:
+                  - term [ref=e199]: Method
+                  - definition [ref=e200]: ACH deposit
+                - generic [ref=e201]:
+                  - term [ref=e202]: Tax ID (W-9)
+                  - definition [ref=e203]: On request
+                - generic [ref=e204]:
+                  - term [ref=e205]: PO minimum
+                  - definition [ref=e206]: $2,500
+            - generic [ref=e207]:
+              - button "Request PO invoice" [ref=e208] [cursor=pointer]
+              - button "Download W-9" [ref=e212] [cursor=pointer]
+              - link "Contact accounts team" [ref=e216] [cursor=pointer]:
+                - /url: mailto:accounts@accessbelt.org
+          - paragraph [ref=e220]:
+            - text: Smaller agencies can skip procurement entirely and subscribe by card below, from
+            - generic [ref=e225]: $250
+            - text: to
+            - generic [ref=e226]: $500
+            - text: per month.
+        - generic [ref=e227]:
+          - generic [ref=e228]:
+            - text: Active Subscription
+            - heading "Regional Pro Plan (Tier 2)" [level=3] [ref=e229]
+            - paragraph [ref=e230]: United Way River Region · Corporate Account
+          - generic [ref=e231]:
+            - generic [ref=e232]:
+              - generic [ref=e233]: "Assigned Counties Usage:"
+              - generic [ref=e234]: 6 / 10 Counties
+            - paragraph [ref=e237]: "Next renewal: Sept 1, 2026 ($18,000 billed annually)"
+          - button "Stripe Portal Active" [ref=e239] [cursor=pointer]
+        - generic [ref=e243]:
+          - generic [ref=e244]: Monthly Billing
+          - button [ref=e245] [cursor=pointer]
+          - generic [ref=e247]:
+            - generic [ref=e248]: Annual Billing
+            - generic [ref=e249]: Save 20%
+        - generic [ref=e250]:
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - text: Tier 1
+              - heading "Community Plan" [level=3] [ref=e253]
+              - paragraph [ref=e254]: Ideal for local single-county non-profits & county action committees
+              - generic [ref=e255]:
+                - generic [ref=e256]: $320
+                - generic [ref=e257]: / month
+                - generic [ref=e258]: (billed $3,840/yr)
+              - generic [ref=e259]:
+                - generic [ref=e260]: 1 Assigned County Scope
+                - generic [ref=e264]: Up to 5 Active Partner Pantries
+                - generic [ref=e268]: Basic Age & Household Demographics
+                - generic [ref=e272]: Standard CSV Exports
+                - generic [ref=e276]: Community ZIP Code Metrics
+                - generic [ref=e280]: Email Support
+            - button "Select Community Plan" [ref=e285] [cursor=pointer]
+          - generic [ref=e289]:
+            - generic [ref=e290]: RECOMMENDED FOR AGENCIES
+            - generic [ref=e291]:
+              - text: Tier 2 · Most Popular
+              - heading "Regional Pro Plan" [level=3] [ref=e292]
+              - paragraph [ref=e293]: For regional agencies like United Way & regional food bank hubs
+              - generic [ref=e294]:
+                - generic [ref=e295]: $1,200
+                - generic [ref=e296]: / month
+                - generic [ref=e297]: (billed $14,400/yr)
+              - generic [ref=e298]:
+                - generic [ref=e299]: Up to 10 Assigned Counties Scope
+                - generic [ref=e303]: 67-County Alabama SVG Vector Heatmap
+                - generic [ref=e307]: USDA Civil Rights Demographics Breakdown
+                - generic [ref=e311]: Automated Weekly & Monthly Email Report Scheduler
+                - generic [ref=e315]: Custom Threshold Alert Rule Builder
+                - generic [ref=e319]: Period Comparison Mode (Current vs Previous)
+                - generic [ref=e323]: Priority Agency Phone & Email Support
+            - button "Current Active Plan" [ref=e328] [cursor=pointer]
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - text: Tier 3 · State Level
+              - heading "Enterprise Impact Plan" [level=3] [ref=e331]
+              - paragraph [ref=e332]: For state departments (ADECA, USDA Regional, Feeding Alabama)
+              - generic [ref=e333]:
+                - generic [ref=e334]: $4,000
+                - generic [ref=e335]: / month
+                - generic [ref=e336]: (billed $48,000/yr)
+              - generic [ref=e337]:
+                - generic [ref=e338]: All 67 Alabama Counties Statewide Live Feed
+                - generic [ref=e342]: Interactive GIS Location Marker Mapping
+                - generic [ref=e346]: Direct Firebase Firestore Live Data Feed API
+                - generic [ref=e350]: Multi-User SSO & Role-Based Access Control
+                - generic [ref=e354]: Custom Branded Grant PDF Templates
+                - generic [ref=e358]: Dedicated Grant & Data Analytics Specialist
+                - generic [ref=e362]: 99.9% Uptime SLA & Invoicing / Purchase Order Option
+            - button "Select Enterprise Impact Plan" [ref=e367] [cursor=pointer]
+        - generic [ref=e371]:
+          - region [ref=e372]:
+            - generic [ref=e374]:
+              - heading "Payment Methods & Invoicing" [level=2] [ref=e375]
+              - paragraph [ref=e376]: Stripe Customer Portal details
+            - generic [ref=e377]:
+              - generic [ref=e378]:
+                - generic [ref=e379]:
+                  - generic [ref=e380]: VISA
+                  - generic [ref=e381]:
+                    - paragraph [ref=e382]: Corporate Visa ending in 4242
+                    - paragraph [ref=e383]: United Way River Region · Expires 12/28
+                - generic [ref=e384]: Primary
+              - generic [ref=e385]:
+                - generic [ref=e386]:
+                  - generic [ref=e387]: PO
+                  - generic [ref=e388]:
+                    - paragraph [ref=e389]: Government Grant Purchase Order
+                    - paragraph [ref=e390]: USDA / State Grant Direct Invoicing (30-day terms)
+                - generic [ref=e391]: Active
+              - button "Add Payment Method in Stripe Portal" [ref=e392] [cursor=pointer]
+          - region [ref=e395]:
+            - generic [ref=e397]:
+              - heading "Stripe API Configuration" [level=2] [ref=e398]
+              - paragraph [ref=e399]: Webhook & keys status for developer handoff
+            - generic [ref=e400]:
+              - generic [ref=e401]:
+                - generic [ref=e407]:
+                  - paragraph [ref=e408]: Stripe Webhook Endpoint
+                  - paragraph [ref=e409]: Listening for customer.subscription.updated
+                - generic [ref=e410]: READY
+              - generic [ref=e411]:
+                - generic [ref=e412]:
+                  - generic [ref=e413]: "VITE_STRIPE_PUBLISHABLE_KEY:"
+                  - generic [ref=e414]: pk_live_51P...90X
+                - generic [ref=e415]:
+                  - generic [ref=e416]: "STRIPE_WEBHOOK_SECRET:"
+                  - generic [ref=e417]: whsec_89f...21a
+        - region [ref=e418]:
+          - generic [ref=e420]:
+            - heading "Billing & Invoice History" [level=2] [ref=e421]
+            - paragraph [ref=e422]: Download PDF receipts for grant auditing
+          - table [ref=e424]:
+            - rowgroup [ref=e425]:
+              - row [ref=e426]:
+                - columnheader "Invoice ID" [ref=e427]
+                - columnheader "Date" [ref=e428]
+                - columnheader "Plan" [ref=e429]
+                - columnheader "Amount" [ref=e430]
+                - columnheader "Status" [ref=e431]
+                - columnheader "Receipt" [ref=e432]
+            - rowgroup [ref=e433]:
+              - row [ref=e434]:
+                - cell "INV-2026-008" [ref=e435]
+                - cell "Aug 1, 2026" [ref=e436]
+                - cell "Regional Pro Plan (Monthly)" [ref=e437]
+                - cell "$1,500.00" [ref=e438]
+                - cell "Paid" [ref=e439]
+                - cell [ref=e440]:
+                  - button "Download PDF Invoice" [ref=e441] [cursor=pointer]
+              - row [ref=e445]:
+                - cell "INV-2026-007" [ref=e446]
+                - cell "Jul 1, 2026" [ref=e447]
+                - cell "Regional Pro Plan (Monthly)" [ref=e448]
+                - cell "$1,500.00" [ref=e449]
+                - cell "Paid" [ref=e450]
+                - cell [ref=e451]:
+                  - button "Download PDF Invoice" [ref=e452] [cursor=pointer]
+              - row [ref=e456]:
+                - cell "INV-2026-006" [ref=e457]
+                - cell "Jun 1, 2026" [ref=e458]
+                - cell "Regional Pro Plan (Monthly)" [ref=e459]
+                - cell "$1,500.00" [ref=e460]
+                - cell "Paid" [ref=e461]
+                - cell [ref=e462]:
+                  - button "Download PDF Invoice" [ref=e463] [cursor=pointer]
+    - contentinfo [ref=e467]:
+      - generic [ref=e468]:
+        - paragraph [ref=e469]: © 2026 AccessBelt Analytics · Demonstration data — live Firebase integration pending
+        - paragraph [ref=e470]: Partnered with United Way River Region & USDA

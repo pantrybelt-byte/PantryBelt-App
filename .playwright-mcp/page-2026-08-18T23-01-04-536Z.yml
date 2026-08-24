@@ -1,0 +1,94 @@
+- generic [ref=f6e3]:
+  - complementary [ref=f6e4]:
+    - generic [ref=f6e5]:
+      - generic [ref=f6e6]:
+        - generic [ref=f6e7]:
+          - generic [ref=f6e8]:
+            - img "AccessBelt" [ref=f6e10]
+            - generic [ref=f6e11]: AccessBelt
+          - button "Collapse sidebar" [ref=f6e12]
+        - combobox [ref=f6e16] [cursor=pointer]:
+          - option "📍 Hope Main Campus (Main Warehouse)" [selected]
+          - option "📍 Hope Eastside Satellite (Satellite Site)"
+          - 'option "📍 Hope Mobile Unit #1 (Mobile Distribution)"'
+      - navigation [ref=f6e17]:
+        - link "Dashboard" [ref=f6e18] [cursor=pointer]:
+          - /url: /
+        - link "Shift mode Live" [ref=f6e25] [cursor=pointer]:
+          - /url: /shift
+          - generic [ref=f6e28]: Shift mode
+          - generic [ref=f6e29]: Live
+        - link "Inventory" [ref=f6e30] [cursor=pointer]:
+          - /url: /inventory
+        - link "Operating hours" [ref=f6e36] [cursor=pointer]:
+          - /url: /hours
+        - paragraph [ref=f6e41]: Communication
+        - link "Broadcasts" [ref=f6e42] [cursor=pointer]:
+          - /url: /notifications
+        - paragraph [ref=f6e47]: Settings
+        - link "Pantry profile" [ref=f6e48] [cursor=pointer]:
+          - /url: /profile
+        - link "Free Services ($0) $0 Free" [ref=f6e54] [cursor=pointer]:
+          - /url: /billing
+          - generic [ref=f6e58]: Free Services ($0)
+          - generic [ref=f6e59]: $0 Free
+        - paragraph [ref=f6e60]: Help & Resources
+        - link "Onboarding Guide New" [ref=f6e61] [cursor=pointer]:
+          - /url: /onboarding
+          - generic [ref=f6e65]: Onboarding Guide
+          - generic [ref=f6e66]: New
+    - button "Sign out" [ref=f6e68]
+  - generic [ref=f6e73]:
+    - banner [ref=f6e74]:
+      - generic [ref=f6e75]:
+        - button "Open" [ref=f6e76] [cursor=pointer]
+        - generic [ref=f6e81]: Auto-closes at 16:00
+      - generic [ref=f6e82]:
+        - generic [ref=f6e83]: Verified 501(c)(3)
+        - link "Shift Mode" [ref=f6e87] [cursor=pointer]:
+          - /url: /shift
+        - button "Notifications" [ref=f6e91]
+        - button [ref=f6e98] [cursor=pointer]:
+          - img "Sarah Jenkins" [ref=f6e100]
+          - paragraph [ref=f6e102]: Sarah Jenkins
+    - main [ref=f6e105]:
+      - generic [ref=f6e106]:
+        - generic [ref=f6e107]:
+          - generic [ref=f6e108]: Operator Portal Walkthrough
+          - heading "AccessBelt Getting Started Guide" [level=1] [ref=f6e113]
+          - paragraph [ref=f6e114]: An overview of portal controls, distribution shift tools, inventory tracking, and push alerts.
+          - button "Print 1-Page Operator Cheat Sheet" [ref=f6e116] [cursor=pointer]
+        - generic [ref=f6e122]:
+          - button "Step 1" [ref=f6e123] [cursor=pointer]
+          - button "Step 2" [ref=f6e131] [cursor=pointer]
+          - button "Step 3" [ref=f6e135] [cursor=pointer]
+          - button "Step 4" [ref=f6e141] [cursor=pointer]
+          - button "Step 5" [ref=f6e146] [cursor=pointer]
+        - generic [ref=f6e151]:
+          - generic [ref=f6e152]:
+            - generic [ref=f6e161]:
+              - text: Step 1 of 5
+              - heading "Real-Time Operational Status" [level=2] [ref=f6e162]
+              - paragraph [ref=f6e163]: Control how your pantry availability displays on the AccessBelt mobile app.
+            - button "View Dashboard" [ref=f6e164] [cursor=pointer]
+          - generic [ref=f6e172]:
+            - paragraph [ref=f6e173]: Operational Objective
+            - paragraph [ref=f6e174]: Set status to OPEN during distribution hours, and CLOSED when shift ends.
+          - generic [ref=f6e175]:
+            - generic [ref=f6e176]:
+              - generic [ref=f6e177]: Interactive Simulation
+              - generic [ref=f6e181]: Step Demo
+            - generic [ref=f6e182]:
+              - paragraph [ref=f6e183]: "Select a status to test live portal behavior:"
+              - generic [ref=f6e184]:
+                - button "OPEN NOW" [ref=f6e185] [cursor=pointer]
+                - button "LIMITED" [ref=f6e186] [cursor=pointer]
+                - button "CLOSED" [ref=f6e187] [cursor=pointer]
+              - generic [ref=f6e188]:
+                - generic [ref=f6e189]:
+                  - generic [ref=f6e191]: open
+                  - generic [ref=f6e192]: "\"Walk-ins welcome until 4:00 PM\""
+                - generic [ref=f6e193]: Live App Output 📱
+          - generic [ref=f6e194]:
+            - button "Previous" [disabled] [ref=f6e195] [cursor=pointer]
+            - button "Next Step (2 of 5)" [ref=f6e199] [cursor=pointer]
