@@ -104,6 +104,9 @@ export default function MapScreen() {
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [feedbackIsAutoPrompt, setFeedbackIsAutoPrompt] = useState(false);
     const [is3D, setIs3D] = useState(true);
+    // True once the native MapView has finished laying out — imperative camera
+    // calls (animateToRegion) are only reliable after this fires on iOS.
+    const [mapReady, setMapReady] = useState(false);
 
     // Track the visible map region so we only render markers in view
     const [visibleRegion, setVisibleRegion] = useState<{
@@ -166,23 +169,16 @@ export default function MapScreen() {
                         : { status: 'denied' as const };
                     if (status === 'granted') {
                         const loc = await Location.getCurrentPositionAsync({
-                            accuracy: Location.Accuracy.Balanced,
+                            accuracy: Location.Accuracy.High,
                         });
                         const userLat = loc.coords.latitude;
                         const userLng = loc.coords.longitude;
+                        // Store the fix; the actual map centering happens in the
+                        // effect below once the MapView has mounted and reported
+                        // ready. (During loading the map isn't rendered yet, so
+                        // mapRef.current would be null and any animate call here
+                        // would be silently dropped.)
                         setUserLocation({ lat: userLat, lng: userLng });
-
-                        // Snapchat-style: start zoomed all the way into the user's
-                        // exact location (street level). Pinch out to explore.
-                        if (!didCenterOnUser.current && mapRef.current) {
-                            didCenterOnUser.current = true;
-                            mapRef.current.animateToRegion({
-                                latitude: userLat,
-                                longitude: userLng,
-                                latitudeDelta: 0.005,   // ~2-3 blocks (street level)
-                                longitudeDelta: 0.005,
-                            }, 1000);
-                        }
 
                         await trackLocationCoverage(valid, userLat, userLng, 'location');
                     }
@@ -203,6 +199,21 @@ export default function MapScreen() {
     useEffect(() => {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
+
+    // Center on the user's exact location on first load. Runs once we have both
+    // a GPS fix and a mounted/ready map — whichever arrives last triggers it.
+    // Snapchat-style: start zoomed into the user's location (street level).
+    useEffect(() => {
+        if (mapReady && userLocation && !didCenterOnUser.current) {
+            didCenterOnUser.current = true;
+            mapRef.current?.animateToRegion({
+                latitude: userLocation.lat,
+                longitude: userLocation.lng,
+                latitudeDelta: 0.005,   // ~2-3 blocks (street level)
+                longitudeDelta: 0.005,
+            }, 1000);
+        }
+    }, [mapReady, userLocation]);
 
     // GAP 7 — Search-to-Success Rate: if the user arrived here shortly after
     // asking Pete to find a pantry, record that the search led somewhere.
@@ -343,6 +354,7 @@ export default function MapScreen() {
                 pitchEnabled
                 rotateEnabled
                 camera={DEFAULT_CAMERA}
+                onMapReady={() => setMapReady(true)}
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
                 {filtered.map(pantry => {
@@ -366,7 +378,7 @@ export default function MapScreen() {
                         <Marker
                             key={pantry.id}
                             coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                            pinColor={pantry.verified ? '#b52525' : '#9333ea'}
+                            pinColor={pantry.verified ? '#b52525' : '#999999'}
                             onPress={openDetails}
                         >
                             <Callout tooltip onPress={openDetails}>
@@ -422,7 +434,7 @@ export default function MapScreen() {
                     <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
                 </View>
                 <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: '#9333ea' }]} />
+                    <View style={[styles.legendDot, { backgroundColor: '#999999' }]} />
                     <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
                 </View>
             </View>
@@ -504,9 +516,9 @@ export default function MapScreen() {
                                             <Text style={styles.verifiedText}>Verified</Text>
                                         </View>
                                     ) : (
-                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#9333ea26' : '#faf5ff' }]}>
-                                            <Ionicons name="help-circle" size={12} color="#9333ea" />
-                                            <Text style={[styles.verifiedText, { color: '#9333ea' }]}>Unverified</Text>
+                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#ffffff1a' : '#f5f5f5' }]}>
+                                            <Ionicons name="help-circle" size={12} color="#888" />
+                                            <Text style={[styles.verifiedText, { color: '#888' }]}>Unverified</Text>
                                         </View>
                                     )}
                                 </View>
@@ -523,23 +535,32 @@ export default function MapScreen() {
                         </View>
                         <View style={styles.modalRow}>
                             <Ionicons name="time-outline" size={16} color={theme.subtext} />
-                            <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.hours}</Text>
+                            <Text style={[styles.modalText, { color: theme.subtext }]}>
+                                {selected.hours !== '' ? selected.hours : 'Call ahead or visit to confirm hours'}
+                            </Text>
                         </View>
-                        <View style={styles.modalRow}>
-                            <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
-                            <Text style={[styles.modalText, { color: '#16a34a' }]}>{selected.eligibility}</Text>
-                        </View>
-                        <View style={styles.modalRow}>
-                            <Ionicons name="document-outline" size={16} color={theme.subtext} />
-                            <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.docs}</Text>
-                        </View>
+                        {selected.eligibility !== '' && (
+                            <View style={styles.modalRow}>
+                                <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
+                                <Text style={[styles.modalText, { color: '#16a34a' }]}>{selected.eligibility}</Text>
+                            </View>
+                        )}
+                        {selected.docs !== '' && (
+                            <View style={styles.modalRow}>
+                                <Ionicons name="document-outline" size={16} color={theme.subtext} />
+                                <Text style={[styles.modalText, { color: theme.subtext }]}>{selected.docs}</Text>
+                            </View>
+                        )}
 
                         <View style={styles.modalActions}>
+                            {selected.phone !== '' && (
                             <TouchableOpacity
                                 style={[styles.modalBtn, styles.modalBtnOutline]}
                                 onPress={() => {
                                     const d = selected.phone.replace(/[^0-9]/g, '');
-                                    Linking.openURL('tel:' + d);
+                                    Linking.openURL('tel:' + d).catch(() => {
+                                        Alert.alert('Calling not supported on this device', `Dial ${selected.phone} from your phone.`);
+                                    });
                                     // GAP 1 — Successful Connections (USDA)
                                     // GAP 6 — Pantry-Level Utilization (County Govts)
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'call');
@@ -549,6 +570,7 @@ export default function MapScreen() {
                                 <Ionicons name="call-outline" size={16} color="#b52525" />
                                 <Text style={styles.modalBtnTextOutline}>{selected.phone}</Text>
                             </TouchableOpacity>
+                            )}
                             <TouchableOpacity
                                 style={styles.modalBtn}
                                 onPress={async () => {
@@ -570,7 +592,7 @@ export default function MapScreen() {
 
                                     // Fallback to Google Maps web URL if no native maps handler
                                     if (!opened) {
-                                        Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`);
+                                        Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`).catch(() => {});
                                     }
 
                                     // GAP 1 — Successful Connections (USDA)
@@ -588,7 +610,9 @@ export default function MapScreen() {
                             <TouchableOpacity
                                 style={[styles.websiteBtn, { backgroundColor: theme.bg }]}
                                 onPress={() => {
-                                    Linking.openURL(selected.website);
+                                    Linking.openURL(selected.website).catch(() => {
+                                        Alert.alert('Could not open website', 'Please try again later.');
+                                    });
                                     // GAP 6 — Website visit as engagement signal
                                     logPantryEngagement(selected.id, selected.name, selected.county, selected.city, 'website');
                                 }}
@@ -630,8 +654,8 @@ const styles = StyleSheet.create({
     feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
     calloutNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
-    calloutUnverifiedBadge: { backgroundColor: '#9333ea18', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
-    calloutUnverifiedText: { fontSize: 9, color: '#9333ea', fontWeight: '700' },
+    calloutUnverifiedBadge: { backgroundColor: '#00000010', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
+    calloutUnverifiedText: { fontSize: 9, color: '#888', fontWeight: '700' },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },
     calloutTap: { fontSize: 10, color: '#8e8e93', marginTop: 4 },

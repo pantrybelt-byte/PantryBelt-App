@@ -32,6 +32,7 @@ export type UserProfileInput = {
     race?: RaceValue | null;
     contactEmail?: string | null; // optional, not a login credential
     pushToken?: string | null;
+    newsletter?: boolean; // Profile → Newsletter toggle opt-in
 };
 
 export async function saveUserProfile(input: UserProfileInput): Promise<{ ok: boolean; error?: string }> {
@@ -52,6 +53,18 @@ export async function updatePushToken(pushToken: string | null): Promise<{ ok: b
 
     try {
         await setDoc(doc(db, 'user_profiles', uid), { pushToken, updatedAt: serverTimestamp() }, { merge: true });
+        return { ok: true };
+    } catch {
+        return { ok: false };
+    }
+}
+
+export async function updateNewsletterOptIn(newsletter: boolean): Promise<{ ok: boolean }> {
+    const uid = getCurrentUid();
+    if (!uid) return { ok: false };
+
+    try {
+        await setDoc(doc(db, 'user_profiles', uid), { newsletter, updatedAt: serverTimestamp() }, { merge: true });
         return { ok: true };
     } catch {
         return { ok: false };

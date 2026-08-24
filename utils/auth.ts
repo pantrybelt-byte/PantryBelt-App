@@ -18,6 +18,7 @@
 
 import {
     createUserWithEmailAndPassword,
+    deleteUser,
     EmailAuthProvider,
     linkWithCredential,
     onAuthStateChanged,
@@ -25,7 +26,7 @@ import {
     signInWithEmailAndPassword,
     signOut as firebaseSignOut,
 } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Platform } from 'react-native';
 import { auth, db } from '../config/firebase';
 
@@ -294,6 +295,46 @@ export function getAccountLabel(): string | null {
  */
 export function subscribeToAccountLabel(callback: (label: string | null) => void): () => void {
     return onAuthStateChanged(auth, () => callback(getAccountLabel()));
+}
+
+/**
+ * deleteAccount()
+ * Permanently deletes the signed-in real account — required by App Store
+ * Guideline 5.1.1(v) (apps that support account creation must offer in-app
+ * account deletion). Removes the user_profiles/{uid} demographic doc first
+ * (once the auth record is gone there's no token left that can delete it),
+ * then the Firebase Auth record, then re-establishes a fresh anonymous
+ * identity so the app is never left without a signed-in user.
+ */
+export async function deleteAccount(): Promise<{ ok: boolean; error?: string }> {
+    const user = auth.currentUser;
+    if (!user || user.isAnonymous) {
+        return { ok: false, error: 'No account to delete.' };
+    }
+
+    // Best-effort: the profile doc may not exist, or the rules deploy may lag —
+    // never let this block the auth-record deletion itself.
+    try {
+        await deleteDoc(doc(db, 'user_profiles', user.uid));
+    } catch (err) {
+        console.warn('[Security] Profile doc cleanup failed during account deletion:', err);
+    }
+
+    try {
+        await deleteUser(user);
+    } catch (err) {
+        const code = (err as { code?: string })?.code;
+        if (code === 'auth/requires-recent-login') {
+            return {
+                ok: false,
+                error: 'For security, please sign out, sign back in, and then delete your account.',
+            };
+        }
+        return { ok: false, error: 'Could not delete your account. Check your connection and try again.' };
+    }
+
+    await reestablishSession();
+    return { ok: true };
 }
 
 /**

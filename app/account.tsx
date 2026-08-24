@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useAuthReady } from '../context/AuthReadyContext';
 import { useTheme } from '../context/ThemeContext';
+import { deleteAccount } from '../utils/auth';
 import { getUserProfile, RACE_OPTIONS, RaceValue, saveUserProfile } from '../utils/userProfile';
 
 export default function AccountScreen() {
@@ -73,6 +74,34 @@ export default function AccountScreen() {
         setSavingProfile(false);
         setProfileMsg(result.ok ? { text: 'Saved!' } : { text: result.error ?? 'Could not save', error: true });
         if (result.ok) setEditingAboutYou(false);
+    };
+
+    const handleDeleteAccount = () => {
+        Alert.alert(
+            'Delete your account?',
+            'This permanently deletes your account and your About You info. This cannot be undone.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Delete Account',
+                    style: 'destructive',
+                    onPress: async () => {
+                        const result = await deleteAccount();
+                        if (result.ok) {
+                            setAge('');
+                            setFamilySize('');
+                            setZipCode('');
+                            setRace(null);
+                            setContactEmail('');
+                            setEditingAboutYou(false);
+                            Alert.alert('Account deleted', 'Your account and saved info have been removed. You can keep using the app anonymously.');
+                        } else {
+                            Alert.alert('Could not delete account', result.error ?? 'Please try again.');
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     const hasAboutYouData = age.trim() !== '' && familySize.trim() !== '' && zipCode.trim() !== '';
@@ -252,6 +281,22 @@ export default function AccountScreen() {
                     </View>
                     <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
                 </TouchableOpacity>
+
+                {accountLabel && (
+                    <>
+                        <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                        <TouchableOpacity style={styles.settingRow} onPress={handleDeleteAccount}>
+                            <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#dc262626' : '#fef2f2' }]}>
+                                <Ionicons name="trash-outline" size={18} color="#dc2626" />
+                            </View>
+                            <View style={styles.settingTextWrap}>
+                                <Text style={[styles.settingTitle, { color: '#dc2626' }]}>Delete Account</Text>
+                                <Text style={[styles.settingDesc, { color: theme.subtext }]}>Permanently remove your account and saved info</Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                        </TouchableOpacity>
+                    </>
+                )}
             </View>
         </ScrollView>
     );

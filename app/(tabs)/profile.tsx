@@ -18,10 +18,11 @@ import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { signOutUser } from '../../utils/auth';
 import { registerForPushNotificationsAsync } from '../../utils/notifications';
-import { updatePushToken } from '../../utils/userProfile';
+import { updateNewsletterOptIn, updatePushToken } from '../../utils/userProfile';
 import { getLastKnownCounty, getLocationPreference, setLocationPreference } from '../../utils/userLocation';
 
 const PUSH_ENABLED_KEY = '@pb_push_enabled';
+const NEWSLETTER_KEY = '@pb_newsletter_enabled';
 
 const RESOURCES = [
     { id: '1', title: 'Apply for SNAP / EBT', sub: 'USDA FNS · fns.usda.gov', icon: 'card-outline' as const, color: '#16a34a', url: 'https://www.fns.usda.gov/snap/supplemental-nutrition-assistance-program' },
@@ -65,8 +66,19 @@ export default function ProfileScreen() {
         AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
             if (val !== null) setNotifications(val === 'true');
         });
+        AsyncStorage.getItem(NEWSLETTER_KEY).then(val => {
+            if (val !== null) setNewsletter(val === 'true');
+        });
         getLocationPreference().then(setLocationEnabled);
     }, []);
+
+    const handleToggleNewsletter = async (value: boolean) => {
+        setNewsletter(value);
+        await AsyncStorage.setItem(NEWSLETTER_KEY, value ? 'true' : 'false');
+        // Best-effort Firestore sync — keyed by uid so the org can match
+        // opt-ins against the profile's optional contact email.
+        if (authReady) await updateNewsletterOptIn(value);
+    };
 
     const handleToggleLocation = async (value: boolean) => {
         setLocationEnabled(value);
@@ -180,7 +192,7 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Newsletter</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Monthly updates & resources</Text>
                     </View>
-                    <Switch value={newsletter} onValueChange={setNewsletter} trackColor={{ true: '#16a34a', false: theme.border }} thumbColor="#fff" />
+                    <Switch value={newsletter} onValueChange={handleToggleNewsletter} trackColor={{ true: '#16a34a', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>
@@ -203,7 +215,12 @@ export default function ProfileScreen() {
                         <TouchableOpacity
                             style={styles.linkRow}
                             onPress={async () => {
-                                Linking.openURL(res.url);
+                                Linking.openURL(res.url).catch(() => {
+                                    Alert.alert(
+                                        res.url.startsWith('tel:') ? 'Calling not supported on this device' : 'Could not open link',
+                                        res.url.startsWith('tel:') ? 'Dial 211 from any phone — free, 24/7.' : 'Please try again later.'
+                                    );
+                                });
                                 // GAP 2 — SNAP/WIC Referral Count (USDA FNS / Alabama DHR)
                                 // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
                                 const referralMap: Record<string, 'snap' | 'wic' | 'emergency_211' | 'food_bank' | 'school_meals' | 'myplate'> = {
@@ -234,14 +251,18 @@ export default function ProfileScreen() {
             {/* Legal */}
             <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Legal</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
-                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/privacy-policy')}>
+                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/privacy-policy').catch(() => {
+                    Alert.alert('Could not open link', 'Please try again later.');
+                })}>
                     <View style={styles.linkTextWrap}>
                         <Text style={[styles.linkText, { color: theme.text }]}>Privacy Policy</Text>
                     </View>
                     <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
                 </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/terms-of-service')}>
+                <TouchableOpacity style={styles.linkRow} onPress={() => Linking.openURL('https://accessbelt.com/terms-of-service').catch(() => {
+                    Alert.alert('Could not open link', 'Please try again later.');
+                })}>
                     <View style={styles.linkTextWrap}>
                         <Text style={[styles.linkText, { color: theme.text }]}>Terms of Service</Text>
                     </View>

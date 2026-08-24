@@ -162,7 +162,8 @@ service cloud.firestore {
           && (!('contactEmail' in data) || data.contactEmail == null || (data.contactEmail is string
                 && data.contactEmail.size() <= 254
                 && data.contactEmail.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')))
-          && (!('pushToken' in data) || data.pushToken == null || (data.pushToken is string && data.pushToken.size() <= 200));
+          && (!('pushToken' in data) || data.pushToken == null || (data.pushToken is string && data.pushToken.size() <= 200))
+          && (!('newsletter' in data) || data.newsletter is bool);
     }
 
     function validFeedback(data) {
@@ -210,7 +211,10 @@ service cloud.firestore {
     match /user_profiles/{uid} {
       allow read: if isVerifiedApp() && request.auth.uid == uid;
       allow create, update: if isVerifiedApp() && request.auth.uid == uid && validUserProfile(request.resource.data);
-      allow delete: if false;
+      // Owner-only delete — required so in-app account deletion (App Store
+      // Guideline 5.1.1(v), utils/auth.ts deleteAccount()) can remove the
+      // demographic doc before the Firebase Auth record is destroyed.
+      allow delete: if isVerifiedApp() && request.auth.uid == uid;
     }
 
     // ══════════════════════════════════════════════════════════════════════════

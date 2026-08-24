@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { getLastKnownCounty } from '../../utils/userLocation';
@@ -29,7 +29,12 @@ export default function HomeScreen() {
         if (item.id === '5') {
             router.push('/(tabs)/map');
         } else if (item.url) {
-            Linking.openURL(item.url);
+            Linking.openURL(item.url).catch(() => {
+                Alert.alert(
+                    item.url!.startsWith('tel:') ? 'Calling not supported on this device' : 'Could not open link',
+                    item.url!.startsWith('tel:') ? 'Dial 211 from any phone — free, 24/7.' : 'Please try again later.'
+                );
+            });
         }
         // GAP 2 — SNAP/WIC Referral Count (USDA FNS / Alabama DHR)
         // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)

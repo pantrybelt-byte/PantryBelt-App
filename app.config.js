@@ -19,11 +19,57 @@ module.exports = {
     ios: {
       bundleIdentifier: 'com.accessbelt.app',
       supportsTablet: true,
-      config: {
-        googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
-      },
+      // No googleMapsApiKey here on purpose: iOS renders with Apple Maps
+      // (PROVIDER_DEFAULT in map.tsx), so shipping the Google key in the
+      // iOS binary would only expose it. Android below still needs it.
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
+      },
+      // App Store privacy manifest — what the app itself sends off-device:
+      // county/rounded coords for food-desert analytics (coarse location),
+      // optional self-reported demographics incl. race (sensitive info),
+      // optional contact email, an anonymous install ID for return-session
+      // counts, and interaction analytics. Nothing is used for tracking.
+      privacyManifests: {
+        NSPrivacyTracking: false,
+        NSPrivacyCollectedDataTypes: [
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeCoarseLocation',
+            NSPrivacyCollectedDataTypeLinked: false,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAppFunctionality', 'NSPrivacyCollectedDataTypePurposeAnalytics'],
+          },
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeSensitiveInfo',
+            NSPrivacyCollectedDataTypeLinked: false,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAnalytics'],
+          },
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeEmailAddress',
+            NSPrivacyCollectedDataTypeLinked: true,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAppFunctionality'],
+          },
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeDeviceID',
+            NSPrivacyCollectedDataTypeLinked: false,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAnalytics'],
+          },
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeProductInteraction',
+            NSPrivacyCollectedDataTypeLinked: false,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAnalytics'],
+          },
+          {
+            NSPrivacyCollectedDataType: 'NSPrivacyCollectedDataTypeOtherDataTypes',
+            NSPrivacyCollectedDataTypeLinked: false,
+            NSPrivacyCollectedDataTypeTracking: false,
+            NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAnalytics'],
+          },
+        ],
       },
     },
     android: {
@@ -70,6 +116,13 @@ module.exports = {
         'expo-location',
         {
           locationWhenInUsePermission:
+            'AccessBelt uses your location to show nearby food pantries on the map.',
+          // The app only ever requests when-in-use, but expo-location writes
+          // the Always keys into Info.plist regardless — give them the same
+          // clear copy instead of the generic boilerplate default.
+          locationAlwaysAndWhenInUsePermission:
+            'AccessBelt uses your location to show nearby food pantries on the map.',
+          locationAlwaysPermission:
             'AccessBelt uses your location to show nearby food pantries on the map.',
         },
       ],

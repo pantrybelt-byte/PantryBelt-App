@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import {
+    Alert,
     Image,
     ImageBackground,
     KeyboardAvoidingView,
@@ -287,7 +288,9 @@ export default function PeteScreen() {
                 <TouchableOpacity
                     style={styles.callBtn}
                     onPress={async () => {
-                        Linking.openURL('tel:211');
+                        Linking.openURL('tel:211').catch(() => {
+                            Alert.alert('Calling not supported on this device', 'Dial 211 from any phone — free, 24/7.');
+                        });
                         // GAP 3 — Emergency Help Requests (CDC / County Emergency Mgmt)
                         const county = await getLastKnownCounty();
                         logReferral('emergency_211', 'pete', county);
@@ -331,7 +334,9 @@ export default function PeteScreen() {
                                             {p.phone && (
                                                 <TouchableOpacity
                                                     style={styles.pantryCallRow}
-                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, ''))}
+                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, '')).catch(() => {
+                                                        Alert.alert('Calling not supported on this device', `Dial ${p.phone} from your phone.`);
+                                                    })}
                                                 >
                                                     <Ionicons name="call-outline" size={13} color="#16a34a" />
                                                     <Text style={styles.pantryCallText}>{p.phone}</Text>
@@ -352,7 +357,7 @@ export default function PeteScreen() {
                                         </TouchableOpacity>
                                     ) : (
                                         <Text style={[styles.pantryFooterText, { color: theme.subtext }]}>
-                                            See all 40+ pantries with directions on the Map tab. Need urgent help? Call 211 — free, 24/7.
+                                            See all 884 pantries across 67 Alabama counties with directions on the Map tab. Need urgent help? Call 211 — free, 24/7.
                                         </Text>
                                     )}
                                 </View>
