@@ -19,7 +19,7 @@ import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { signOutUser } from '../../utils/auth';
 import { registerForPushNotificationsAsync } from '../../utils/notifications';
 import { updatePushToken } from '../../utils/userProfile';
-import { getLastKnownCounty } from '../../utils/userLocation';
+import { getLastKnownCounty, getLocationPreference, setLocationPreference } from '../../utils/userLocation';
 
 const PUSH_ENABLED_KEY = '@pb_push_enabled';
 
@@ -65,7 +65,19 @@ export default function ProfileScreen() {
         AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
             if (val !== null) setNotifications(val === 'true');
         });
+        getLocationPreference().then(setLocationEnabled);
     }, []);
+
+    const handleToggleLocation = async (value: boolean) => {
+        setLocationEnabled(value);
+        await setLocationPreference(value);
+        if (!value) {
+            Alert.alert(
+                'Location Services off',
+                'The map will show a statewide view instead of pantries near you. You can turn this back on anytime.'
+            );
+        }
+    };
 
     const handleToggleNotifications = async (value: boolean) => {
         if (!value) {
@@ -157,7 +169,7 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Location Services</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Find pantries near you</Text>
                     </View>
-                    <Switch value={locationEnabled} onValueChange={setLocationEnabled} trackColor={{ true: '#2563eb', false: theme.border }} thumbColor="#fff" />
+                    <Switch value={locationEnabled} onValueChange={handleToggleLocation} trackColor={{ true: '#2563eb', false: theme.border }} thumbColor="#fff" />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>

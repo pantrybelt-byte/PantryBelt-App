@@ -14,7 +14,7 @@ import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
-import { clearPendingSearchOutcome, getLastKnownCounty, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
+import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
     id: string;
@@ -94,8 +94,6 @@ export default function MapScreen() {
     const [pantries, setPantries] = useState<Pantry[]>([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
-    // REMOVE BEFORE PUBLIC LAUNCH — temporary beta-only diagnostic detail
-    const [errorDetail, setErrorDetail] = useState<{ code?: string; message?: string } | null>(null);
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
     const [counties, setCounties] = useState<string[]>(['All']);
@@ -119,7 +117,6 @@ export default function MapScreen() {
     const fetchPantries = useCallback(async () => {
         setLoading(true);
         setFetchError(false);
-        setErrorDetail(null);
         try {
             const q = query(
                 collection(db, 'resources'),
@@ -160,8 +157,13 @@ export default function MapScreen() {
                 setCounties(uniqueCounties);
 
                 // ── Get user location: center map + analytics ──────────
+                // Respects the Location Services toggle in Profile — if the user has
+                // turned it off in-app, we don't even prompt for the OS permission.
                 try {
-                    const { status } = await Location.requestForegroundPermissionsAsync();
+                    const locationAllowed = await getLocationPreference();
+                    const { status } = locationAllowed
+                        ? await Location.requestForegroundPermissionsAsync()
+                        : { status: 'denied' as const };
                     if (status === 'granted') {
                         const loc = await Location.getCurrentPositionAsync({
                             accuracy: Location.Accuracy.Balanced,
@@ -170,15 +172,16 @@ export default function MapScreen() {
                         const userLng = loc.coords.longitude;
                         setUserLocation({ lat: userLat, lng: userLng });
 
-                        // Center map on user's location on first load (~5-mile view)
+                        // Snapchat-style: start zoomed all the way into the user's
+                        // exact location (street level). Pinch out to explore.
                         if (!didCenterOnUser.current && mapRef.current) {
                             didCenterOnUser.current = true;
                             mapRef.current.animateToRegion({
                                 latitude: userLat,
                                 longitude: userLng,
-                                latitudeDelta: 0.15,   // ~10-mile view
-                                longitudeDelta: 0.15,
-                            }, 800);
+                                latitudeDelta: 0.005,   // ~2-3 blocks (street level)
+                                longitudeDelta: 0.005,
+                            }, 1000);
                         }
 
                         await trackLocationCoverage(valid, userLat, userLng, 'location');
@@ -190,8 +193,6 @@ export default function MapScreen() {
         } catch (err) {
             console.error('Firestore error:', err);
             setFetchError(true);
-            // REMOVE BEFORE PUBLIC LAUNCH — surfaces the real error for beta testers
-            setErrorDetail({ code: (err as any)?.code, message: (err as any)?.message });
         } finally {
             setLoading(false);
         }
@@ -277,6 +278,14 @@ export default function MapScreen() {
     // Recenter the map on the user and zoom in close enough to see nearby pantries.
     const recenterOnUser = useCallback(async () => {
         try {
+            const locationAllowed = await getLocationPreference();
+            if (!locationAllowed) {
+                Alert.alert(
+                    'Location Services is off',
+                    'Turn it back on in Profile → Preferences to find pantries near you.'
+                );
+                return;
+            }
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert(
@@ -291,8 +300,8 @@ export default function MapScreen() {
             mapRef.current?.animateToRegion({
                 latitude,
                 longitude,
-                latitudeDelta: 0.15,
-                longitudeDelta: 0.15,
+                latitudeDelta: 0.005,   // Street level — pinch out to explore
+                longitudeDelta: 0.005,
             }, 800);
             await trackLocationCoverage(pantries, latitude, longitude, 'location');
         } catch {
@@ -312,12 +321,6 @@ export default function MapScreen() {
             <Ionicons name="wifi-outline" size={48} color="#b52525" />
             <Text style={[styles.loadingText, { color: theme.text }]}>Could not load pantries</Text>
             <Text style={[styles.errorSubtext, { color: theme.subtext }]}>Check your connection and try again.</Text>
-            {/* REMOVE BEFORE PUBLIC LAUNCH — beta-only diagnostic error detail */}
-            {errorDetail && (
-                <Text style={[styles.errorSubtext, { color: theme.subtext }]}>
-                    {errorDetail.code ?? 'unknown-code'}: {errorDetail.message ?? 'no message'}
-                </Text>
-            )}
             <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries}>
                 <Text style={styles.retryBtnText}>Retry</Text>
             </TouchableOpacity>
@@ -363,12 +366,19 @@ export default function MapScreen() {
                         <Marker
                             key={pantry.id}
                             coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                            pinColor="#b52525"
+                            pinColor={pantry.verified ? '#b52525' : '#9333ea'}
                             onPress={openDetails}
                         >
                             <Callout tooltip onPress={openDetails}>
                                 <View style={[styles.callout, { backgroundColor: theme.card }]}>
-                                    <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
+                                    <View style={styles.calloutNameRow}>
+                                        <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
+                                        {!pantry.verified && (
+                                            <View style={styles.calloutUnverifiedBadge}>
+                                                <Text style={styles.calloutUnverifiedText}>Unverified</Text>
+                                            </View>
+                                        )}
+                                    </View>
                                     <Text style={styles.calloutCity}>{pantry.city}</Text>
                                     <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
                                 </View>
@@ -403,6 +413,18 @@ export default function MapScreen() {
                 <Text style={styles.countText}>
                     {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
                 </Text>
+            </View>
+
+            {/* Verified / unverified legend */}
+            <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
+                <View style={styles.legendRow}>
+                    <View style={[styles.legendDot, { backgroundColor: '#b52525' }]} />
+                    <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
+                </View>
+                <View style={styles.legendRow}>
+                    <View style={[styles.legendDot, { backgroundColor: '#9333ea' }]} />
+                    <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
+                </View>
             </View>
 
             {/* 2D / 3D view toggle */}
@@ -476,10 +498,15 @@ export default function MapScreen() {
                                     <Text style={[styles.modalCounty, { color: '#b52525' }]}>
                                         {selected.city} · {selected.county}
                                     </Text>
-                                    {selected.verified && (
+                                    {selected.verified ? (
                                         <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
                                             <Ionicons name="checkmark-circle" size={12} color="#16a34a" />
                                             <Text style={styles.verifiedText}>Verified</Text>
+                                        </View>
+                                    ) : (
+                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#9333ea26' : '#faf5ff' }]}>
+                                            <Ionicons name="help-circle" size={12} color="#9333ea" />
+                                            <Text style={[styles.verifiedText, { color: '#9333ea' }]}>Unverified</Text>
                                         </View>
                                     )}
                                 </View>
@@ -590,6 +617,10 @@ const styles = StyleSheet.create({
     chipTextActive: { color: '#fff' },
     countBadge: { position: 'absolute', top: 106, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
     countText: { color: '#fff', fontSize: 12, fontWeight: '600' },
+    legend: { position: 'absolute', top: 144, right: 16, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 8, gap: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
+    legendRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    legendDot: { width: 8, height: 8, borderRadius: 4 },
+    legendText: { fontSize: 11, fontWeight: '600' },
     recenterFloating: { position: 'absolute', bottom: 92, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     viewToggle: { position: 'absolute', bottom: 148, right: 16, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     viewToggleText: { color: '#2563eb', fontWeight: '800', fontSize: 13 },
@@ -598,6 +629,9 @@ const styles = StyleSheet.create({
     feedbackFloating: { position: 'absolute', bottom: 30, left: 16, backgroundColor: '#fff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
+    calloutNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+    calloutUnverifiedBadge: { backgroundColor: '#9333ea18', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
+    calloutUnverifiedText: { fontSize: 9, color: '#9333ea', fontWeight: '700' },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },
     calloutTap: { fontSize: 10, color: '#8e8e93', marginTop: 4 },
