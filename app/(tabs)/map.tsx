@@ -552,6 +552,15 @@ export default function MapScreen() {
                             </View>
                         )}
 
+                        {!selected.verified && (
+                            <View style={[styles.unverifiedBanner, { backgroundColor: theme.dark ? '#ffffff0d' : '#f5f5f5' }]}>
+                                <Ionicons name="information-circle-outline" size={16} color="#888" />
+                                <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
+                                    This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
+                                </Text>
+                            </View>
+                        )}
+
                         <View style={styles.modalActions}>
                             {selected.phone !== '' && (
                             <TouchableOpacity
@@ -677,6 +686,8 @@ const styles = StyleSheet.create({
     websiteBtnText: { color: '#2563eb', fontWeight: '600', fontSize: 14 },
     verifiedBadge: { flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: '#f0fdf4', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 },
     verifiedText: { fontSize: 10, color: '#16a34a', fontWeight: '700' },
+    unverifiedBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, padding: 12, borderRadius: 10, marginTop: 4 },
+    unverifiedBannerText: { flex: 1, fontSize: 12, lineHeight: 17 },
     errorSubtext: { fontSize: 14, marginTop: 6 },
     retryBtn: { marginTop: 20, backgroundColor: '#b52525', paddingHorizontal: 28, paddingVertical: 13, borderRadius: 12 },
     retryBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
