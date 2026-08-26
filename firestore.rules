@@ -228,6 +228,14 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /agencies/{agencyId} {
+      // Public read for active agencies (needed for the map)
+      allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
+      allow delete: if false;
+    }
+
     match /resources/{resourceId} {
       // Public read for active resources (needed for the map)
       allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
@@ -404,5 +412,20 @@ service cloud.firestore {
     match /final_analytical_kpis/{docId} {
       allow read, write: if false;
     }
+
+    // ── Waitlist (Public Landing Page) ─────────────────────────────────────────
+    match /waitlist/{docId} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'phone_sms', 'created_at'])
+                    && request.resource.data.keys().hasOnly(['name', 'email', 'phone_sms', 'created_at'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.email is string
+                    && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+                    && request.resource.data.phone_sms is string
+                    && request.resource.data.phone_sms.matches('^\\+1[0-9]{10}$')
+                    && request.resource.data.created_at is timestamp;
+    }
   }
 }
+
