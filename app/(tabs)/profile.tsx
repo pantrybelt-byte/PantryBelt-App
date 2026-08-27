@@ -86,7 +86,7 @@ export default function ProfileScreen() {
                         setCountyCount('67');
                         return;
                     }
-                    const q = query(collection(db, 'resources'), where('status', '==', 'active'));
+                    const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
                     const snapshot = await getDocs(q);
                     const counties = new Set<string>();
                     snapshot.docs.forEach(d => {
@@ -406,14 +406,24 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             </View>
 
-            {/* FTC Informational Disclaimer */}
+            {/* Government Entity & Informational Disclaimer */}
             <View style={[styles.disclaimerCard, { backgroundColor: theme.dark ? '#1c1917' : '#fffbeb', borderColor: theme.dark ? '#44403c' : '#fef3c7' }]}>
                 <View style={styles.disclaimerHeader}>
                     <Ionicons name="alert-circle-outline" size={18} color="#b52525" />
-                    <Text style={[styles.disclaimerTitle, { color: theme.text }]}>Informational Disclaimer</Text>
+                    <Text style={[styles.disclaimerTitle, { color: theme.text }]}>Government & Informational Disclaimer</Text>
                 </View>
+                <Text style={[styles.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
+                    <Text style={{ fontWeight: '700' }}>Non-Affiliation Notice:</Text> AccessBelt is an independent community initiative and is <Text style={{ fontWeight: '700' }}>NOT affiliated with, endorsed by, authorized by, or representing any federal, state, or local government entity or agency.</Text>
+                </Text>
+                <Text style={[styles.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
+                    <Text style={{ fontWeight: '700' }}>Official Government Sources:</Text> All government assistance program information (e.g. SNAP, WIC, School Meals) is aggregated for public benefit from official sources:
+                    {'\n'}• USDA Food & Nutrition Service: https://www.fns.usda.gov
+                    {'\n'}• Alabama Public Health (WIC): https://www.alabamapublichealth.gov
+                    {'\n'}• Benefits.gov: https://www.benefits.gov
+                    {'\n'}• Alabama DHR Food Assistance: https://dhr.alabama.gov
+                </Text>
                 <Text style={[styles.disclaimerText, { color: theme.subtext }]}>
-                    AccessBelt is an independent community resource directory. Pantry operating hours, locations, eligibility, and food inventory levels are crowd-sourced and managed by third-party organizations. AccessBelt does not guarantee resource availability or food distribution at any listed facility.
+                    Pantry hours, eligibility, and inventory levels are crowd-sourced and managed by third-party community organizations. AccessBelt does not guarantee resource availability at any listed facility.
                 </Text>
             </View>
 

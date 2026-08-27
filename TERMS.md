@@ -10,8 +10,15 @@ Welcome to AccessBelt. By accessing or using the AccessBelt mobile application, 
 
 ---
 
-## 2. Description of Service & FTC Informational Positioning
+## 2. Description of Service & Government Non-Affiliation
 AccessBelt is an independent informational directory and logistical resource platform designed to connect individuals and families to food pantries, emergency food programs, SNAP/EBT resources, and community aid.
+
+**2.1 Government Entity Non-Affiliation Disclaimer:**  
+AccessBelt is a private, independent community resource platform. **AccessBelt is NOT affiliated with, endorsed by, authorized by, or representing any federal, state, county, or municipal government entity or agency.** All government assistance program information (e.g., SNAP, WIC, School Lunch programs) presented within the Service is compiled for public convenience from official, publicly accessible government domains, including:
+- United States Department of Agriculture (USDA) Food & Nutrition Service: [fns.usda.gov](https://www.fns.usda.gov)
+- Alabama Department of Public Health (WIC): [alabamapublichealth.gov](https://www.alabamapublichealth.gov)
+- Benefits.gov: [benefits.gov](https://www.benefits.gov)
+- Alabama Department of Human Resources: [dhr.alabama.gov](https://dhr.alabama.gov)
 
 **AccessBelt does not operate, manage, control, stock, or guarantee any third-party food pantry, government assistance program, or distribution center. All listings are provided for general informational purposes only.**
 
