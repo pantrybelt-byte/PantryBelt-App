@@ -30,7 +30,7 @@ export default function HomeScreen() {
         if (!authReady) return;
         (async () => {
             try {
-                const q = query(collection(db, 'resources'), where('status', '==', 'active'));
+                const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
                 const snapshot = await getDocs(q);
                 const counties = new Set<string>();
                 snapshot.docs.forEach(d => {

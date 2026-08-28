@@ -122,7 +122,7 @@ export default function MapScreen() {
         setFetchError(false);
         try {
             const q = query(
-                collection(db, 'resources'),
+                collection(db, 'agencies'),
                 where('status', '==', 'active')
             );
             const snapshot = await getDocs(q);

@@ -1,10 +1,10 @@
 {
   "indexes": [
-    { "collectionGroup": "resources", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
-    { "collectionGroup": "resources", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "locationType", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
-    { "collectionGroup": "resources", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "orgId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
-    { "collectionGroup": "resources", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "geohash", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
-    { "collectionGroup": "resources", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "locationType", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "orgId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "geohash", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
     { "collectionGroup": "events", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "startTime", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
     { "collectionGroup": "events", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "eventType", "order": "ASCENDING" }, { "fieldPath": "startTime", "order": "ASCENDING" } ] },
     { "collectionGroup": "events", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "orgId", "order": "ASCENDING" }, { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "startTime", "order": "ASCENDING" } ] },

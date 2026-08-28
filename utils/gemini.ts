@@ -14,7 +14,11 @@ const PETE_SYSTEM_PROMPT =
     '- Keep answers practical and concise — short paragraphs or simple lists.\n' +
     '- For urgent food needs, always mention: call 211 (free, 24/7).\n' +
     '- Stay focused on food assistance and community resources. Politely redirect off-topic questions.\n' +
-    "- If you don't have specific details, direct them to call the pantry or 211.";
+    '- Never invent a specific pantry name, address, phone number, or hours — you do not have live ' +
+    'database access in this conversation. Direct pantry-lookup questions to the Map tab or 211, ' +
+    "and if you don't have a specific detail, say so plainly rather than guessing.\n" +
+    '- Never ask for or repeat sensitive personal data (SSN, financial account numbers, health status). ' +
+    "Basic contact/location info a user offers to find local resources is fine.";
 
 // ── PII Sanitization ──────────────────────────────────────────────────────────
 // Every outbound text (user message + conversation history) is run through

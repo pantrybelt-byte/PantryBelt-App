@@ -19,6 +19,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { logPeteRequest, logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
+import { extractCounty, fetchPantriesByCounty } from '../../utils/pantries';
 import { getLastKnownCounty, setPendingSearchOutcome } from '../../utils/userLocation';
 
 // Enable smooth, non-jarring layout transitions on Android when the pantry
@@ -34,21 +35,9 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const RESPONSES: Record<string, string> = {
     find_pantries:
-        "Here are some pantries near you in Alabama's Black Belt:\n\n" +
-        "Montgomery Area\n" +
-        "Heart of Alabama Food Bank — (334) 263-3784\n" +
-        "True Divine Community Dev — (334) 286-4008, Mon/Wed/Fri 9am–12:30pm\n" +
-        "Aldersgate UMC — Tuesdays 10am–12pm\n" +
-        "Westside Church of Christ — (334) 356-8759, Thursdays 10am–1pm\n\n" +
-        "Auburn Area\n" +
-        "East Alabama Food Bank — (334) 821-9006\n" +
-        "Alabama Coalition Against Hunger — (334) 262-0359, Mon–Fri 8:30am–5pm\n\n" +
-        "Tuskegee\n" +
-        "Tuskegee Community Food Bank — (334) 727-0060\n\n" +
-        "Selma\n" +
-        "Selma Area Food Bank — (334) 872-4114\n" +
-        "American Red Cross Selma — (334) 875-7565\n\n" +
-        "Use the Map tab to see all 884 pantries across 67 Alabama counties with directions. Need urgent help? Call 211 — free, 24/7.",
+        "I look up pantries live so I don't give you stale info — tell me your city or Alabama county " +
+        "(like \"Autauga\" or \"Dallas County\") and I'll pull active listings for that area.\n\n" +
+        "You can also browse every pantry with directions on the Map tab. Need urgent help right now? Call 211 — free, 24/7.",
 
     snap_ebt:
         "SNAP (also called food stamps or EBT) can help your family buy groceries each month.\n\n" +
@@ -94,14 +83,9 @@ const RESPONSES: Record<string, string> = {
         "Call 211 to find summer meal sites near you.",
 
     hours:
-        "Pantry hours vary by location. Here are some with set schedules:\n\n" +
-        "True Divine Community Dev — Mon, Wed, Fri 9am–12:30pm — (334) 286-4008\n" +
-        "Aldersgate UMC — Tuesdays 10am–12pm\n" +
-        "Westside Church of Christ — Thursdays 10am–1pm — (334) 356-8759\n" +
-        "AICC Ministry Prattville — Tue–Thu 9:30am–2:30pm — (334) 365-4080\n" +
-        "2nd Chance Pantry Albertville — Wed & Fri 10am–1pm — (256) 891-2430\n" +
-        "Alabama Coalition Against Hunger — Mon–Fri 8:30am–5pm — (334) 262-0359\n\n" +
-        "For others, call the pantry directly or check the Map tab. Need food outside of hours? Call 211.",
+        "Pantry hours vary by location, so I'd rather look up the real schedule than guess. Tell me your " +
+        "city or Alabama county and I'll pull active pantries with their current hours.\n\n" +
+        "You can also check the Map tab for every pantry's hours. Need food outside of posted hours? Call 211.",
 
     general:
         "I'm here to help! I can assist you with:\n\n" +
@@ -156,17 +140,7 @@ const MAX_HISTORY_TURNS = 6;         // only send last 6 turns to Gemini (saves 
 
 // ─── Pantry search results — shown as a paginated card list instead of one ────
 // big wall of text, a few at a time via "Show more" so Pete doesn't overwhelm.
-const PANTRY_PREVIEW: PantryPreview[] = [
-    { name: 'Heart of Alabama Food Bank', area: 'Montgomery', phone: '(334) 263-3784' },
-    { name: 'True Divine Community Dev', area: 'Montgomery', phone: '(334) 286-4008', hours: 'Mon/Wed/Fri 9am–12:30pm' },
-    { name: 'Aldersgate UMC', area: 'Montgomery', hours: 'Tuesdays 10am–12pm' },
-    { name: 'Westside Church of Christ', area: 'Montgomery', phone: '(334) 356-8759', hours: 'Thursdays 10am–1pm' },
-    { name: 'East Alabama Food Bank', area: 'Auburn', phone: '(334) 821-9006' },
-    { name: 'Alabama Coalition Against Hunger', area: 'Auburn', phone: '(334) 262-0359', hours: 'Mon–Fri 8:30am–5pm' },
-    { name: 'Tuskegee Community Food Bank', area: 'Tuskegee', phone: '(334) 727-0060' },
-    { name: 'Selma Area Food Bank', area: 'Selma', phone: '(334) 872-4114' },
-    { name: 'American Red Cross Selma', area: 'Selma', phone: '(334) 875-7565' },
-];
+// Cards come from a live Firestore query (utils/pantries.ts), not a fixed list.
 const PANTRY_PAGE_SIZE = 4;
 
 const QUICK_QUESTIONS = [
@@ -217,24 +191,62 @@ export default function PeteScreen() {
 
         const topic = detectTopic(msg);
         // Log to analytics_searches with raw message + interaction source
-        const county = await getLastKnownCounty();
-        logPeteRequest(topic, msg, text ? 'chip' : 'typed', county);
+        const lastCounty = await getLastKnownCounty();
+        logPeteRequest(topic, msg, text ? 'chip' : 'typed', lastCounty);
         // GAP 7 — if this is a pantry search, watch for a map/pantry follow-up
         if (topic === 'pantry_search') setPendingSearchOutcome(topic);
 
-        // ── Pantry search — answer with a paginated card list, not a text dump ──
-        // Skips Gemini entirely: it's deterministic, instant, and saves quota.
+        // ── Pantry search — live Firestore lookup, shown as a paginated card ───
+        // list. Skips Gemini entirely: it's grounded, instant, and saves quota.
+        // Filters to the user's county (named in the message, else the last
+        // county map.tsx inferred from GPS) — never a generic/static list.
         if (topic === 'pantry_search') {
-            setTimeout(() => {
+            const targetCounty = extractCounty(msg) ?? lastCounty;
+
+            if (!targetCounty) {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     role: 'assistant',
-                    text: "Here are some pantries near you in Alabama's Black Belt — I'll show them a few at a time:",
-                    pantries: PANTRY_PREVIEW,
+                    text: "I'd love to help you find a pantry! Which city or county are you in? (For example: \"Autauga\" or \"Dallas County\".) Or open the Map tab to browse all of them.",
                 }]);
                 setLoading(false);
                 setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
-            }, 500);
+                return;
+            }
+
+            try {
+                const results = await fetchPantriesByCounty(targetCounty);
+                if (results.length === 0) {
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: `I didn't find any active pantries listed for ${targetCounty} County right now. Check the Map tab for nearby counties, or call 211 — free, 24/7 — for the most current options.`,
+                    }]);
+                } else {
+                    const pantries: PantryPreview[] = results.map(p => ({
+                        name: p.name,
+                        area: p.city || p.county,
+                        phone: p.phone || undefined,
+                        hours: p.hours || undefined,
+                    }));
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: `Here are active pantries in ${targetCounty} County — I'll show them a few at a time:`,
+                        pantries,
+                    }]);
+                }
+            } catch (err) {
+                console.error('Pantry lookup failed:', err);
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    role: 'assistant',
+                    text: "I couldn't reach the pantry database just now, so I don't want to guess. Please try again in a moment, check the Map tab, or call 211 — free, 24/7.",
+                }]);
+            } finally {
+                setLoading(false);
+                setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+            }
             return;
         }
 

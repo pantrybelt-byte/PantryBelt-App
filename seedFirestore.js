@@ -251,8 +251,8 @@ async function seed() {
   // Pillar 2: resources
   console.log('\nPillar 2 — resources');
   for (const res of resources) {
-    await db.collection('resources').doc(res.id).set(res.data);
-    log(`✔ resources/${res.id}`);
+    await db.collection('agencies').doc(res.id).set(res.data);
+    log(`✔ agencies/${res.id}`);
   }
 
   // Pillar 3: events
