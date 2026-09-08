@@ -14,8 +14,17 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
+import { COLORS } from '../../theme/tokens';
 
 const { width } = Dimensions.get('window');
+
+// Mirrors app/(tabs)/map.tsx's TIER_COLORS/TIER_LABELS so onboarding shows
+// the exact same colors users will see on the map.
+const TIER_LEGEND = [
+    { color: COLORS.success, label: 'Verified', desc: 'Fully confirmed, with an operator profile' },
+    { color: COLORS.warning, label: 'Active', desc: 'Has a phone, website, or social link' },
+    { color: COLORS.unverified, label: 'Unverified', desc: 'Still active, not yet confirmed' },
+] as const;
 
 type Slide = {
     id: string;
@@ -23,6 +32,7 @@ type Slide = {
     subtitle: string;
     visual: 'logo' | 'map' | 'pete';
     features?: { icon: string; text: string }[];
+    colorLegend?: boolean;
 };
 
 const SLIDES: Slide[] = [
@@ -37,13 +47,14 @@ const SLIDES: Slide[] = [
         id: 'map',
         title: 'Find Pantries Near You',
         subtitle:
-            'Browse an interactive map of local food pantries, filtered by city and updated in real time.',
+            'Browse an interactive map of local food pantries, filtered by city and updated in real time. Pin colors show how confirmed each pantry\'s info is.',
         visual: 'map',
         features: [
             { icon: 'location', text: 'Tap any pin for hours, address & phone' },
             { icon: 'funnel', text: 'Filter pantries by county' },
             { icon: 'navigate', text: 'Get directions with one tap' },
         ],
+        colorLegend: true,
     },
     {
         id: 'pete',
@@ -110,6 +121,18 @@ export default function OnboardingScreen() {
 
             <Text style={[styles.title, { color: theme.text }]}>{item.title}</Text>
             <Text style={[styles.subtitle, { color: theme.subtext }]}>{item.subtitle}</Text>
+
+            {item.colorLegend && (
+                <View style={[styles.legendList, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    {TIER_LEGEND.map(t => (
+                        <View key={t.label} style={styles.legendRow}>
+                            <View style={[styles.legendDot, { backgroundColor: t.color }]} />
+                            <Text style={[styles.legendLabel, { color: theme.text }]}>{t.label}</Text>
+                            <Text style={[styles.legendDesc, { color: theme.subtext }]}>{t.desc}</Text>
+                        </View>
+                    ))}
+                </View>
+            )}
 
             {item.features && (
                 <View style={styles.featureList}>
@@ -281,6 +304,36 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 24,
         marginBottom: 28,
+    },
+
+    // Verification color legend
+    legendList: {
+        alignSelf: 'stretch',
+        borderRadius: 14,
+        padding: 14,
+        borderWidth: 1,
+        gap: 10,
+        marginBottom: 16,
+    },
+    legendRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    legendDot: {
+        width: 12,
+        height: 12,
+        borderRadius: 6,
+    },
+    legendLabel: {
+        fontSize: 14,
+        fontWeight: '700',
+        width: 78,
+    },
+    legendDesc: {
+        flex: 1,
+        fontSize: 12,
+        lineHeight: 16,
     },
 
     // Feature bullets
