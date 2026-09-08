@@ -5,9 +5,11 @@
  * and exposes an `authReady` flag. Screens that query Firestore
  * should wait for `authReady === true` before firing queries.
  *
- * This eliminates the race condition where fetchPantries() could
- * run before anonymous auth completes, causing Firestore security
- * rules to reject the read.
+ * PERFORMANCE FIX: Auth initializes in the background. The UI renders
+ * immediately with `authReady: false`. Screens show skeleton/placeholder
+ * content while auth completes, then hydrate when `authReady` flips.
+ * This eliminates the 2–8s cold start on TestFlight/cellular where the
+ * anonymous signIn pays the full TLS + HTTP/2 setup cost.
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -29,16 +31,19 @@ export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         // 🔒 TIER 1 + TIER 3A: Anonymous auth + session bootstrap
-        // Must complete before any Firestore queries are attempted.
+        // UI renders immediately — screens show placeholders until authReady flips.
         initAppSecurity()
             .then(() => {
                 setAuthReady(true);
-                // GAP 5: Log the session AFTER auth is confirmed
-                logSession();
-                // Local session count for the feedback auto-prompt, and retry
-                // any feedback that failed to submit while offline last time.
-                incrementFeedbackSessionCount();
-                flushFeedbackQueue();
+                // Fire-and-forget: these are side effects that must NOT block
+                // the UI thread. Run them in parallel, don't await.
+                Promise.all([
+                    logSession(),
+                    incrementFeedbackSessionCount(),
+                    flushFeedbackQueue(),
+                ]).catch(() => {
+                    // Best-effort — never block the UI for analytics/feedback
+                });
             })
             .catch(() => {
                 // Even if auth fails, mark ready so the UI isn't stuck forever.
@@ -55,6 +60,8 @@ export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
         return subscribeToAccountLabel(setAccountLabel);
     }, []);
 
+    // CRITICAL: Children render immediately — not gated behind authReady.
+    // Individual screens handle the loading state themselves.
     return (
         <AuthReadyContext.Provider value={{ authReady, accountLabel }}>
             {children}

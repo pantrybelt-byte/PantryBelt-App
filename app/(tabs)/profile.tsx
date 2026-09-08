@@ -1,8 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../config/firebase';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -17,6 +15,7 @@ import {
 import FeedbackModal from '../../components/FeedbackModal';
 import LegalModal from '../../components/LegalModal';
 import { useAuthReady } from '../../context/AuthReadyContext';
+import { useStats } from '../../context/StatsContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { signOutUser } from '../../utils/auth';
@@ -40,6 +39,7 @@ export default function ProfileScreen() {
     const router = useRouter();
     const theme = useTheme();
     const { authReady, accountLabel } = useAuthReady();
+    const { pantryCount, countyCount } = useStats();
 
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
@@ -47,8 +47,6 @@ export default function ProfileScreen() {
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [legalModalVisible, setLegalModalVisible] = useState(false);
     const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy'>('privacy');
-    const [pantryCount, setPantryCount] = useState('—');
-    const [countyCount, setCountyCount] = useState('—');
 
     const handleSignOut = () => {
         Alert.alert(
@@ -70,40 +68,13 @@ export default function ProfileScreen() {
     };
 
     useEffect(() => {
-        try {
-            AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
-                if (val !== null) setNotifications(val === 'true');
-            }).catch(() => {});
-            AsyncStorage.getItem(NEWSLETTER_KEY).then(val => {
-                if (val !== null) setNewsletter(val === 'true');
-            }).catch(() => {});
-            getLocationPreference().then(setLocationEnabled).catch(() => {});
-            // Fetch live pantry/county counts safely
-            (async () => {
-                try {
-                    if (!db) {
-                        setPantryCount('880+');
-                        setCountyCount('67');
-                        return;
-                    }
-                    const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
-                    const snapshot = await getDocs(q);
-                    const counties = new Set<string>();
-                    snapshot.docs.forEach(d => {
-                        const county = d.data()?.county;
-                        if (county) counties.add(county);
-                    });
-                    setPantryCount(String(snapshot.size > 0 ? snapshot.size : '880+'));
-                    setCountyCount(String(counties.size > 0 ? counties.size : '67'));
-                } catch {
-                    setPantryCount('880+');
-                    setCountyCount('67');
-                }
-            })();
-        } catch {
-            setPantryCount('880+');
-            setCountyCount('67');
-        }
+        AsyncStorage.getItem(PUSH_ENABLED_KEY).then(val => {
+            if (val !== null) setNotifications(val === 'true');
+        }).catch(() => {});
+        AsyncStorage.getItem(NEWSLETTER_KEY).then(val => {
+            if (val !== null) setNewsletter(val === 'true');
+        }).catch(() => {});
+        getLocationPreference().then(setLocationEnabled).catch(() => {});
     }, []);
 
     const handleToggleNewsletter = async (value: boolean) => {

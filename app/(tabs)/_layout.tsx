@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
+import { SHADOWS, SPACING, TYPOGRAPHY } from '../../theme/tokens';
 
 export default function TabLayout() {
     const theme = useTheme();
@@ -12,7 +13,7 @@ export default function TabLayout() {
             tabBarShowLabel: true,
             tabBarStyle: [styles.tabBar, { backgroundColor: theme.card, borderTopColor: theme.border }],
             tabBarItemStyle: styles.tabBarItem,
-            tabBarActiveTintColor: '#b52525',
+            tabBarActiveTintColor: theme.primary,
             tabBarInactiveTintColor: theme.subtext,
             tabBarLabelStyle: styles.tabBarLabel,
         }}>
@@ -58,18 +59,12 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
     tabBar: {
-        backgroundColor: '#ffffff',
-        borderTopColor: '#e5e5ea',
         borderTopWidth: 1,
-        height: 82,
-        paddingBottom: 16,
-        paddingTop: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.06,
-        shadowRadius: 12,
-        elevation: 20,
+        height: SPACING.tabBarHeight,
+        paddingBottom: SPACING.lg,
+        paddingTop: SPACING.sm,
+        ...SHADOWS.topBar,
     },
     tabBarItem: { flex: 1 },
-    tabBarLabel: { fontSize: 10, fontWeight: '600', marginTop: 2 },
+    tabBarLabel: { ...TYPOGRAPHY.tabLabel },
 });
