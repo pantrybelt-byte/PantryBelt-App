@@ -1,0 +1,23 @@
+# Data issues surfaced during verification
+
+- **Foley Hispanic Seventh Day Adventist Church** (tfbWEhVmUcQMZuG80tDv, batch 03): On-file phone (662) 266-9370 is a Mississippi area code; church's published number is (251) 504-8110. Food-distribution activity itself not confirmed online.
+- **Mt. Aid Missionary Baptist Church** (wm9Husl9o66t7Y5uFMmf, batch 03): A food-pantry contact number of 251-600-9777 appears in listings alongside the on-file church number (251) 626-0020; pantry line may be the better contact.
+- **All Saints Kingdom Church** (oNAmVHQE9ulYSPGogIPt, batch montgomery): Bare Facebook page only
+- **Bible Verse Church** (2QuZ3qxN4kOIbDZyJtVg, batch montgomery): Thin directory mention, overshadowed by a similarly-named nearby church
+- **Church of the Ascension** (ZVx3oJpk131ldIGZ5BHW, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **Church of the Highlands** (vaO4h9whQuEWMfmQqmdn, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **Dalraida Church of Christ** (WvNYrYKm4qwPLOyDxQGQ, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **Dalraida United Methodist Church** (aPPZ3vCsED97JrgrI071, batch montgomery): UMC denomination records show this building closed 5/2023 amid the UMC/Global Methodist split; same address now operates as "Dalraida Global Methodist Church" (active). Likely just a rename, not defunct — name field is stale.
+- **Eastern Hills Baptist Church** (PS3wotg27xes7bMdPcUp, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **Eternal Fountain Ministries** (2Dxzn8HFcdrTRNR9i3yf, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **First Baptist Church Mission Center** (6PO4ASilX9OcbKc6EWBc, batch montgomery): Parent First Baptist Church active; this may have folded into general church ministry rather than being a distinct site
+- **Hands of Christ Ministry** (WjRk7dFEwsXsK7hiEeJc, batch montgomery): Directories list a "Hands of Christ Ministry Center" but with a different phone ((334) 230-1961 vs. on-file (334) 262-6438)
+- **King Hill Baptist Family Life Center** (z1hI11PRjhgduMavp1Mg, batch montgomery): On-file phone (334) 262-1260 vs. listings showing (334) 265-1807
+- **Lord Saving Many Solutions** (tX1I09PtyDpNL6PE93lY, batch montgomery): Org confirmed to exist, phone matches, but described as outreach/tutoring, not clearly a food pantry
+- **Mercy House** (88GG6Cl7DkYoIhARRGJw, batch montgomery): On-file phone (334) 649-1534 vs. current (334) 356-2037; fuller address found (2412 Council St) vs. bare city/zip on file
+- **Old Mount Pleasant Missionary Baptist Church** (rS00RJkGnPG3GH7sd0QL, batch montgomery): Church confirmed active, no pantry-specific or phone confirmation
+- **Reaching Out Mission Outreach (St. Jude the Apostle)** (pB83lyW3RtFsuKbULaId, batch montgomery): Parent "City of St. Jude" is active, but no trace of this specific program name/phone
+- **Salvation Army (Montgomery River Region)** (J2ciiZZxQ8RvpOzVBkoC, batch montgomery): WSFA reported (May 2025) the Lomac St location relocated to Carter Hill Road; on-file address is stale
+- **Shepherds Ministries, Inc** (p42kNfjf05gkoSjkWa51, batch montgomery): No exact name/phone match; a similarly-named "Shepherd's Staff Ministry" exists but with different contact info
+- **St Johns A M E Church** (rBM55mNLnxMnXBgKXshx, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
+- **Westside Church of Christ** (uJ4NgpLafrfJV2lrADkR, batch montgomery): Address matches exactly but phone differs slightly from current listings — low priority
