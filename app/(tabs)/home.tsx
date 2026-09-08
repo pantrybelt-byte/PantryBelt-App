@@ -58,8 +58,8 @@ export default function HomeScreen() {
                 style={styles.resourceRow}
                 onPress={() => handleQuickLink(item)}
             >
-                <View style={[styles.resourceIcon, { backgroundColor: theme.primaryMuted }]}>
-                    <Ionicons name={item.icon} size={20} color={theme.primary} />
+                <View style={[styles.resourceIcon, { backgroundColor: theme.input }]}>
+                    <Ionicons name={item.icon} size={20} color={theme.subtext} />
                 </View>
                 <View style={styles.resourceTextWrap}>
                     <Text style={[styles.resourceTitle, { color: theme.text }]}>{item.title}</Text>
