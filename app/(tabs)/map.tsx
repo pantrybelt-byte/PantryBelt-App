@@ -325,6 +325,8 @@ export default function MapScreen() {
             .slice(0, 20);
     }, [pantries, searchQuery]);
 
+    const searchOpen = searchFocused && searchQuery.trim() !== '';
+
     const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
     // Only render markers within (or near) the visible map region to avoid
@@ -503,7 +505,7 @@ export default function MapScreen() {
                     )}
                 </View>
 
-                {searchFocused && searchQuery.trim() !== '' && (
+                {searchOpen && (
                     <View style={[styles.searchResults, { backgroundColor: theme.card }]}>
                         {searchResults.length === 0 ? (
                             <Text style={[styles.searchEmptyText, { color: theme.subtext }]}>No pantries match "{searchQuery}"</Text>
@@ -527,48 +529,56 @@ export default function MapScreen() {
                 )}
             </View>
 
-            {/* County filter chips */}
-            <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipContent}>
-                    {counties.map((county, i) => {
-                        const count = county === 'All' ? pantries.length : pantries.filter(p => p.county === county).length;
-                        return (
-                            <TouchableOpacity
-                                key={county ?? `county-${i}`}
-                                style={[styles.chip, { backgroundColor: theme.card }, filter === county && styles.chipActive]}
-                                onPress={() => handleFilter(county)}
-                            >
-                                <Text style={[styles.chipText, { color: theme.text }, filter === county && styles.chipTextActive]}>
-                                    {county === 'All' ? `All (${count})` : `${county} (${count})`}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </ScrollView>
-            </View>
+            {/* County filter chips — hidden while the search dropdown is open so
+                they don't visually collide with it (they render after it, so
+                they'd otherwise sit on top of the results list). */}
+            {!searchOpen && (
+                <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipContent}>
+                        {counties.map((county, i) => {
+                            const count = county === 'All' ? pantries.length : pantries.filter(p => p.county === county).length;
+                            return (
+                                <TouchableOpacity
+                                    key={county ?? `county-${i}`}
+                                    style={[styles.chip, { backgroundColor: theme.card }, filter === county && styles.chipActive]}
+                                    onPress={() => handleFilter(county)}
+                                >
+                                    <Text style={[styles.chipText, { color: theme.text }, filter === county && styles.chipTextActive]}>
+                                        {county === 'All' ? `All (${count})` : `${county} (${count})`}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </ScrollView>
+                </View>
+            )}
 
             {/* Count badge */}
-            <View style={styles.countBadge} pointerEvents="none">
-                <Text style={styles.countText}>
-                    {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
-                </Text>
-            </View>
+            {!searchOpen && (
+                <View style={styles.countBadge} pointerEvents="none">
+                    <Text style={styles.countText}>
+                        {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
+                    </Text>
+                </View>
+            )}
 
             {/* Verification tier legend */}
-            <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
-                <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.green }]} />
-                    <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
+            {!searchOpen && (
+                <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
+                    <View style={styles.legendRow}>
+                        <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.green }]} />
+                        <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
+                    </View>
+                    <View style={styles.legendRow}>
+                        <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.orange }]} />
+                        <Text style={[styles.legendText, { color: theme.subtext }]}>Active</Text>
+                    </View>
+                    <View style={styles.legendRow}>
+                        <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.grey }]} />
+                        <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
+                    </View>
                 </View>
-                <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.orange }]} />
-                    <Text style={[styles.legendText, { color: theme.subtext }]}>Active</Text>
-                </View>
-                <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.grey }]} />
-                    <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
-                </View>
-            </View>
+            )}
 
             {/* 2D / 3D view toggle */}
             <TouchableOpacity
