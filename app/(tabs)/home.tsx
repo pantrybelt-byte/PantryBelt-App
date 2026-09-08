@@ -52,7 +52,7 @@ export default function HomeScreen() {
         }
     };
 
-    const renderResourceRow = (item: typeof FIND_FOOD[0], isLast: boolean) => (
+    const renderResourceRow = (item: typeof FIND_FOOD[number] | typeof PROGRAMS[number], isLast: boolean) => (
         <View key={item.id}>
             <TouchableOpacity
                 style={styles.resourceRow}
@@ -122,7 +122,7 @@ export default function HomeScreen() {
                             <Ionicons name="megaphone-outline" size={14} color={COLORS.white} />
                             <Text style={[TYPOGRAPHY.badge, { color: COLORS.white }]}>UPDATE</Text>
                         </View>
-                        <Text style={[TYPOGRAPHY.small, { color: theme.subtext }]}>Aug 2026</Text>
+                        <Text style={[TYPOGRAPHY.small, { color: theme.subtext }]}>Sept 2026</Text>
                     </View>
                     <Text style={[TYPOGRAPHY.heading3, { color: theme.text, marginBottom: SPACING.sm }]}>AccessBelt is Now on the App Store!</Text>
                     <Text style={[TYPOGRAPHY.caption, { color: theme.subtext, lineHeight: 21 }]}>

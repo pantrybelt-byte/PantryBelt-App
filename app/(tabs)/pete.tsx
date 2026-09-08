@@ -16,12 +16,14 @@ import {
     UIManager,
     View,
 } from 'react-native';
+import { useStats } from '../../context/StatsContext';
 import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING, TYPOGRAPHY } from '../../theme/tokens';
 import { logPeteRequest, logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
-import { extractCounty, fetchPantriesByCounty } from '../../utils/pantries';
-import { getLastKnownCounty, setPendingSearchOutcome } from '../../utils/userLocation';
+import { extractCounty, fetchNearestPantries, fetchPantriesByCounty } from '../../utils/pantries';
+import { getLastKnownCounty, getLocationPreference, setPendingSearchOutcome } from '../../utils/userLocation';
+import * as Location from 'expo-location';
 
 // Enable smooth, non-jarring layout transitions on Android when the pantry
 // card list expands (iOS animates LayoutAnimation by default).
@@ -126,6 +128,15 @@ function detectTopic(text: string): string {
     return 'general';
 }
 
+// Distinguishes a live-location "near me" pantry search from a general/
+// county-named one — still logged as the 'pantry_search' topic (analytics
+// schema in firestore.rules only allows a fixed topic enum), just resolved
+// via GPS instead of a named county.
+function isNearMeQuery(text: string): boolean {
+    const t = text.toLowerCase();
+    return /\bnear me\b|\bnearest\b|\bclosest\b/.test(t);
+}
+
 // logSearchTopic replaced by logPeteRequest from utils/analytics.ts
 
 type PantryPreview = { name: string; area: string; phone?: string; hours?: string };
@@ -146,6 +157,7 @@ const PANTRY_PAGE_SIZE = 4;
 
 // ── Unified quick-question chips — no rainbow colors ──
 const QUICK_QUESTIONS = [
+    'Pantries near me',
     'Find pantries',
     'SNAP/EBT help',
     'Recipe ideas',
@@ -155,6 +167,7 @@ const QUICK_QUESTIONS = [
 
 export default function PeteScreen() {
     const theme = useTheme();
+    const { pantryCount, countyCount } = useStats();
     const [messages, setMessages] = useState<Message[]>([
         { id: 1, role: 'assistant', text: "Hi! I'm Pete, your food assistance helper for Alabama's Black Belt.\n\nI can help you find pantries, apply for SNAP, get recipe ideas, and more. What do you need today?" },
     ]);
@@ -202,6 +215,65 @@ export default function PeteScreen() {
         // list. Skips Gemini entirely: it's grounded, instant, and saves quota.
         // Filters to the user's county (named in the message, else the last
         // county map.tsx inferred from GPS) — never a generic/static list.
+        if (topic === 'pantry_search' && isNearMeQuery(msg)) {
+            // ── "Pantries near me" — live GPS fix, never persisted, used only
+            // in-memory to sort by distance (claude.md §6.5). Same permission
+            // flow map.tsx already uses for its recenter-on-me button.
+            try {
+                const locationAllowed = await getLocationPreference();
+                if (!locationAllowed) {
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: "Location Services is off in Profile → Preferences, so I can't find what's nearest to you. Turn it back on, or tell me your city or county instead.",
+                    }]);
+                    return;
+                }
+                const { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: "I need location access to find pantries near you. Enable it in Settings, or tell me your city or county instead.",
+                    }]);
+                    return;
+                }
+                const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+                const results = await fetchNearestPantries(loc.coords.latitude, loc.coords.longitude);
+                if (results.length === 0) {
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: "I couldn't find any active pantries nearby. Check the Map tab, or call 211, free 24/7.",
+                    }]);
+                } else {
+                    const pantries: PantryPreview[] = results.map(p => ({
+                        name: p.name,
+                        area: p.city || p.county,
+                        phone: p.phone || undefined,
+                        hours: p.hours || undefined,
+                    }));
+                    setMessages(prev => [...prev, {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        text: 'Here are the pantries closest to you right now:',
+                        pantries,
+                    }]);
+                }
+            } catch (err) {
+                console.error('Nearest-pantry lookup failed:', err);
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    role: 'assistant',
+                    text: "I couldn't determine your location just now. Please try again, check the Map tab, or tell me your city or county instead.",
+                }]);
+            } finally {
+                setLoading(false);
+                setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+            }
+            return;
+        }
+
         if (topic === 'pantry_search') {
             const targetCounty = extractCounty(msg) ?? lastCounty;
 
@@ -371,7 +443,7 @@ export default function PeteScreen() {
                                         </TouchableOpacity>
                                     ) : (
                                         <Text style={[TYPOGRAPHY.small, { color: theme.subtext, marginTop: SPACING.xxs }]}>
-                                            See all 884 pantries across 67 Alabama counties with directions on the Map tab. Need urgent help? Call 211, free 24/7.
+                                            See all {pantryCount} pantries across {countyCount} Alabama counties with directions on the Map tab. Some are still undergoing verification. Need urgent help? Call 211, free 24/7.
                                         </Text>
                                     )}
                                 </View>

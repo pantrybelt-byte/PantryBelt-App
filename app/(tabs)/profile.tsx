@@ -135,6 +135,9 @@ export default function ProfileScreen() {
                     <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
                 </View>
             </View>
+            <Text style={[styles.statsDisclaimer, { color: theme.subtext }]}>
+                Coverage spans all 67 Alabama counties. Some listed pantries are still undergoing verification — look for the Verified/Active/Unverified badge on the Map tab.
+            </Text>
 
             {/* Account */}
             <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Account</Text>
@@ -402,7 +405,7 @@ export default function ProfileScreen() {
             <View style={[styles.aboutCard, { backgroundColor: theme.card }]}>
                 <Text style={[styles.aboutTitle, { color: theme.text }]}>About AccessBelt</Text>
                 <Text style={[styles.aboutText, { color: theme.subtext }]}>
-                    AccessBelt connects families in Alabama's Black Belt region to food pantries, SNAP/EBT resources, and community programs. Our mission: more meals, less stress.
+                    AccessBelt is built specifically for families across the state of Alabama, connecting them to food pantries, SNAP/EBT resources, and community programs. Our mission: more meals, less stress.
                 </Text>
             </View>
 
@@ -434,7 +437,8 @@ const styles = StyleSheet.create({
     container: { flex: 1 },
     content: { padding: 20, paddingTop: 60, paddingBottom: 40 },
     headerTitle: { fontSize: 32, fontWeight: '800', marginBottom: 20 },
-    statsRow: { flexDirection: 'row', borderRadius: 16, padding: 16, marginBottom: 28, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+    statsRow: { flexDirection: 'row', borderRadius: 16, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+    statsDisclaimer: { fontSize: 11, lineHeight: 15, textAlign: 'center', marginBottom: 28, paddingHorizontal: 8 },
     statItem: { flex: 1, alignItems: 'center', gap: 4 },
     statDivider: { width: 1, marginVertical: 4 },
     statValue: { fontSize: 20, fontWeight: '900', color: '#b52525' },

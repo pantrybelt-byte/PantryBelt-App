@@ -15,6 +15,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
+import { distanceMiles } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
@@ -327,16 +328,31 @@ export default function MapScreen() {
     const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
     // Only render markers within (or near) the visible map region to avoid
-    // dumping all 884 pins at once — much cleaner UX and better performance.
-    const filtered = visibleRegion
+    // dumping all ~880 pins at once — much cleaner UX and better performance.
+    // The overscan pad is proportional to the current zoom level (not a fixed
+    // ~20-mile buffer) so the "nearby" count actually shrinks as you zoom in
+    // instead of staying dominated by a flat buffer at every zoom level —
+    // realistically 1-2 pantries are ever truly "nearby," not dozens.
+    const regionFiltered = visibleRegion
         ? cityFiltered.filter(p => {
-            const pad = 0.3; // render slightly beyond the visible edge for smooth panning
+            const latPad = visibleRegion.latitudeDelta * 0.15;
+            const lngPad = visibleRegion.longitudeDelta * 0.15;
             return (
-                Math.abs(p.lat - visibleRegion.latitude)  < visibleRegion.latitudeDelta  / 2 + pad &&
-                Math.abs(p.lng - visibleRegion.longitude) < visibleRegion.longitudeDelta / 2 + pad
+                Math.abs(p.lat - visibleRegion.latitude)  < visibleRegion.latitudeDelta  / 2 + latPad &&
+                Math.abs(p.lng - visibleRegion.longitude) < visibleRegion.longitudeDelta / 2 + lngPad
             );
         })
         : cityFiltered;
+
+    // "Pantries near me": prioritize markers closest to the user's live
+    // location (never persisted — same in-memory-only posture as the
+    // recenter-on-me button below). Doesn't change which pins render, only
+    // their order, which affects overlap/tap priority in dense clusters.
+    const filtered = userLocation
+        ? [...regionFiltered].sort((a, b) =>
+            distanceMiles(userLocation.lat, userLocation.lng, a.lat, a.lng) -
+            distanceMiles(userLocation.lat, userLocation.lng, b.lat, b.lng))
+        : regionFiltered;
 
     const handleFilter = (county: string) => {
         setSearchFocused(false);

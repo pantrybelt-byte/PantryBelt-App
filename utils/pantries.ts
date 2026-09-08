@@ -42,7 +42,20 @@ export type PantryResult = {
     address: string;
     website: string;
     verified: boolean;
+    lat: number;
+    lng: number;
 };
+
+/** Great-circle distance in miles between two lat/lng points (haversine). */
+export function distanceMiles(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 function formatHours(hours: Record<string, any> | string | null | undefined): string {
     if (!hours) return '';
@@ -73,6 +86,7 @@ export async function fetchPantriesByCounty(county: string, max = 8): Promise<Pa
     return snapshot.docs.map(d => {
         const r = d.data();
         const addr = r.address ?? {};
+        const coords = r.coordinates ?? {};
         return {
             id: d.id,
             name: r.name ?? '',
@@ -83,6 +97,42 @@ export async function fetchPantriesByCounty(county: string, max = 8): Promise<Pa
             address: [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
             website: r.website ?? '',
             verified: r.verified ?? false,
+            lat: typeof coords.lat === 'number' ? coords.lat : 0,
+            lng: typeof coords.lng === 'number' ? coords.lng : 0,
         };
     });
+}
+
+/**
+ * Live query across every active `agencies` doc, sorted by distance from
+ * (lat, lng) and capped to the nearest `max`. Coordinates are only ever used
+ * in-memory for this sort — never persisted (claude.md §6.5: no precise
+ * end-user location storage, county-level only). Fetches the full active
+ * collection client-side, same pattern map.tsx already uses at this dataset
+ * size — no geohash range query needed.
+ */
+export async function fetchNearestPantries(lat: number, lng: number, max = 8): Promise<PantryResult[]> {
+    const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
+    const snapshot = await getDocs(q);
+    const results: PantryResult[] = snapshot.docs.map(d => {
+        const r = d.data();
+        const addr = r.address ?? {};
+        const coords = r.coordinates ?? {};
+        return {
+            id: d.id,
+            name: r.name ?? '',
+            county: r.county ?? '',
+            city: addr.city ?? '',
+            phone: r.phone ?? '',
+            hours: formatHours(r.hours),
+            address: [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
+            website: r.website ?? '',
+            verified: r.verified ?? false,
+            lat: typeof coords.lat === 'number' ? coords.lat : 0,
+            lng: typeof coords.lng === 'number' ? coords.lng : 0,
+        };
+    }).filter(p => p.lat !== 0 && p.lng !== 0 && !isNaN(p.lat) && !isNaN(p.lng));
+
+    results.sort((a, b) => distanceMiles(lat, lng, a.lat, a.lng) - distanceMiles(lat, lng, b.lat, b.lng));
+    return results.slice(0, max);
 }

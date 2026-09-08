@@ -30,7 +30,7 @@ const SLIDES: Slide[] = [
         id: 'welcome',
         title: 'Welcome to AccessBelt',
         subtitle:
-            'Your free, private guide to food pantries across Alabama\'s Black Belt. No account required — just help when you need it.',
+            'Built specifically for families across the state of Alabama — your free, private guide to food pantries statewide, from the Black Belt to every corner of the state. No account required — just help when you need it.',
         visual: 'logo',
     },
     {

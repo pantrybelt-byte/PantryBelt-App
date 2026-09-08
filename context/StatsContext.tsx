@@ -40,7 +40,7 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
                     const county = d.data().county;
                     if (county) counties.add(county);
                 });
-                setPantryCount(String(snapshot.size > 0 ? snapshot.size : '880+'));
+                setPantryCount(String(snapshot.size > 0 ? snapshot.size : '883+'));
                 setCountyCount(String(counties.size > 0 ? counties.size : '67'));
             } catch {
                 setPantryCount('880+');
