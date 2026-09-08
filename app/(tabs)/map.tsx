@@ -2,16 +2,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Alert, Linking, Modal, Platform, ScrollView,
-    StyleSheet, Text, TouchableOpacity, View,
+    ActivityIndicator, Alert, FlatList, Linking, Modal, Platform, ScrollView,
+    StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import FeedbackModal from '../../components/FeedbackModal';
 import { db } from '../../config/firebase';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
+import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
@@ -30,6 +31,35 @@ type Pantry = {
     docs: string;
     website: string;
     verified: boolean;
+    socialMedia: string[];
+    operatorPortalAccess: boolean;
+    hasMiniProfile: boolean;
+};
+
+// ── Verification color tiers ──────────────────────────────
+// Grey (default): active but no self-reported activity yet.
+// Orange (Layer 1 "Activities"): has a phone, website, or social link.
+// Green (Layer 2): fully verified — human-confirmed AND has Operator Portal
+// access + a mini profile. Nothing sets operatorPortalAccess/miniProfile yet
+// (no Operator Portal exists), so this tier is inert until that ships.
+type Tier = 'grey' | 'orange' | 'green';
+
+function pantryTier(p: Pantry): Tier {
+    if (p.verified && p.operatorPortalAccess && p.hasMiniProfile) return 'green';
+    if (p.phone || p.website || p.socialMedia.length > 0) return 'orange';
+    return 'grey';
+}
+
+const TIER_COLORS: Record<Tier, string> = {
+    grey: COLORS.unverified,
+    orange: COLORS.warning,
+    green: COLORS.success,
+};
+
+const TIER_LABELS: Record<Tier, string> = {
+    grey: 'Unverified',
+    orange: 'Active',
+    green: 'Verified',
 };
 
 function formatHours(hours: Record<string, any> | string | null | undefined): string {
@@ -97,6 +127,8 @@ export default function MapScreen() {
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
     const [counties, setCounties] = useState<string[]>(['All']);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchFocused, setSearchFocused] = useState(false);
     const [selected, setSelected] = useState<Pantry | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     // Tracks the user's coarse location for analytics (county / food desert)
@@ -146,6 +178,9 @@ export default function MapScreen() {
                         docs:        Array.isArray(r.docsRequired) ? r.docsRequired.join(', ') : '',
                         hours:       formatHours(r.hours),
                         verified:    r.verified    ?? false,
+                        socialMedia: Array.isArray(r.socialMedia) ? r.socialMedia : [],
+                        operatorPortalAccess: r.operatorPortalAccess ?? false,
+                        hasMiniProfile: r.miniProfile != null,
                     } as Pantry;
                 });
 
@@ -245,6 +280,50 @@ export default function MapScreen() {
         })();
     }, [loading, fetchError]);
 
+    // Opens the detail modal + logs engagement, shared by marker taps and
+    // search-result taps so both entry points behave identically.
+    const openPantryDetails = useCallback((pantry: Pantry) => {
+        setSearchFocused(false);
+        setSelected(pantry);
+        setModalVisible(true);
+        logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
+        updateMonthlySummary(pantry.county, 'pantryViews');
+        (async () => {
+            const topic = await getPendingSearchOutcome();
+            if (topic) {
+                logSearchOutcome(topic, 'pantry_viewed', pantry.county);
+                await clearPendingSearchOutcome();
+            }
+        })();
+    }, []);
+
+    // Selecting a search result: fly the map to it and open its detail modal.
+    // Purely client-side over the pantries already loaded — no external
+    // geocoding/search API (Google's is deliberately not shipped on iOS).
+    const selectSearchResult = useCallback((pantry: Pantry) => {
+        setSearchQuery('');
+        setSearchFocused(false);
+        mapRef.current?.animateToRegion({
+            latitude: pantry.lat,
+            longitude: pantry.lng,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+        }, 800);
+        openPantryDetails(pantry);
+    }, [openPantryDetails]);
+
+    const searchResults = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return [];
+        return pantries
+            .filter(p =>
+                p.name.toLowerCase().includes(q) ||
+                p.city.toLowerCase().includes(q) ||
+                p.county.toLowerCase().includes(q)
+            )
+            .slice(0, 20);
+    }, [pantries, searchQuery]);
+
     const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
     // Only render markers within (or near) the visible map region to avoid
@@ -260,6 +339,7 @@ export default function MapScreen() {
         : cityFiltered;
 
     const handleFilter = (county: string) => {
+        setSearchFocused(false);
         setFilter(county);
         const items = county === 'All' ? pantries : pantries.filter(p => p.county === county);
 
@@ -358,38 +438,23 @@ export default function MapScreen() {
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
                 {filtered.map(pantry => {
-                    const openDetails = () => {
-                        setSelected(pantry);
-                        setModalVisible(true);
-                        // GAP 6 — Pantry-Level Utilization (County Govts / DHR)
-                        logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
-                        updateMonthlySummary(pantry.county, 'pantryViews');
-                        // GAP 7 — close the loop if this view follows a Pete search
-                        (async () => {
-                            const topic = await getPendingSearchOutcome();
-                            if (topic) {
-                                logSearchOutcome(topic, 'pantry_viewed', pantry.county);
-                                await clearPendingSearchOutcome();
-                            }
-                        })();
-                    };
+                    const tier = pantryTier(pantry);
+                    const openDetails = () => openPantryDetails(pantry);
 
                     return (
                         <Marker
                             key={pantry.id}
                             coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                            pinColor={pantry.verified ? '#b52525' : '#999999'}
+                            pinColor={TIER_COLORS[tier]}
                             onPress={openDetails}
                         >
                             <Callout tooltip onPress={openDetails}>
                                 <View style={[styles.callout, { backgroundColor: theme.card }]}>
                                     <View style={styles.calloutNameRow}>
                                         <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
-                                        {!pantry.verified && (
-                                            <View style={styles.calloutUnverifiedBadge}>
-                                                <Text style={styles.calloutUnverifiedText}>Unverified</Text>
-                                            </View>
-                                        )}
+                                        <View style={[styles.calloutTierBadge, { backgroundColor: TIER_COLORS[tier] + '26' }]}>
+                                            <Text style={[styles.calloutTierText, { color: TIER_COLORS[tier] }]}>{TIER_LABELS[tier]}</Text>
+                                        </View>
                                     </View>
                                     <Text style={styles.calloutCity}>{pantry.city}</Text>
                                     <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
@@ -399,6 +464,52 @@ export default function MapScreen() {
                     );
                 })}
             </MapView>
+
+            {/* Global pantry search */}
+            <View style={styles.searchWrapper} pointerEvents="box-none">
+                <View style={[styles.searchBar, { backgroundColor: theme.card }]}>
+                    <Ionicons name="search" size={16} color={theme.subtext} />
+                    <TextInput
+                        style={[styles.searchInput, { color: theme.text }]}
+                        placeholder="Search pantries by name or location"
+                        placeholderTextColor={theme.subtext}
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        onFocus={() => setSearchFocused(true)}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        returnKeyType="search"
+                    />
+                    {searchQuery !== '' && (
+                        <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={8}>
+                            <Ionicons name="close-circle" size={18} color={theme.subtext} />
+                        </TouchableOpacity>
+                    )}
+                </View>
+
+                {searchFocused && searchQuery.trim() !== '' && (
+                    <View style={[styles.searchResults, { backgroundColor: theme.card }]}>
+                        {searchResults.length === 0 ? (
+                            <Text style={[styles.searchEmptyText, { color: theme.subtext }]}>No pantries match "{searchQuery}"</Text>
+                        ) : (
+                            <FlatList
+                                data={searchResults}
+                                keyExtractor={item => item.id}
+                                keyboardShouldPersistTaps="handled"
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity style={styles.searchResultRow} onPress={() => selectSearchResult(item)}>
+                                        <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
+                                            <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>{item.city}, {item.county} County</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        )}
+                    </View>
+                )}
+            </View>
 
             {/* County filter chips */}
             <View style={[styles.chipsWrapper, { backgroundColor: 'transparent' }]} pointerEvents="box-none">
@@ -427,14 +538,18 @@ export default function MapScreen() {
                 </Text>
             </View>
 
-            {/* Verified / unverified legend */}
+            {/* Verification tier legend */}
             <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
                 <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: '#b52525' }]} />
+                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.green }]} />
                     <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
                 </View>
                 <View style={styles.legendRow}>
-                    <View style={[styles.legendDot, { backgroundColor: '#999999' }]} />
+                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.orange }]} />
+                    <Text style={[styles.legendText, { color: theme.subtext }]}>Active</Text>
+                </View>
+                <View style={styles.legendRow}>
+                    <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.grey }]} />
                     <Text style={[styles.legendText, { color: theme.subtext }]}>Unverified</Text>
                 </View>
             </View>
@@ -510,17 +625,17 @@ export default function MapScreen() {
                                     <Text style={[styles.modalCounty, { color: '#b52525' }]}>
                                         {selected.city} · {selected.county}
                                     </Text>
-                                    {selected.verified ? (
-                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
-                                            <Ionicons name="checkmark-circle" size={12} color="#16a34a" />
-                                            <Text style={styles.verifiedText}>Verified</Text>
-                                        </View>
-                                    ) : (
-                                        <View style={[styles.verifiedBadge, { backgroundColor: theme.dark ? '#ffffff1a' : '#f5f5f5' }]}>
-                                            <Ionicons name="help-circle" size={12} color="#888" />
-                                            <Text style={[styles.verifiedText, { color: '#888' }]}>Unverified</Text>
-                                        </View>
-                                    )}
+                                    {(() => {
+                                        const tier = pantryTier(selected);
+                                        const icon = tier === 'green' ? 'checkmark-circle' : tier === 'orange' ? 'flash' : 'help-circle';
+                                        const color = tier === 'grey' ? theme.subtext : TIER_COLORS[tier];
+                                        return (
+                                            <View style={[styles.verifiedBadge, { backgroundColor: color + '1a' }]}>
+                                                <Ionicons name={icon} size={12} color={color} />
+                                                <Text style={[styles.verifiedText, { color }]}>{TIER_LABELS[tier]}</Text>
+                                            </View>
+                                        );
+                                    })()}
                                 </View>
                                 <Text style={[styles.modalName, { color: theme.text }]}>{selected.name}</Text>
                             </View>
@@ -642,15 +757,24 @@ const styles = StyleSheet.create({
     map: { ...StyleSheet.absoluteFillObject },
     loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f2f2f7', gap: 12 },
     loadingText: { fontSize: 15, color: '#6c6c70', fontWeight: '600' },
-    chipsWrapper: { position: 'absolute', top: 54, left: 0, right: 0 },
+    searchWrapper: { position: 'absolute', top: 54, left: 12, right: 12 },
+    searchBar: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: RADIUS.xl, paddingHorizontal: SPACING.md, height: 44, ...SHADOWS.md },
+    searchInput: { flex: 1, fontSize: 14, height: '100%' },
+    searchResults: { marginTop: 6, borderRadius: RADIUS.lg, maxHeight: 260, overflow: 'hidden', ...SHADOWS.lg },
+    searchResultRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
+    searchResultDot: { width: 8, height: 8, borderRadius: 4 },
+    searchResultName: { fontSize: 13, fontWeight: '700' },
+    searchResultLocation: { fontSize: 11, marginTop: 1 },
+    searchEmptyText: { fontSize: 12, padding: SPACING.md, textAlign: 'center' },
+    chipsWrapper: { position: 'absolute', top: 106, left: 0, right: 0 },
     chipContent: { paddingHorizontal: 12, paddingVertical: 8, gap: 8 },
     chip: { backgroundColor: '#fff', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
     chipActive: { backgroundColor: '#b52525' },
     chipText: { color: '#1c1c1e', fontWeight: '600', fontSize: 13 },
     chipTextActive: { color: '#fff' },
-    countBadge: { position: 'absolute', top: 106, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
+    countBadge: { position: 'absolute', top: 158, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 },
     countText: { color: '#fff', fontSize: 12, fontWeight: '600' },
-    legend: { position: 'absolute', top: 144, right: 16, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 8, gap: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
+    legend: { position: 'absolute', top: 196, right: 16, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 8, gap: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
     legendRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     legendDot: { width: 8, height: 8, borderRadius: 4 },
     legendText: { fontSize: 11, fontWeight: '600' },
@@ -663,8 +787,8 @@ const styles = StyleSheet.create({
     feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
     calloutNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
-    calloutUnverifiedBadge: { backgroundColor: '#00000010', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
-    calloutUnverifiedText: { fontSize: 9, color: '#888', fontWeight: '700' },
+    calloutTierBadge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
+    calloutTierText: { fontSize: 9, fontWeight: '700' },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },
     calloutTap: { fontSize: 10, color: '#8e8e93', marginTop: 4 },

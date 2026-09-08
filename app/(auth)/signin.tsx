@@ -12,6 +12,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import {
     isValidPin,
@@ -29,6 +30,7 @@ type IdentifierKind = 'email' | 'username';
 export default function SignInScreen() {
     const router = useRouter();
     const theme = useTheme();
+    const { authReady } = useAuthReady();
 
     const [view, setView] = useState<Screen>('choice');
     const [mode, setMode] = useState<Mode>('signup');
@@ -61,6 +63,14 @@ export default function SignInScreen() {
 
     const handleSubmit = async () => {
         setError(null);
+
+        // Guards against submitting before the app-launch anonymous auth
+        // bootstrap has resolved — see waitForInitialAuthBootstrap() in
+        // utils/auth.ts for why that race can silently drop the account.
+        if (!authReady) {
+            setError('Still preparing your secure session — try again in a moment.');
+            return;
+        }
 
         if (kind === 'email') {
             if (!email.trim() || !password) {
@@ -260,12 +270,16 @@ export default function SignInScreen() {
                         {error && <Text style={styles.errorText}>{error}</Text>}
 
                         <TouchableOpacity
-                            style={[styles.enterBtn, loading && styles.enterBtnDisabled]}
+                            style={[styles.enterBtn, (loading || !authReady) && styles.enterBtnDisabled]}
                             onPress={handleSubmit}
-                            disabled={loading}
+                            disabled={loading || !authReady}
                         >
                             <Text style={styles.enterBtnText}>
-                                {loading ? 'Please wait…' : mode === 'signup' ? 'Create Account →' : 'Sign In →'}
+                                {!authReady
+                                    ? 'Preparing secure session…'
+                                    : loading
+                                    ? 'Please wait…'
+                                    : mode === 'signup' ? 'Create Account →' : 'Sign In →'}
                             </Text>
                         </TouchableOpacity>
                     </View>

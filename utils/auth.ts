@@ -167,6 +167,25 @@ export async function reestablishSession(): Promise<void> {
     await initAppSecurity();
 }
 
+/**
+ * waitForInitialAuthBootstrap()
+ *
+ * Guards against a race between the app-launch anonymous sign-in
+ * (initAppSecurity(), kicked off from AuthReadyProvider on mount) and a real
+ * sign-up/sign-in submitted before it resolves. AuthReadyProvider renders
+ * children immediately without gating on authReady, and the anonymous
+ * signInAnonymously() call can take 2-8s on TestFlight/cellular — if a real
+ * auth call reads auth.currentUser during that window it's still null, so
+ * linkOrCreate() falls into createUserWithEmailAndPassword() instead of
+ * linking. If the earlier signInAnonymously() call then resolves afterward,
+ * it flips auth.currentUser back to a fresh anonymous session, silently
+ * orphaning the just-created real account. Awaiting the same in-flight
+ * bootstrap promise before touching auth.currentUser closes the race.
+ */
+export async function waitForInitialAuthBootstrap(): Promise<void> {
+    if (_bootstrapPromise) await _bootstrapPromise;
+}
+
 type IdentifierKind = 'email' | 'username';
 
 function friendlyAuthError(err: unknown, kind: IdentifierKind): string {
@@ -209,6 +228,7 @@ function usernameToIdentifier(username: string): string {
 }
 
 async function linkOrCreate(identifier: string, secret: string, kind: IdentifierKind): Promise<{ ok: boolean; error?: string }> {
+    await waitForInitialAuthBootstrap();
     try {
         if (auth.currentUser?.isAnonymous) {
             await linkWithCredential(auth.currentUser, EmailAuthProvider.credential(identifier, secret));
@@ -223,6 +243,7 @@ async function linkOrCreate(identifier: string, secret: string, kind: Identifier
 }
 
 async function signInWithIdentifier(identifier: string, secret: string, kind: IdentifierKind): Promise<{ ok: boolean; error?: string }> {
+    await waitForInitialAuthBootstrap();
     try {
         await signInWithEmailAndPassword(auth, identifier, secret);
         await reestablishSession();

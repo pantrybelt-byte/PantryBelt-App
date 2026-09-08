@@ -60,6 +60,16 @@ service cloud.firestore {
           || (data.startTime is timestamp && data.endTime is timestamp && data.startTime < data.endTime);
     }
 
+    // Map color-tier fields on agencies — each independently optional, same
+    // pattern as validUserProfile. Nothing sets operatorPortalAccess/miniProfile
+    // yet (no Operator Portal exists), but the fields are validated now so the
+    // future dashboard's writes are type-checked from day one.
+    function validAgencyOptionalFields(data) {
+      return (!('socialMedia' in data) || data.socialMedia == null || data.socialMedia is list)
+          && (!('operatorPortalAccess' in data) || data.operatorPortalAccess is bool)
+          && (!('miniProfile' in data) || data.miniProfile == null || data.miniProfile is map);
+    }
+
     // ══════════════════════════════════════════════════════════════════════════
     // TIER 3A: App Session Validation
     // ══════════════════════════════════════════════════════════════════════════
@@ -231,8 +241,8 @@ service cloud.firestore {
     match /agencies/{agencyId} {
       // Public read for active agencies (needed for the map)
       allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
       allow delete: if false;
     }
 
