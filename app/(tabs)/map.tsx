@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Alert, FlatList, Linking, Modal, Platform, ScrollView,
+    ActivityIndicator, Alert, FlatList, Keyboard, Linking, Modal, Platform, ScrollView,
     StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -302,6 +302,7 @@ export default function MapScreen() {
     // Purely client-side over the pantries already loaded — no external
     // geocoding/search API (Google's is deliberately not shipped on iOS).
     const selectSearchResult = useCallback((pantry: Pantry) => {
+        Keyboard.dismiss();
         setSearchQuery('');
         setSearchFocused(false);
         mapRef.current?.animateToRegion({

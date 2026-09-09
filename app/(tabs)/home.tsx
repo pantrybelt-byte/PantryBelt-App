@@ -52,23 +52,18 @@ export default function HomeScreen() {
         }
     };
 
-    const renderResourceRow = (item: typeof FIND_FOOD[number] | typeof PROGRAMS[number], isLast: boolean) => (
-        <View key={item.id}>
-            <TouchableOpacity
-                style={styles.resourceRow}
-                onPress={() => handleQuickLink(item)}
-            >
-                <View style={[styles.resourceIcon, { backgroundColor: theme.input }]}>
-                    <Ionicons name={item.icon} size={20} color={theme.subtext} />
-                </View>
-                <View style={styles.resourceTextWrap}>
-                    <Text style={[styles.resourceTitle, { color: theme.text }]}>{item.title}</Text>
-                    <Text style={[styles.resourceSub, { color: theme.subtext }]}>{item.sub}</Text>
-                </View>
-                <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
-            </TouchableOpacity>
-            {!isLast && <View style={[styles.resourceDivider, { backgroundColor: theme.border }]} />}
-        </View>
+    const renderResourceCard = (item: typeof FIND_FOOD[number] | typeof PROGRAMS[number]) => (
+        <TouchableOpacity
+            key={item.id}
+            style={[styles.resourceCard, { backgroundColor: theme.card }, SHADOWS.md]}
+            onPress={() => handleQuickLink(item)}
+        >
+            <View style={[styles.resourceCardIcon, { backgroundColor: theme.input }]}>
+                <Ionicons name={item.icon} size={24} color={theme.primary} />
+            </View>
+            <Text style={[styles.resourceCardTitle, { color: theme.text }]}>{item.title}</Text>
+            <Text style={[styles.resourceCardSub, { color: theme.subtext }]}>{item.sub}</Text>
+        </TouchableOpacity>
     );
 
     return (
@@ -135,19 +130,19 @@ export default function HomeScreen() {
                 </View>
             </View>
 
-            {/* Find Food — grouped list */}
+            {/* Find Food — quick-resource cards */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, TYPOGRAPHY.heading2, { color: theme.text }]}>Find Food</Text>
-                <View style={[styles.resourceGroup, { backgroundColor: theme.card }, SHADOWS.md]}>
-                    {FIND_FOOD.map((item, i) => renderResourceRow(item, i === FIND_FOOD.length - 1))}
+                <View style={styles.resourceGrid}>
+                    {FIND_FOOD.map(item => renderResourceCard(item))}
                 </View>
             </View>
 
-            {/* Government Programs — grouped list */}
+            {/* Government Programs — quick-resource cards */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, TYPOGRAPHY.heading2, { color: theme.text }]}>Government Programs</Text>
-                <View style={[styles.resourceGroup, { backgroundColor: theme.card }, SHADOWS.md]}>
-                    {PROGRAMS.map((item, i) => renderResourceRow(item, i === PROGRAMS.length - 1))}
+                <View style={styles.resourceGrid}>
+                    {PROGRAMS.map(item => renderResourceCard(item))}
                 </View>
             </View>
 
@@ -216,13 +211,11 @@ const styles = StyleSheet.create({
     badgeRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, paddingHorizontal: SPACING.sm, paddingVertical: SPACING.xs, borderRadius: RADIUS.sm },
     learnMore: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, marginTop: SPACING.md },
 
-    resourceGroup: { borderRadius: RADIUS.lg, overflow: 'hidden' },
-    resourceRow: { flexDirection: 'row', alignItems: 'center', padding: SPACING.md + 2, gap: SPACING.md },
-    resourceIcon: { width: 36, height: 36, borderRadius: RADIUS.md, alignItems: 'center', justifyContent: 'center' },
-    resourceTextWrap: { flex: 1 },
-    resourceTitle: { fontSize: 15, fontWeight: '600' },
-    resourceSub: { fontSize: 12, marginTop: SPACING.xxs },
-    resourceDivider: { height: 1, marginLeft: 60 },
+    resourceGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.md },
+    resourceCard: { width: '47%', padding: SPACING.lg, borderRadius: RADIUS.lg, alignItems: 'center', gap: SPACING.sm },
+    resourceCardIcon: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center' },
+    resourceCardTitle: { fontSize: 14, fontWeight: '600', textAlign: 'center' },
+    resourceCardSub: { fontSize: 11, textAlign: 'center', marginTop: -SPACING.xxs },
 
     tipCard: { borderRadius: RADIUS.lg, padding: SPACING.screenPadding },
     tipRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
