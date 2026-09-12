@@ -33,6 +33,7 @@ type Slide = {
     visual: 'logo' | 'map' | 'pete';
     features?: { icon: string; text: string }[];
     colorLegend?: boolean;
+    safetyDisclaimer?: boolean;
 };
 
 const SLIDES: Slide[] = [
@@ -55,6 +56,7 @@ const SLIDES: Slide[] = [
             { icon: 'navigate', text: 'Get directions with one tap' },
         ],
         colorLegend: true,
+        safetyDisclaimer: true,
     },
     {
         id: 'pete',
@@ -124,13 +126,31 @@ export default function OnboardingScreen() {
 
             {item.colorLegend && (
                 <View style={[styles.legendList, { backgroundColor: theme.card, borderColor: theme.border }]}>
-                    {TIER_LEGEND.map(t => (
+                    {/* 'Verified' (green) intentionally excluded here: it mirrors
+                        map.tsx's pantryTier(), which gates green on
+                        operatorPortalAccess + miniProfile — neither field is set on
+                        any document yet, so no pantry can render green today.
+                        Introducing a new user to a color they'll never see on the
+                        map would be misleading. TIER_LEGEND itself is left whole
+                        (including the green entry) so this filter is the only
+                        thing to remove once the operator portal starts setting
+                        those fields. */}
+                    {TIER_LEGEND.filter(t => t.label !== 'Verified').map(t => (
                         <View key={t.label} style={styles.legendRow}>
                             <View style={[styles.legendDot, { backgroundColor: t.color }]} />
                             <Text style={[styles.legendLabel, { color: theme.text }]}>{t.label}</Text>
                             <Text style={[styles.legendDesc, { color: theme.subtext }]}>{t.desc}</Text>
                         </View>
                     ))}
+                </View>
+            )}
+
+            {item.safetyDisclaimer && (
+                <View style={[styles.safetyBanner, { backgroundColor: theme.dark ? '#3d1f0026' : '#fff4e5', borderColor: theme.dark ? '#7a4a0080' : '#f5c98c' }]}>
+                    <Ionicons name="warning" size={18} color="#b57900" />
+                    <Text style={[styles.safetyText, { color: theme.dark ? '#f5c98c' : '#7a4a00' }]}>
+                        Safety Disclaimer: Do not use the AccessBelt map or interact with the application while driving. Please secure your vehicle in a safe location before searching for nearby resources.
+                    </Text>
                 </View>
             )}
 
@@ -334,6 +354,24 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 12,
         lineHeight: 16,
+    },
+
+    // Driving-safety disclaimer
+    safetyBanner: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 8,
+        alignSelf: 'stretch',
+        borderRadius: 14,
+        padding: 12,
+        borderWidth: 1,
+        marginBottom: 16,
+    },
+    safetyText: {
+        flex: 1,
+        fontSize: 12,
+        lineHeight: 16,
+        fontWeight: '500',
     },
 
     // Feature bullets

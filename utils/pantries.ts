@@ -8,6 +8,7 @@
 
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { computeMapEligible, sanitizeWebsite } from './mapEligibility';
 
 export const ALABAMA_COUNTIES = [
     'Autauga', 'Baldwin', 'Barbour', 'Bibb', 'Blount', 'Bullock', 'Butler',
@@ -44,6 +45,10 @@ export type PantryResult = {
     verified: boolean;
     lat: number;
     lng: number;
+    // Computed client-side at read time (utils/mapEligibility.ts) — never
+    // written to Firestore. false when this doc's coordinates collide with
+    // another doc's to 5 decimals, or fall outside its named county.
+    mapEligible: boolean;
 };
 
 /** Great-circle distance in miles between two lat/lng points (haversine). */
@@ -95,10 +100,11 @@ export async function fetchPantriesByCounty(county: string, max = 8): Promise<Pa
             phone: r.phone ?? '',
             hours: formatHours(r.hours),
             address: [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
-            website: r.website ?? '',
+            website: sanitizeWebsite(d.id, r.website ?? ''),
             verified: r.verified ?? false,
             lat: typeof coords.lat === 'number' ? coords.lat : 0,
             lng: typeof coords.lng === 'number' ? coords.lng : 0,
+            mapEligible: computeMapEligible(d.id),
         };
     });
 }
@@ -126,10 +132,11 @@ export async function fetchNearestPantries(lat: number, lng: number, max = 8): P
             phone: r.phone ?? '',
             hours: formatHours(r.hours),
             address: [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
-            website: r.website ?? '',
+            website: sanitizeWebsite(d.id, r.website ?? ''),
             verified: r.verified ?? false,
             lat: typeof coords.lat === 'number' ? coords.lat : 0,
             lng: typeof coords.lng === 'number' ? coords.lng : 0,
+            mapEligible: computeMapEligible(d.id),
         };
     }).filter(p => p.lat !== 0 && p.lng !== 0 && !isNaN(p.lat) && !isNaN(p.lng));
 

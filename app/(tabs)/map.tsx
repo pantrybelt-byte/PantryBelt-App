@@ -15,6 +15,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
+import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
 import { distanceMiles } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
@@ -35,6 +36,10 @@ type Pantry = {
     socialMedia: string[];
     operatorPortalAccess: boolean;
     hasMiniProfile: boolean;
+    // Computed client-side at read time (utils/mapEligibility.ts) — never
+    // written to Firestore. false when this doc's coordinates collide with
+    // another doc's to 5 decimals, or fall outside its named county.
+    mapEligible: boolean;
 };
 
 // ── Verification color tiers ──────────────────────────────
@@ -173,7 +178,7 @@ export default function MapScreen() {
                         lat:         typeof coords.lat === 'number' ? coords.lat : 0,
                         lng:         typeof coords.lng === 'number' ? coords.lng : 0,
                         phone:       r.phone       ?? '',
-                        website:     r.website     ?? '',
+                        website:     sanitizeWebsite(d.id, r.website ?? ''),
                         address:     [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
                         eligibility: r.eligibilityNotes ?? '',
                         docs:        Array.isArray(r.docsRequired) ? r.docsRequired.join(', ') : '',
@@ -182,6 +187,7 @@ export default function MapScreen() {
                         socialMedia: Array.isArray(r.socialMedia) ? r.socialMedia : [],
                         operatorPortalAccess: r.operatorPortalAccess ?? false,
                         hasMiniProfile: r.miniProfile != null,
+                        mapEligible: computeMapEligible(d.id),
                     } as Pantry;
                 });
 
@@ -305,12 +311,17 @@ export default function MapScreen() {
         Keyboard.dismiss();
         setSearchQuery('');
         setSearchFocused(false);
-        mapRef.current?.animateToRegion({
-            latitude: pantry.lat,
-            longitude: pantry.lng,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-        }, 800);
+        // Only fly the camera to pantries with a confirmed location — for
+        // mapEligible === false, the coordinates are a known duplicate/
+        // out-of-county placeholder, so don't navigate the map there.
+        if (pantry.mapEligible) {
+            mapRef.current?.animateToRegion({
+                latitude: pantry.lat,
+                longitude: pantry.lng,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+            }, 800);
+        }
         openPantryDetails(pantry);
     }, [openPantryDetails]);
 
@@ -456,7 +467,7 @@ export default function MapScreen() {
                 onMapReady={() => setMapReady(true)}
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
-                {filtered.map(pantry => {
+                {filtered.filter(p => p.mapEligible).map(pantry => {
                     const tier = pantryTier(pantry);
                     const openDetails = () => openPantryDetails(pantry);
 
@@ -566,10 +577,13 @@ export default function MapScreen() {
             {/* Verification tier legend */}
             {!searchOpen && (
                 <View style={[styles.legend, { backgroundColor: theme.card }]} pointerEvents="none">
-                    <View style={styles.legendRow}>
-                        <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.green }]} />
-                        <Text style={[styles.legendText, { color: theme.subtext }]}>Verified</Text>
-                    </View>
+                    {/* Green/"Verified" intentionally omitted: it's gated on
+                        operatorPortalAccess + miniProfile, and nothing sets either
+                        field yet (see pantryTier() above), so no pantry can ever
+                        render green today. Showing it in the legend would promise
+                        a category that never appears. pantryTier()/TIER_COLORS.green
+                        are untouched — this swatch comes back on its own the moment
+                        the operator portal starts setting those fields. */}
                     <View style={styles.legendRow}>
                         <View style={[styles.legendDot, { backgroundColor: TIER_COLORS.orange }]} />
                         <Text style={[styles.legendText, { color: theme.subtext }]}>Active</Text>
@@ -697,9 +711,16 @@ export default function MapScreen() {
                         {!selected.verified && (
                             <View style={[styles.unverifiedBanner, { backgroundColor: theme.dark ? '#ffffff0d' : '#f5f5f5' }]}>
                                 <Ionicons name="information-circle-outline" size={16} color="#888" />
-                                <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
-                                    This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
-                                </Text>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
+                                        This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
+                                    </Text>
+                                    {!selected.mapEligible && (
+                                        <Text style={[styles.unverifiedBannerText, { color: theme.subtext, marginTop: 4 }]}>
+                                            We do not have a confirmed location for this pantry.
+                                        </Text>
+                                    )}
+                                </View>
                             </View>
                         )}
 
@@ -722,6 +743,7 @@ export default function MapScreen() {
                                 <Text style={styles.modalBtnTextOutline}>{selected.phone}</Text>
                             </TouchableOpacity>
                             )}
+                            {selected.mapEligible && (
                             <TouchableOpacity
                                 style={styles.modalBtn}
                                 onPress={async () => {
@@ -755,6 +777,7 @@ export default function MapScreen() {
                                 <Ionicons name="navigate-outline" size={16} color="#fff" />
                                 <Text style={styles.modalBtnText}>Directions</Text>
                             </TouchableOpacity>
+                            )}
                         </View>
 
                         {selected.website !== '' && (

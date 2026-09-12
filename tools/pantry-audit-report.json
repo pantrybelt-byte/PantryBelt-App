@@ -1,0 +1,1203 @@
+{
+  "timestamp": "2026-09-12T14:14:21.139Z",
+  "totalAgencies": 884,
+  "coverage": {
+    "coveredCounties": 67,
+    "emptyCounties": 0,
+    "coverageRate": "100.0%",
+    "empty": [],
+    "byCounty": [
+      {
+        "county": "Jefferson",
+        "total": 119,
+        "active": 119
+      },
+      {
+        "county": "Mobile",
+        "total": 97,
+        "active": 97
+      },
+      {
+        "county": "Montgomery",
+        "total": 68,
+        "active": 68
+      },
+      {
+        "county": "Madison",
+        "total": 54,
+        "active": 54
+      },
+      {
+        "county": "Tuscaloosa",
+        "total": 29,
+        "active": 29
+      },
+      {
+        "county": "Dallas",
+        "total": 27,
+        "active": 27
+      },
+      {
+        "county": "Houston",
+        "total": 26,
+        "active": 26
+      },
+      {
+        "county": "Baldwin",
+        "total": 19,
+        "active": 19
+      },
+      {
+        "county": "Shelby",
+        "total": 19,
+        "active": 19
+      },
+      {
+        "county": "Lee",
+        "total": 18,
+        "active": 18
+      },
+      {
+        "county": "Etowah",
+        "total": 17,
+        "active": 17
+      },
+      {
+        "county": "Cullman",
+        "total": 15,
+        "active": 15
+      },
+      {
+        "county": "Morgan",
+        "total": 15,
+        "active": 15
+      },
+      {
+        "county": "Walker",
+        "total": 15,
+        "active": 15
+      },
+      {
+        "county": "Calhoun",
+        "total": 13,
+        "active": 13
+      },
+      {
+        "county": "Barbour",
+        "total": 12,
+        "active": 12
+      },
+      {
+        "county": "Dale",
+        "total": 12,
+        "active": 12
+      },
+      {
+        "county": "Jackson",
+        "total": 12,
+        "active": 12
+      },
+      {
+        "county": "Lauderdale",
+        "total": 12,
+        "active": 12
+      },
+      {
+        "county": "Marengo",
+        "total": 12,
+        "active": 12
+      },
+      {
+        "county": "Limestone",
+        "total": 10,
+        "active": 10
+      },
+      {
+        "county": "Russell",
+        "total": 10,
+        "active": 10
+      },
+      {
+        "county": "Talladega",
+        "total": 10,
+        "active": 10
+      },
+      {
+        "county": "Tallapoosa",
+        "total": 10,
+        "active": 10
+      },
+      {
+        "county": "Autauga",
+        "total": 9,
+        "active": 9
+      },
+      {
+        "county": "Marshall",
+        "total": 9,
+        "active": 9
+      },
+      {
+        "county": "Perry",
+        "total": 9,
+        "active": 8
+      },
+      {
+        "county": "St. Clair",
+        "total": 9,
+        "active": 9
+      },
+      {
+        "county": "Blount",
+        "total": 8,
+        "active": 8
+      },
+      {
+        "county": "Coffee",
+        "total": 8,
+        "active": 8
+      },
+      {
+        "county": "Covington",
+        "total": 8,
+        "active": 8
+      },
+      {
+        "county": "Lawrence",
+        "total": 8,
+        "active": 8
+      },
+      {
+        "county": "Monroe",
+        "total": 8,
+        "active": 8
+      },
+      {
+        "county": "Butler",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Chilton",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Elmore",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Escambia",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Macon",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Washington",
+        "total": 7,
+        "active": 7
+      },
+      {
+        "county": "Clarke",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Clay",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Colbert",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "DeKalb",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Geneva",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Henry",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Marion",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Wilcox",
+        "total": 6,
+        "active": 6
+      },
+      {
+        "county": "Franklin",
+        "total": 5,
+        "active": 5
+      },
+      {
+        "county": "Pickens",
+        "total": 5,
+        "active": 5
+      },
+      {
+        "county": "Randolph",
+        "total": 5,
+        "active": 5
+      },
+      {
+        "county": "Bibb",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Chambers",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Cherokee",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Choctaw",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Lowndes",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Sumter",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Winston",
+        "total": 4,
+        "active": 4
+      },
+      {
+        "county": "Bullock",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Cleburne",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Conecuh",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Hale",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Lamar",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Pike",
+        "total": 3,
+        "active": 3
+      },
+      {
+        "county": "Coosa",
+        "total": 2,
+        "active": 2
+      },
+      {
+        "county": "Fayette",
+        "total": 2,
+        "active": 2
+      },
+      {
+        "county": "Crenshaw",
+        "total": 1,
+        "active": 1
+      },
+      {
+        "county": "Greene",
+        "total": 1,
+        "active": 1
+      }
+    ]
+  },
+  "coordinates": {
+    "checked": 884,
+    "missingOrZero": 0,
+    "outOfBounds": 61,
+    "outOfBoundsDetails": [
+      {
+        "docId": "3q6sgNfeVQPF1CAmwmN1",
+        "name": "Flat Rock Community Center",
+        "county": "Jackson",
+        "lat": 34.769637400665,
+        "lng": -85.691455749899,
+        "expected": {
+          "minLat": 34.55,
+          "maxLat": 35,
+          "minLng": -86.4,
+          "maxLng": -85.8
+        }
+      },
+      {
+        "docId": "4FiRdkF80c0MyX12HqPP",
+        "name": "Uriah United Methodist Church - The Shepard's Pantry",
+        "county": "Monroe",
+        "lat": 31.30565391,
+        "lng": -87.50217693,
+        "expected": {
+          "minLat": 31.33,
+          "maxLat": 31.82,
+          "minLng": -87.6,
+          "maxLng": -87
+        }
+      },
+      {
+        "docId": "4R8OJYKZcKA8k0zYbhKQ",
+        "name": "Lake Elam Missionary Baptist Church",
+        "county": "Elmore",
+        "lat": 32.476136,
+        "lng": -86.3553222,
+        "expected": {
+          "minLat": 32.35,
+          "maxLat": 32.7,
+          "minLng": -86.35,
+          "maxLng": -85.85
+        }
+      },
+      {
+        "docId": "4ePu8z3HEz6DTqqxQdTo",
+        "name": "A Servant's Heart Mission Pantry",
+        "county": "Etowah",
+        "lat": 33.9677303,
+        "lng": -85.76905,
+        "expected": {
+          "minLat": 33.9,
+          "maxLat": 34.28,
+          "minLng": -86.35,
+          "maxLng": -85.85
+        }
+      },
+      {
+        "docId": "8iPxghY8rWp4udObJjIp",
+        "name": "Cane Creek Missionary Baptist Pantry",
+        "county": "Jefferson",
+        "lat": 33.8143112,
+        "lng": -86.8477415,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "8nnwTPmKIaAAQx3tugP0",
+        "name": "Kikstart Incorporated Pantry",
+        "county": "Jefferson",
+        "lat": 33.3674581,
+        "lng": -87.0121489,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "94gfhAr9INJzT03gyTJh",
+        "name": "Empowerment Tabernacle Christian Center",
+        "county": "Escambia",
+        "lat": 31.03745999,
+        "lng": -87.49175198,
+        "expected": {
+          "minLat": 30.97,
+          "maxLat": 31.38,
+          "minLng": -87.47,
+          "maxLng": -86.85
+        }
+      },
+      {
+        "docId": "BACCMBEbApOnNuYj3PsS",
+        "name": "Friends of Theo Ratlif",
+        "county": "Marengo",
+        "lat": 32.50498616736,
+        "lng": -87.826445480319,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "BOQgFGpPjRLejy7ltQzK",
+        "name": "Leeds First Methodist Church Pantry",
+        "county": "Jefferson",
+        "lat": 33.5439856,
+        "lng": -86.544669,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "BR4O49H2E7enhZeDlycI",
+        "name": "Steele United Methodist Church Pantry",
+        "county": "St. Clair",
+        "lat": 33.9398201,
+        "lng": -86.2016435,
+        "expected": {
+          "minLat": 33.52,
+          "maxLat": 33.9,
+          "minLng": -86.57,
+          "maxLng": -86.1
+        }
+      },
+      {
+        "docId": "BbL2rQIRdwbAOV6Gx0m1",
+        "name": "Greater Ebenezer Missionary Baptist Church",
+        "county": "Lee",
+        "lat": 32.4008557,
+        "lng": -85.7220855,
+        "expected": {
+          "minLat": 32.45,
+          "maxLat": 32.8,
+          "minLng": -85.55,
+          "maxLng": -85.1
+        }
+      },
+      {
+        "docId": "BgFiIMdSmhRNEkkg8Afg",
+        "name": "Bethlehem Baptist Church",
+        "county": "Madison",
+        "lat": 34.976906101339,
+        "lng": -86.645679154114,
+        "expected": {
+          "minLat": 34.53,
+          "maxLat": 34.92,
+          "minLng": -86.82,
+          "maxLng": -86.3
+        }
+      },
+      {
+        "docId": "CmxxjQyzdKakhFpnrM5G",
+        "name": "The HUB Community Development Corporation, Inc. Pantry",
+        "county": "Jefferson",
+        "lat": 33.3325349,
+        "lng": -86.9595863,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "E5j1wrMo1e0T8qMOHVCG",
+        "name": "Shepherd of the Bay Lutheran Church",
+        "county": "Baldwin",
+        "lat": 30.41228401,
+        "lng": -87.44791898,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.08,
+          "minLng": -88.06,
+          "maxLng": -87.52
+        }
+      },
+      {
+        "docId": "E7Uk23dRXFOzQSy4ILEu",
+        "name": "Operation Homecare",
+        "county": "Marengo",
+        "lat": 32.4918,
+        "lng": -88.2959,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "HFSYhxMQqowShczZ5b4M",
+        "name": "First Baptist Church Childersburg Pantry",
+        "county": "Talladega",
+        "lat": 33.2765791,
+        "lng": -86.3541683,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.57,
+          "minLng": -86.35,
+          "maxLng": -85.78
+        }
+      },
+      {
+        "docId": "HfnNQl28Fugsqlw3P0KW",
+        "name": "Upper Room Church Pantry",
+        "county": "Shelby",
+        "lat": 33.0765749,
+        "lng": -86.87309,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.5,
+          "minLng": -86.95,
+          "maxLng": -86.48
+        }
+      },
+      {
+        "docId": "JDgP8NUKFaZYNhmyv7pB",
+        "name": "Winfield First Methodist Church",
+        "county": "Marion",
+        "lat": 33.9326712,
+        "lng": -87.80414,
+        "expected": {
+          "minLat": 33.95,
+          "maxLat": 34.37,
+          "minLng": -88.2,
+          "maxLng": -87.63
+        }
+      },
+      {
+        "docId": "LCQV5jd17JDMPp9TDn25",
+        "name": "Judson Baptist Church",
+        "county": "Henry",
+        "lat": 31.656657399136,
+        "lng": -85.176422582177,
+        "expected": {
+          "minLat": 31.25,
+          "maxLat": 31.62,
+          "minLng": -85.53,
+          "maxLng": -85.05
+        }
+      },
+      {
+        "docId": "LP8jaXstJkerEXUAppRV",
+        "name": "Thomasville Church of God in Christ",
+        "county": "Clarke",
+        "lat": 31.905538,
+        "lng": -87.748244,
+        "expected": {
+          "minLat": 31.34,
+          "maxLat": 31.86,
+          "minLng": -88.2,
+          "maxLng": -87.52
+        }
+      },
+      {
+        "docId": "LpjPJJPtozS0rWf1FpuT",
+        "name": "St. Joseph Conference of Society of St. Vincent de Paul",
+        "county": "Baldwin",
+        "lat": 30.410248,
+        "lng": -87.44194998,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.08,
+          "minLng": -88.06,
+          "maxLng": -87.52
+        }
+      },
+      {
+        "docId": "OEqfciJp42dGSKivjf5h",
+        "name": "Yellow Bluff Baptist Church",
+        "county": "Wilcox",
+        "lat": 31.971186581375,
+        "lng": -87.492200104028,
+        "expected": {
+          "minLat": 31.73,
+          "maxLat": 32.22,
+          "minLng": -87.48,
+          "maxLng": -86.88
+        }
+      },
+      {
+        "docId": "OHHe6MgKJ1CITzQcRR59",
+        "name": "Open Door Tabernacle",
+        "county": "Russell",
+        "lat": 32.6453,
+        "lng": -85.3783,
+        "expected": {
+          "minLat": 32.08,
+          "maxLat": 32.55,
+          "minLng": -85.48,
+          "maxLng": -84.98
+        }
+      },
+      {
+        "docId": "PaBBudu1Z9t2chNlV70R",
+        "name": "Millry Baptist Church",
+        "county": "Washington",
+        "lat": 31.636186,
+        "lng": -88.314317,
+        "expected": {
+          "minLat": 31.05,
+          "maxLat": 31.6,
+          "minLng": -88.42,
+          "maxLng": -87.95
+        }
+      },
+      {
+        "docId": "Q7xKhjk34m140LEwNHv9",
+        "name": "Calvary Baptist Church",
+        "county": "Mobile",
+        "lat": 31.13483202,
+        "lng": -88.25033601,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      },
+      {
+        "docId": "QAC57jXNzYyVUW41fRsQ",
+        "name": "Moundville Baptist Church",
+        "county": "Hale",
+        "lat": 32.9998951,
+        "lng": -87.6272781,
+        "expected": {
+          "minLat": 32.5,
+          "maxLat": 32.95,
+          "minLng": -87.77,
+          "maxLng": -87.22
+        }
+      },
+      {
+        "docId": "UGRPyyET2Ka0jwuQFH2i",
+        "name": "Oakley Baptist Church",
+        "county": "Madison",
+        "lat": 34.982635729513,
+        "lng": -86.39349530056,
+        "expected": {
+          "minLat": 34.53,
+          "maxLat": 34.92,
+          "minLng": -86.82,
+          "maxLng": -86.3
+        }
+      },
+      {
+        "docId": "UuGNAT7799UmJL1ECPSf",
+        "name": "First Baptist Church Haleyville Pantry",
+        "county": "Winston",
+        "lat": 34.2264381,
+        "lng": -87.6200551,
+        "expected": {
+          "minLat": 33.95,
+          "maxLat": 34.32,
+          "minLng": -87.55,
+          "maxLng": -87.15
+        }
+      },
+      {
+        "docId": "WUWLGgN5DxwR8axhi3Kf",
+        "name": "Copeland Assembly of God",
+        "county": "Washington",
+        "lat": 31.56064401,
+        "lng": -88.42372003,
+        "expected": {
+          "minLat": 31.05,
+          "maxLat": 31.6,
+          "minLng": -88.42,
+          "maxLng": -87.95
+        }
+      },
+      {
+        "docId": "WpEDhHaqRBFlYBkzJMf7",
+        "name": "The Grace Place Pantry",
+        "county": "Jefferson",
+        "lat": 33.3494256,
+        "lng": -87.0151875,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "XR9E6id7oMLWNTJxT0Lf",
+        "name": "Iglesia del Nazareno Monantial de Vida",
+        "county": "Elmore",
+        "lat": 32.5070973,
+        "lng": -86.3808617,
+        "expected": {
+          "minLat": 32.35,
+          "maxLat": 32.7,
+          "minLng": -86.35,
+          "maxLng": -85.85
+        }
+      },
+      {
+        "docId": "XT4cMXWtEJQv5yI4UPjw",
+        "name": "Macklin Baptist Church",
+        "county": "Jackson",
+        "lat": 34.716947188154,
+        "lng": -85.746997422233,
+        "expected": {
+          "minLat": 34.55,
+          "maxLat": 35,
+          "minLng": -86.4,
+          "maxLng": -85.8
+        }
+      },
+      {
+        "docId": "XZXFzSDVoosrdrs8Pk8X",
+        "name": "Greater Mircale House of Prayer",
+        "county": "Hale",
+        "lat": 33.0038037,
+        "lng": -87.6169279,
+        "expected": {
+          "minLat": 32.5,
+          "maxLat": 32.95,
+          "minLng": -87.77,
+          "maxLng": -87.22
+        }
+      },
+      {
+        "docId": "Y9MGEujxFcbeNDCwt0wp",
+        "name": "Pleasant Hill United Methodist Church Pantry",
+        "county": "Jefferson",
+        "lat": 33.3308003,
+        "lng": -86.9975564,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "YRDs9EpYXwtr63TogIYq",
+        "name": "Pine Grove Missionary Baptist Church",
+        "county": "Mobile",
+        "lat": 31.09048121,
+        "lng": -87.99317379,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      },
+      {
+        "docId": "ZQ8uoYSqTyVDM5WWnwHc",
+        "name": "Braxton Senior Care Facility, Inc.",
+        "county": "Marengo",
+        "lat": 32.514151152027,
+        "lng": -87.832749920579,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "ZfKXgRQvpMF89fUTQFvw",
+        "name": "Anointed Warrior Hill Baptist Church",
+        "county": "Autauga",
+        "lat": 32.0785972,
+        "lng": -86.0626529,
+        "expected": {
+          "minLat": 32.34,
+          "maxLat": 32.71,
+          "minLng": -86.92,
+          "maxLng": -86.41
+        }
+      },
+      {
+        "docId": "adU557wFcL1njkhtbhNe",
+        "name": "Friendly Holiness Church",
+        "county": "Escambia",
+        "lat": 31.12113498,
+        "lng": -87.522243,
+        "expected": {
+          "minLat": 30.97,
+          "maxLat": 31.38,
+          "minLng": -87.47,
+          "maxLng": -86.85
+        }
+      },
+      {
+        "docId": "aeijlgFYSP33lr6pzizB",
+        "name": "New Hope Baptist Church",
+        "county": "Fayette",
+        "lat": 33.5374133,
+        "lng": -87.6864268,
+        "expected": {
+          "minLat": 33.55,
+          "maxLat": 33.95,
+          "minLng": -87.95,
+          "maxLng": -87.43
+        }
+      },
+      {
+        "docId": "dPOsK6JCg1nVKnszT5rC",
+        "name": "MOWA Band/Choctaw/Mobile",
+        "county": "Mobile",
+        "lat": 31.13983199,
+        "lng": -88.06332301,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      },
+      {
+        "docId": "eeug3pY8BaCL2TVBzw7B",
+        "name": "Rosalie Baptist Ch.",
+        "county": "Jackson",
+        "lat": 34.699309417877,
+        "lng": -85.769601601303,
+        "expected": {
+          "minLat": 34.55,
+          "maxLat": 35,
+          "minLng": -86.4,
+          "maxLng": -85.8
+        }
+      },
+      {
+        "docId": "h2VNgXnOVZ1isqHE0MFp",
+        "name": "Turning Point Church",
+        "county": "Baldwin",
+        "lat": 30.514618,
+        "lng": -87.47292304,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.08,
+          "minLng": -88.06,
+          "maxLng": -87.52
+        }
+      },
+      {
+        "docId": "hUuv6bgPA5dtPFP2kZmQ",
+        "name": "Community Bs Auxiliary Client Choice Senior Grocery Program",
+        "county": "Winston",
+        "lat": 34.0521919,
+        "lng": -87.5530414,
+        "expected": {
+          "minLat": 33.95,
+          "maxLat": 34.32,
+          "minLng": -87.55,
+          "maxLng": -87.15
+        }
+      },
+      {
+        "docId": "iRkdjtaehedtIdCGRRDW",
+        "name": "Build-A-Bridge Pantry",
+        "county": "Shelby",
+        "lat": 33.3712671,
+        "lng": -86.4161316,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.5,
+          "minLng": -86.95,
+          "maxLng": -86.48
+        }
+      },
+      {
+        "docId": "iUvTO8Ihlhfws3bNWX31",
+        "name": "Demopolis Food Pantry",
+        "county": "Marengo",
+        "lat": 32.5173,
+        "lng": -87.8364,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "j2n4Jh1otodx2YqesFI7",
+        "name": "Christian's Place Mission Pantry",
+        "county": "Walker",
+        "lat": 33.9907184,
+        "lng": -87.4854948,
+        "expected": {
+          "minLat": 33.68,
+          "maxLat": 34.1,
+          "minLng": -87.45,
+          "maxLng": -86.95
+        }
+      },
+      {
+        "docId": "kGeO8mLSkoEG26nmNUl5",
+        "name": "Zion Star A.M.E. Zion Church",
+        "county": "Escambia",
+        "lat": 31.030191,
+        "lng": -87.48650801,
+        "expected": {
+          "minLat": 30.97,
+          "maxLat": 31.38,
+          "minLng": -87.47,
+          "maxLng": -86.85
+        }
+      },
+      {
+        "docId": "l5ZbUWsCpusbQPsIrcaf",
+        "name": "Bethel Apostolic Holiness",
+        "county": "Marion",
+        "lat": 33.9208754,
+        "lng": -87.7885193,
+        "expected": {
+          "minLat": 33.95,
+          "maxLat": 34.37,
+          "minLng": -88.2,
+          "maxLng": -87.63
+        }
+      },
+      {
+        "docId": "nO3fN5WWERi8gDDeSeTI",
+        "name": "Citronelle United Methodist Church",
+        "county": "Mobile",
+        "lat": 31.095454,
+        "lng": -88.23161704,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      },
+      {
+        "docId": "nd5qh43KXRmFwVJwKSwM",
+        "name": "Waterstone Church Pantry",
+        "county": "Jefferson",
+        "lat": 33.8116153,
+        "lng": -86.8072364,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "npb2fX2CRCZyGYVlevOY",
+        "name": "Christian Chapel Baptist Church",
+        "county": "Marengo",
+        "lat": 32.514385020996,
+        "lng": -87.84253137383,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "pkJxbonxdTNaaZe9zl15",
+        "name": "Ward Chapel AME Church Pantry",
+        "county": "Shelby",
+        "lat": 33.0994545,
+        "lng": -86.8656207,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.5,
+          "minLng": -86.95,
+          "maxLng": -86.48
+        }
+      },
+      {
+        "docId": "pnzwmxIkmyOrgbWTGoaZ",
+        "name": "Huntsville Assistance Program (HAP)- Toney",
+        "county": "Madison",
+        "lat": 34.92359949858,
+        "lng": -86.713598127363,
+        "expected": {
+          "minLat": 34.53,
+          "maxLat": 34.92,
+          "minLng": -86.82,
+          "maxLng": -86.3
+        }
+      },
+      {
+        "docId": "rS00RJkGnPG3GH7sd0QL",
+        "name": "Old Mount Pleasant Missionary Baptist Church",
+        "county": "Montgomery",
+        "lat": 32.0264042,
+        "lng": -86.0312689,
+        "expected": {
+          "minLat": 32.1,
+          "maxLat": 32.58,
+          "minLng": -86.5,
+          "maxLng": -85.95
+        }
+      },
+      {
+        "docId": "tkTOmlewkY9vuEK2zrGg",
+        "name": "Leeds Outreach Pantry",
+        "county": "Jefferson",
+        "lat": 33.544922,
+        "lng": -86.5640108,
+        "expected": {
+          "minLat": 33.38,
+          "maxLat": 33.8,
+          "minLng": -87.22,
+          "maxLng": -86.57
+        }
+      },
+      {
+        "docId": "ublxNadpy2zNr7Cv9jmd",
+        "name": "Eastern Star Baptist Church",
+        "county": "Marengo",
+        "lat": 32.50498616736,
+        "lng": -87.826445480319,
+        "expected": {
+          "minLat": 31.98,
+          "maxLat": 32.5,
+          "minLng": -88.12,
+          "maxLng": -87.47
+        }
+      },
+      {
+        "docId": "vDpJCzTtBKx91gh8Hj2o",
+        "name": "Triumph Ministries, Inc.",
+        "county": "Mobile",
+        "lat": 31.06624701,
+        "lng": -88.23380497,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      },
+      {
+        "docId": "xbytkwdsus9Fv8RpPUag",
+        "name": "First United Methodist Church - Slocomb",
+        "county": "Geneva",
+        "lat": 31.10772435637,
+        "lng": -85.59357939701,
+        "expected": {
+          "minLat": 30.98,
+          "maxLat": 31.42,
+          "minLng": -86.2,
+          "maxLng": -85.6
+        }
+      },
+      {
+        "docId": "y3TjgGQhQDVDdHQboA1I",
+        "name": "Saint Mary's Client Choice Senior Grocery Program",
+        "county": "Talladega",
+        "lat": 33.624168,
+        "lng": -86.063007,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.57,
+          "minLng": -86.35,
+          "maxLng": -85.78
+        }
+      },
+      {
+        "docId": "yJupMdjgdmJZ5InJG04A",
+        "name": "Lincoln Food Pantry",
+        "county": "Talladega",
+        "lat": 33.6070224,
+        "lng": -86.1187982,
+        "expected": {
+          "minLat": 33.1,
+          "maxLat": 33.57,
+          "minLng": -86.35,
+          "maxLng": -85.78
+        }
+      },
+      {
+        "docId": "zD7TRUUIaig2iyRlAT77",
+        "name": "The Lift Worldwide Corp",
+        "county": "Mobile",
+        "lat": 31.11411501,
+        "lng": -88.23512,
+        "expected": {
+          "minLat": 30.22,
+          "maxLat": 31.02,
+          "minLng": -88.43,
+          "maxLng": -87.92
+        }
+      }
+    ],
+    "missingDetails": []
+  },
+  "dataQuality": {
+    "unknownCounties": [],
+    "countyMismatches": [],
+    "statusAnomalies": [],
+    "duplicateNames": [
+      {
+        "name": "catholic social services",
+        "count": 2,
+        "docIds": [
+          "0UqTTAfHiiwGEDTFhyHJ",
+          "qsvgFXWBZV31BXbSGPFj"
+        ]
+      },
+      {
+        "name": "lakewood baptist church",
+        "count": 2,
+        "docIds": [
+          "1sAzWkohrD87PJI6jwr6",
+          "D3ksTykaBJQQsrFofCzj"
+        ]
+      },
+      {
+        "name": "empowerment tabernacle christian center",
+        "count": 2,
+        "docIds": [
+          "94gfhAr9INJzT03gyTJh",
+          "b70BOK2Y4mG8YmrlRDTk"
+        ]
+      },
+      {
+        "name": "christian service center",
+        "count": 2,
+        "docIds": [
+          "Ba2v0XSnCLHO3dYcwYIf",
+          "mKrMiuwgN9un8iAmFmD0"
+        ]
+      },
+      {
+        "name": "beulah baptist church",
+        "count": 2,
+        "docIds": [
+          "LqsUgZwiQ0dYA7eJtZFv",
+          "xdSgQe5fR5Qqf0PLbSOH"
+        ]
+      },
+      {
+        "name": "trinity episcopal church",
+        "count": 2,
+        "docIds": [
+          "S6NpBbNzGGh1UPKmsgIl",
+          "drMagrPseDUyYXsPeoz2"
+        ]
+      }
+    ]
+  }
+}
