@@ -122,6 +122,12 @@ SELECT
   JSON_EXTRACT_SCALAR(data, '$.city')   AS city,
   CAST(JSON_EXTRACT_SCALAR(data, '$.lat') AS FLOAT64) AS lat,
   CAST(JSON_EXTRACT_SCALAR(data, '$.lng') AS FLOAT64) AS lng,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.pantryCount') AS INT64) AS pantry_count,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.closestPantryMiles') AS FLOAT64) AS closest_pantry_miles,
+  JSON_EXTRACT_SCALAR(data, '$.countyTier') AS county_tier,
+  JSON_EXTRACT_SCALAR(data, '$.desertSeverity') AS desert_severity,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.hourOfDay') AS INT64) AS hour_of_day,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.dayOfWeek') AS INT64) AS day_of_week,
   JSON_EXTRACT_SCALAR(data, '$.monthYear') AS month_year
 FROM `firestore_export.analytics_food_deserts_raw_latest`;
 

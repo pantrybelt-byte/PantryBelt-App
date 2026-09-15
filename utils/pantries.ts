@@ -24,6 +24,113 @@ export const ALABAMA_COUNTIES = [
     'Washington', 'Wilcox', 'Winston',
 ] as const;
 
+export type AlabamaCounty = (typeof ALABAMA_COUNTIES)[number];
+
+export type CountyTierType = 'urban' | 'micropolitan' | 'rural';
+
+export interface CountyTierConfig {
+    tier: CountyTierType;
+    nearbyRadiusMiles: number;
+    desertThresholdMiles: number;
+}
+
+// Urban counties (Metropolitan core centers): Jefferson, Madison, Mobile, Montgomery, Shelby, Tuscaloosa
+export const URBAN_COUNTIES = new Set<string>([
+    'Jefferson', 'Madison', 'Mobile', 'Montgomery', 'Shelby', 'Tuscaloosa',
+]);
+
+// Micropolitan / Suburban counties
+export const MICROPOLITAN_COUNTIES = new Set<string>([
+    'Baldwin', 'Calhoun', 'Cullman', 'Dale', 'DeKalb', 'Elmore',
+    'Etowah', 'Houston', 'Lauderdale', 'Lee', 'Limestone', 'Marshall',
+    'Morgan', 'Russell', 'St. Clair', 'Talladega',
+]);
+
+export function getCountyTierConfig(county?: string | null): CountyTierConfig {
+    if (!county) {
+        return { tier: 'rural', nearbyRadiusMiles: 25, desertThresholdMiles: 15 };
+    }
+    if (URBAN_COUNTIES.has(county)) {
+        return { tier: 'urban', nearbyRadiusMiles: 5, desertThresholdMiles: 3 };
+    }
+    if (MICROPOLITAN_COUNTIES.has(county)) {
+        return { tier: 'micropolitan', nearbyRadiusMiles: 15, desertThresholdMiles: 10 };
+    }
+    return { tier: 'rural', nearbyRadiusMiles: 25, desertThresholdMiles: 15 };
+}
+
+export type DesertSeverity = 'none' | 'moderate' | 'severe' | 'critical';
+
+export interface AdaptiveFoodDesertResult {
+    isDesert: boolean;
+    severity: DesertSeverity;
+    closestPantry: PantryResult | null;
+    closestDistanceMiles: number | null;
+    pantriesInRadius: number;
+    searchRadiusMiles: number;
+    countyTier: CountyTierType;
+    detectedCounty: string | null;
+}
+
+/**
+ * Adaptive food desert evaluator:
+ * Dynamically adjusts proximity thresholds depending on whether the user is in
+ * an Urban (5 mi radius, 3 mi desert threshold), Micropolitan (15 mi radius, 10 mi desert threshold),
+ * or Rural Black Belt county (25 mi radius, 15 mi desert threshold).
+ */
+export function evaluateAdaptiveFoodDesert<T extends { lat: number; lng: number; county?: string; city?: string; name?: string; mapEligible?: boolean }>(
+    pantries: T[],
+    userLat: number,
+    userLng: number,
+    preferredCounty?: string | null
+): AdaptiveFoodDesertResult {
+    const validPantries = pantries.filter(
+        p => p.mapEligible !== false && p.lat !== 0 && p.lng !== 0 && !isNaN(p.lat) && !isNaN(p.lng)
+    );
+
+    let closest: T | null = null;
+    let closestDist: number | null = null;
+
+    for (const p of validPantries) {
+        const d = distanceMiles(userLat, userLng, p.lat, p.lng);
+        if (closestDist === null || d < closestDist) {
+            closestDist = d;
+            closest = p;
+        }
+    }
+
+    const county = preferredCounty || closest?.county || null;
+    const tierConfig = getCountyTierConfig(county);
+
+    const pantriesInRadius = validPantries.filter(
+        p => distanceMiles(userLat, userLng, p.lat, p.lng) <= tierConfig.nearbyRadiusMiles
+    ).length;
+
+    const isDesert = pantriesInRadius === 0 || (closestDist !== null && closestDist > tierConfig.desertThresholdMiles);
+
+    let severity: DesertSeverity = 'none';
+    if (isDesert) {
+        if (closestDist === null || closestDist > tierConfig.desertThresholdMiles * 2.5) {
+            severity = 'critical';
+        } else if (closestDist > tierConfig.desertThresholdMiles * 1.5) {
+            severity = 'severe';
+        } else {
+            severity = 'moderate';
+        }
+    }
+
+    return {
+        isDesert,
+        severity,
+        closestPantry: closest as PantryResult | null,
+        closestDistanceMiles: closestDist,
+        pantriesInRadius,
+        searchRadiusMiles: tierConfig.nearbyRadiusMiles,
+        countyTier: tierConfig.tier,
+        detectedCounty: county,
+    };
+}
+
 /** Matches free-text (e.g. a Pete chat message) against a known AL county name. */
 export function extractCounty(text: string): string | null {
     const t = text.toLowerCase();

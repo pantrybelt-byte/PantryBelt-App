@@ -16,7 +16,7 @@ import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
-import { distanceMiles } from '../../utils/pantries';
+import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 
 type Pantry = {
@@ -81,13 +81,6 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
     return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
 }
 
-const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
-
-// Fixed radius (miles) for the "nearby" count badge — rural Alabama Black
-// Belt driving distances run longer than an urban "nearby," so this errs
-// wider than a typical walkable-radius default.
-const NEARBY_RADIUS_MILES = 20;
-
 // Default fallback camera: Alabama center (statewide view)
 const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
 const DEFAULT_CAMERA = {
@@ -98,31 +91,35 @@ const DEFAULT_CAMERA = {
     zoom: 6,
 };
 
-// GAP 4/6 — Whenever we get a fresh GPS fix (initial load or recenter tap),
-// log the user's county if pantries are nearby, or a food-desert event if not.
+// Whenever we get a fresh GPS fix (initial load or recenter tap),
+// evaluate coverage adaptively (Urban 5 mi vs Rural 25 mi) and log county/food-desert metrics.
 async function trackLocationCoverage(
     pantries: Pantry[],
     lat: number,
     lng: number,
     source: 'location' | 'filter_tap' | 'inferred'
 ): Promise<void> {
-    const nearbyPantries = pantries.filter(p =>
-        Math.abs(p.lat - lat) < MILES_30_IN_DEG &&
-        Math.abs(p.lng - lng) < MILES_30_IN_DEG
-    );
+    const evaluation = evaluateAdaptiveFoodDesert(pantries, lat, lng);
 
-    if (nearbyPantries.length > 0) {
-        // Sort by distance and use the closest pantry's county
-        const closest = nearbyPantries.slice().sort((a, b) => {
-            const distA = Math.hypot(a.lat - lat, a.lng - lng);
-            const distB = Math.hypot(b.lat - lat, b.lng - lng);
-            return distA - distB;
-        })[0];
-        logUserCounty(closest.county, closest.city, source);
-        setLastKnownCounty(closest.county);
-    } else {
-        // No pantries nearby — this is a food desert
-        logFoodDesert(lat, lng, null, null, 0);
+    if (evaluation.closestPantry) {
+        logUserCounty(evaluation.closestPantry.county, evaluation.closestPantry.city, source);
+        setLastKnownCounty(evaluation.closestPantry.county);
+    }
+
+    if (evaluation.isDesert) {
+        logFoodDesert(
+            lat,
+            lng,
+            evaluation.detectedCounty,
+            evaluation.closestPantry?.city ?? null,
+            evaluation.pantriesInRadius,
+            evaluation.closestDistanceMiles,
+            evaluation.countyTier,
+            evaluation.severity
+        );
+        if (evaluation.detectedCounty) {
+            updateMonthlySummary(evaluation.detectedCounty, 'foodDeserts');
+        }
     }
 }
 
@@ -346,19 +343,27 @@ export default function MapScreen() {
 
     const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
-    // "Nearby" count shown in the count badge: a fixed-radius, client-side
-    // Haversine filter from the user's live location — deliberately NOT tied
-    // to the map's viewport/zoom (panning/pinching shouldn't change what
-    // counts as geographically "nearby"). Matches marker rendering below in
-    // also requiring mapEligible (ineligible docs never get a pin, so they
-    // shouldn't count as "nearby" either). null when we don't have a
-    // location fix yet (permission denied/pending).
-    const nearbyCount = useMemo(() => {
+    // Adaptive proximity calculation:
+    // Determine active county tier based on filter or closest pantry to user
+    const proximityStats = useMemo(() => {
         if (!userLocation) return null;
-        return cityFiltered.filter(p =>
-            p.mapEligible && distanceMiles(userLocation.lat, userLocation.lng, p.lat, p.lng) <= NEARBY_RADIUS_MILES
-        ).length;
-    }, [cityFiltered, userLocation]);
+
+        const evaluation = evaluateAdaptiveFoodDesert(
+            cityFiltered,
+            userLocation.lat,
+            userLocation.lng,
+            filter !== 'All' ? filter : null
+        );
+
+        return {
+            countInRadius: evaluation.pantriesInRadius,
+            radiusMiles: evaluation.searchRadiusMiles,
+            closestDistanceMiles: evaluation.closestDistanceMiles,
+            closestCity: evaluation.closestPantry?.city || null,
+            countyTier: evaluation.countyTier,
+            isDesert: evaluation.isDesert,
+        };
+    }, [cityFiltered, userLocation, filter]);
 
     // Only render markers within (or near) the visible map region — this is
     // purely a rendering/performance concern (limiting how many <Marker>
@@ -582,11 +587,17 @@ export default function MapScreen() {
                 </View>
             )}
 
-            {/* Count badge */}
+            {/* Proximity & Count badge */}
             {!searchOpen && (
                 <View style={styles.countBadge} pointerEvents="none">
                     <Text style={styles.countText}>
-                        {nearbyCount !== null ? `${nearbyCount} within ${NEARBY_RADIUS_MILES}mi · ` : ''}{cityFiltered.length} total · {liveData ? 'live' : 'offline'}
+                        {proximityStats !== null
+                            ? proximityStats.countInRadius > 0
+                                ? `${proximityStats.countInRadius} within ${proximityStats.radiusMiles}mi · ${cityFiltered.length} total · ${liveData ? 'live' : 'offline'}`
+                                : proximityStats.closestDistanceMiles !== null
+                                    ? `Closest: ${proximityStats.closestDistanceMiles.toFixed(1)}mi${proximityStats.closestCity ? ` (${proximityStats.closestCity})` : ''} · ${cityFiltered.length} total`
+                                    : `${cityFiltered.length} total · ${liveData ? 'live' : 'offline'}`
+                            : `${cityFiltered.length} total · ${liveData ? 'live' : 'offline'}`}
                     </Text>
                 </View>
             )}

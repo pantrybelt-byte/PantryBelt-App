@@ -137,7 +137,10 @@ export async function logFoodDesert(
     lng: number,
     county: string | null,
     city: string | null,
-    pantryCount: number
+    pantryCount: number,
+    closestPantryMiles: number | null = null,
+    countyTier: string | null = null,
+    desertSeverity: string | null = null
 ): Promise<void> {
     try {
         const coarseLat = Math.round(lat * 100) / 100;
@@ -148,6 +151,9 @@ export async function logFoodDesert(
             county: county ?? null,
             city: city ?? null,
             pantryCount,
+            closestPantryMiles: closestPantryMiles !== null ? Math.round(closestPantryMiles * 10) / 10 : null,
+            countyTier: countyTier ?? null,
+            desertSeverity: desertSeverity ?? null,
             timestamp: serverTimestamp(),
             ...timeFields(),
         });
