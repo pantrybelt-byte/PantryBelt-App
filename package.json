@@ -38,5 +38,8 @@
     "firebase-admin": "^13.7.0",
     "typescript": "^5.9.3"
   },
+  "overrides": {
+    "react-dom": "19.1.0"
+  },
   "private": true
 }
