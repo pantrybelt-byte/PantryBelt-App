@@ -66,6 +66,8 @@ SELECT
   JSON_EXTRACT_SCALAR(data, '$.outcome') AS outcome,
   JSON_EXTRACT_SCALAR(data, '$.county')  AS county,
   CAST(JSON_EXTRACT_SCALAR(data, '$.success') AS BOOL) AS success,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.hourOfDay') AS INT64) AS hour_of_day,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.dayOfWeek') AS INT64) AS day_of_week,
   JSON_EXTRACT_SCALAR(data, '$.monthYear') AS month_year
 FROM `firestore_export.analytics_search_outcomes_raw_latest`;
 
@@ -108,6 +110,8 @@ SELECT
   document_id AS device_id,
   timestamp AS last_seen,
   CAST(JSON_EXTRACT_SCALAR(data, '$.sessionCount') AS INT64) AS session_count,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.hourOfDay') AS INT64) AS hour_of_day,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.dayOfWeek') AS INT64) AS day_of_week,
   JSON_EXTRACT_SCALAR(data, '$.monthYear') AS month_year
 FROM `firestore_export.analytics_sessions_raw_latest`;
 
@@ -138,6 +142,8 @@ SELECT
   JSON_EXTRACT_SCALAR(data, '$.county') AS county,
   JSON_EXTRACT_SCALAR(data, '$.city')   AS city,
   JSON_EXTRACT_SCALAR(data, '$.source') AS source,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.hourOfDay') AS INT64) AS hour_of_day,
+  CAST(JSON_EXTRACT_SCALAR(data, '$.dayOfWeek') AS INT64) AS day_of_week,
   JSON_EXTRACT_SCALAR(data, '$.monthYear') AS month_year
 FROM `firestore_export.analytics_user_counties_raw_latest`;
 
