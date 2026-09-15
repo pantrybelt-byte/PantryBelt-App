@@ -83,6 +83,11 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
 
 const MILES_30_IN_DEG = 0.435; // ~30 miles in degrees
 
+// Fixed radius (miles) for the "nearby" count badge — rural Alabama Black
+// Belt driving distances run longer than an urban "nearby," so this errs
+// wider than a typical walkable-radius default.
+const NEARBY_RADIUS_MILES = 20;
+
 // Default fallback camera: Alabama center (statewide view)
 const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
 const DEFAULT_CAMERA = {
@@ -341,12 +346,24 @@ export default function MapScreen() {
 
     const cityFiltered = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
 
-    // Only render markers within (or near) the visible map region to avoid
-    // dumping all ~880 pins at once — much cleaner UX and better performance.
-    // The overscan pad is proportional to the current zoom level (not a fixed
-    // ~20-mile buffer) so the "nearby" count actually shrinks as you zoom in
-    // instead of staying dominated by a flat buffer at every zoom level —
-    // realistically 1-2 pantries are ever truly "nearby," not dozens.
+    // "Nearby" count shown in the count badge: a fixed-radius, client-side
+    // Haversine filter from the user's live location — deliberately NOT tied
+    // to the map's viewport/zoom (panning/pinching shouldn't change what
+    // counts as geographically "nearby"). Matches marker rendering below in
+    // also requiring mapEligible (ineligible docs never get a pin, so they
+    // shouldn't count as "nearby" either). null when we don't have a
+    // location fix yet (permission denied/pending).
+    const nearbyCount = useMemo(() => {
+        if (!userLocation) return null;
+        return cityFiltered.filter(p =>
+            p.mapEligible && distanceMiles(userLocation.lat, userLocation.lng, p.lat, p.lng) <= NEARBY_RADIUS_MILES
+        ).length;
+    }, [cityFiltered, userLocation]);
+
+    // Only render markers within (or near) the visible map region — this is
+    // purely a rendering/performance concern (limiting how many <Marker>
+    // instances mount at once, avoiding dumping all ~880 pins simultaneously),
+    // kept separate from the nearbyCount metric above.
     const regionFiltered = visibleRegion
         ? cityFiltered.filter(p => {
             const latPad = visibleRegion.latitudeDelta * 0.15;
@@ -569,7 +586,7 @@ export default function MapScreen() {
             {!searchOpen && (
                 <View style={styles.countBadge} pointerEvents="none">
                     <Text style={styles.countText}>
-                        {filtered.length} nearby · {cityFiltered.length} total · {liveData ? 'live' : 'offline'}
+                        {nearbyCount !== null ? `${nearbyCount} within ${NEARBY_RADIUS_MILES}mi · ` : ''}{cityFiltered.length} total · {liveData ? 'live' : 'offline'}
                     </Text>
                 </View>
             )}
