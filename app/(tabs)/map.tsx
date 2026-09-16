@@ -306,16 +306,18 @@ export default function MapScreen() {
         })();
     }, []);
 
-    // Selecting a search result: fly the map to it and open its detail modal.
-    // Purely client-side over the pantries already loaded — no external
-    // geocoding/search API (Google's is deliberately not shipped on iOS).
+    // Selecting a search result: fly the map to it, sync the active county filter, and open its detail modal.
     const selectSearchResult = useCallback((pantry: Pantry) => {
         Keyboard.dismiss();
         setSearchQuery('');
         setSearchFocused(false);
-        // Only fly the camera to pantries with a confirmed location — for
-        // mapEligible === false, the coordinates are a known duplicate/
-        // out-of-county placeholder, so don't navigate the map there.
+        // Automatically switch county filter to match the selected pantry
+        if (pantry.county) {
+            setFilter(pantry.county);
+            logUserCounty(pantry.county, pantry.city, 'filter_tap');
+            setLastKnownCounty(pantry.county);
+        }
+        // Only fly the camera to pantries with a confirmed location
         if (pantry.mapEligible) {
             mapRef.current?.animateToRegion({
                 latitude: pantry.lat,
@@ -327,17 +329,27 @@ export default function MapScreen() {
         openPantryDetails(pantry);
     }, [openPantryDetails]);
 
+    // Scoped search: searches within active county when a county filter is selected,
+    // or statewide when "All" is active. Results are distance-sorted if GPS is available.
     const searchResults = useMemo(() => {
         const q = searchQuery.trim().toLowerCase();
         if (!q) return [];
-        return pantries
+        const pool = filter === 'All' ? pantries : pantries.filter(p => p.county === filter);
+        const results = pool
             .filter(p =>
                 p.name.toLowerCase().includes(q) ||
                 p.city.toLowerCase().includes(q) ||
                 p.county.toLowerCase().includes(q)
-            )
-            .slice(0, 20);
-    }, [pantries, searchQuery]);
+            );
+
+        if (userLocation) {
+            results.sort((a, b) =>
+                distanceMiles(userLocation.lat, userLocation.lng, a.lat, a.lng) -
+                distanceMiles(userLocation.lat, userLocation.lng, b.lat, b.lng)
+            );
+        }
+        return results.slice(0, 20);
+    }, [pantries, searchQuery, filter, userLocation]);
 
     const searchOpen = searchFocused && searchQuery.trim() !== '';
 
@@ -517,13 +529,13 @@ export default function MapScreen() {
                 })}
             </MapView>
 
-            {/* Global pantry search */}
+            {/* Global/Scoped pantry search */}
             <View style={styles.searchWrapper} pointerEvents="box-none">
                 <View style={[styles.searchBar, { backgroundColor: theme.card }]}>
                     <Ionicons name="search" size={16} color={theme.subtext} />
                     <TextInput
                         style={[styles.searchInput, { color: theme.text }]}
-                        placeholder="Search pantries by name or location"
+                        placeholder={filter === 'All' ? "Search pantries by name or city" : `Search in ${filter} County...`}
                         placeholderTextColor={theme.subtext}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
@@ -542,21 +554,43 @@ export default function MapScreen() {
                 {searchOpen && (
                     <View style={[styles.searchResults, { backgroundColor: theme.card }]}>
                         {searchResults.length === 0 ? (
-                            <Text style={[styles.searchEmptyText, { color: theme.subtext }]}>No pantries match "{searchQuery}"</Text>
+                            <View style={styles.searchEmptyContainer}>
+                                <Text style={[styles.searchEmptyText, { color: theme.subtext }]}>
+                                    {filter === 'All'
+                                        ? `No pantries match "${searchQuery}"`
+                                        : `No pantries match "${searchQuery}" in ${filter} County`}
+                                </Text>
+                                {filter !== 'All' && (
+                                    <TouchableOpacity
+                                        style={styles.searchFallbackBtn}
+                                        onPress={() => setFilter('All')}
+                                    >
+                                        <Ionicons name="globe-outline" size={14} color="#b52525" />
+                                        <Text style={styles.searchFallbackBtnText}>Search All Alabama</Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
                         ) : (
                             <FlatList
                                 data={searchResults}
                                 keyExtractor={item => item.id}
                                 keyboardShouldPersistTaps="handled"
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity style={styles.searchResultRow} onPress={() => selectSearchResult(item)}>
-                                        <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
-                                            <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>{item.city}, {item.county} County</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                )}
+                                renderItem={({ item }) => {
+                                    const dist = userLocation
+                                        ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
+                                        : null;
+                                    return (
+                                        <TouchableOpacity style={styles.searchResultRow} onPress={() => selectSearchResult(item)}>
+                                            <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
+                                            <View style={{ flex: 1 }}>
+                                                <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
+                                                <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
+                                                    {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
+                                                </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    );
+                                }}
                             />
                         )}
                     </View>
@@ -843,7 +877,10 @@ const styles = StyleSheet.create({
     searchResultDot: { width: 8, height: 8, borderRadius: 4 },
     searchResultName: { fontSize: 13, fontWeight: '700' },
     searchResultLocation: { fontSize: 11, marginTop: 1 },
-    searchEmptyText: { fontSize: 12, padding: SPACING.md, textAlign: 'center' },
+    searchEmptyContainer: { padding: SPACING.md, alignItems: 'center', gap: 8 },
+    searchEmptyText: { fontSize: 12, textAlign: 'center' },
+    searchFallbackBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 12, borderRadius: 12, backgroundColor: '#fef2f2' },
+    searchFallbackBtnText: { color: '#b52525', fontSize: 13, fontWeight: '700' },
     chipsWrapper: { position: 'absolute', top: 106, left: 0, right: 0 },
     chipContent: { paddingHorizontal: 12, paddingVertical: 8, gap: 8 },
     chip: { backgroundColor: '#fff', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 4, elevation: 4 },
