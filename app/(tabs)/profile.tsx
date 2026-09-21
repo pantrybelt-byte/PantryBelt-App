@@ -167,7 +167,16 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Dark Mode</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Easy on the eyes at night</Text>
                     </View>
-                    <Switch value={theme.dark} onValueChange={theme.toggle} trackColor={{ true: '#a78bfa', false: theme.border }} thumbColor="#fff" />
+                    <Switch
+                        value={theme.dark}
+                        onValueChange={theme.toggle}
+                        trackColor={{ true: '#a78bfa', false: theme.border }}
+                        thumbColor="#fff"
+                        accessibilityRole="switch"
+                        accessibilityLabel="Dark Mode"
+                        accessibilityHint="Easy on the eyes at night"
+                        accessibilityState={{ checked: theme.dark }}
+                    />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
@@ -178,7 +187,16 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Push Notifications</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Alerts about nearby pantries</Text>
                     </View>
-                    <Switch value={notifications} onValueChange={handleToggleNotifications} trackColor={{ true: '#b52525', false: theme.border }} thumbColor="#fff" />
+                    <Switch
+                        value={notifications}
+                        onValueChange={handleToggleNotifications}
+                        trackColor={{ true: '#b52525', false: theme.border }}
+                        thumbColor="#fff"
+                        accessibilityRole="switch"
+                        accessibilityLabel="Push Notifications"
+                        accessibilityHint="Alerts about nearby pantries"
+                        accessibilityState={{ checked: notifications }}
+                    />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
@@ -189,7 +207,16 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Location Services</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Find pantries near you</Text>
                     </View>
-                    <Switch value={locationEnabled} onValueChange={handleToggleLocation} trackColor={{ true: '#2563eb', false: theme.border }} thumbColor="#fff" />
+                    <Switch
+                        value={locationEnabled}
+                        onValueChange={handleToggleLocation}
+                        trackColor={{ true: '#2563eb', false: theme.border }}
+                        thumbColor="#fff"
+                        accessibilityRole="switch"
+                        accessibilityLabel="Location Services"
+                        accessibilityHint="Find pantries near you"
+                        accessibilityState={{ checked: locationEnabled }}
+                    />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
@@ -200,7 +227,16 @@ export default function ProfileScreen() {
                         <Text style={[styles.settingTitle, { color: theme.text }]}>Newsletter</Text>
                         <Text style={[styles.settingDesc, { color: theme.subtext }]}>Monthly updates & resources</Text>
                     </View>
-                    <Switch value={newsletter} onValueChange={handleToggleNewsletter} trackColor={{ true: '#16a34a', false: theme.border }} thumbColor="#fff" />
+                    <Switch
+                        value={newsletter}
+                        onValueChange={handleToggleNewsletter}
+                        trackColor={{ true: '#16a34a', false: theme.border }}
+                        thumbColor="#fff"
+                        accessibilityRole="switch"
+                        accessibilityLabel="Newsletter"
+                        accessibilityHint="Monthly updates and resources"
+                        accessibilityState={{ checked: newsletter }}
+                    />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>

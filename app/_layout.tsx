@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthReadyProvider } from '../context/AuthReadyContext';
 import { StatsProvider } from '../context/StatsContext';
 import { ThemeProvider } from '../context/ThemeContext';
@@ -23,19 +24,21 @@ export default function RootLayout() {
     }, []);
 
     return (
-        <AuthReadyProvider>
-            <StatsProvider>
-                <ThemeProvider>
-                    <StatusBar style="light" />
-                    <Stack>
-                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        <Stack.Screen name="account" options={{ headerShown: false }} />
-                        <Stack.Screen name="index" options={{ headerShown: false }} />
-                    </Stack>
-                </ThemeProvider>
-            </StatsProvider>
-        </AuthReadyProvider>
+        <SafeAreaProvider>
+            <AuthReadyProvider>
+                <StatsProvider>
+                    <ThemeProvider>
+                        <StatusBar style="light" />
+                        <Stack>
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                            <Stack.Screen name="account" options={{ headerShown: false }} />
+                            <Stack.Screen name="index" options={{ headerShown: false }} />
+                        </Stack>
+                    </ThemeProvider>
+                </StatsProvider>
+            </AuthReadyProvider>
+        </SafeAreaProvider>
     );
 }

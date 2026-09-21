@@ -4,8 +4,8 @@ import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Alert, FlatList, Keyboard, Linking, Modal, Platform, ScrollView,
-    StyleSheet, Text, TextInput, TouchableOpacity, View,
+    ActivityIndicator, Alert, FlatList, Keyboard, Linking, Modal, Platform, RefreshControl,
+    ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import FeedbackModal from '../../components/FeedbackModal';
@@ -147,6 +147,21 @@ export default function MapScreen() {
     // True once the native MapView has finished laying out — imperative camera
     // calls (animateToRegion) are only reliable after this fires on iOS.
     const [mapReady, setMapReady] = useState(false);
+    // react-native-maps exposes no onError for native load failures. On
+    // Android specifically, onMapReady can fire even with an invalid/missing
+    // Maps API key — the SDK itself initializes fine, only tile loading
+    // fails afterward, leaving a grey map with just the Google logo. We
+    // watch onMapLoaded instead (confirmed present in this project's
+    // installed react-native-maps@1.20.1 type defs — MapView.d.ts), which
+    // only fires once tiles have actually rendered. If it hasn't fired
+    // within a reasonable window, treat it as failed and fall back to a
+    // list view instead of leaving users staring at a blank/grey screen.
+    const [mapLoadFailed, setMapLoadFailed] = useState(false);
+    // Bumped on retry to force a full MapView remount — there's no
+    // imperative "reload" API, so recreating the native view is the only
+    // way to retry after a load failure.
+    const [mapInstanceKey, setMapInstanceKey] = useState(0);
+    const mapReadyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Track the visible map region so we only render markers in view
     const [visibleRegion, setVisibleRegion] = useState<{
@@ -243,6 +258,48 @@ export default function MapScreen() {
     useEffect(() => {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
+
+    // Map-load watchdog: once we have pantries to show, start a timer. If
+    // onMapLoaded hasn't cleared it by the time it fires, tiles never
+    // actually rendered (see mapLoadFailed comment above) — log it and
+    // switch to the list-view fallback. Re-armed on every retry via
+    // mapInstanceKey. Deliberately keyed off onMapLoaded, not onMapReady:
+    // on Android, onMapReady fires once the SDK/native view initializes,
+    // even with a bad API key — tiles then silently fail to load, leaving a
+    // grey map with just the Google wordmark. onMapLoaded only fires after
+    // tiles are actually in.
+    //
+    // iOS uses Apple Maps (PROVIDER_DEFAULT) which requires no API key and
+    // has different tile-load timing — the watchdog fired on the iOS
+    // simulator even when data loaded correctly, risking a false fallback
+    // for iPhone users. Restrict the timeout to Android only.
+    useEffect(() => {
+        if (loading || fetchError) return;
+        setMapLoadFailed(false);
+        if (Platform.OS !== 'android') return;
+        mapReadyTimeoutRef.current = setTimeout(() => {
+            console.error(
+                '[Map] onMapLoaded did not fire within 12s — treating this as a map load ' +
+                'failure. On Android this usually means a missing/invalid/unrestricted ' +
+                'Google Maps API key (GOOGLE_MAPS_ANDROID_KEY) or a Google Play Services ' +
+                'error on-device. Falling back to a pantry list view.'
+            );
+            setMapLoadFailed(true);
+        }, 12000);
+        return () => {
+            if (mapReadyTimeoutRef.current) {
+                clearTimeout(mapReadyTimeoutRef.current);
+                mapReadyTimeoutRef.current = null;
+            }
+        };
+    }, [loading, fetchError, mapInstanceKey]);
+
+    // Pull-to-retry: force the MapView to fully remount and re-arm the watchdog.
+    const retryMapLoad = useCallback(() => {
+        setMapReady(false);
+        setMapLoadFailed(false);
+        setMapInstanceKey(k => k + 1);
+    }, []);
 
     // Center on the user's exact location on first load. Runs once we have both
     // a GPS fix and a mounted/ready map — whichever arrives last triggers it.
@@ -473,12 +530,63 @@ export default function MapScreen() {
 
     if (fetchError) return (
         <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
-            <Ionicons name="wifi-outline" size={48} color="#b52525" />
+            <Ionicons name="wifi-outline" size={48} color="#b52525" importantForAccessibility="no" />
             <Text style={[styles.loadingText, { color: theme.text }]}>Could not load pantries</Text>
             <Text style={[styles.errorSubtext, { color: theme.subtext }]}>Check your connection and try again.</Text>
-            <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries}>
+            <TouchableOpacity style={styles.retryBtn} onPress={fetchPantries} accessibilityRole="button" accessibilityLabel="Retry loading pantries">
                 <Text style={styles.retryBtnText}>Retry</Text>
             </TouchableOpacity>
+        </View>
+    );
+
+    // Map failed to come up natively (see mapLoadFailed comment above) —
+    // pantries themselves loaded fine, so fall back to a scrollable list
+    // instead of a blank map.
+    if (mapLoadFailed) return (
+        <View style={[styles.container, { backgroundColor: theme.bg }]}>
+            <FlatList
+                data={cityFiltered}
+                keyExtractor={item => item.id}
+                refreshControl={
+                    <RefreshControl refreshing={false} onRefresh={retryMapLoad} tintColor="#b52525" />
+                }
+                ListHeaderComponent={
+                    <View style={styles.mapFallbackHeader}>
+                        <Ionicons name="map-outline" size={40} color="#b52525" importantForAccessibility="no" />
+                        <Text style={[styles.loadingText, { color: theme.text }]}>Map couldn't load. Pull to retry.</Text>
+                        <TouchableOpacity style={styles.retryBtn} onPress={retryMapLoad} accessibilityRole="button" accessibilityLabel="Retry loading map">
+                            <Text style={styles.retryBtnText}>Retry</Text>
+                        </TouchableOpacity>
+                        <Text style={[styles.errorSubtext, { color: theme.subtext }]}>
+                            Showing {cityFiltered.length} pantries as a list instead.
+                        </Text>
+                    </View>
+                }
+                renderItem={({ item }) => {
+                    const dist = userLocation
+                        ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
+                        : null;
+                    return (
+                        <TouchableOpacity
+                            style={[styles.searchResultRow, { paddingHorizontal: SPACING.md }]}
+                            onPress={() => openPantryDetails(item)}
+                        >
+                            <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
+                            <View style={{ flex: 1 }}>
+                                <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
+                                <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
+                                    {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    );
+                }}
+                ListEmptyComponent={
+                    <Text style={[styles.errorSubtext, { color: theme.subtext, textAlign: 'center', marginTop: 20 }]}>
+                        No pantries loaded yet.
+                    </Text>
+                }
+            />
         </View>
     );
 
@@ -487,6 +595,7 @@ export default function MapScreen() {
 
             {/* ── REAL MAP WITH LIVE FIREBASE PINS ── */}
             <MapView
+                key={mapInstanceKey}
                 ref={mapRef}
                 style={styles.map}
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
@@ -498,7 +607,23 @@ export default function MapScreen() {
                 pitchEnabled
                 rotateEnabled
                 initialCamera={DEFAULT_CAMERA}
-                onMapReady={() => setMapReady(true)}
+                onMapReady={() => {
+                    // Fires once the native view/SDK initializes — kept for
+                    // camera-timing purposes (see mapReady comment above),
+                    // but NOT trusted as a load-success signal on Android
+                    // (see mapLoadFailed comment above) — the watchdog is
+                    // only cleared by onMapLoaded below.
+                    console.log('[Map] onMapReady fired');
+                    setMapReady(true);
+                }}
+                onMapLoaded={() => {
+                    console.log('[Map] onMapLoaded fired — tiles rendered');
+                    if (mapReadyTimeoutRef.current) {
+                        clearTimeout(mapReadyTimeoutRef.current);
+                        mapReadyTimeoutRef.current = null;
+                    }
+                    setMapLoadFailed(false);
+                }}
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
                 {filtered.filter(p => p.mapEligible).map(pantry => {
@@ -511,6 +636,7 @@ export default function MapScreen() {
                             coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
                             pinColor={TIER_COLORS[tier]}
                             onPress={openDetails}
+                            accessibilityLabel={`${pantry.name}, ${pantry.city}, ${TIER_LABELS[tier]}`}
                         >
                             <Callout tooltip onPress={openDetails}>
                                 <View style={[styles.callout, { backgroundColor: theme.card }]}>
@@ -543,9 +669,16 @@ export default function MapScreen() {
                         autoCapitalize="none"
                         autoCorrect={false}
                         returnKeyType="search"
+                        accessibilityLabel="Search pantries"
+                        accessibilityHint={filter === 'All' ? 'Search pantries by name or city' : `Search in ${filter} County`}
                     />
                     {searchQuery !== '' && (
-                        <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={8}>
+                        <TouchableOpacity
+                            onPress={() => setSearchQuery('')}
+                            hitSlop={8}
+                            accessibilityRole="button"
+                            accessibilityLabel="Clear search"
+                        >
                             <Ionicons name="close-circle" size={18} color={theme.subtext} />
                         </TouchableOpacity>
                     )}
@@ -610,6 +743,9 @@ export default function MapScreen() {
                                     key={county ?? `county-${i}`}
                                     style={[styles.chip, { backgroundColor: theme.card }, filter === county && styles.chipActive]}
                                     onPress={() => handleFilter(county)}
+                                    accessibilityRole="button"
+                                    accessibilityLabel={county === 'All' ? `All counties, ${count} pantries` : `${county} County, ${count} pantries`}
+                                    accessibilityState={{ selected: filter === county }}
                                 >
                                     <Text style={[styles.chipText, { color: theme.text }, filter === county && styles.chipTextActive]}>
                                         {county === 'All' ? `All (${count})` : `${county} (${count})`}
@@ -661,20 +797,32 @@ export default function MapScreen() {
             <TouchableOpacity
                 style={[styles.viewToggle, { backgroundColor: theme.card }]}
                 onPress={toggleMapView}
+                accessibilityRole="button"
+                accessibilityLabel={is3D ? 'Switch to flat 2D map view' : 'Switch to tilted 3D map view'}
             >
-                <Text style={styles.viewToggleText}>{is3D ? '2D' : '3D'}</Text>
+                {/* maxFontSizeMultiplier (not allowFontScaling={false}) so this
+                    still grows a bit for larger system text sizes without
+                    overflowing the fixed 44px circular button. */}
+                <Text style={styles.viewToggleText} maxFontSizeMultiplier={1.4}>{is3D ? '2D' : '3D'}</Text>
             </TouchableOpacity>
 
             {/* Recenter-on-me button */}
             <TouchableOpacity
                 style={[styles.recenterFloating, { backgroundColor: theme.card }]}
                 onPress={recenterOnUser}
+                accessibilityRole="button"
+                accessibilityLabel="Recenter map on my location"
             >
                 <Ionicons name="locate" size={20} color="#2563eb" />
             </TouchableOpacity>
 
             {/* Ask Pete floating button */}
-            <TouchableOpacity style={styles.peteFloating} onPress={() => router.push('/(tabs)/pete')}>
+            <TouchableOpacity
+                style={styles.peteFloating}
+                onPress={() => router.push('/(tabs)/pete')}
+                accessibilityRole="button"
+                accessibilityLabel="Ask Pete, the AI pantry assistant"
+            >
                 <Ionicons name="chatbubble-ellipses" size={16} color="#fff" />
                 <Text style={styles.peteFloatingText}>Ask Pete</Text>
             </TouchableOpacity>
@@ -686,6 +834,8 @@ export default function MapScreen() {
                     setFeedbackIsAutoPrompt(false);
                     setFeedbackVisible(true);
                 }}
+                accessibilityRole="button"
+                accessibilityLabel="Send feedback"
             >
                 <Ionicons name="chatbox-ellipses-outline" size={16} color="#b52525" />
                 <Text style={styles.feedbackFloatingText}>Feedback</Text>
@@ -869,6 +1019,7 @@ const styles = StyleSheet.create({
     map: { ...StyleSheet.absoluteFillObject },
     loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f2f2f7', gap: 12 },
     loadingText: { fontSize: 15, color: '#6c6c70', fontWeight: '600' },
+    mapFallbackHeader: { alignItems: 'center', justifyContent: 'center', gap: 10, paddingTop: 32, paddingBottom: 20, paddingHorizontal: 24 },
     searchWrapper: { position: 'absolute', top: 54, left: 12, right: 12 },
     searchBar: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: RADIUS.xl, paddingHorizontal: SPACING.md, height: 44, ...SHADOWS.md },
     searchInput: { flex: 1, fontSize: 14, height: '100%' },

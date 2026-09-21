@@ -1,10 +1,18 @@
-if (!process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) {
+if (!process.env.GOOGLE_MAPS_ANDROID_KEY) {
   console.warn(
-    '\n⚠️  WARNING: EXPO_PUBLIC_GOOGLE_MAPS_API_KEY is not defined in the environment. ' +
+    '\n⚠️  WARNING: GOOGLE_MAPS_ANDROID_KEY is not defined in the environment. ' +
     'Google Maps will render as a blank screen on Android in production builds. ' +
     'Make sure to set this in your EAS Secrets/Variables or local .env file!\n'
   );
 }
+
+// Note: this key is read here (app.config.js), evaluated by Node at
+// `expo prebuild` / `eas build` time — it does NOT need an EXPO_PUBLIC_
+// prefix, since that prefix only controls what gets inlined into the
+// client JS bundle. Nothing in app JS reads this var directly, so keeping
+// it un-prefixed means it never ends up in the bundle at all, only baked
+// into the native AndroidManifest.xml (where any Android Maps key
+// necessarily lives — see comment below on why that's still safe).
 
 module.exports = {
   expo: {
@@ -20,8 +28,13 @@ module.exports = {
       bundleIdentifier: 'com.accessbelt.app',
       supportsTablet: true,
       // No googleMapsApiKey here on purpose: iOS renders with Apple Maps
-      // (PROVIDER_DEFAULT in map.tsx), so shipping the Google key in the
-      // iOS binary would only expose it. Android below still needs it.
+      // (PROVIDER_DEFAULT in map.tsx), so shipping a Google key in the
+      // iOS binary would only expose it for no benefit — react-native-maps
+      // never reads it on a PROVIDER_DEFAULT map. Android below still
+      // needs it because map.tsx explicitly requests PROVIDER_GOOGLE there.
+      // A GOOGLE_MAPS_IOS_KEY env var is deliberately NOT wired to
+      // ios.config.googleMapsApiKey for this reason — only revisit this if
+      // iOS is ever switched to PROVIDER_GOOGLE.
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
       },
@@ -80,7 +93,7 @@ module.exports = {
       },
       config: {
         googleMaps: {
-          apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+          apiKey: process.env.GOOGLE_MAPS_ANDROID_KEY,
         },
       },
     },
