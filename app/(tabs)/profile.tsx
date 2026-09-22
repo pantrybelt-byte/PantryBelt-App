@@ -40,6 +40,10 @@ const RESOURCES = [
     { id: '6', title: 'Alabama 211 – Emergency Help', sub: 'Free 24/7 hotline', icon: 'call-outline' as const, color: '#b52525', url: 'tel:211' },
 ];
 
+// Flag to control visibility of map diagnostics on Profile screen.
+// Turn off before public release (see docs/RELEASE_CHECKLIST.md).
+export const SHOW_MAP_DIAGNOSTICS = true;
+
 export default function ProfileScreen() {
     const router = useRouter();
     const theme = useTheme();
@@ -464,7 +468,7 @@ export default function ProfileScreen() {
             <Text style={[styles.version, { color: theme.subtext }]}>
                 AccessBelt v1.0.1 (build {Application.nativeBuildVersion ?? Constants.nativeBuildVersion ?? Constants.expoConfig?.android?.versionCode ?? '7'}) · Free for families
             </Text>
-            {(__DEV__ || Updates.channel === 'preview' || Updates.channel === 'beta' || Updates.channel === 'internal' || true) && (
+            {SHOW_MAP_DIAGNOSTICS && (
                 <Text style={[styles.diagnostics, { color: theme.subtext }]}>
                     Map: ready {mapDiag.ready ? 'yes' : 'no'}, loaded {mapDiag.loaded ? 'yes' : 'no'}, provider {mapDiag.provider}{mapDiag.size ? `, size ${mapDiag.size}` : ''}
                 </Text>
