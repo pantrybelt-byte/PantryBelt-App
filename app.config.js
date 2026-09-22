@@ -87,6 +87,11 @@ module.exports = {
     },
     android: {
       package: 'com.accessbelt.app',
+      // Root window background (AppTheme's android:windowBackground, via
+      // expo-system-ui below) — matches the splash screen's backgroundColor
+      // so there's no black flash if JS takes a moment to paint its first
+      // frame after Android's native splash hands off to the main theme.
+      backgroundColor: '#F1EBD8',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#F3EAD8',
@@ -115,6 +120,7 @@ module.exports = {
     plugins: [
       'expo-router',
       'expo-font',
+      'expo-system-ui',
       './plugins/withPodfilePatches',
       [
         'expo-splash-screen',
