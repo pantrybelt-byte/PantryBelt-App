@@ -16,7 +16,7 @@ import { auth } from '../config/firebase';
 import { useAuthReady } from '../context/AuthReadyContext';
 import { useTheme } from '../context/ThemeContext';
 import { deleteAccount } from '../utils/auth';
-import { getUserProfile, RACE_OPTIONS, RaceValue, saveUserProfile } from '../utils/userProfile';
+import { getUserProfile, RACE_OPTIONS, RaceValue, saveUserProfile, UserProfileInput } from '../utils/userProfile';
 
 export default function AccountScreen() {
     const router = useRouter();
@@ -28,6 +28,10 @@ export default function AccountScreen() {
     const [zipCode, setZipCode] = useState('');
     const [race, setRace] = useState<RaceValue | null>(null);
     const [contactEmail, setContactEmail] = useState('');
+    const [savedProfile, setSavedProfile] = useState<UserProfileInput | null>(null);
+    const [ageError, setAgeError] = useState<string | null>(null);
+    const [familySizeError, setFamilySizeError] = useState<string | null>(null);
+    const [zipError, setZipError] = useState<string | null>(null);
     const [savingProfile, setSavingProfile] = useState(false);
     const [profileMsg, setProfileMsg] = useState<{ text: string; error?: boolean } | null>(null);
     const [editingAboutYou, setEditingAboutYou] = useState(false);
@@ -35,6 +39,7 @@ export default function AccountScreen() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
             if (!user) {
+                setSavedProfile(null);
                 setAge('');
                 setFamilySize('');
                 setZipCode('');
@@ -43,13 +48,15 @@ export default function AccountScreen() {
                 return;
             }
             getUserProfile().then(profile => {
-                if (profile) {
-                    setAge(profile.age != null ? String(profile.age) : '');
-                    setFamilySize(profile.familySize != null ? String(profile.familySize) : '');
-                    setZipCode(profile.zipCode != null ? String(profile.zipCode) : '');
+                if (profile && profile.age != null && profile.familySize != null && profile.zipCode != null) {
+                    setSavedProfile(profile);
+                    setAge(String(profile.age));
+                    setFamilySize(String(profile.familySize));
+                    setZipCode(String(profile.zipCode));
                     setRace(profile.race ?? null);
                     setContactEmail(profile.contactEmail ?? '');
                 } else {
+                    setSavedProfile(null);
                     setAge('');
                     setFamilySize('');
                     setZipCode('');
@@ -61,38 +68,75 @@ export default function AccountScreen() {
         return unsubscribe;
     }, []);
 
-    const handleSaveProfile = async () => {
-        const ageNum = parseInt(age, 10);
-        const familySizeNum = parseInt(familySize, 10);
-        if (!Number.isFinite(ageNum) || ageNum < 13 || ageNum > 120) {
-            setProfileMsg({ text: 'Enter an age between 13 and 120.', error: true });
-            return;
-        }
-        if (!Number.isFinite(familySizeNum) || familySizeNum < 1 || familySizeNum > 20) {
-            setProfileMsg({ text: 'Enter a family size between 1 and 20.', error: true });
-            return;
-        }
-        if (!/^\d{5}$/.test(zipCode)) {
-            setProfileMsg({ text: 'Enter a valid 5-digit zip code.', error: true });
-            return;
-        }
-        if (contactEmail.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contactEmail.trim())) {
-            setProfileMsg({ text: 'Enter a valid email, or leave it blank.', error: true });
-            return;
-        }
-
+    const executeSave = async (ageNum: number, familySizeNum: number, zip: string, r: RaceValue | null, email: string) => {
         setSavingProfile(true);
         setProfileMsg(null);
         const result = await saveUserProfile({
             age: ageNum,
             familySize: familySizeNum,
-            zipCode,
-            race,
-            contactEmail: contactEmail.trim() || null,
+            zipCode: zip,
+            race: r,
+            contactEmail: email.trim() || null,
         });
         setSavingProfile(false);
-        setProfileMsg(result.ok ? { text: 'Saved!' } : { text: result.error ?? 'Could not save', error: true });
-        if (result.ok) setEditingAboutYou(false);
+        if (result.ok) {
+            setSavedProfile({
+                age: ageNum,
+                familySize: familySizeNum,
+                zipCode: zip,
+                race: r,
+                contactEmail: email.trim() || null,
+            });
+            setEditingAboutYou(false);
+            setProfileMsg({ text: 'Saved!' });
+        } else {
+            setProfileMsg({ text: result.error ?? 'Could not save', error: true });
+        }
+    };
+
+    const handleSaveProfile = async () => {
+        let valid = true;
+        const ageNum = parseInt(age, 10);
+        const familySizeNum = parseInt(familySize, 10);
+
+        if (!Number.isFinite(ageNum) || ageNum < 13 || ageNum > 120) {
+            setAgeError('Must be 13–120');
+            valid = false;
+        } else {
+            setAgeError(null);
+        }
+
+        if (!Number.isFinite(familySizeNum) || familySizeNum < 1 || familySizeNum > 20) {
+            setFamilySizeError('Must be 1–20');
+            valid = false;
+        } else {
+            setFamilySizeError(null);
+        }
+
+        if (!/^\d{5}$/.test(zipCode)) {
+            setZipError('Must be 5 digits');
+            valid = false;
+        } else {
+            setZipError(null);
+        }
+
+        if (contactEmail.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contactEmail.trim())) {
+            setProfileMsg({ text: 'Enter a valid email, or leave it blank.', error: true });
+            valid = false;
+        }
+
+        if (!valid) return;
+        await executeSave(ageNum, familySizeNum, zipCode, race, contactEmail);
+    };
+
+    const attemptSaveOnBlur = async (currentZip = zipCode, currentAge = age, currentFamily = familySize) => {
+        const ageNum = parseInt(currentAge, 10);
+        const familySizeNum = parseInt(currentFamily, 10);
+        if (!Number.isFinite(ageNum) || ageNum < 13 || ageNum > 120) return;
+        if (!Number.isFinite(familySizeNum) || familySizeNum < 1 || familySizeNum > 20) return;
+        if (!/^\d{5}$/.test(currentZip)) return;
+        if (contactEmail.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contactEmail.trim())) return;
+        await executeSave(ageNum, familySizeNum, currentZip, race, contactEmail);
     };
 
     const handleDeleteAccount = () => {
@@ -107,6 +151,7 @@ export default function AccountScreen() {
                     onPress: async () => {
                         const result = await deleteAccount();
                         if (result.ok) {
+                            setSavedProfile(null);
                             setAge('');
                             setFamilySize('');
                             setZipCode('');
@@ -123,8 +168,8 @@ export default function AccountScreen() {
         );
     };
 
-    const hasAboutYouData = String(age || '').trim() !== '' && String(familySize || '').trim() !== '' && String(zipCode || '').trim() !== '';
-    const showAboutYouForm = editingAboutYou || !hasAboutYouData;
+    const hasSavedData = !!savedProfile;
+    const showAboutYouForm = editingAboutYou || !hasSavedData;
     const raceLabelFor = (v: RaceValue | null) => RACE_OPTIONS.find(o => o.value === v)?.label;
 
     // router.back() throws (dev-mode red box) if this screen has no history
@@ -181,38 +226,103 @@ export default function AccountScreen() {
                                 <View style={styles.aboutYouField}>
                                     <Text style={[styles.aboutYouLabel, { color: theme.subtext }]}>Age</Text>
                                     <TextInput
-                                        style={[styles.aboutYouInput, { backgroundColor: theme.input, color: theme.text }]}
+                                        style={[
+                                            styles.aboutYouInput,
+                                            { backgroundColor: theme.input, color: theme.text },
+                                            ageError ? styles.aboutYouInputError : null,
+                                        ]}
                                         value={age}
-                                        onChangeText={setAge}
+                                        onChangeText={val => {
+                                            const digits = val.replace(/\D/g, '').slice(0, 3);
+                                            setAge(digits);
+                                            if (ageError) setAgeError(null);
+                                        }}
+                                        onBlur={() => {
+                                            if (!age.trim()) {
+                                                setAgeError(null);
+                                                return;
+                                            }
+                                            const num = parseInt(age, 10);
+                                            if (!Number.isFinite(num) || num < 13 || num > 120) {
+                                                setAgeError('Must be 13–120');
+                                            } else {
+                                                setAgeError(null);
+                                                attemptSaveOnBlur(zipCode, age, familySize);
+                                            }
+                                        }}
                                         keyboardType="number-pad"
                                         placeholder="e.g. 34"
                                         placeholderTextColor={theme.subtext}
                                         maxLength={3}
                                     />
+                                    {ageError ? <Text style={styles.aboutYouFieldError}>{ageError}</Text> : null}
                                 </View>
                                 <View style={styles.aboutYouField}>
                                     <Text style={[styles.aboutYouLabel, { color: theme.subtext }]}>Family size</Text>
                                     <TextInput
-                                        style={[styles.aboutYouInput, { backgroundColor: theme.input, color: theme.text }]}
+                                        style={[
+                                            styles.aboutYouInput,
+                                            { backgroundColor: theme.input, color: theme.text },
+                                            familySizeError ? styles.aboutYouInputError : null,
+                                        ]}
                                         value={familySize}
-                                        onChangeText={setFamilySize}
+                                        onChangeText={val => {
+                                            const digits = val.replace(/\D/g, '').slice(0, 2);
+                                            setFamilySize(digits);
+                                            if (familySizeError) setFamilySizeError(null);
+                                        }}
+                                        onBlur={() => {
+                                            if (!familySize.trim()) {
+                                                setFamilySizeError(null);
+                                                return;
+                                            }
+                                            const num = parseInt(familySize, 10);
+                                            if (!Number.isFinite(num) || num < 1 || num > 20) {
+                                                setFamilySizeError('Must be 1–20');
+                                            } else {
+                                                setFamilySizeError(null);
+                                                attemptSaveOnBlur(zipCode, age, familySize);
+                                            }
+                                        }}
                                         keyboardType="number-pad"
                                         placeholder="e.g. 3"
                                         placeholderTextColor={theme.subtext}
                                         maxLength={2}
                                     />
+                                    {familySizeError ? <Text style={styles.aboutYouFieldError}>{familySizeError}</Text> : null}
                                 </View>
                                 <View style={styles.aboutYouField}>
                                     <Text style={[styles.aboutYouLabel, { color: theme.subtext }]}>Zip code</Text>
                                     <TextInput
-                                        style={[styles.aboutYouInput, { backgroundColor: theme.input, color: theme.text }]}
+                                        style={[
+                                            styles.aboutYouInput,
+                                            { backgroundColor: theme.input, color: theme.text },
+                                            zipError ? styles.aboutYouInputError : null,
+                                        ]}
                                         value={zipCode}
-                                        onChangeText={setZipCode}
+                                        onChangeText={val => {
+                                            const digits = val.replace(/\D/g, '').slice(0, 5);
+                                            setZipCode(digits);
+                                            if (zipError) setZipError(null);
+                                        }}
+                                        onBlur={() => {
+                                            if (!zipCode.trim()) {
+                                                setZipError(null);
+                                                return;
+                                            }
+                                            if (!/^\d{5}$/.test(zipCode)) {
+                                                setZipError('Must be 5 digits');
+                                            } else {
+                                                setZipError(null);
+                                                attemptSaveOnBlur(zipCode, age, familySize);
+                                            }
+                                        }}
                                         keyboardType="number-pad"
                                         placeholder="e.g. 36701"
                                         placeholderTextColor={theme.subtext}
                                         maxLength={5}
                                     />
+                                    {zipError ? <Text style={styles.aboutYouFieldError}>{zipError}</Text> : null}
                                 </View>
                             </View>
 
@@ -262,11 +372,11 @@ export default function AccountScreen() {
                     ) : (
                         <View>
                             <Text style={[styles.aboutYouSummaryText, { color: theme.text }]}>
-                                {age} yrs old · Family of {familySize} · {zipCode}
-                                {race ? ` · ${raceLabelFor(race)}` : ''}
+                                {savedProfile?.age} yrs old · Family of {savedProfile?.familySize} · {savedProfile?.zipCode}
+                                {savedProfile?.race ? ` · ${raceLabelFor(savedProfile.race)}` : ''}
                             </Text>
-                            {contactEmail ? (
-                                <Text style={[styles.aboutYouSummaryText, { color: theme.subtext }]}>{contactEmail}</Text>
+                            {savedProfile?.contactEmail ? (
+                                <Text style={[styles.aboutYouSummaryText, { color: theme.subtext }]}>{savedProfile.contactEmail}</Text>
                             ) : null}
                             <TouchableOpacity onPress={() => setEditingAboutYou(true)}>
                                 <Text style={styles.aboutYouEditLink}>Edit</Text>
@@ -342,6 +452,8 @@ const styles = StyleSheet.create({
     aboutYouLabel: { fontSize: 11, fontWeight: '600', marginBottom: 6 },
     raceLabel: { marginBottom: 8 },
     aboutYouInput: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 9, fontSize: 14 },
+    aboutYouInputError: { borderWidth: 1, borderColor: '#dc2626' },
+    aboutYouFieldError: { fontSize: 11, fontWeight: '600', color: '#dc2626', marginTop: 4 },
     raceChipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 14 },
     raceChip: { borderRadius: 16, paddingHorizontal: 12, paddingVertical: 7, borderWidth: 1 },
     raceChipText: { fontSize: 12, fontWeight: '600' },

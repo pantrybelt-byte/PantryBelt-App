@@ -259,33 +259,32 @@ export default function MapScreen() {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
 
+    const mapLoadedRef = useRef(false);
+
     // Map-load watchdog: once we have pantries to show, start a timer. If
     // onMapLoaded hasn't cleared it by the time it fires, tiles never
     // actually rendered (see mapLoadFailed comment above) — log it and
     // switch to the list-view fallback. Re-armed on every retry via
-    // mapInstanceKey. Deliberately keyed off onMapLoaded, not onMapReady:
-    // on Android, onMapReady fires once the SDK/native view initializes,
-    // even with a bad API key — tiles then silently fail to load, leaving a
-    // grey map with just the Google wordmark. onMapLoaded only fires after
-    // tiles are actually in.
-    //
-    // iOS uses Apple Maps (PROVIDER_DEFAULT) which requires no API key and
-    // has different tile-load timing — the watchdog fired on the iOS
-    // simulator even when data loaded correctly, risking a false fallback
-    // for iPhone users. Restrict the timeout to Android only.
+    // mapInstanceKey. Arms only ONCE per MapView mount. If onMapLoaded has
+    // already fired for this mount, returning to the map tab will never
+    // trigger the fallback. Timeout is set to 20s for slow networks.
     useEffect(() => {
         if (loading || fetchError) return;
-        setMapLoadFailed(false);
+        if (mapLoadedRef.current) return;
         if (Platform.OS !== 'android') return;
+        if (mapReadyTimeoutRef.current) return;
+
+        setMapLoadFailed(false);
         mapReadyTimeoutRef.current = setTimeout(() => {
             console.error(
-                '[Map] onMapLoaded did not fire within 12s — treating this as a map load ' +
+                '[Map] onMapLoaded did not fire within 20s — treating this as a map load ' +
                 'failure. On Android this usually means a missing/invalid/unrestricted ' +
                 'Google Maps API key (GOOGLE_MAPS_ANDROID_KEY) or a Google Play Services ' +
                 'error on-device. Falling back to a pantry list view.'
             );
             setMapLoadFailed(true);
-        }, 12000);
+            mapReadyTimeoutRef.current = null;
+        }, 20000);
         return () => {
             if (mapReadyTimeoutRef.current) {
                 clearTimeout(mapReadyTimeoutRef.current);
@@ -296,6 +295,11 @@ export default function MapScreen() {
 
     // Pull-to-retry: force the MapView to fully remount and re-arm the watchdog.
     const retryMapLoad = useCallback(() => {
+        mapLoadedRef.current = false;
+        if (mapReadyTimeoutRef.current) {
+            clearTimeout(mapReadyTimeoutRef.current);
+            mapReadyTimeoutRef.current = null;
+        }
         setMapReady(false);
         setMapLoadFailed(false);
         setMapInstanceKey(k => k + 1);
@@ -631,6 +635,7 @@ export default function MapScreen() {
                 }}
                 onMapLoaded={() => {
                     console.log('[Map] onMapLoaded fired — tiles rendered');
+                    mapLoadedRef.current = true;
                     if (mapReadyTimeoutRef.current) {
                         clearTimeout(mapReadyTimeoutRef.current);
                         mapReadyTimeoutRef.current = null;

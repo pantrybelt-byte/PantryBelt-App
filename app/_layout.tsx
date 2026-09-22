@@ -7,6 +7,9 @@ import { AuthReadyProvider } from '../context/AuthReadyContext';
 import { StatsProvider } from '../context/StatsContext';
 import { ThemeProvider } from '../context/ThemeContext';
 import { logSession } from '../utils/analytics';
+import { ErrorBoundary, FallbackErrorBoundary } from '../components/ErrorBoundary';
+
+export { FallbackErrorBoundary as ErrorBoundary };
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -24,21 +27,23 @@ export default function RootLayout() {
     }, []);
 
     return (
-        <SafeAreaProvider>
-            <AuthReadyProvider>
-                <StatsProvider>
-                    <ThemeProvider>
-                        <StatusBar style="light" />
-                        <Stack>
-                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                            <Stack.Screen name="account" options={{ headerShown: false }} />
-                            <Stack.Screen name="index" options={{ headerShown: false }} />
-                        </Stack>
-                    </ThemeProvider>
-                </StatsProvider>
-            </AuthReadyProvider>
-        </SafeAreaProvider>
+        <ErrorBoundary>
+            <SafeAreaProvider>
+                <AuthReadyProvider>
+                    <StatsProvider>
+                        <ThemeProvider>
+                            <StatusBar style="light" />
+                            <Stack>
+                                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                                <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+                                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                                <Stack.Screen name="account" options={{ headerShown: false }} />
+                                <Stack.Screen name="index" options={{ headerShown: false }} />
+                            </Stack>
+                        </ThemeProvider>
+                    </StatsProvider>
+                </AuthReadyProvider>
+            </SafeAreaProvider>
+        </ErrorBoundary>
     );
 }
