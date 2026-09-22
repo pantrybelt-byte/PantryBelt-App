@@ -82,8 +82,14 @@ function formatHours(hours: Record<string, any> | string | null | undefined): st
     return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
 }
 
-// Default fallback camera: Alabama center (statewide view)
+// Default fallback camera & region: Alabama center (statewide view)
 const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
+const DEFAULT_REGION = {
+    latitude: 32.75,
+    longitude: -86.83,
+    latitudeDelta: 3.5,
+    longitudeDelta: 3.0,
+};
 const DEFAULT_CAMERA = {
     center: ALABAMA_CENTER,
     pitch: 30,
@@ -624,9 +630,8 @@ export default function MapScreen() {
     return (
         <View style={styles.container} onLayout={onContainerLayout}>
 
-            {/* ── REAL MAP WITH LIVE FIREBASE PINS (Mounted only when container size is measured > 0) ── */}
-            {containerSize && containerSize.width > 0 && containerSize.height > 0 ? (
-                <MapView
+            {/* ── REAL MAP WITH LIVE FIREBASE PINS ── */}
+            <MapView
                     key={mapInstanceKey}
                     ref={mapRef}
                     style={styles.map}
@@ -638,6 +643,7 @@ export default function MapScreen() {
                     showsBuildings
                     pitchEnabled
                     rotateEnabled
+                    initialRegion={DEFAULT_REGION}
                     initialCamera={DEFAULT_CAMERA}
                     onMapReady={() => {
                         console.log('[Map] onMapReady fired');
@@ -685,7 +691,6 @@ export default function MapScreen() {
                         );
                     })}
                 </MapView>
-            ) : null}
 
             {/* Slow load banner: offers manual list fallback if onMapReady takes > 20s */}
             {mapReadySlow && !mapReady && (
