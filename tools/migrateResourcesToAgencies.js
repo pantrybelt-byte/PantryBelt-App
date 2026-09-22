@@ -10,7 +10,7 @@ const admin = require('firebase-admin');
 const path = require('path');
 const fs = require('fs');
 
-const serviceAccountPath = path.resolve(__dirname, '../serviceAccountKey.json');
+const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(require('os').homedir(), '.config/accessbelt/serviceAccountKey.json');
 
 if (!fs.existsSync(serviceAccountPath)) {
     console.error(`❌ Service account key file not found at ${serviceAccountPath}`);

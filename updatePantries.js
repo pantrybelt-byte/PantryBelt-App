@@ -7,8 +7,9 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const path = require("path");
 
-// 🔧 REPLACE with your service account key path
-const serviceAccount = require("./serviceAccountKey.json");
+const os = require("os");
+const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(os.homedir(), ".config/accessbelt/serviceAccountKey.json");
+const serviceAccount = require(serviceAccountPath);
 
 // 🔧 REPLACE with your Firestore collection name for pantries
 const COLLECTION_NAME = "pantries";

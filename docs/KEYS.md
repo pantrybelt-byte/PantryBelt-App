@@ -1,0 +1,138 @@
+# AccessBelt — Key & Credential Inventory
+
+This document lists every API key, credential, and service account used across AccessBelt, where it is stored, how it is secured, and its rotation procedure.
+
+> **Security Notice**: Never commit secret keys, private keys, or API tokens directly to this repository. All sensitive credentials are kept outside git in `.env`, secret managers, or external config paths.
+
+---
+
+## 1. Firebase Web Client API Key
+
+* **Variable Name**: `EXPO_PUBLIC_FIREBASE_API_KEY`
+* **What Uses It**:
+  * AccessBelt Mobile App (iOS and Android) via `firebase.ts` / `config/firebase.ts`.
+  * Authenticates client instances with Firebase Authentication and Cloud Firestore.
+* **Where It Is Stored**:
+  * **Local**: `.env` (`EXPO_PUBLIC_FIREBASE_API_KEY`)
+  * **EAS Cloud**: EAS Environment Variables (`production`, `preview`, `development`)
+* **Cloud Project & Console**:
+  * **Project**: `pantrybelt-1e7eb`
+  * **Console**: Firebase Console → Project Settings → General (Web App config) / Google Cloud Console → APIs & Services → Credentials.
+* **Restrictions**:
+  * **Application Restrictions**: None (Public client identifier; security is enforced server-side by Firestore Security Rules and Firebase Auth).
+  * **API Target Restrictions**: Scoped to standard Firebase services (Identity Toolkit, Firestore, Storage, App Check).
+* **Who Can Rotate**: Project Owner / Firebase Admin in Firebase Console.
+
+---
+
+## 2. Google Maps Android API Key
+
+* **Variable Name**: `GOOGLE_MAPS_ANDROID_KEY`
+* **What Uses It**:
+  * Google Maps SDK for Android to render vector map tiles and markers in the `Map` tab.
+  * Evaluated at build time in `app.config.js` and injected strictly into the native `AndroidManifest.xml` (`com.google.android.geo.API_KEY`). Notice it intentionally omits the `EXPO_PUBLIC_` prefix so it is never bundled into client JavaScript.
+  * *(iOS intentionally does not use this key; iOS uses native Apple Maps).*
+* **Where It Is Stored**:
+  * **Local**: `.env` (`GOOGLE_MAPS_ANDROID_KEY`)
+  * **EAS Cloud**: EAS Environment Variables (`production`, `preview`, `development`) with **Secret** visibility.
+* **Cloud Project & Console**:
+  * **Project**: `pantrybelt-1e7eb`
+  * **Console**: Google Cloud Console (`pantrybelt-1e7eb`) → APIs & Services → Credentials.
+* **Restrictions**:
+  * **Application Restrictions**: Strictly restricted to Android applications matching:
+    * Package Name: `com.accessbelt.app`
+    * SHA-1 Certificate Fingerprints:
+      1. Google Play App Signing key fingerprint
+      2. EAS Upload key fingerprint
+  * **API Target Restrictions**: Restricted strictly to `Maps SDK for Android` (`maps-android-backend.googleapis.com`). All other Google Cloud APIs are rejected.
+* **Who Can Rotate**: GCP Project Owner / Android Release Manager.
+
+---
+
+## 3. Gemini API Key (Server-Side Cloud Function Secret)
+
+* **Secret Name**: `GEMINI_API_KEY` (Google Cloud Secret Manager)
+* **What Uses It**:
+  * Pete AI Assistant backend Cloud Function (`askPete` in `functions/src/index.ts`).
+  * Relays Pete's user prompts and sanitizes inputs before querying Gemini.
+  * **Not shipped in the client app.** Replaced direct client-side requests with `httpsCallable(functions, "askPete")`.
+* **Where It Is Stored**:
+  * **Production / Cloud**: Google Cloud Secret Manager via Firebase Functions (`defineSecret("GEMINI_API_KEY")`).
+  * **Local Testing**: Set interactively via `firebase functions:secrets:set GEMINI_API_KEY`.
+* **Cloud Project & Console**:
+  * **Project**: `pantrybelt-1e7eb` (Firebase Cloud Functions & GCP Secret Manager).
+  * **Source Key**: Google AI Studio (`https://aistudio.google.com/app/apikey`).
+* **Restrictions**:
+  * **Server-side only**: Never embedded into mobile binaries or exposed to client network traffic.
+  * **Rate Limiting**: Enforced server-side per Firebase Auth UID (30 messages/day counter in Firestore).
+  * **Input Capping**: Enforced server-side (max 1,000 characters per message).
+  * **Authentication**: Requires valid Firebase Auth token (`request.auth`).
+* **Who Can Rotate**: GCP Project Owner / Firebase Admin via `firebase functions:secrets:set GEMINI_API_KEY`.
+
+---
+
+## 4. Google Maps Geocoding API Key
+
+* **Variable Name**: `GOOGLE_MAPS_GEOCODING_KEY`
+* **What Uses It**:
+  * Developer scripts and administrative data pipelines (e.g. `seedPantries.js`, verification tools) to resolve physical Alabama pantry addresses into latitude/longitude coordinates.
+  * Never bundled or used in the mobile runtime application.
+* **Where It Is Stored**:
+  * **Local Only**: `.env` (`GOOGLE_MAPS_GEOCODING_KEY`). Kept on developer machines only; deleted from EAS environments.
+* **Cloud Project & Console**:
+  * **Project**: `pantries-488902`
+  * **Console**: Google Cloud Console (`pantries-488902`) → APIs & Services → Credentials.
+* **Restrictions**:
+  * **Application Restrictions**: None (Server/script key used exclusively from developer machines).
+  * **API Targets**: Geocoding API.
+* **Who Can Rotate**: GCP Project Owner (`pantries-488902`).
+
+---
+
+## 5. Firebase Admin Service Account Key
+
+* **Variable Name**: `GOOGLE_APPLICATION_CREDENTIALS`
+* **What Uses It**:
+  * Local administrative scripts (`seedFirestore.js`, `updatePantries.js`, migration tools in `tools/`).
+  * Bypasses Firestore security rules using Firebase Admin SDK for database initialization and dataset updates.
+* **Where It Is Stored**:
+  * **Moved outside the repository**: `~/.config/accessbelt/serviceAccountKey.json` with file permissions `600` (directory `700`).
+  * Never committed to git.
+* **Cloud Project & Console**:
+  * **Project**: `pantrybelt-1e7eb`
+  * **Console**: Firebase Console → Project Settings → Service accounts → "Generate new private key".
+* **Restrictions**:
+  * Full Firebase Admin / IAM administrative permissions. Must remain strictly confidential.
+* **Who Can Rotate**: Firebase Project Owner in Firebase Console.
+
+---
+
+## 6. Google Play Store Submission Service Account Key
+
+* **Variable Name**: `PLAY_STORE_SERVICE_ACCOUNT_KEY_PATH`
+* **What Uses It**:
+  * EAS CLI (`eas submit -p android`) to submit production `.aab` bundles directly to Google Play Console (internal test track).
+  * Evaluated dynamically in `eas.json` via `${PLAY_STORE_SERVICE_ACCOUNT_KEY_PATH:-/Users/.../.config/accessbelt/google-service-account.json}`.
+* **Where It Is Stored**:
+  * **Moved outside the repository**: `~/.config/accessbelt/google-service-account.json` with file permissions `600`.
+  * Never committed to git.
+* **Cloud Project & Console**:
+  * **Project**: Google Cloud Console linked to Google Play Console developer account.
+  * **Console**: Google Play Console → API access → Service Accounts.
+* **Restrictions**:
+  * Scoped strictly to Google Play Android Developer API with release management permissions for `com.accessbelt.app`.
+* **Who Can Rotate**: Google Play Console Account Owner.
+
+---
+
+## 7. App Session Identifier
+
+* **Variable Name**: `EXPO_PUBLIC_APP_SESSION_ID`
+* **What Uses It**:
+  * Client session bootstrap and anti-tamper validation in `utils/auth.ts`.
+* **Where It Is Stored**:
+  * **Local**: `.env`
+  * **EAS Cloud**: EAS Environment Variables (`production`, `preview`, `development`).
+* **Restrictions**:
+  * Application identifier token.
+* **Who Can Rotate**: AccessBelt Lead Engineers.

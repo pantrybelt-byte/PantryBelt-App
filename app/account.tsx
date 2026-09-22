@@ -11,6 +11,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebase';
 import { useAuthReady } from '../context/AuthReadyContext';
 import { useTheme } from '../context/ThemeContext';
 import { deleteAccount } from '../utils/auth';
@@ -31,16 +33,33 @@ export default function AccountScreen() {
     const [editingAboutYou, setEditingAboutYou] = useState(false);
 
     useEffect(() => {
-        if (!authReady) return;
-        getUserProfile().then(profile => {
-            if (!profile) return;
-            setAge(String(profile.age));
-            setFamilySize(String(profile.familySize));
-            setZipCode(profile.zipCode);
-            setRace(profile.race ?? null);
-            setContactEmail(profile.contactEmail ?? '');
+        const unsubscribe = onAuthStateChanged(auth, user => {
+            if (!user) {
+                setAge('');
+                setFamilySize('');
+                setZipCode('');
+                setRace(null);
+                setContactEmail('');
+                return;
+            }
+            getUserProfile().then(profile => {
+                if (profile) {
+                    setAge(profile.age != null ? String(profile.age) : '');
+                    setFamilySize(profile.familySize != null ? String(profile.familySize) : '');
+                    setZipCode(profile.zipCode != null ? String(profile.zipCode) : '');
+                    setRace(profile.race ?? null);
+                    setContactEmail(profile.contactEmail ?? '');
+                } else {
+                    setAge('');
+                    setFamilySize('');
+                    setZipCode('');
+                    setRace(null);
+                    setContactEmail('');
+                }
+            });
         });
-    }, [authReady]);
+        return unsubscribe;
+    }, []);
 
     const handleSaveProfile = async () => {
         const ageNum = parseInt(age, 10);
@@ -104,7 +123,7 @@ export default function AccountScreen() {
         );
     };
 
-    const hasAboutYouData = age.trim() !== '' && familySize.trim() !== '' && zipCode.trim() !== '';
+    const hasAboutYouData = String(age || '').trim() !== '' && String(familySize || '').trim() !== '' && String(zipCode || '').trim() !== '';
     const showAboutYouForm = editingAboutYou || !hasAboutYouData;
     const raceLabelFor = (v: RaceValue | null) => RACE_OPTIONS.find(o => o.value === v)?.label;
 

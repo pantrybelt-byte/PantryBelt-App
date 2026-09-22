@@ -345,10 +345,14 @@ export default function PeteScreen() {
             const reply = await askGemini(geminiHistory, msg);
             responseCache.set(cacheKey, reply);
             setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
-        } catch (err) {
-            console.warn('Gemini unavailable, using local response:', err);
-            const reply = getPeteResponse(msg);
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+        } catch (err: any) {
+            if (err?.code === 'resource-exhausted' || err?.message?.includes('30 messages') || err?.message?.includes('daily limit')) {
+                setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: err.message }]);
+            } else {
+                console.warn('Pete Cloud Function unavailable, using local response:', err);
+                const reply = getPeteResponse(msg);
+                setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+            }
         } finally {
             setLoading(false);
             setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);

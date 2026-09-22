@@ -41,6 +41,11 @@ Pantry-Belt-Landing-Page-/
 android/
 ios/
 
+# Functions
+functions/lib/
+functions/.secret.local
+
 # Signing credentials — never commit; let EAS manage build credentials.
 *.jks
 *.keystore
+

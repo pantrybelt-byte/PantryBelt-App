@@ -147,7 +147,7 @@ export async function incrementFeedbackSessionCount(): Promise<void> {
     }
 }
 
-/** Whether the auto rating-prompt should show right now. */
+/** Whether the auto rating-prompt should show right now (after every 3 sessions). */
 export async function shouldShowFeedbackPrompt(): Promise<boolean> {
     if (hasPromptedThisSession) return false;
     try {
@@ -157,7 +157,24 @@ export async function shouldShowFeedbackPrompt(): Promise<boolean> {
             AsyncStorage.getItem(SUBMITTED_KEY),
         ]);
         const count = countRaw ? parseInt(countRaw, 10) || 0 : 0;
-        if (count < PROMPT_AFTER_SESSION) return false;
+        if (submitted === 'true') return false;
+        if (snoozeRaw && Date.now() < parseInt(snoozeRaw, 10)) return false;
+        // Pop up after every 3 sessions (session 3, 6, 9...)
+        if (count < 3 || count % 3 !== 0) return false;
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+/** Check if feedback can be prompted after 30 seconds of searching map */
+export async function canShowMapSearchFeedbackPrompt(): Promise<boolean> {
+    if (hasPromptedThisSession) return false;
+    try {
+        const [snoozeRaw, submitted] = await Promise.all([
+            AsyncStorage.getItem(SNOOZE_UNTIL_KEY),
+            AsyncStorage.getItem(SUBMITTED_KEY),
+        ]);
         if (submitted === 'true') return false;
         if (snoozeRaw && Date.now() < parseInt(snoozeRaw, 10)) return false;
         return true;

@@ -19,13 +19,32 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "accessbelt-security",
+      "codebase": "default",
       "ignore": [
         "node_modules",
-        ".git"
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
       ]
     }
   ],
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": false
+    }
+  },
   "extensions": {
     "fs-bq-monthly-summary": "firebase/firestore-bigquery-export@0.3.2",
     "fs-bq-referrals": "firebase/firestore-bigquery-export@0.3.2",

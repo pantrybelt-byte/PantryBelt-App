@@ -28,7 +28,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
+        "serviceAccountKeyPath": "${PLAY_STORE_SERVICE_ACCOUNT_KEY_PATH:-/Users/Thad/.config/accessbelt/google-service-account.json}",
         "track": "internal"
       },
       "ios": {

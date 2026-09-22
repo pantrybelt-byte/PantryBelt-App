@@ -14,7 +14,7 @@ import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
-import { markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
+import { canShowMapSearchFeedbackPrompt, markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
 import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
@@ -332,7 +332,7 @@ export default function MapScreen() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, fetchError]);
 
-    // Auto-prompt the feedback/rating modal once after the user's 3rd session.
+    // Feedback prompt: after every 3 sessions on launch, OR after 30 seconds of searching map.
     const promptCheckedRef = useRef(false);
     useEffect(() => {
         if (loading || fetchError || promptCheckedRef.current) return;
@@ -344,6 +344,19 @@ export default function MapScreen() {
                 setFeedbackVisible(true);
             }
         })();
+    }, [loading, fetchError]);
+
+    // 30 seconds of searching / browsing map timer
+    useEffect(() => {
+        if (loading || fetchError) return;
+        const timer = setTimeout(async () => {
+            if (await canShowMapSearchFeedbackPrompt()) {
+                markFeedbackPromptShown();
+                setFeedbackIsAutoPrompt(true);
+                setFeedbackVisible(true);
+            }
+        }, 30000);
+        return () => clearTimeout(timer);
     }, [loading, fetchError]);
 
     // Opens the detail modal + logs engagement, shared by marker taps and

@@ -1,12 +1,26 @@
 {
   "name": "accessbelt-functions",
   "version": "1.0.0",
-  "description": "AccessBelt Cloud Functions — Tier 3B Security (Blaze plan upgrade)",
-  "main": "index.js",
-  "engines": { "node": "20" },
+  "description": "AccessBelt Cloud Functions",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions"
+  },
+  "engines": {
+    "node": "20"
+  },
   "dependencies": {
-    "firebase-admin": "^13.7.0",
-    "firebase-functions": "^6.0.0"
+    "firebase-admin": "^13.1.0",
+    "firebase-functions": "^6.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
   },
   "private": true
 }

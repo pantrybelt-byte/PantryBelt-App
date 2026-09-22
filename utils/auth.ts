@@ -26,7 +26,7 @@ import {
     signInWithEmailAndPassword,
     signOut as firebaseSignOut,
 } from 'firebase/auth';
-import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Platform } from 'react-native';
 import { auth, db } from '../config/firebase';
 
@@ -245,13 +245,42 @@ async function linkOrCreate(identifier: string, secret: string, kind: Identifier
 async function signInWithIdentifier(identifier: string, secret: string, kind: IdentifierKind): Promise<{ ok: boolean; error?: string }> {
     await waitForInitialAuthBootstrap();
     try {
+        const isAnon = auth.currentUser?.isAnonymous;
+        const anonUid = isAnon ? auth.currentUser?.uid : null;
+        let anonProfileData: Record<string, unknown> | null = null;
+
+        if (anonUid) {
+            try {
+                const anonSnap = await getDoc(doc(db, 'user_profiles', anonUid));
+                if (anonSnap.exists()) {
+                    anonProfileData = anonSnap.data() as Record<string, unknown>;
+                }
+            } catch (err) {
+                console.warn('[Security] Could not read anonymous profile before sign in:', err);
+            }
+        }
+
         await signInWithEmailAndPassword(auth, identifier, secret);
         await reestablishSession();
+
+        const accountUid = auth.currentUser?.uid;
+        if (anonProfileData && accountUid && accountUid !== anonUid) {
+            try {
+                const accountSnap = await getDoc(doc(db, 'user_profiles', accountUid));
+                if (!accountSnap.exists()) {
+                    await setDoc(doc(db, 'user_profiles', accountUid), anonProfileData);
+                }
+            } catch (err) {
+                console.warn('[Security] Could not copy anonymous profile to account:', err);
+            }
+        }
+
         return { ok: true };
     } catch (err) {
         return { ok: false, error: friendlyAuthError(err, kind) };
     }
 }
+
 
 /**
  * signUpWithEmail() / signInWithEmail()

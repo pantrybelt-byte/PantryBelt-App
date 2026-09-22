@@ -12,7 +12,7 @@ const admin = require('firebase-admin');
 const path = require('path');
 const fs = require('fs');
 
-const serviceAccountPath = path.resolve(__dirname, '../serviceAccountKey.json');
+const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(require('os').homedir(), '.config/accessbelt/serviceAccountKey.json');
 const serviceAccount = require(serviceAccountPath);
 if (!admin.apps.length) {
   admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });

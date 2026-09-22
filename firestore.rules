@@ -423,6 +423,12 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Pete AI rate limits — written and read only by Cloud Functions (Admin SDK)
+    match /pete_rate_limits/{docId} {
+      allow read, write: if false;
+    }
+
+
     // ── Waitlist (Public Landing Page) ─────────────────────────────────────────
     match /waitlist/{docId} {
       allow read, update, delete: if false;

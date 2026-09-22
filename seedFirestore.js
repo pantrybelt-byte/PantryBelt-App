@@ -5,8 +5,10 @@
  * Run once: node seedFirestore.js
  */
 
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
+const path = require('path');
+const os = require('os');
+const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(os.homedir(), '.config/accessbelt/serviceAccountKey.json');
+const serviceAccount = require(serviceAccountPath);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
