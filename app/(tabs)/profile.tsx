@@ -41,8 +41,7 @@ const RESOURCES = [
 ];
 
 // Flag to control visibility of map diagnostics on Profile screen.
-// Turn off before public release (see docs/RELEASE_CHECKLIST.md).
-export const SHOW_MAP_DIAGNOSTICS = true;
+export const SHOW_MAP_DIAGNOSTICS = false;
 
 export default function ProfileScreen() {
     const router = useRouter();

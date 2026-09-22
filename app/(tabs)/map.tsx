@@ -465,8 +465,11 @@ export default function MapScreen() {
     // purely a rendering/performance concern (limiting how many <Marker>
     // instances mount at once, avoiding dumping all ~880 pins simultaneously).
     // If viewport culling would produce 0 pins while pantries are loaded (e.g.
-    // user is in an area with no immediate pantries, or initial zoom), fall back
-    // to showing all eligible pins so the map never appears empty.
+    // initial statewide zoom, before the camera settles), fall back to showing
+    // all eligible pins so the map never appears empty. Scoped to the
+    // unfiltered ("All") case only — when a county filter is active, an empty
+    // viewport result should surface as a real empty state (see
+    // noResultsInFilter below), not silently widen back out to every pin.
     const candidatePins = visibleRegion
         ? cityFiltered.filter(p => {
             const latPad = visibleRegion.latitudeDelta * 0.15;
@@ -478,9 +481,14 @@ export default function MapScreen() {
         })
         : cityFiltered;
 
-    const regionFiltered = (candidatePins.length === 0 && cityFiltered.length > 0)
+    const regionFiltered = (filter === 'All' && candidatePins.length === 0 && cityFiltered.length > 0)
         ? cityFiltered
         : candidatePins;
+
+    // True only when an explicit county filter is active and genuinely has no
+    // pantries to show (either the county has none at all, or the camera
+    // hasn't reached them yet) — never true for the unfiltered statewide view.
+    const noResultsInFilter = filter !== 'All' && mapReady && regionFiltered.length === 0;
 
     // "Pantries near me": prioritize markers closest to the user's live
     // location (never persisted — same in-memory-only posture as the
@@ -701,6 +709,29 @@ export default function MapScreen() {
                         activeOpacity={0.8}
                     >
                         <Text style={styles.slowBannerBtnText}>View as list</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+
+            {/* Shown when an explicit county filter genuinely has no pantries
+                to display — replaces the old behavior of silently falling
+                back to every pantry statewide. */}
+            {noResultsInFilter && (
+                <View style={[styles.slowBanner, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    <View style={styles.slowBannerLeft}>
+                        <Ionicons name="alert-circle-outline" size={18} color="#b52525" />
+                        <Text style={[styles.slowBannerText, { color: theme.text }]}>
+                            No pantries found in {filter} County
+                        </Text>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.slowBannerBtn}
+                        onPress={() => handleFilter('All')}
+                        accessibilityRole="button"
+                        accessibilityLabel="View all counties"
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.slowBannerBtnText}>View All</Text>
                     </TouchableOpacity>
                 </View>
             )}
