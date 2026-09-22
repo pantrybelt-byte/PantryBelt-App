@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Alert,
     Linking,
+    Platform,
     ScrollView,
     StyleSheet,
     Switch,
@@ -12,6 +13,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import Constants from 'expo-constants';
+import * as Updates from 'expo-updates';
 import FeedbackModal from '../../components/FeedbackModal';
 import LegalModal from '../../components/LegalModal';
 import { useAuthReady } from '../../context/AuthReadyContext';
@@ -22,6 +25,7 @@ import { signOutUser } from '../../utils/auth';
 import { registerForPushNotificationsAsync } from '../../utils/notifications';
 import { updateNewsletterOptIn, updatePushToken } from '../../utils/userProfile';
 import { getLastKnownCounty, getLocationPreference, setLocationPreference } from '../../utils/userLocation';
+import { getMapDiagnostics, subscribeMapDiagnostics } from '../../utils/mapDiagnostics';
 
 const PUSH_ENABLED_KEY = '@pb_push_enabled';
 const NEWSLETTER_KEY = '@pb_newsletter_enabled';
@@ -47,6 +51,11 @@ export default function ProfileScreen() {
     const [feedbackVisible, setFeedbackVisible] = useState(false);
     const [legalModalVisible, setLegalModalVisible] = useState(false);
     const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy'>('privacy');
+    const [mapDiag, setMapDiag] = useState(getMapDiagnostics);
+
+    useEffect(() => {
+        return subscribeMapDiagnostics(setMapDiag);
+    }, []);
 
     const handleSignOut = () => {
         Alert.alert(
@@ -451,7 +460,14 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             )}
 
-            <Text style={[styles.version, { color: theme.subtext }]}>AccessBelt v1.0.1 · Free for families</Text>
+            <Text style={[styles.version, { color: theme.subtext }]}>
+                AccessBelt v1.0.1 (build {Constants.expoConfig?.android?.versionCode ?? Constants.nativeBuildVersion ?? '6'}) · Free for families
+            </Text>
+            {(__DEV__ || Updates.channel === 'preview' || Updates.channel === 'beta' || Updates.channel === 'internal' || true) && (
+                <Text style={[styles.diagnostics, { color: theme.subtext }]}>
+                    Map: ready {mapDiag.ready ? 'yes' : 'no'}, loaded {mapDiag.loaded ? 'yes' : 'no'}, provider {mapDiag.provider}
+                </Text>
+            )}
 
             <FeedbackModal
                 visible={feedbackVisible}
@@ -502,4 +518,11 @@ const styles = StyleSheet.create({
     signOutBtn: { backgroundColor: '#dc2626', borderRadius: 14, paddingVertical: 16, alignItems: 'center', marginBottom: 20 },
     signOutBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
     version: { textAlign: 'center', fontSize: 12 },
+    diagnostics: {
+        textAlign: 'center',
+        fontSize: 11,
+        marginTop: 4,
+        opacity: 0.8,
+        fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+    },
 });

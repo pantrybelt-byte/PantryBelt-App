@@ -18,6 +18,7 @@ import { canShowMapSearchFeedbackPrompt, markFeedbackPromptShown, shouldShowFeed
 import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
 import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
+import { updateMapDiagnostics } from '../../utils/mapDiagnostics';
 
 type Pantry = {
     id: string;
@@ -259,30 +260,29 @@ export default function MapScreen() {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
 
+    const mapReadyRef = useRef(false);
     const mapLoadedRef = useRef(false);
+    const [mapReadySlow, setMapReadySlow] = useState(false);
+    const [viewAsList, setViewAsList] = useState(false);
 
-    // Map-load watchdog: once we have pantries to show, start a timer. If
-    // onMapLoaded hasn't cleared it by the time it fires, tiles never
-    // actually rendered (see mapLoadFailed comment above) — log it and
-    // switch to the list-view fallback. Re-armed on every retry via
-    // mapInstanceKey. Arms only ONCE per MapView mount. If onMapLoaded has
-    // already fired for this mount, returning to the map tab will never
-    // trigger the fallback. Timeout is set to 20s for slow networks.
+    useEffect(() => {
+        updateMapDiagnostics({ provider: Platform.OS === 'android' ? 'google' : 'default' });
+    }, []);
+
+    // If onMapReady hasn't fired after 20 seconds, display a small non-blocking
+    // banner offering to switch to list view. The MapView itself is NEVER unmounted
+    // or replaced automatically.
     useEffect(() => {
         if (loading || fetchError) return;
-        if (mapLoadedRef.current) return;
+        if (mapReadyRef.current) return;
         if (Platform.OS !== 'android') return;
         if (mapReadyTimeoutRef.current) return;
 
-        setMapLoadFailed(false);
         mapReadyTimeoutRef.current = setTimeout(() => {
-            console.error(
-                '[Map] onMapLoaded did not fire within 20s — treating this as a map load ' +
-                'failure. On Android this usually means a missing/invalid/unrestricted ' +
-                'Google Maps API key (GOOGLE_MAPS_ANDROID_KEY) or a Google Play Services ' +
-                'error on-device. Falling back to a pantry list view.'
-            );
-            setMapLoadFailed(true);
+            if (!mapReadyRef.current) {
+                console.warn('[Map] onMapReady did not fire within 20s — showing slow load banner');
+                setMapReadySlow(true);
+            }
             mapReadyTimeoutRef.current = null;
         }, 20000);
         return () => {
@@ -293,15 +293,18 @@ export default function MapScreen() {
         };
     }, [loading, fetchError, mapInstanceKey]);
 
-    // Pull-to-retry: force the MapView to fully remount and re-arm the watchdog.
+    // Pull-to-retry: force the MapView to fully remount and reset states.
     const retryMapLoad = useCallback(() => {
+        mapReadyRef.current = false;
         mapLoadedRef.current = false;
         if (mapReadyTimeoutRef.current) {
             clearTimeout(mapReadyTimeoutRef.current);
             mapReadyTimeoutRef.current = null;
         }
         setMapReady(false);
-        setMapLoadFailed(false);
+        setMapReadySlow(false);
+        setViewAsList(false);
+        updateMapDiagnostics({ ready: false, loaded: false });
         setMapInstanceKey(k => k + 1);
     }, []);
 
@@ -556,10 +559,8 @@ export default function MapScreen() {
         </View>
     );
 
-    // Map failed to come up natively (see mapLoadFailed comment above) —
-    // pantries themselves loaded fine, so fall back to a scrollable list
-    // instead of a blank map.
-    if (mapLoadFailed) return (
+    // If user explicitly chose list view (via the slow banner)
+    if (viewAsList) return (
         <View style={[styles.container, { backgroundColor: theme.bg }]}>
             <FlatList
                 data={cityFiltered}
@@ -570,12 +571,12 @@ export default function MapScreen() {
                 ListHeaderComponent={
                     <View style={styles.mapFallbackHeader}>
                         <Ionicons name="map-outline" size={40} color="#b52525" importantForAccessibility="no" />
-                        <Text style={[styles.loadingText, { color: theme.text }]}>Map couldn't load. Pull to retry.</Text>
-                        <TouchableOpacity style={styles.retryBtn} onPress={retryMapLoad} accessibilityRole="button" accessibilityLabel="Retry loading map">
-                            <Text style={styles.retryBtnText}>Retry</Text>
+                        <Text style={[styles.loadingText, { color: theme.text }]}>Pantry List View</Text>
+                        <TouchableOpacity style={styles.retryBtn} onPress={retryMapLoad} accessibilityRole="button" accessibilityLabel="Return to map">
+                            <Text style={styles.retryBtnText}>Return to Map</Text>
                         </TouchableOpacity>
                         <Text style={[styles.errorSubtext, { color: theme.subtext }]}>
-                            Showing {cityFiltered.length} pantries as a list instead.
+                            Showing {cityFiltered.length} pantries as a list.
                         </Text>
                     </View>
                 }
@@ -585,7 +586,7 @@ export default function MapScreen() {
                         : null;
                     return (
                         <TouchableOpacity
-                            style={[styles.searchResultRow, { paddingHorizontal: SPACING.md }]}
+                            style={[styles.searchResultRow, { backgroundColor: theme.card }]}
                             onPress={() => openPantryDetails(item)}
                         >
                             <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
@@ -625,22 +626,20 @@ export default function MapScreen() {
                 rotateEnabled
                 initialCamera={DEFAULT_CAMERA}
                 onMapReady={() => {
-                    // Fires once the native view/SDK initializes — kept for
-                    // camera-timing purposes (see mapReady comment above),
-                    // but NOT trusted as a load-success signal on Android
-                    // (see mapLoadFailed comment above) — the watchdog is
-                    // only cleared by onMapLoaded below.
                     console.log('[Map] onMapReady fired');
+                    mapReadyRef.current = true;
                     setMapReady(true);
-                }}
-                onMapLoaded={() => {
-                    console.log('[Map] onMapLoaded fired — tiles rendered');
-                    mapLoadedRef.current = true;
+                    setMapReadySlow(false);
                     if (mapReadyTimeoutRef.current) {
                         clearTimeout(mapReadyTimeoutRef.current);
                         mapReadyTimeoutRef.current = null;
                     }
-                    setMapLoadFailed(false);
+                    updateMapDiagnostics({ ready: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
+                }}
+                onMapLoaded={() => {
+                    console.log('[Map] onMapLoaded fired — tiles rendered');
+                    mapLoadedRef.current = true;
+                    updateMapDiagnostics({ loaded: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
                 }}
                 onRegionChangeComplete={(region) => setVisibleRegion(region)}
             >
@@ -672,6 +671,25 @@ export default function MapScreen() {
                     );
                 })}
             </MapView>
+
+            {/* Slow load banner: offers manual list fallback if onMapReady takes > 20s */}
+            {mapReadySlow && !mapReady && (
+                <View style={[styles.slowBanner, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    <View style={styles.slowBannerLeft}>
+                        <Ionicons name="time-outline" size={18} color="#b52525" />
+                        <Text style={[styles.slowBannerText, { color: theme.text }]}>Map slow to load?</Text>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.slowBannerBtn}
+                        onPress={() => setViewAsList(true)}
+                        accessibilityRole="button"
+                        accessibilityLabel="View as list"
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.slowBannerBtnText}>View as list</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
 
             {/* Global/Scoped pantry search */}
             <View style={styles.searchWrapper} pointerEvents="box-none">
@@ -1038,6 +1056,25 @@ const styles = StyleSheet.create({
     loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f2f2f7', gap: 12 },
     loadingText: { fontSize: 15, color: '#6c6c70', fontWeight: '600' },
     mapFallbackHeader: { alignItems: 'center', justifyContent: 'center', gap: 10, paddingTop: 32, paddingBottom: 20, paddingHorizontal: 24 },
+    slowBanner: {
+        position: 'absolute',
+        bottom: 84,
+        left: 14,
+        right: 14,
+        zIndex: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        paddingHorizontal: 14,
+        borderRadius: RADIUS.lg,
+        borderWidth: 1,
+        ...SHADOWS.md,
+    },
+    slowBannerLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+    slowBannerText: { fontSize: 13, fontWeight: '600' },
+    slowBannerBtn: { backgroundColor: '#b52525', paddingHorizontal: 12, paddingVertical: 6, borderRadius: RADIUS.md },
+    slowBannerBtnText: { color: '#fff', fontSize: 12, fontWeight: '700' },
     searchWrapper: { position: 'absolute', top: 54, left: 12, right: 12 },
     searchBar: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: RADIUS.xl, paddingHorizontal: SPACING.md, height: 44, ...SHADOWS.md },
     searchInput: { flex: 1, fontSize: 14, height: '100%' },
