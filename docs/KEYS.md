@@ -46,6 +46,13 @@ This document lists every API key, credential, and service account used across A
       2. EAS Upload key fingerprint
   * **API Target Restrictions**: Restricted strictly to `Maps SDK for Android` (`maps-android-backend.googleapis.com`). All other Google Cloud APIs are rejected.
 * **Who Can Rotate**: GCP Project Owner / Android Release Manager.
+* **Current Active Key**: UID `65e6702c-a03d-400a-a74f-6a7fbdb2ad11` ("AccessBelt Android Maps Sep 2026 v3"), created 2026-09-22.
+* **Rotation History**:
+  * `772782b7-e9f5-4b71-9c47-377059a6f633` ("Maps") — original key. Tightened (application + API-target restrictions added) 2026-09-21; superseded, not deleted; left in place, still restricted, unused going forward.
+  * `0a9d474e-17c6-4c98-9799-43c315d2e1cc` ("AccessBelt Android Maps Sep 2026") — created 2026-09-21 to replace the above. Its value was accidentally printed to a local terminal/tool output during a pre-flight check on 2026-09-22 (never transmitted externally). Retired same day as a precaution; left in place per policy (never delete), still restricted, unused going forward.
+  * `fbea4944-430e-4530-8617-1a337c050bab` ("AccessBelt Android Maps Sep 2026 v2") — created 2026-09-22 to replace the above, but its value was *also* accidentally printed to a local terminal/tool output during creation (gcloud's long-running-operation status line ignored `--format`). Never used for any real traffic; left in place per policy, unused going forward.
+  * `65e6702c-a03d-400a-a74f-6a7fbdb2ad11` ("AccessBelt Android Maps Sep 2026 v3") — created 2026-09-22 with output fully redirected to a file (never displayed) to avoid repeating the above. This is the key currently live in `.env` and EAS (`production`/`preview`/`development`, secret visibility).
+  * All four keys carry identical restrictions (package `com.accessbelt.app`, both SHA-1 fingerprints; API target `maps-android-backend.googleapis.com` only), so the two orphaned keys pose no broader blast radius even if never deleted.
 
 ---
 
