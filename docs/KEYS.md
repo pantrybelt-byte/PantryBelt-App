@@ -42,9 +42,11 @@ This document lists every API key, credential, and service account used across A
   * **Application Restrictions**: Strictly restricted to Android applications matching:
     * Package Name: `com.accessbelt.app`
     * SHA-1 Certificate Fingerprints:
-      1. Google Play App Signing key fingerprint
-      2. EAS Upload key fingerprint
+      1. `a57704e7d5004b9b87c9bf26c29a9c70a9403f9a` — EAS Upload key (signs the `.aab` before it reaches Play).
+      2. `4ebcefe549718bb4f0cdcfe0516fa08ea6582812` — added early in this key's history; provenance unconfirmed, kept for compatibility.
+      3. `c9a230b75eddb9a6d6f988c7b6352d23d6b6b874` — **the real Google Play App Signing certificate**, added 2026-09-22 after Build 9 shipped with a blank map on every real device. Verified directly (not guessed): downloaded an actual generated APK for versionCode 9 via the Play Developer API (`generatedApks.download`, using the existing submission service account) and extracted its signing certificate. Fingerprints 1–2 never covered this certificate, so every real install was silently rejected by the Maps backend from the very first Android build — a Cloud Console gap, not a client-code bug, despite several prior app-side "fix" attempts across builds 5–9.
   * **API Target Restrictions**: Restricted strictly to `Maps SDK for Android` (`maps-android-backend.googleapis.com`). All other Google Cloud APIs are rejected.
+  * **Propagation note**: restriction changes on this key take effect within minutes without a new build — Build 9 (already on the internal track) should start rendering the map once this change propagates, no rebuild required for this specific fix.
 * **Who Can Rotate**: GCP Project Owner / Android Release Manager.
 * **Current Active Key**: UID `65e6702c-a03d-400a-a74f-6a7fbdb2ad11` ("AccessBelt Android Maps Sep 2026 v3"), created 2026-09-22. The only other surviving key, `772782b7...` ("Maps", see below), is intentionally retained but unused. The two exposed keys from this rotation were deleted.
 * **Rotation History**:
