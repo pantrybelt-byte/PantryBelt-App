@@ -327,20 +327,8 @@ export default function MapScreen() {
         setMapInstanceKey(k => k + 1);
     }, []);
 
-    // Center on the user's exact location on first load. Runs once we have both
-    // a GPS fix and a mounted/ready map — whichever arrives last triggers it.
-    // Snapchat-style: start zoomed into the user's location (street level).
-    useEffect(() => {
-        if (mapReady && userLocation && !didCenterOnUser.current) {
-            didCenterOnUser.current = true;
-            mapRef.current?.animateToRegion({
-                latitude: userLocation.lat,
-                longitude: userLocation.lng,
-                latitudeDelta: 0.005,   // ~2-3 blocks (street level)
-                longitudeDelta: 0.005,
-            }, 1000);
-        }
-    }, [mapReady, userLocation]);
+    // User location centering is manual-only (user taps recenter button, selects a search result,
+    // or taps a county chip) to ensure first load always displays the statewide pantry overview.
 
     // GAP 7 — Search-to-Success Rate: if the user arrived here shortly after
     // asking Pete to find a pantry, record that the search led somewhere.
@@ -475,9 +463,11 @@ export default function MapScreen() {
 
     // Only render markers within (or near) the visible map region — this is
     // purely a rendering/performance concern (limiting how many <Marker>
-    // instances mount at once, avoiding dumping all ~880 pins simultaneously),
-    // kept separate from the nearbyCount metric above.
-    const regionFiltered = visibleRegion
+    // instances mount at once, avoiding dumping all ~880 pins simultaneously).
+    // If viewport culling would produce 0 pins while pantries are loaded (e.g.
+    // user is in an area with no immediate pantries, or initial zoom), fall back
+    // to showing all eligible pins so the map never appears empty.
+    const candidatePins = visibleRegion
         ? cityFiltered.filter(p => {
             const latPad = visibleRegion.latitudeDelta * 0.15;
             const lngPad = visibleRegion.longitudeDelta * 0.15;
@@ -487,6 +477,10 @@ export default function MapScreen() {
             );
         })
         : cityFiltered;
+
+    const regionFiltered = (candidatePins.length === 0 && cityFiltered.length > 0)
+        ? cityFiltered
+        : candidatePins;
 
     // "Pantries near me": prioritize markers closest to the user's live
     // location (never persisted — same in-memory-only posture as the
