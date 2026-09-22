@@ -10,6 +10,7 @@ export type MapDiagnostics = {
     loaded: boolean;
     provider: 'google' | 'default';
     visited: boolean;
+    size?: string;
 };
 
 let diagnostics: MapDiagnostics = {

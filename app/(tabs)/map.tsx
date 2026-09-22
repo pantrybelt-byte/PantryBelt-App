@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Alert, FlatList, Keyboard, Linking, Modal, Platform, RefreshControl,
+    ActivityIndicator, Alert, FlatList, Keyboard, LayoutChangeEvent, Linking, Modal, Platform, RefreshControl,
     ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -264,6 +264,19 @@ export default function MapScreen() {
     const mapLoadedRef = useRef(false);
     const [mapReadySlow, setMapReadySlow] = useState(false);
     const [viewAsList, setViewAsList] = useState(false);
+    const [containerSize, setContainerSize] = useState<{ width: number; height: number } | null>(null);
+
+    const onContainerLayout = useCallback((e: LayoutChangeEvent) => {
+        const { width, height } = e.nativeEvent.layout;
+        if (width > 0 && height > 0) {
+            const sizeStr = `${Math.round(width)}x${Math.round(height)}`;
+            updateMapDiagnostics({ size: sizeStr });
+            setContainerSize(prev => {
+                if (prev && prev.width === width && prev.height === height) return prev;
+                return { width, height };
+            });
+        }
+    }, []);
 
     useEffect(() => {
         updateMapDiagnostics({ provider: Platform.OS === 'android' ? 'google' : 'default' });
@@ -609,68 +622,70 @@ export default function MapScreen() {
     );
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} onLayout={onContainerLayout}>
 
-            {/* ── REAL MAP WITH LIVE FIREBASE PINS ── */}
-            <MapView
-                key={mapInstanceKey}
-                ref={mapRef}
-                style={styles.map}
-                provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
-                mapType="standard"
-                userInterfaceStyle={theme.dark ? 'dark' : 'light'}
-                showsUserLocation
-                showsCompass
-                showsBuildings
-                pitchEnabled
-                rotateEnabled
-                initialCamera={DEFAULT_CAMERA}
-                onMapReady={() => {
-                    console.log('[Map] onMapReady fired');
-                    mapReadyRef.current = true;
-                    setMapReady(true);
-                    setMapReadySlow(false);
-                    if (mapReadyTimeoutRef.current) {
-                        clearTimeout(mapReadyTimeoutRef.current);
-                        mapReadyTimeoutRef.current = null;
-                    }
-                    updateMapDiagnostics({ ready: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
-                }}
-                onMapLoaded={() => {
-                    console.log('[Map] onMapLoaded fired — tiles rendered');
-                    mapLoadedRef.current = true;
-                    updateMapDiagnostics({ loaded: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
-                }}
-                onRegionChangeComplete={(region) => setVisibleRegion(region)}
-            >
-                {filtered.filter(p => p.mapEligible).map(pantry => {
-                    const tier = pantryTier(pantry);
-                    const openDetails = () => openPantryDetails(pantry);
+            {/* ── REAL MAP WITH LIVE FIREBASE PINS (Mounted only when container size is measured > 0) ── */}
+            {containerSize && containerSize.width > 0 && containerSize.height > 0 ? (
+                <MapView
+                    key={mapInstanceKey}
+                    ref={mapRef}
+                    style={styles.map}
+                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+                    mapType="standard"
+                    userInterfaceStyle={theme.dark ? 'dark' : 'light'}
+                    showsUserLocation
+                    showsCompass
+                    showsBuildings
+                    pitchEnabled
+                    rotateEnabled
+                    initialCamera={DEFAULT_CAMERA}
+                    onMapReady={() => {
+                        console.log('[Map] onMapReady fired');
+                        mapReadyRef.current = true;
+                        setMapReady(true);
+                        setMapReadySlow(false);
+                        if (mapReadyTimeoutRef.current) {
+                            clearTimeout(mapReadyTimeoutRef.current);
+                            mapReadyTimeoutRef.current = null;
+                        }
+                        updateMapDiagnostics({ ready: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
+                    }}
+                    onMapLoaded={() => {
+                        console.log('[Map] onMapLoaded fired — tiles rendered');
+                        mapLoadedRef.current = true;
+                        updateMapDiagnostics({ loaded: true, provider: Platform.OS === 'android' ? 'google' : 'default' });
+                    }}
+                    onRegionChangeComplete={(region) => setVisibleRegion(region)}
+                >
+                    {filtered.filter(p => p.mapEligible).map(pantry => {
+                        const tier = pantryTier(pantry);
+                        const openDetails = () => openPantryDetails(pantry);
 
-                    return (
-                        <Marker
-                            key={pantry.id}
-                            coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                            pinColor={TIER_COLORS[tier]}
-                            onPress={openDetails}
-                            accessibilityLabel={`${pantry.name}, ${pantry.city}, ${TIER_LABELS[tier]}`}
-                        >
-                            <Callout tooltip onPress={openDetails}>
-                                <View style={[styles.callout, { backgroundColor: theme.card }]}>
-                                    <View style={styles.calloutNameRow}>
-                                        <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
-                                        <View style={[styles.calloutTierBadge, { backgroundColor: TIER_COLORS[tier] + '26' }]}>
-                                            <Text style={[styles.calloutTierText, { color: TIER_COLORS[tier] }]}>{TIER_LABELS[tier]}</Text>
+                        return (
+                            <Marker
+                                key={pantry.id}
+                                coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
+                                pinColor={TIER_COLORS[tier]}
+                                onPress={openDetails}
+                                accessibilityLabel={`${pantry.name}, ${pantry.city}, ${TIER_LABELS[tier]}`}
+                            >
+                                <Callout tooltip onPress={openDetails}>
+                                    <View style={[styles.callout, { backgroundColor: theme.card }]}>
+                                        <View style={styles.calloutNameRow}>
+                                            <Text style={[styles.calloutName, { color: theme.text }]}>{pantry.name}</Text>
+                                            <View style={[styles.calloutTierBadge, { backgroundColor: TIER_COLORS[tier] + '26' }]}>
+                                                <Text style={[styles.calloutTierText, { color: TIER_COLORS[tier] }]}>{TIER_LABELS[tier]}</Text>
+                                            </View>
                                         </View>
+                                        <Text style={styles.calloutCity}>{pantry.city}</Text>
+                                        <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
                                     </View>
-                                    <Text style={styles.calloutCity}>{pantry.city}</Text>
-                                    <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
-                                </View>
-                            </Callout>
-                        </Marker>
-                    );
-                })}
-            </MapView>
+                                </Callout>
+                            </Marker>
+                        );
+                    })}
+                </MapView>
+            ) : null}
 
             {/* Slow load banner: offers manual list fallback if onMapReady takes > 20s */}
             {mapReadySlow && !mapReady && (

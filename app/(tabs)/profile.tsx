@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import * as Updates from 'expo-updates';
+import * as Application from 'expo-application';
 import FeedbackModal from '../../components/FeedbackModal';
 import LegalModal from '../../components/LegalModal';
 import { useAuthReady } from '../../context/AuthReadyContext';
@@ -461,11 +462,11 @@ export default function ProfileScreen() {
             )}
 
             <Text style={[styles.version, { color: theme.subtext }]}>
-                AccessBelt v1.0.1 (build {Constants.expoConfig?.android?.versionCode ?? Constants.nativeBuildVersion ?? '6'}) · Free for families
+                AccessBelt v1.0.1 (build {Application.nativeBuildVersion ?? Constants.nativeBuildVersion ?? Constants.expoConfig?.android?.versionCode ?? '7'}) · Free for families
             </Text>
             {(__DEV__ || Updates.channel === 'preview' || Updates.channel === 'beta' || Updates.channel === 'internal' || true) && (
                 <Text style={[styles.diagnostics, { color: theme.subtext }]}>
-                    Map: ready {mapDiag.ready ? 'yes' : 'no'}, loaded {mapDiag.loaded ? 'yes' : 'no'}, provider {mapDiag.provider}
+                    Map: ready {mapDiag.ready ? 'yes' : 'no'}, loaded {mapDiag.loaded ? 'yes' : 'no'}, provider {mapDiag.provider}{mapDiag.size ? `, size ${mapDiag.size}` : ''}
                 </Text>
             )}
 
