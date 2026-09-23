@@ -239,16 +239,21 @@ service cloud.firestore {
     }
 
     match /agencies/{agencyId} {
-      // Public read for active agencies (needed for the map)
-      allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      // Any authenticated user (including anonymous) can read active agencies — this powers the map.
+      // All AccessBelt app users are signed in anonymously via initAppSecurity() before any Firestore
+      // query fires, so isAuthed() is the correct gate here.
+      // NOTE: The old rule used `resource.data.status == 'active'` as an unauthenticated bypass, but
+      // that pattern is unreliable for collection queries (Firestore cannot guarantee resource.data
+      // access during list evaluation), causing permission-denied on the agencies query in the app.
+      allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
       allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
       allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
       allow delete: if false;
     }
 
     match /resources/{resourceId} {
-      // Public read for active resources (needed for the map)
-      allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
+      // Same auth-first pattern as agencies — isAuthed() required for list queries
+      allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
       allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
       allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
       allow delete: if false;

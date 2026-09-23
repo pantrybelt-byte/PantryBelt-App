@@ -673,10 +673,18 @@ export default function MapScreen() {
                             <Marker
                                 key={pantry.id}
                                 coordinate={{ latitude: pantry.lat, longitude: pantry.lng }}
-                                pinColor={TIER_COLORS[tier]}
                                 onPress={openDetails}
                                 accessibilityLabel={`${pantry.name}, ${pantry.city}, ${TIER_LABELS[tier]}`}
+                                // pinColor only accepts named strings on Android (PROVIDER_GOOGLE) —
+                                // hex values are silently ignored and fall back to red. Use a
+                                // custom View marker so the tier color renders correctly on both platforms.
+                                anchor={{ x: 0.5, y: 0.5 }}
                             >
+                                {/* Custom pin dot — works with hex colors on both iOS and Android */}
+                                <View style={[
+                                    styles.pinDot,
+                                    { backgroundColor: TIER_COLORS[tier], borderColor: '#ffffff' },
+                                ]} />
                                 <Callout tooltip onPress={openDetails}>
                                     <View style={[styles.callout, { backgroundColor: theme.card }]}>
                                         <View style={styles.calloutNameRow}>
@@ -1151,7 +1159,11 @@ const styles = StyleSheet.create({
     peteFloatingText: { color: '#fff', fontWeight: '800', fontSize: 14 },
     feedbackFloating: { position: 'absolute', bottom: 30, left: 16, backgroundColor: '#fff', borderRadius: 24, paddingHorizontal: 16, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 8 },
     feedbackFloatingText: { color: '#b52525', fontWeight: '800', fontSize: 14 },
+    // Custom circular pin marker — replaces pinColor (which only accepts named
+    // color strings on Android with PROVIDER_GOOGLE; hex falls back to red).
+    pinDot: { width: 14, height: 14, borderRadius: 7, borderWidth: 2 },
     callout: { backgroundColor: '#fff', borderRadius: 12, padding: 10, minWidth: 160, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 6, elevation: 4 },
+
     calloutNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
     calloutTierBadge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
     calloutTierText: { fontSize: 9, fontWeight: '700' },
