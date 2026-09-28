@@ -210,6 +210,14 @@ export default function SignInScreen() {
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     keyboardType="email-address"
+                                    // Native credential autofill. textContentType drives
+                                    // iOS Keychain/QuickType; autoComplete drives the
+                                    // Android autofill service. Both are needed — neither
+                                    // platform reads the other's prop.
+                                    textContentType="username"
+                                    autoComplete="email"
+                                    importantForAutofill="yes"
+                                    returnKeyType="next"
                                 />
                                 <TextInput
                                     style={[styles.input, { backgroundColor: theme.input, color: theme.text }]}
@@ -218,6 +226,16 @@ export default function SignInScreen() {
                                     value={password}
                                     onChangeText={setPassword}
                                     secureTextEntry
+                                    // 'newPassword' on signup is what triggers the OS to
+                                    // offer a generated strong password and save it;
+                                    // 'password' on signin is what makes it offer to fill.
+                                    // Using one value for both breaks the other flow.
+                                    textContentType={mode === 'signup' ? 'newPassword' : 'password'}
+                                    autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                                    importantForAutofill="yes"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    returnKeyType={mode === 'signup' ? 'next' : 'go'}
                                 />
                                 {mode === 'signup' && (
                                     <TextInput
@@ -227,6 +245,12 @@ export default function SignInScreen() {
                                         value={confirmPassword}
                                         onChangeText={setConfirmPassword}
                                         secureTextEntry
+                                        textContentType="newPassword"
+                                        autoComplete="new-password"
+                                        importantForAutofill="yes"
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                        returnKeyType="go"
                                     />
                                 )}
                             </>
@@ -241,6 +265,10 @@ export default function SignInScreen() {
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     maxLength={20}
+                                    textContentType="username"
+                                    autoComplete="username"
+                                    importantForAutofill="yes"
+                                    returnKeyType="next"
                                 />
                                 <TextInput
                                     style={[styles.input, { backgroundColor: theme.input, color: theme.text }]}
@@ -251,6 +279,10 @@ export default function SignInScreen() {
                                     secureTextEntry
                                     keyboardType="number-pad"
                                     maxLength={6}
+                                    textContentType={mode === 'signup' ? 'newPassword' : 'password'}
+                                    autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                                    importantForAutofill="yes"
+                                    returnKeyType={mode === 'signup' ? 'next' : 'go'}
                                 />
                                 {mode === 'signup' && (
                                     <TextInput
@@ -262,6 +294,10 @@ export default function SignInScreen() {
                                         secureTextEntry
                                         keyboardType="number-pad"
                                         maxLength={6}
+                                        textContentType="newPassword"
+                                        autoComplete="new-password"
+                                        importantForAutofill="yes"
+                                        returnKeyType="go"
                                     />
                                 )}
                             </>

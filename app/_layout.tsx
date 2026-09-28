@@ -9,6 +9,7 @@ import { StatsProvider } from '../context/StatsContext';
 import { ThemeProvider } from '../context/ThemeContext';
 import { logSession } from '../utils/analytics';
 import { ErrorBoundary, FallbackErrorBoundary } from '../components/ErrorBoundary';
+import { ToastProvider } from '../components/Toast';
 
 export { FallbackErrorBoundary as ErrorBoundary };
 
@@ -46,14 +47,18 @@ export default function RootLayout() {
                 <AuthReadyProvider>
                     <StatsProvider>
                         <ThemeProvider>
-                            <StatusBar style="light" />
-                            <Stack>
-                                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                                <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-                                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                                <Stack.Screen name="account" options={{ headerShown: false }} />
-                                <Stack.Screen name="index" options={{ headerShown: false }} />
-                            </Stack>
+                            {/* ToastProvider must be inside SafeAreaProvider (uses insets)
+                                and ThemeProvider (reads theme colors) */}
+                            <ToastProvider>
+                                <StatusBar style="light" />
+                                <Stack>
+                                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                                    <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+                                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                                    <Stack.Screen name="account" options={{ headerShown: false }} />
+                                    <Stack.Screen name="index" options={{ headerShown: false }} />
+                                </Stack>
+                            </ToastProvider>
                         </ThemeProvider>
                     </StatsProvider>
                 </AuthReadyProvider>

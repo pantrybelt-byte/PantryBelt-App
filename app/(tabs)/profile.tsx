@@ -18,6 +18,8 @@ import * as Updates from 'expo-updates';
 import * as Application from 'expo-application';
 import FeedbackModal from '../../components/FeedbackModal';
 import LegalModal from '../../components/LegalModal';
+import { useToast } from '../../components/Toast';
+import { recordError } from '../../utils/monitoring';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useStats } from '../../context/StatsContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -48,6 +50,7 @@ export default function ProfileScreen() {
     const theme = useTheme();
     const { authReady, accountLabel } = useAuthReady();
     const { pantryCount, countyCount } = useStats();
+    const { showToast } = useToast();
 
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
@@ -90,17 +93,40 @@ export default function ProfileScreen() {
         getLocationPreference().then(setLocationEnabled).catch(() => {});
     }, []);
 
+    // Optimistic with rollback: the switch flips immediately so the UI stays
+    // responsive on the slow rural connections this app targets, but if the
+    // write fails we put it back and say so. Leaving a flipped switch over a
+    // failed write is the worst option — the user believes they opted in.
     const handleToggleNewsletter = async (value: boolean) => {
+        const previous = newsletter;
         setNewsletter(value);
-        await AsyncStorage.setItem(NEWSLETTER_KEY, value ? 'true' : 'false');
-        // Best-effort Firestore sync — keyed by uid so the org can match
-        // opt-ins against the profile's optional contact email.
-        if (authReady) await updateNewsletterOptIn(value);
+        try {
+            await AsyncStorage.setItem(NEWSLETTER_KEY, value ? 'true' : 'false');
+            // Firestore sync — keyed by uid so the org can match opt-ins
+            // against the profile's optional contact email.
+            if (authReady) {
+                const res = await updateNewsletterOptIn(value);
+                if (!res.ok) throw new Error('newsletter sync failed');
+            }
+            showToast(value ? 'Subscribed to the newsletter' : 'Unsubscribed from the newsletter', 'success');
+        } catch (err) {
+            setNewsletter(previous);
+            recordError(err, 'profile:toggleNewsletter');
+            showToast('Could not save that change. Check your connection.', 'error');
+        }
     };
 
     const handleToggleLocation = async (value: boolean) => {
+        const previous = locationEnabled;
         setLocationEnabled(value);
-        await setLocationPreference(value);
+        try {
+            await setLocationPreference(value);
+        } catch (err) {
+            setLocationEnabled(previous);
+            recordError(err, 'profile:toggleLocation');
+            showToast('Could not save that change.', 'error');
+            return;
+        }
         if (!value) {
             Alert.alert(
                 'Location Services off',
@@ -110,13 +136,25 @@ export default function ProfileScreen() {
     };
 
     const handleToggleNotifications = async (value: boolean) => {
+        const previous = notifications;
+
         if (!value) {
             setNotifications(false);
-            await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'false');
-            if (authReady) await updatePushToken(null);
+            try {
+                await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'false');
+                if (authReady) await updatePushToken(null);
+                showToast('Push notifications turned off', 'success');
+            } catch (err) {
+                setNotifications(previous);
+                recordError(err, 'profile:disableNotifications');
+                showToast('Could not save that change.', 'error');
+            }
             return;
         }
 
+        // Turning ON needs an OS permission grant first, so this one is
+        // deliberately NOT optimistic — flipping the switch before the user has
+        // answered the system prompt would show "on" while push is still off.
         const token = await registerForPushNotificationsAsync();
         if (!token) {
             Alert.alert(
@@ -127,8 +165,15 @@ export default function ProfileScreen() {
         }
 
         setNotifications(true);
-        await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'true');
-        if (authReady) await updatePushToken(token);
+        try {
+            await AsyncStorage.setItem(PUSH_ENABLED_KEY, 'true');
+            if (authReady) await updatePushToken(token);
+            showToast('Push notifications turned on', 'success');
+        } catch (err) {
+            setNotifications(previous);
+            recordError(err, 'profile:enableNotifications');
+            showToast('Could not save that change.', 'error');
+        }
     };
 
     return (
