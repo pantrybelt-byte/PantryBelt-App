@@ -4,11 +4,12 @@ import * as Location from 'expo-location';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Alert, FlatList, Keyboard, LayoutChangeEvent, Linking, Modal, Platform, RefreshControl,
+    Alert, FlatList, Keyboard, LayoutChangeEvent, Linking, Modal, Platform, RefreshControl,
     ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import FeedbackModal from '../../components/FeedbackModal';
+import { MapLoadingSkeleton, PantryListSkeleton } from '../../components/SkeletonLoader';
 import { db } from '../../config/firebase';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -19,6 +20,15 @@ import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility'
 import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 import { updateMapDiagnostics } from '../../utils/mapDiagnostics';
+import { useIsOffline } from '../../utils/network';
+import { sortByCounty, sortByProximity } from '../../utils/offlineCache';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// UI preference: the county chip the user last selected. Restored on relaunch
+// so someone who only ever cares about Dallas County isn't re-filtering on
+// every cold start. Not security- or privacy-relevant — a county name is the
+// coarsest geography the app retains anyway (Operating Agreement §6.5).
+const MAP_FILTER_KEY = '@pb_map_county_filter';
 
 type Pantry = {
     id: string;
@@ -139,6 +149,16 @@ export default function MapScreen() {
     const [pantries, setPantries] = useState<Pantry[]>([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    // Connectivity. When offline we hide the map entirely — MapKit/Google Maps
+    // render a blank grey tile grid with no cached basemap, which reads as a
+    // broken app rather than as "you are offline".
+    const isOffline = useIsOffline();
+    // Whether the last Firestore read was served from the on-disk persistent
+    // cache rather than the network (snapshot.metadata.fromCache). Drives the
+    // "showing saved pantries" banner so stale data is never passed off as live.
+    const [servedFromCache, setServedFromCache] = useState(false);
+    // Offline list ordering. Proximity needs a GPS fix; falls back to county.
+    const [offlineSort, setOfflineSort] = useState<'county' | 'proximity'>('county');
     const [liveData, setLiveData] = useState(false);
     const [filter, setFilter] = useState('All');
     const [counties, setCounties] = useState<string[]>(['All']);
@@ -188,6 +208,10 @@ export default function MapScreen() {
                 where('status', '==', 'active')
             );
             const snapshot = await getDocs(q);
+            // Persistent cache is enabled in firebase.ts, so this resolves from
+            // disk when the network is down instead of rejecting. Record which
+            // it was — the UI must never present cached pantry hours as live.
+            setServedFromCache(snapshot.metadata.fromCache);
 
             if (!snapshot.empty) {
                 const data = snapshot.docs.map(d => {
@@ -265,6 +289,36 @@ export default function MapScreen() {
     useEffect(() => {
         if (authReady) fetchPantries();
     }, [authReady, fetchPantries]);
+
+    // Restore the last county filter, but only once the county list is loaded —
+    // setting a filter for a county that isn't in `counties` yet would leave the
+    // chip row with no visible selection.
+    const filterRestored = useRef(false);
+    useEffect(() => {
+        if (filterRestored.current || counties.length <= 1) return;
+        filterRestored.current = true;
+        AsyncStorage.getItem(MAP_FILTER_KEY)
+            .then(saved => {
+                if (saved && counties.includes(saved)) setFilter(saved);
+            })
+            .catch(() => { /* preference only — never block the map on it */ });
+    }, [counties]);
+
+    useEffect(() => {
+        if (!filterRestored.current) return;
+        AsyncStorage.setItem(MAP_FILTER_KEY, filter).catch(() => { });
+    }, [filter]);
+
+    // Coming back online after showing cached data: re-read from the network so
+    // the user isn't left on a stale snapshot until they happen to pull-to-refresh.
+    // Gated on servedFromCache so a normal online session doesn't refetch every
+    // time NetInfo blips (common on cellular hand-off).
+    const wasOffline = useRef(isOffline);
+    useEffect(() => {
+        const reconnected = wasOffline.current && !isOffline;
+        wasOffline.current = isOffline;
+        if (reconnected && authReady && servedFromCache) fetchPantries();
+    }, [isOffline, authReady, servedFromCache, fetchPantries]);
 
     const mapReadyRef = useRef(false);
     const mapLoadedRef = useRef(false);
@@ -562,12 +616,129 @@ export default function MapScreen() {
         }
     }, [pantries]);
 
-    if (loading) return (
-        <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
-            <ActivityIndicator size="large" color="#b52525" />
-            <Text style={[styles.loadingText, { color: theme.subtext }]}>Finding pantries near you!</Text>
-        </View>
-    );
+    // Skeleton, not a spinner: the map screen always resolves into the same
+    // layout (search bar, county chips, pins), so showing that shape while it
+    // loads reads as "nearly there" instead of "nothing is happening". Offline
+    // cold starts skip straight to the list skeleton, since no map will appear.
+    if (loading) return isOffline
+        ? (
+            <View style={[styles.container, { backgroundColor: theme.bg }]}>
+                <PantryListSkeleton count={6} />
+            </View>
+        )
+        : <MapLoadingSkeleton />;
+
+    // ── OFFLINE: cached pantry list ────────────────────────────────────────
+    // The map is deliberately not rendered — neither MapKit nor Google Maps
+    // ships an offline basemap, so it would paint a blank grey grid. Pantry
+    // docs, by contrast, come straight out of the Firestore persistent cache.
+    if (isOffline && pantries.length > 0) {
+        const sorted = offlineSort === 'proximity' && userLocation
+            // Distance is computed on-device from an in-memory fix and is never
+            // persisted or transmitted — only county-level geography leaves the
+            // device (Operating Agreement §6.5).
+            ? sortByProximity(cityFiltered as any, userLocation.lat, userLocation.lng) as unknown as Pantry[]
+            : sortByCounty(cityFiltered as any) as unknown as Pantry[];
+
+        return (
+            <View style={[styles.container, { backgroundColor: theme.bg }]}>
+                <View style={[styles.offlineBanner, { backgroundColor: theme.dark ? '#3a2a00' : '#fff4e0' }]}>
+                    <Ionicons name="cloud-offline-outline" size={18} color="#b06000" importantForAccessibility="no" />
+                    <Text style={[styles.offlineBannerText, { color: theme.text }]}>
+                        You&apos;re offline. Showing {sorted.length} saved {sorted.length === 1 ? 'pantry' : 'pantries'} — hours and
+                        availability may have changed, so call ahead.
+                    </Text>
+                </View>
+
+                {/* County filter — same `filter` state the online map uses, so
+                    the selection survives the transition in either direction. */}
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.offlineChipsRow}
+                    contentContainerStyle={styles.offlineChipsContent}
+                >
+                    {counties.map(c => (
+                        <TouchableOpacity
+                            key={c}
+                            onPress={() => setFilter(c)}
+                            accessibilityRole="button"
+                            accessibilityState={{ selected: filter === c }}
+                            style={[
+                                styles.offlineChip,
+                                { backgroundColor: filter === c ? '#b52525' : theme.card, borderColor: theme.border },
+                            ]}
+                        >
+                            <Text style={[styles.offlineChipText, { color: filter === c ? '#fff' : theme.text }]}>
+                                {c}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+
+                <View style={styles.offlineSortRow}>
+                    <TouchableOpacity
+                        onPress={() => setOfflineSort('county')}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: offlineSort === 'county' }}
+                    >
+                        <Text style={[styles.offlineSortText, {
+                            color: offlineSort === 'county' ? '#b52525' : theme.subtext,
+                            fontWeight: offlineSort === 'county' ? '700' : '500',
+                        }]}>By county</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: theme.subtext }}>·</Text>
+                    <TouchableOpacity
+                        // Disabled without a fix: sorting by proximity with no
+                        // location would silently fall back to county order and
+                        // look like a broken button.
+                        disabled={!userLocation}
+                        onPress={() => setOfflineSort('proximity')}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: offlineSort === 'proximity', disabled: !userLocation }}
+                    >
+                        <Text style={[styles.offlineSortText, {
+                            color: !userLocation
+                                ? theme.border
+                                : offlineSort === 'proximity' ? '#b52525' : theme.subtext,
+                            fontWeight: offlineSort === 'proximity' ? '700' : '500',
+                        }]}>Nearest first</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <FlatList
+                    data={sorted}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => {
+                        const dist = userLocation
+                            ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
+                            : null;
+                        return (
+                            <TouchableOpacity
+                                style={[styles.searchResultRow, { backgroundColor: theme.card }]}
+                                onPress={() => openPantryDetails(item)}
+                                accessibilityRole="button"
+                                accessibilityLabel={`${item.name}, ${item.city}, ${item.county} County`}
+                            >
+                                <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
+                                <View style={{ flex: 1 }}>
+                                    <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
+                                    <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
+                                        {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    }}
+                    ListEmptyComponent={
+                        <Text style={[styles.errorSubtext, { color: theme.subtext, textAlign: 'center', marginTop: 20 }]}>
+                            No saved pantries in {filter}.
+                        </Text>
+                    }
+                />
+            </View>
+        );
+    }
 
     if (fetchError) return (
         <View style={[styles.loadingWrap, { backgroundColor: theme.bg }]}>
@@ -1009,21 +1180,33 @@ export default function MapScreen() {
                             </View>
                         )}
 
-                        {!selected.verified && (
-                            <View style={[styles.unverifiedBanner, { backgroundColor: theme.dark ? '#ffffff0d' : '#f5f5f5' }]}>
-                                <Ionicons name="information-circle-outline" size={16} color="#888" />
-                                <View style={{ flex: 1 }}>
-                                    <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
-                                        This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
-                                    </Text>
-                                    {!selected.mapEligible && (
-                                        <Text style={[styles.unverifiedBannerText, { color: theme.subtext, marginTop: 4 }]}>
-                                            We do not have a confirmed location for this pantry.
+                        {/* ── Status banner: only shown for truly unverified pantries (tier='grey') ──
+                            Derivation:
+                              grey   = no phone, no website, no social  → show "unverified" banner
+                              orange = has at least one contact signal   → Active; suppress banner
+                              green  = verified + portal + profile       → Verified; suppress banner
+                            This prevents the conflation bug where a pantry with a phone (orange pin)
+                            simultaneously showed an "Unverified" card banner. One status, one UI. */}
+                        {(() => {
+                            const tier = pantryTier(selected);
+                            if (tier !== 'grey') return null;
+                            return (
+                                <View style={[styles.unverifiedBanner, { backgroundColor: theme.dark ? '#ffffff0d' : '#f5f5f5' }]}>
+                                    <Ionicons name="information-circle-outline" size={16} color="#888" />
+                                    <View style={{ flex: 1 }}>
+                                        <Text style={[styles.unverifiedBannerText, { color: theme.subtext }]}>
+                                            This pantry has not been verified by our team. Hours, address, and availability may be outdated. Please call ahead to confirm.
                                         </Text>
-                                    )}
+                                        {!selected.mapEligible && (
+                                            <Text style={[styles.unverifiedBannerText, { color: theme.subtext, marginTop: 4 }]}>
+                                                We do not have a confirmed location for this pantry.
+                                            </Text>
+                                        )}
+                                    </View>
                                 </View>
-                            </View>
-                        )}
+                            );
+                        })()}
+
 
                         <View style={styles.modalActions}>
                             {selected.phone !== '' && (
@@ -1106,6 +1289,16 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
     container: { flex: 1 },
     map: { ...StyleSheet.absoluteFillObject },
+    // ── Offline cached-list view ──────────────────────────────────────────
+    offlineBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingHorizontal: 14, paddingVertical: 12 },
+    offlineBannerText: { flex: 1, fontSize: 13, lineHeight: 18 },
+    offlineChipsRow: { flexGrow: 0 },
+    offlineChipsContent: { paddingHorizontal: 12, gap: 8, paddingBottom: 8 },
+    offlineChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 16, borderWidth: StyleSheet.hairlineWidth },
+    offlineChipText: { fontSize: 13, fontWeight: '600' },
+    offlineSortRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, paddingBottom: 10 },
+    offlineSortText: { fontSize: 13 },
+
     loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f2f2f7', gap: 12 },
     loadingText: { fontSize: 15, color: '#6c6c70', fontWeight: '600' },
     mapFallbackHeader: { alignItems: 'center', justifyContent: 'center', gap: 10, paddingTop: 32, paddingBottom: 20, paddingHorizontal: 24 },

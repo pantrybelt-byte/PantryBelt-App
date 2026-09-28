@@ -1,6 +1,15 @@
 import { getApps, initializeApp } from 'firebase/app';
-import { getAuth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getAuth, initializeAuth } from 'firebase/auth';
+// @ts-ignore — getReactNativePersistence is present at runtime in firebase v12
+// but missing from its .d.ts. Known upstream issue; see firebase/firebase-js-sdk#8598.
+import { getReactNativePersistence } from 'firebase/auth';
+import {
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore';
+import { getFunctions } from 'firebase/functions';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 if (!process.env.EXPO_PUBLIC_FIREBASE_API_KEY) {
@@ -22,9 +31,26 @@ export const firebaseConfig = {
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-export const db = getFirestore(app);
+// ── Firestore with persistent offline cache ────────────────────────────────
+// initializeFirestore() must be called BEFORE getFirestore() on a new app
+// instance. We call it with persistentLocalCache so all getDocs/onSnapshot
+// calls are automatically served from the local cache when offline.
+// On Fast Refresh / HMR the app is already initialized, so we catch the
+// "already initialized" error and fall back to getFirestore().
+let _db;
+try {
+  _db = initializeFirestore(app, {
+    localCache: persistentLocalCache({
+      tabManager: persistentMultipleTabManager(),
+    }),
+  });
+} catch (err: any) {
+  // "already started" = Fast Refresh or HMR — reuse existing instance
+  _db = getFirestore(app);
+}
+export const db = _db;
 
-// ── TIER 1: Auth instance with AsyncStorage persistence ──
+// ── Auth instance with AsyncStorage persistence ────────────────────────────
 // Initialize with AsyncStorage persistence first; only fall back to getAuth
 // if initializeAuth throws auth/already-initialized (e.g. during Fast Refresh / HMR).
 let authInstance;
@@ -39,8 +65,6 @@ try {
     throw error;
   }
 }
-
-import { getFunctions } from 'firebase/functions';
 
 export const functions = getFunctions(app, 'us-central1');
 export const auth = authInstance;
