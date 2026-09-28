@@ -9,11 +9,6 @@
       "database": "accessbelt-agency",
       "rules": "firestore.agency.rules",
       "indexes": "firestore.empty.indexes.json"
-    },
-    {
-      "database": "accessbelt-operator",
-      "rules": "firestore.operator.rules",
-      "indexes": "firestore.empty.indexes.json"
     }
   ],
   "functions": [

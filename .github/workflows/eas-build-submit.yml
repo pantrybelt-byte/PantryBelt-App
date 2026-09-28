@@ -1,0 +1,99 @@
+name: EAS Build and Submit
+
+on:
+  # Manual trigger from GitHub Actions UI with profile selection
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'EAS build profile'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+          - development
+      platform:
+        description: 'Platform to build'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - ios
+          - android
+      submit:
+        description: 'Submit to stores after build?'
+        required: true
+        default: 'true'
+        type: boolean
+
+  # Also trigger on version tags (e.g. v1.0.2)
+  push:
+    tags:
+      - 'v[0-9]+.*'
+
+jobs:
+  build-and-submit:
+    name: EAS Build (${{ github.event.inputs.platform || 'all' }}) — ${{ github.event.inputs.profile || 'production' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Verify EAS login
+        run: eas whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # The Play Store service account key must exist on the runner. eas.json's
+      # fallback path (/Users/Thad/.config/...) is a local workstation path and
+      # does not exist in CI, so Android submit failed here before this step.
+      - name: Write Play Store service account key
+        if: github.event.inputs.platform != 'ios'
+        run: |
+          printf '%s' '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}' > "$RUNNER_TEMP/play-key.json"
+          echo "PLAY_STORE_SERVICE_ACCOUNT_KEY_PATH=$RUNNER_TEMP/play-key.json" >> "$GITHUB_ENV"
+
+      # NOTE: no --no-wait. The submit steps below need a finished build;
+      # with --no-wait they raced an in-progress build and submitted the
+      # previous artifact (or failed outright with "no builds found").
+      - name: EAS Build
+        run: |
+          eas build \
+            --platform ${{ github.event.inputs.platform || 'all' }} \
+            --profile ${{ github.event.inputs.profile || 'production' }} \
+            --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # Submit only on production builds when submit=true (or tag push)
+      - name: EAS Submit (iOS)
+        if: |
+          (github.event.inputs.profile == 'production' || startsWith(github.ref, 'refs/tags/')) &&
+          (github.event.inputs.submit == 'true' || startsWith(github.ref, 'refs/tags/')) &&
+          (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')
+        run: eas submit --platform ios --profile production --non-interactive --latest
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: EAS Submit (Android)
+        if: |
+          (github.event.inputs.profile == 'production' || startsWith(github.ref, 'refs/tags/')) &&
+          (github.event.inputs.submit == 'true' || startsWith(github.ref, 'refs/tags/')) &&
+          (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')
+        run: eas submit --platform android --profile production --non-interactive --latest
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

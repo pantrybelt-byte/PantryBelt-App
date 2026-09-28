@@ -49,3 +49,6 @@ functions/.secret.local
 *.jks
 *.keystore
 
+
+# AI agent skills/config — may contain API keys or session tokens
+.agents/

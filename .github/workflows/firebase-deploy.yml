@@ -1,0 +1,137 @@
+name: Firebase Deploy
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OWNERSHIP BOUNDARY — one database, one owner.
+#
+#   (default)            ← THIS repo (pantrybelt-v3-3)
+#   accessbelt-agency    ← THIS repo (deny-all stub until a schema exists)
+#   accessbelt-operator  ← Operator-Portal repo. NOT deployed from here.
+#
+# Before 2026-09-28 this workflow ran `--only firestore:rules`, which deploys
+# every database declared in firebase.json. firebase.json declared a 13-line
+# deny-all stub for accessbelt-operator, so every merge to main overwrote the
+# Operator Portal's real rules and took the portal down. The stub is deleted
+# and the deploy is scoped explicitly below. Do not re-add it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'functions/**'
+      - 'firestore.rules'
+      - 'firestore.agency.rules'
+      - 'firestore.indexes.json'
+      - 'firestore.empty.indexes.json'
+      - 'firebase.json'
+      - 'tests/rules/**'
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ── Step 1: type-check functions AND prove the rules still hold ─────────────
+  verify:
+    name: Type-check + Firestore rules tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install root deps (rules test harness)
+        run: npm ci
+
+      - name: Install function deps
+        run: npm ci
+        working-directory: functions
+
+      - name: TypeScript type-check (no emit)
+        run: npx tsc --noEmit
+        working-directory: functions
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      # Runs tests/rules/*.test.js against the Firestore emulator declared in
+      # firebase.json (port 8080). Exits non-zero on any failure, which blocks
+      # the deploy job below.
+      - name: Firestore rules tests
+        run: npm run test:rules:ci
+
+  # ── Step 2: deploy, behind a manual approval gate ───────────────────────────
+  deploy:
+    name: Deploy Functions + (default)/agency Rules + Indexes
+    runs-on: ubuntu-latest
+    needs: verify
+    # Requires a reviewer to approve in the GitHub UI before this job starts.
+    # Configure at: Settings → Environments → production → Required reviewers.
+    environment:
+      name: production
+      url: https://console.firebase.google.com/project/pantrybelt-1e7eb/overview
+
+    permissions:
+      contents: read
+      id-token: write   # Required for Workload Identity Federation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: functions/package-lock.json
+
+      - name: Install function deps
+        run: npm ci
+        working-directory: functions
+
+      - name: Build Cloud Functions
+        run: npm run build
+        working-directory: functions
+
+      # ── Auth: prefer Workload Identity Federation (no long-lived JSON key) ──
+      # Set repo variable GCP_WIF_PROVIDER + GCP_DEPLOY_SA to enable. Until
+      # those exist, falls back to the FIREBASE_SERVICE_ACCOUNT JSON secret.
+      # WIF setup: https://github.com/google-github-actions/auth#workload-identity-federation
+      - name: Authenticate to Google Cloud (Workload Identity Federation)
+        if: vars.GCP_WIF_PROVIDER != ''
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Authenticate to Google Cloud (service account key — fallback)
+        if: vars.GCP_WIF_PROVIDER == ''
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      # Rules are scoped per-database on purpose. accessbelt-operator is
+      # deliberately absent — see the ownership note at the top of this file.
+      - name: Deploy Functions + Rules + Indexes
+        run: |
+          firebase deploy \
+            --only functions,firestore:rules,firestore:indexes \
+            --project pantrybelt-1e7eb \
+            --non-interactive
+
+      - name: Deployment Summary
+        if: always()
+        run: |
+          echo "### Firebase deploy" >> "$GITHUB_STEP_SUMMARY"
+          echo "- commit: \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- actor: ${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- databases: \`(default)\`, \`accessbelt-agency\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- NOT deployed: \`accessbelt-operator\` (owned by Operator-Portal)" >> "$GITHUB_STEP_SUMMARY"
