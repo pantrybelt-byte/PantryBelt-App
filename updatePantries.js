@@ -49,8 +49,26 @@ async function updatePantries() {
       const updateData = {};
 
       if (lat && lng) {
-        updateData.latitude = parseFloat(lat);
-        updateData.longitude = parseFloat(lng);
+        const parsedLat = parseFloat(lat);
+        const parsedLng = parseFloat(lng);
+
+        // ── Alabama bounds guard ──────────────────────────────────────────────
+        // BUG FIX: was writing flat `latitude`/`longitude` that map.tsx never reads.
+        // map.tsx and utils/pantries.ts both read r.coordinates.lat / r.coordinates.lng.
+        if (parsedLat < 30.1 || parsedLat > 35.1 || parsedLng < -88.6 || parsedLng > -84.8) {
+          console.error(`❌ Skipping ${id} — coordinate (${parsedLat}, ${parsedLng}) is outside Alabama bounds.`);
+          failed++;
+          continue;
+        }
+        // ── Precision guard ──────────────────────────────────────────────────
+        const latDec = (parsedLat.toString().split('.')[1] || '').length;
+        const lngDec = (parsedLng.toString().split('.')[1] || '').length;
+        if (latDec < 5 || lngDec < 5) {
+          console.warn(`⚠️  ${id} — coordinates have fewer than 5 decimal places (${latDec}/${lngDec}). Writing anyway but flag for manual review.`);
+        }
+        // Write to the nested field that map.tsx / pantries.ts actually reads.
+        updateData['coordinates.lat'] = parsedLat;
+        updateData['coordinates.lng'] = parsedLng;
       }
 
       if (website && website.trim() !== "") {

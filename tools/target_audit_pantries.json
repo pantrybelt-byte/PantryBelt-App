@@ -1,0 +1,782 @@
+[
+  {
+    "id": "0zXAXOK0LXlsX3U2IGhT",
+    "name": "Faith in Action Ministries",
+    "county": "Perry",
+    "address": {
+      "zip": "",
+      "city": "Uniontown",
+      "street": "353 Water Avenue",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "9IvWqComYq5vbsvwtzcw",
+    "name": "Sowing Seeds of Hope",
+    "county": "Perry",
+    "address": {
+      "zip": "",
+      "city": "Marion",
+      "street": "1728 South Washington Street",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "TksE9ag7tDELf42QEm5r",
+    "name": "Eagle Grove Missionary Baptist Church",
+    "county": "Perry",
+    "address": {
+      "zip": "",
+      "city": "Marion",
+      "street": "1467 County Road 38",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "g7lvRaWTtPv7ecoVPOZL",
+    "name": "Cahaba Medical Care Foundation",
+    "county": "Perry",
+    "address": {
+      "zip": "",
+      "city": "Marion",
+      "street": "1303 Washington Street",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "q7wYd0iOiptBreTDzdTv",
+    "name": "CHOICE",
+    "county": "Perry",
+    "address": {
+      "zip": "",
+      "city": "Uniontown",
+      "street": "60 Hamburg Duncan Road",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "res_per_002",
+    "name": "Marion Resource Center",
+    "county": "Perry",
+    "address": {
+      "zip": "36756",
+      "city": "Marion",
+      "street": "100 Washington St",
+      "county": "Perry",
+      "state": "AL"
+    },
+    "createdBy": "uid_state_admin_01"
+  },
+  {
+    "id": "1OLbA3kNdM3dRdwVymVw",
+    "name": "Heaven's Storehouse at Oakwood University Church",
+    "county": "Madison",
+    "address": {
+      "zip": "35896",
+      "city": "Huntsville",
+      "street": "5500 Adventist Blvd",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "7xtaNvT0vKkeizzeOXQF",
+    "name": "Patricia Haley Charity",
+    "county": "Madison",
+    "address": {
+      "zip": "35804",
+      "city": "Huntsville",
+      "street": "3322 South Memorial Parkway",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "LJXDCQy6ObFN01wSNnUm",
+    "name": "Life Church Huntsville",
+    "county": "Madison",
+    "address": {
+      "zip": "35801",
+      "city": "Huntsville",
+      "street": "2300 S. Memorial Parkway SW",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "PU3WVmHmHcbtFAW9uCHm",
+    "name": "Manna House",
+    "county": "Madison",
+    "address": {
+      "zip": "35801",
+      "city": "Huntsville",
+      "street": "2110 Memorial Pkwy. SW",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "u46CSuIrRWwvZuyHU3cy",
+    "name": "Downtown Rescue Mission",
+    "county": "Madison",
+    "address": {
+      "zip": "35816",
+      "city": "Huntsville",
+      "street": "1400 Evangel Drive",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "wEXjarrMbgthZeODYMj2",
+    "name": "Metropolitan Community Worship Center",
+    "county": "Madison",
+    "address": {
+      "zip": "35801",
+      "city": "Huntsville",
+      "street": "1116 Church St.",
+      "county": "Madison",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "LHgVpKqXw5kE4MT003Iz",
+    "name": "Smiths Station Baptist Church",
+    "county": "Lee",
+    "address": {
+      "zip": "36877",
+      "city": "Smiths Station",
+      "street": "2460 Panther Parkway",
+      "county": "Lee",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "TM0AepxDeHrZjJ35jOit",
+    "name": "New Nelius Baptist Church",
+    "county": "Lee",
+    "address": {
+      "zip": "36877",
+      "city": "Smiths Station",
+      "street": "175 New Nelius Church Road",
+      "county": "Lee",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "mWT9lc2rwuJBynyKIZet",
+    "name": "Food Bank of East Alabama",
+    "county": "Lee",
+    "address": {
+      "zip": "",
+      "city": "Auburn",
+      "street": "375 Industry Drive, Auburn, AL",
+      "county": "Lee",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "tEUvaVaVLP79qwo8AO4A",
+    "name": "Lee-Russell Council of Governments",
+    "county": "Lee",
+    "address": {
+      "zip": "36801",
+      "city": "Opelika",
+      "street": "2207 Gateway Drive",
+      "county": "Lee",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "uxQh1KaztBlmbZkFlbpM",
+    "name": "Auburn Wesley Foundation (Loachapoka Methodist Church)",
+    "county": "Lee",
+    "address": {
+      "zip": "36865",
+      "city": "Loachapoka",
+      "street": "6220 Stage Road",
+      "county": "Lee",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "S9OawMShN0rymTy8bbj9",
+    "name": "FBC Community Ministries",
+    "county": "Montgomery",
+    "address": {
+      "zip": "",
+      "city": "Montgomery",
+      "street": "380 Arba Street, Montgomery, AL",
+      "county": "Montgomery",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "WjRk7dFEwsXsK7hiEeJc",
+    "name": "Hands of Christ Ministry",
+    "county": "Montgomery",
+    "address": {
+      "zip": "",
+      "city": "Montgomery",
+      "street": "Montgomery, AL",
+      "county": "Montgomery",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "gQJGmtyCAAoZnTBQyIyX",
+    "name": "Feeding the Multitude",
+    "county": "Montgomery",
+    "address": {
+      "zip": "",
+      "city": "Montgomery",
+      "street": "Montgomery, AL",
+      "county": "Montgomery",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "pmyulmt5U0nWV2uIuMJn",
+    "name": "Love Loud River Region",
+    "county": "Montgomery",
+    "address": {
+      "zip": "",
+      "city": "Montgomery",
+      "street": "Montgomery, AL",
+      "county": "Montgomery",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "wn5dpPntDHkh6TdBKCDA",
+    "name": "Frazer Community Ministries",
+    "county": "Montgomery",
+    "address": {
+      "zip": "",
+      "city": "Montgomery",
+      "street": "Montgomery, AL",
+      "county": "Montgomery",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "5E8DSFBeJNWvWXKUqJVT",
+    "name": "St. John Missionary BC",
+    "county": "Houston",
+    "address": {
+      "zip": "36343",
+      "city": "Gordon",
+      "street": "5529 South State Highway 95",
+      "county": "Houston",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_wiregrass_2026-08-17"
+  },
+  {
+    "id": "CxiiJnZzCTSRdBlxHykA",
+    "name": "Shady Grove C.H. Church",
+    "county": "Houston",
+    "address": {
+      "zip": "36370",
+      "city": "Pansey",
+      "street": "355 County Road 75 S.",
+      "county": "Houston",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_wiregrass_2026-08-17"
+  },
+  {
+    "id": "FQJM0SlrazOAQBFedeH1",
+    "name": "Philadelphia Baptist Church",
+    "county": "Houston",
+    "address": {
+      "zip": "36343",
+      "city": "Gordon",
+      "street": "24 Philadelphia Church Road",
+      "county": "Houston",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_wiregrass_2026-08-17"
+  },
+  {
+    "id": "BAN0oITCjZJmLX0jEHHh",
+    "name": "Cullman Caring For Kids",
+    "county": "Cullman",
+    "address": {
+      "zip": "35056",
+      "city": "Cullman",
+      "street": "402 Arnold Street NE",
+      "county": "Cullman",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "PRjn44xL6yzPOYV11bx6",
+    "name": "Garden City Church Of God",
+    "county": "Cullman",
+    "address": {
+      "zip": "35070",
+      "city": "Garden City",
+      "street": "134 Short St.",
+      "county": "Cullman",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "zW7xtz0bVVOoJVKPiFce",
+    "name": "Northbrook Baptist Church (The Caring Center)",
+    "county": "Cullman",
+    "address": {
+      "zip": "35055",
+      "city": "Cullman",
+      "street": "1629 Second Ave. NW",
+      "county": "Cullman",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "KTs9dFuUQF1awHablWUT",
+    "name": "Paint Rock Missionary Baptist",
+    "county": "Jackson",
+    "address": {
+      "zip": "35764",
+      "city": "Paint Rock",
+      "street": "2911 Hwy 72",
+      "county": "Jackson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "bivszCHo6eFwjkL0TVw4",
+    "name": "Living Word Ministries",
+    "county": "Jackson",
+    "address": {
+      "zip": "35768",
+      "city": "Scottsboro",
+      "street": "9545 Alabama Hwy. 79",
+      "county": "Jackson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "dPyaXY5C5aC5jCBeEqIJ",
+    "name": "Pleasant View Baptist Church",
+    "county": "Jackson",
+    "address": {
+      "zip": "35744",
+      "city": "Dutton",
+      "street": "1825 County Road 378",
+      "county": "Jackson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_fbna_2026-08-17"
+  },
+  {
+    "id": "MavqptEPSuNKY0zrxw4v",
+    "name": "Forgiven Ministries",
+    "county": "Barbour",
+    "address": {
+      "zip": "",
+      "city": "Eufaula",
+      "street": "Eufaula, AL",
+      "county": "Barbour",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "N0c0OA5lNzxWfRqVrbiJ",
+    "name": "White Oak UMC",
+    "county": "Barbour",
+    "address": {
+      "zip": "",
+      "city": "Eufaula",
+      "street": "Eufaula, AL",
+      "county": "Barbour",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "PusVQuGCVHZ1DwZAGfFT",
+    "name": "Eufaula Church of God In Christ",
+    "county": "Barbour",
+    "address": {
+      "zip": "",
+      "city": "Eufaula",
+      "street": "Eufaula, AL",
+      "county": "Barbour",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "0nj4TGnRlN4417jzwBWk",
+    "name": "First Universalist Church of Camp Hill",
+    "county": "Tallapoosa",
+    "address": {
+      "zip": "36850",
+      "city": "Camp Hill",
+      "street": "",
+      "county": "Tallapoosa",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "JwWYp1453fmEj0EUuRk4",
+    "name": "River of Life Worship Center",
+    "county": "Tallapoosa",
+    "address": {
+      "zip": "35010",
+      "city": "Alexander City",
+      "street": "1715 Tallapoosa Street",
+      "county": "Tallapoosa",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_east_alabama_2026-08-17"
+  },
+  {
+    "id": "21UaTtW6cISOuyn4SH8Y",
+    "name": "Ridgecrest Baptist Church",
+    "county": "Dale",
+    "address": {
+      "zip": "36360",
+      "city": "Ozark",
+      "street": "1971 Deese Road",
+      "county": "Dale",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_wiregrass_2026-08-17"
+  },
+  {
+    "id": "TfeKVlSkKNvHxGC7F7AZ",
+    "name": "Daleville Heights COC",
+    "county": "Dale",
+    "address": {
+      "zip": "36360",
+      "city": "Ozark",
+      "street": "660 Willow Oaks Drive",
+      "county": "Dale",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_wiregrass_2026-08-17"
+  },
+  {
+    "id": "4EWelLqeYFetqIKGLeeg",
+    "name": "St. Patrick Lazarus Pantry",
+    "county": "Russell",
+    "address": {
+      "zip": "",
+      "city": "Phenix City",
+      "street": "607 16th Street, Phenix City, AL",
+      "county": "Russell",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "QzFHHAQ4LZ7gAhQMgTok",
+    "name": "Potter's House Baptist",
+    "county": "Russell",
+    "address": {
+      "zip": "",
+      "city": "Phenix City",
+      "street": "124 Highway 165, Phenix City, AL",
+      "county": "Russell",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "6vOdFytI1mKQVAUnPgwn",
+    "name": "Selma Area Food Bank (Hub)",
+    "county": "Dallas",
+    "address": {
+      "zip": "",
+      "city": "Selma",
+      "street": "101 Craig Industrial Park, Selma, AL",
+      "county": "Dallas",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "vASK9ow1QPFJVSIkb5vz",
+    "name": "Christian Outreach Alliance",
+    "county": "Dallas",
+    "address": {
+      "zip": "",
+      "city": "Selma",
+      "street": "700 Jeff Davis Ave, Selma, AL",
+      "county": "Dallas",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "9vZctReMcYWf22c3SuXP",
+    "name": "Smithfield Backpack Buddies Agency Backpack",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35204",
+      "city": "Birmingham",
+      "street": "300 4th Court North",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  },
+  {
+    "id": "TVnsPEB0tTAOVGOkaS86",
+    "name": "Joe Brooks Food Ministry Pantry",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35204",
+      "city": "Birmingham",
+      "street": "300 4th Court North",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  },
+  {
+    "id": "BACCMBEbApOnNuYj3PsS",
+    "name": "Friends of Theo Ratlif",
+    "county": "Marengo",
+    "address": {
+      "zip": "",
+      "city": "Demopolis",
+      "street": "940 Martha Drive",
+      "county": "Marengo",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "ublxNadpy2zNr7Cv9jmd",
+    "name": "Eastern Star Baptist Church",
+    "county": "Marengo",
+    "address": {
+      "zip": "",
+      "city": "Demopolis",
+      "street": "940 Martha Drive",
+      "county": "Marengo",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "CaZmL4vPwkbe9YxzRhdu",
+    "name": "Selma AIR",
+    "county": "Dallas",
+    "address": {
+      "zip": "",
+      "city": "Selma",
+      "street": "102 Central Park Place",
+      "county": "Dallas",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "k3iWcSupS69sDUjK92bP",
+    "name": "Sandridge Missionary Baptist Church",
+    "county": "Dallas",
+    "address": {
+      "zip": "",
+      "city": "Selma",
+      "street": "5024 County Road 27",
+      "county": "Dallas",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "HqKXhBerOiiruQzOIe4j",
+    "name": "St Thomas AME Church",
+    "county": "Wilcox",
+    "address": {
+      "zip": "",
+      "city": "Lower Peach Tree",
+      "street": "323 St Thomas Church Road",
+      "county": "Wilcox",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "IW2yblAgXAHBhsjnTybF",
+    "name": "Pine Hill Mission",
+    "county": "Wilcox",
+    "address": {
+      "zip": "",
+      "city": "Pinehill",
+      "street": "3915 Broad Street",
+      "county": "Wilcox",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_selma_area_2026-08-17"
+  },
+  {
+    "id": "KYz4fYXEcL31xZnhpqji",
+    "name": "St. Andrew's Episcopal Church Pantry",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35205",
+      "city": "Birmingham",
+      "street": "1024 12th Street South",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  },
+  {
+    "id": "dx8Etr6nMkDjw159PXgf",
+    "name": "The Community Kitchens of Birmingham Soup Kitchen",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35205",
+      "city": "Birmingham",
+      "street": "1024 12th St S",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  },
+  {
+    "id": "RgYVJiiwup6WlfRErB6x",
+    "name": "First Missionary Baptist",
+    "county": "Bullock",
+    "address": {
+      "zip": "",
+      "city": "Union Springs",
+      "street": "Union Springs, AL",
+      "county": "Bullock",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "ssRxzFIaiUuAUZYYTvyK",
+    "name": "Bullock County Food Pantry",
+    "county": "Bullock",
+    "address": {
+      "zip": "",
+      "city": "Union Springs",
+      "street": "Union Springs, AL",
+      "county": "Bullock",
+      "state": "AL"
+    },
+    "createdBy": "migration_script"
+  },
+  {
+    "id": "Ta6KJZBNczQ8jbbyYAlu",
+    "name": "Hands Of Hope Ministry",
+    "county": "Mobile",
+    "address": {
+      "zip": "36609",
+      "city": "Mobile",
+      "street": "3750 Michael Blvd",
+      "county": "Mobile",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_ftgc_region_2026-08-17"
+  },
+  {
+    "id": "l9uMoQqn2PWxGBPI1usb",
+    "name": "Authentic Life Church",
+    "county": "Mobile",
+    "address": {
+      "zip": "36609",
+      "city": "Mobile",
+      "street": "3750 Michael Boulevard",
+      "county": "Mobile",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_ftgc_region_2026-08-17"
+  },
+  {
+    "id": "U7I2aDm07DxmAciQbnRV",
+    "name": "St. Louis Missionary Baptist Church",
+    "county": "Mobile",
+    "address": {
+      "zip": "36602",
+      "city": "Mobile",
+      "street": "108 North Dearborn Street",
+      "county": "Mobile",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_ftgc_region_2026-08-17"
+  },
+  {
+    "id": "qTYArh2dUqswYXqgaoKS",
+    "name": "Watchman International Ministries",
+    "county": "Mobile",
+    "address": {
+      "zip": "36602",
+      "city": "Mobile",
+      "street": "108 North Dearborn Street",
+      "county": "Mobile",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_ftgc_region_2026-08-17"
+  },
+  {
+    "id": "UOb6IIdr2tBXPmhDCsGB",
+    "name": "Southside Baptist Church Pantry",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35205",
+      "city": "Birmingham",
+      "street": "1016 19th St S",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  },
+  {
+    "id": "ZNR31EFedYki9BoVyxRq",
+    "name": "Jesus Said Feed the Hungry Soup Kitchen",
+    "county": "Jefferson",
+    "address": {
+      "zip": "35205",
+      "city": "Birmingham",
+      "street": "1016 19th Street South",
+      "county": "Jefferson",
+      "state": "AL"
+    },
+    "createdBy": "ai_import_cfbca_2026-08-17"
+  }
+]

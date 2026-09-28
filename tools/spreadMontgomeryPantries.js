@@ -5,8 +5,28 @@
  * them within Montgomery's rough city bounds so they're visually distinct on
  * the map rather than stacked. Targets only docs from that batch
  * (createdBy == 'ai_research_batch_2026-08-10').
+ *
+ * ⚠️  DEPRECATED — DO NOT RUN
+ * This script was a temporary workaround that assigned RANDOM, ARTIFICIAL
+ * coordinates to 29 pantries. Those coordinates have no relationship to the
+ * pantries' real physical addresses and place pins on grass, parking lots, and
+ * random roads across Montgomery.
+ *
+ * The correct fix is to re-geocode these pantries properly using the verified
+ * address in each Firestore document via tools/fix_pantry_coordinates_dry_run.js
+ * after human review of pantry-coordinate-audit.md.
  */
-const admin = require('firebase-admin');
+
+// DEPRECATION GUARD — this script exits immediately so it cannot be run.
+console.error(
+  '\n❌  spreadMontgomeryPantries.js is DEPRECATED and must not be run.\n' +
+  '    It would assign random, artificial coordinates to real pantry locations.\n' +
+  '    Use tools/fix_pantry_coordinates_dry_run.js + human review instead.\n' +
+  '    See pantry-coordinate-audit.md for the correct verified coordinates.\n'
+);
+process.exit(1);
+
+// ─── Legacy code below (will never execute) ───────────────────────────────
 const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || require('path').join(require('os').homedir(), '.config/accessbelt/serviceAccountKey.json');
 const serviceAccount = require(serviceAccountPath);
 

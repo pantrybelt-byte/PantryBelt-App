@@ -165,8 +165,11 @@ async function seedPantries() {
     try {
       let coords = null;
 
-      // Try full address first
-      if (pantry.address && !pantry.address.endsWith(', AL')) {
+      // Try full address first.
+      // BUG FIX: The previous check `!pantry.address.endsWith(', AL')` was
+      // skipping geocoding for every address that ended in state-only form
+      // (e.g. "101 Ave C, Selma, AL"), which is almost all of them. Removed.
+      if (pantry.address) {
         coords = await geocode(pantry.address);
       }
 
@@ -182,9 +185,21 @@ async function seedPantries() {
         console.log(`   ⚠️  Using Montgomery fallback for ${pantry.name}`);
       }
 
-      await addDoc(ref, { ...pantry, lat: coords.lat, lng: coords.lng });
+      // ── Alabama bounds guard ────────────────────────────────────────────
+      // Refuse to write any coordinate outside Alabama (lat 30.1–35.1, lng -88.6 to -84.8).
+      if (coords.lat < 30.1 || coords.lat > 35.1 || coords.lng < -88.6 || coords.lng > -84.8) {
+        throw new Error(`Coordinate (${coords.lat}, ${coords.lng}) is outside Alabama bounds — skipping "${pantry.name}"`);
+      }
+      // ── Precision guard ────────────────────────────────────────────────
+      const latDec = (coords.lat.toString().split('.')[1] || '').length;
+      const lngDec = (coords.lng.toString().split('.')[1] || '').length;
+      if (latDec < 5 || lngDec < 5) {
+        console.warn(`   ⚠️  Low-precision coordinates for "${pantry.name}" (${latDec}/${lngDec} decimals) — using as-is, will need manual verification.`);
+      }
+      // Store in the coordinates sub-object that map.tsx and pantries.ts read.
+      await addDoc(ref, { ...pantry, coordinates: { lat: coords.lat, lng: coords.lng } });
       count++;
-      console.log(`✅ ${count}/${PANTRIES.length} — ${pantry.name} (${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)})`);
+      console.log(`✅ ${count}/${PANTRIES.length} — ${pantry.name} (${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)})`);
 
       // Delay to avoid rate limiting
       await new Promise(res => setTimeout(res, 250));
@@ -197,6 +212,18 @@ async function seedPantries() {
   console.log(`\n🎉 Done! ${count} pantries seeded. ${failed > 0 ? `${failed} failed.` : 'All successful!'}`);
   console.log(`📊 Total pantries in Firestore: ${count}`);
   process.exit(0);
+}
+
+// ── Production guard ────────────────────────────────────────────────────────
+// Refuse to run without an explicit --confirm flag so this cannot be triggered
+// accidentally in a development session.
+if (!process.argv.includes('--confirm')) {
+  console.error(
+    '\n❌  seedPantries.js writes to the PRODUCTION Firestore database.' +
+    '\n    You must pass --confirm to acknowledge this:' +
+    '\n\n      node seedPantries.js --confirm\n'
+  );
+  process.exit(1);
 }
 
 seedPantries();
