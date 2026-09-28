@@ -1,0 +1,24 @@
+{
+  "_comment": [
+    "Emulator config used ONLY by `npm run test:rules`.",
+    "Deliberately separate from firebase.json so the rules test suite can run",
+    "on port 8085 alongside a long-lived dev emulator on 8080, and so it is not",
+    "pinned to single_project_mode against the production project id.",
+    "It declares no deploy targets — this file must never be passed to",
+    "`firebase deploy`."
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "firestore": {
+      "host": "127.0.0.1",
+      "port": 8085
+    },
+    "ui": {
+      "enabled": false
+    },
+    "singleProjectMode": false
+  }
+}

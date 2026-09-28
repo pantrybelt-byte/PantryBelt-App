@@ -91,6 +91,46 @@ service cloud.firestore {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
+    // TIER 1B: EMAIL VERIFICATION
+    // ══════════════════════════════════════════════════════════════════════════
+    // READ THIS BEFORE WIDENING ANY OF THE THREE FUNCTIONS BELOW.
+    //
+    // AccessBelt is anonymous-by-default. The overwhelming majority of users
+    // have no account and no email address at all, and per the Operating
+    // Agreement that is a commitment, not a default we may quietly tighten.
+    // App Store Guideline 5.1.1(iv) independently forbids requiring an account
+    // for features that do not need one.
+    //
+    // Therefore email verification gates WRITES BY ACCOUNT HOLDERS ONLY:
+    //   • anonymous users                    → never gated, full app access
+    //   • signed-in but unverified accounts  → may read, may not write
+    //   • operators/agency staff             → must be verified to write
+    //
+    // It is deliberately NOT applied to any read. An operator whose token
+    // refreshes mid-session must not lose visibility of their own data.
+
+    function isAnonymous() {
+      return isAuthed() && request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
+    function emailVerified() {
+      return isAuthed() && request.auth.token.email_verified == true;
+    }
+
+    // The gate for ordinary app users. Anonymous passes unconditionally — this
+    // is the line that keeps the app usable without an account. An account
+    // holder must have confirmed their address.
+    function selfWriteAllowed() {
+      return isAnonymous() || emailVerified();
+    }
+
+    // The gate for privileged/operator writes. No anonymous escape hatch:
+    // anyone writing org-owned data necessarily has a real, verified account.
+    function operatorWriteAllowed() {
+      return emailVerified();
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
     // TIER 2: Analytics Schema Validators
     // ══════════════════════════════════════════════════════════════════════════
 
@@ -220,10 +260,15 @@ service cloud.firestore {
 
     match /user_profiles/{uid} {
       allow read: if isVerifiedApp() && request.auth.uid == uid;
-      allow create, update: if isVerifiedApp() && request.auth.uid == uid && validUserProfile(request.resource.data);
+      // selfWriteAllowed(): anonymous users pass unconditionally; an account
+      // holder must have verified their email before writing demographics.
+      allow create, update: if isVerifiedApp() && request.auth.uid == uid && selfWriteAllowed() && validUserProfile(request.resource.data);
       // Owner-only delete — required so in-app account deletion (App Store
       // Guideline 5.1.1(v), utils/auth.ts deleteAccount()) can remove the
       // demographic doc before the Firebase Auth record is destroyed.
+      // Deliberately NOT gated on selfWriteAllowed(): a user who never verified
+      // their email must still be able to delete their own data. Blocking that
+      // would fail 5.1.1(v) and is indefensible on privacy grounds besides.
       allow delete: if isVerifiedApp() && request.auth.uid == uid;
     }
 
@@ -233,9 +278,9 @@ service cloud.firestore {
 
     match /organizations/{orgId} {
       allow read: if isAuthed() && (ownsOrg(orgId) || isStateAdmin());
-      allow create: if isStateAdmin();
-      allow update: if isStateAdmin() || (isOrgAdmin() && ownsOrg(orgId) && request.resource.data.jurisdictionCounties == resource.data.jurisdictionCounties);
-      allow delete: if false;
+      allow create: if operatorWriteAllowed() && (isStateAdmin());
+      allow update: if operatorWriteAllowed() && (isStateAdmin() || (isOrgAdmin() && ownsOrg(orgId) && request.resource.data.jurisdictionCounties == resource.data.jurisdictionCounties));
+      allow delete: if operatorWriteAllowed() && (false);
     }
 
     match /agencies/{agencyId} {
@@ -246,50 +291,49 @@ service cloud.firestore {
       // that pattern is unreliable for collection queries (Firestore cannot guarantee resource.data
       // access during list evaluation), causing permission-denied on the agencies query in the app.
       allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
-      allow delete: if false;
+      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data));
+      allow update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data));
+      allow delete: if operatorWriteAllowed() && (false);
     }
 
     match /resources/{resourceId} {
       // Same auth-first pattern as agencies — isAuthed() required for list queries
       allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
-      allow delete: if false;
+      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data));
+      allow update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data));
+      allow delete: if operatorWriteAllowed() && (false);
     }
 
     match /events/{eventId} {
       allow read: if resource.data.status in ['published','active'] || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data);
-      allow delete: if false;
+      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data));
+      allow update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validEventStatus(request.resource.data.status) && validFulfillmentStatus(request.resource.data.fulfillmentStatus) && validEventWindow(request.resource.data));
+      allow delete: if operatorWriteAllowed() && (false);
     }
 
     match /resourceRequests/{requestId} {
       allow read: if isAuthed() && (hasOrgAccess(resource.data.orgId) || (isReadPartner() && countyOk(resource.data.county)));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validRequestStatus(request.resource.data.status) && request.resource.data.status in ['unopened','pending'];
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && validRequestStatus(request.resource.data.status);
-      allow delete: if false;
-
+      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validRequestStatus(request.resource.data.status) && request.resource.data.status in ['unopened','pending']);
+      allow update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && validRequestStatus(request.resource.data.status));
+      allow delete: if operatorWriteAllowed() && (false);
       match /items/{itemId} {
         function parentReq() { return get(/databases/$(database)/documents/resourceRequests/$(requestId)).data; }
         allow read: if isAuthed() && (hasOrgAccess(parentReq().orgId) || (isReadPartner() && countyOk(parentReq().county)));
-        allow create, update: if isOrgStaff() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county) && validItemQuantities(request.resource.data);
-        allow delete: if isOrgAdmin() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county);
+        allow create, update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county) && validItemQuantities(request.resource.data));
+        allow delete: if operatorWriteAllowed() && (isOrgAdmin() && hasOrgAccess(parentReq().orgId) && countyOk(parentReq().county));
       }
     }
 
     match /users/{userId} {
       allow read: if request.auth.uid == userId || (isOrgAdmin() && ownsOrg(resource.data.orgId)) || isStateAdmin();
-      allow create: if (isOrgAdmin() && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
-      allow update: if (request.auth.uid == userId && request.resource.data.role == resource.data.role && request.resource.data.orgId == resource.data.orgId && request.resource.data.authorizedCounties == resource.data.authorizedCounties) || (isOrgAdmin() && ownsOrg(resource.data.orgId) && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin();
-      allow delete: if isStateAdmin();
+      allow create: if operatorWriteAllowed() && ((isOrgAdmin() && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin());
+      allow update: if operatorWriteAllowed() && ((request.auth.uid == userId && request.resource.data.role == resource.data.role && request.resource.data.orgId == resource.data.orgId && request.resource.data.authorizedCounties == resource.data.authorizedCounties) || (isOrgAdmin() && ownsOrg(resource.data.orgId) && ownsOrg(request.resource.data.orgId) && request.resource.data.role != 'state_admin') || isStateAdmin());
+      allow delete: if operatorWriteAllowed() && (isStateAdmin());
     }
 
     match /auditLogs/{logId} {
       allow read: if isStateAdmin();
-      allow write: if false;
+      allow write: if operatorWriteAllowed() && (false);
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -430,6 +474,17 @@ service cloud.firestore {
 
     // Pete AI rate limits — written and read only by Cloud Functions (Admin SDK)
     match /pete_rate_limits/{docId} {
+      allow read, write: if false;
+    }
+
+    // KMS operation rate limits — written only by Cloud Functions (Admin SDK)
+    match /kms_rate_limits/{docId} {
+      allow read, write: if false;
+    }
+
+    // Password reset tokens — written only by generatePasswordResetLink Cloud Function (Admin SDK).
+    // Never readable or writable by client apps.
+    match /password_reset_tokens/{docId} {
       allow read, write: if false;
     }
 

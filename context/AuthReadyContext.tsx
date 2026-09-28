@@ -13,9 +13,11 @@
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { initAppSecurity, subscribeToAccountLabel } from '../utils/auth';
+import { initAppSecurity, subscribeToAccountLabel, getCurrentUid } from '../utils/auth';
 import { logSession } from '../utils/analytics';
 import { flushFeedbackQueue, incrementFeedbackSessionCount } from '../utils/feedback';
+import { initMonitoring } from '../utils/monitoring';
+import { initAppCheck } from '../utils/appCheck';
 
 type AuthReadyContextType = {
     authReady: boolean;
@@ -30,17 +32,28 @@ export function AuthReadyProvider({ children }: { children: React.ReactNode }) {
     const [accountLabel, setAccountLabel] = useState<string | null>(null);
 
     useEffect(() => {
+        // 🔒 TIER 3B: App Check must be initialized BEFORE the first Firestore /
+        // Functions call, otherwise that call goes out with no attestation header
+        // and will be rejected once enforcement is switched on in the console.
+        // initAppCheck() never rejects — it degrades to unattested requests — so
+        // chaining auth off it cannot strand the UI.
+        //
         // 🔒 TIER 1 + TIER 3A: Anonymous auth + session bootstrap
         // UI renders immediately — screens show placeholders until authReady flips.
-        initAppSecurity()
+        initAppCheck()
+            .then(() => initAppSecurity())
             .then(() => {
                 setAuthReady(true);
                 // Fire-and-forget: these are side effects that must NOT block
                 // the UI thread. Run them in parallel, don't await.
+                const uid = getCurrentUid();
                 Promise.all([
                     logSession(),
                     incrementFeedbackSessionCount(),
                     flushFeedbackQueue(),
+                    // Bootstrap Crashlytics + Analytics with the anonymous uid.
+                    // Must run after auth so the uid is available.
+                    uid ? initMonitoring(uid) : Promise.resolve(),
                 ]).catch(() => {
                     // Best-effort — never block the UI for analytics/feedback
                 });
