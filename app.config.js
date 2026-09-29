@@ -18,7 +18,7 @@ module.exports = {
   expo: {
     name: 'AccessBelt',
     slug: 'accessbelt',
-    version: '1.1.0',
+    version: '1.1.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -108,7 +108,7 @@ module.exports = {
     updates: {
       url: 'https://u.expo.dev/59f03f7a-deae-43d4-abb2-ee18a299a9b0',
     },
-    runtimeVersion: '1.1.0',
+    runtimeVersion: '1.1.1',
     owner: 'accessbelt',
     extra: {
       eas: {
