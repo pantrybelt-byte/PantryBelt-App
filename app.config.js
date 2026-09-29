@@ -116,24 +116,6 @@ module.exports = {
       },
     },
     plugins: [
-      // ─── @react-native-firebase native modules ─────────────────────────────
-      // These must come FIRST so they can patch the native project before other
-      // plugins. They coexist with the Firebase JS SDK (firebase npm package)
-      // used for Auth + Firestore — RNFirebase is used only for Crashlytics
-      // and Analytics, which need native SDKs for full crash report capture.
-      //
-      // ⚠️  Requires google-services.json (Android) and GoogleService-Info.plist
-      //     (iOS) in the project root before running `expo prebuild` or EAS Build.
-      //     Download both from Firebase Console → Project Settings → Your apps.
-      '@react-native-firebase/app',
-      '@react-native-firebase/analytics',
-      '@react-native-firebase/crashlytics',
-      // App Check: App Attest (iOS) / Play Integrity (Android). Requires a
-      // prebuild. iOS also needs the App Attest capability, which this plugin
-      // adds to the entitlements file. See utils/appCheck.ts for why the
-      // native token has to be bridged into the Firebase JS SDK by hand.
-      '@react-native-firebase/app-check',
-      // ─── Expo plugins ─────────────────────────────────────────────────────
       'expo-router',
       'expo-font',
       'expo-system-ui',
