@@ -22,6 +22,7 @@ import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, g
 import { updateMapDiagnostics } from '../../utils/mapDiagnostics';
 import { useIsOffline } from '../../utils/network';
 import { sortByCounty, sortByProximity } from '../../utils/offlineCache';
+import { haptics } from '../../utils/haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // UI preference: the county chip the user last selected. Restored on relaunch
@@ -78,6 +79,38 @@ const TIER_LABELS: Record<Tier, string> = {
     orange: 'Active',
     green: 'Verified',
 };
+
+// ── High performance memoized pantry list row ─────────────
+type PantryRowProps = {
+    item: Pantry;
+    userLocation: { lat: number; lng: number } | null;
+    onPress: (item: Pantry) => void;
+    theme: any;
+};
+
+const PantryRowItem = React.memo(function PantryRowItem({ item, userLocation, onPress, theme }: PantryRowProps) {
+    const dist = userLocation ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng) : null;
+    const tier = pantryTier(item);
+    return (
+        <TouchableOpacity
+            style={[styles.searchResultRow, { backgroundColor: theme.card }]}
+            onPress={() => onPress(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.name}, ${item.city}, ${item.county} County`}
+            accessibilityHint="Opens pantry details and directions"
+        >
+            <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[tier] }]} />
+            <View style={{ flex: 1 }}>
+                <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={2}>
+                    {item.name}
+                </Text>
+                <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={2}>
+                    {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
+                </Text>
+            </View>
+        </TouchableOpacity>
+    );
+});
 
 function formatHours(hours: Record<string, any> | string | null | undefined): string {
     if (!hours) return '';
@@ -430,6 +463,7 @@ export default function MapScreen() {
     // Opens the detail modal + logs engagement, shared by marker taps and
     // search-result taps so both entry points behave identically.
     const openPantryDetails = useCallback((pantry: Pantry) => {
+        haptics.mediumImpact();
         setSearchFocused(false);
         setSelected(pantry);
         setModalVisible(true);
@@ -446,6 +480,7 @@ export default function MapScreen() {
 
     // Selecting a search result: fly the map to it, sync the active county filter, and open its detail modal.
     const selectSearchResult = useCallback((pantry: Pantry) => {
+        haptics.mediumImpact();
         Keyboard.dismiss();
         setSearchQuery('');
         setSearchFocused(false);
@@ -466,6 +501,24 @@ export default function MapScreen() {
         }
         openPantryDetails(pantry);
     }, [openPantryDetails]);
+
+    const renderFallbackItem = useCallback(({ item }: { item: Pantry }) => (
+        <PantryRowItem
+            item={item}
+            userLocation={userLocation}
+            onPress={openPantryDetails}
+            theme={theme}
+        />
+    ), [userLocation, openPantryDetails, theme]);
+
+    const renderSearchResultItem = useCallback(({ item }: { item: Pantry }) => (
+        <PantryRowItem
+            item={item}
+            userLocation={userLocation}
+            onPress={selectSearchResult}
+            theme={theme}
+        />
+    ), [userLocation, selectSearchResult, theme]);
 
     // Scoped search: searches within active county when a county filter is selected,
     // or statewide when "All" is active. Results are distance-sorted if GPS is available.
@@ -555,6 +608,7 @@ export default function MapScreen() {
         : regionFiltered;
 
     const handleFilter = (county: string) => {
+        haptics.lightImpact();
         setSearchFocused(false);
         setFilter(county);
         const items = county === 'All' ? pantries : pantries.filter(p => p.county === county);
@@ -577,6 +631,7 @@ export default function MapScreen() {
 
     // Toggle between a flat top-down view and a tilted 3D perspective.
     const toggleMapView = useCallback(() => {
+        haptics.mediumImpact();
         const next = !is3D;
         setIs3D(next);
         mapRef.current?.animateCamera({ pitch: next ? 30 : 0, heading: 0 }, { duration: 500 });
@@ -584,6 +639,7 @@ export default function MapScreen() {
 
     // Recenter the map on the user and zoom in close enough to see nearby pantries.
     const recenterOnUser = useCallback(async () => {
+        haptics.mediumImpact();
         try {
             const locationAllowed = await getLocationPreference();
             if (!locationAllowed) {
@@ -709,27 +765,28 @@ export default function MapScreen() {
                 <FlatList
                     data={sorted}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => {
-                        const dist = userLocation
-                            ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
-                            : null;
-                        return (
-                            <TouchableOpacity
-                                style={[styles.searchResultRow, { backgroundColor: theme.card }]}
-                                onPress={() => openPantryDetails(item)}
-                                accessibilityRole="button"
-                                accessibilityLabel={`${item.name}, ${item.city}, ${item.county} County`}
-                            >
-                                <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
-                                <View style={{ flex: 1 }}>
-                                    <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
-                                    <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
-                                        {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        );
-                    }}
+                    initialNumToRender={12}
+                    maxToRenderPerBatch={10}
+                    windowSize={5}
+                    removeClippedSubviews={Platform.OS === 'android'}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={false}
+                            onRefresh={() => {
+                                haptics.lightImpact();
+                                fetchPantries();
+                            }}
+                            tintColor="#b52525"
+                        />
+                    }
+                    renderItem={({ item }) => (
+                        <PantryRowItem
+                            item={item}
+                            userLocation={userLocation}
+                            onPress={openPantryDetails}
+                            theme={theme}
+                        />
+                    )}
                     ListEmptyComponent={
                         <Text style={[styles.errorSubtext, { color: theme.subtext, textAlign: 'center', marginTop: 20 }]}>
                             No saved pantries in {filter}.
@@ -757,8 +814,19 @@ export default function MapScreen() {
             <FlatList
                 data={cityFiltered}
                 keyExtractor={item => item.id}
+                initialNumToRender={12}
+                maxToRenderPerBatch={10}
+                windowSize={5}
+                removeClippedSubviews={Platform.OS === 'android'}
                 refreshControl={
-                    <RefreshControl refreshing={false} onRefresh={retryMapLoad} tintColor="#b52525" />
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={() => {
+                            haptics.lightImpact();
+                            retryMapLoad();
+                        }}
+                        tintColor="#b52525"
+                    />
                 }
                 ListHeaderComponent={
                     <View style={styles.mapFallbackHeader}>
@@ -772,25 +840,7 @@ export default function MapScreen() {
                         </Text>
                     </View>
                 }
-                renderItem={({ item }) => {
-                    const dist = userLocation
-                        ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
-                        : null;
-                    return (
-                        <TouchableOpacity
-                            style={[styles.searchResultRow, { backgroundColor: theme.card }]}
-                            onPress={() => openPantryDetails(item)}
-                        >
-                            <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
-                            <View style={{ flex: 1 }}>
-                                <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
-                                <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
-                                    {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    );
-                }}
+                renderItem={renderFallbackItem}
                 ListEmptyComponent={
                     <Text style={[styles.errorSubtext, { color: theme.subtext, textAlign: 'center', marginTop: 20 }]}>
                         No pantries loaded yet.
@@ -968,22 +1018,11 @@ export default function MapScreen() {
                                 data={searchResults}
                                 keyExtractor={item => item.id}
                                 keyboardShouldPersistTaps="handled"
-                                renderItem={({ item }) => {
-                                    const dist = userLocation
-                                        ? distanceMiles(userLocation.lat, userLocation.lng, item.lat, item.lng)
-                                        : null;
-                                    return (
-                                        <TouchableOpacity style={styles.searchResultRow} onPress={() => selectSearchResult(item)}>
-                                            <View style={[styles.searchResultDot, { backgroundColor: TIER_COLORS[pantryTier(item)] }]} />
-                                            <View style={{ flex: 1 }}>
-                                                <Text style={[styles.searchResultName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
-                                                <Text style={[styles.searchResultLocation, { color: theme.subtext }]} numberOfLines={1}>
-                                                    {item.city}, {item.county} County{dist !== null ? ` · ${dist.toFixed(1)} mi` : ''}
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    );
-                                }}
+                                initialNumToRender={8}
+                                maxToRenderPerBatch={8}
+                                windowSize={5}
+                                removeClippedSubviews={Platform.OS === 'android'}
+                                renderItem={renderSearchResultItem}
                             />
                         )}
                     </View>
@@ -1152,7 +1191,14 @@ export default function MapScreen() {
                                 </View>
                                 <Text style={[styles.modalName, { color: theme.text }]}>{selected.name}</Text>
                             </View>
-                            <TouchableOpacity onPress={() => setModalVisible(false)}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    haptics.lightImpact();
+                                    setModalVisible(false);
+                                }}
+                                accessibilityRole="button"
+                                accessibilityLabel="Close pantry details modal"
+                            >
                                 <Ionicons name="close-circle" size={28} color={theme.subtext} />
                             </TouchableOpacity>
                         </View>
@@ -1212,7 +1258,11 @@ export default function MapScreen() {
                             {selected.phone !== '' && (
                             <TouchableOpacity
                                 style={[styles.modalBtn, styles.modalBtnOutline]}
+                                accessibilityRole="button"
+                                accessibilityLabel={`Call ${selected.name} at ${selected.phone}`}
+                                accessibilityHint="Opens dialer to call pantry"
                                 onPress={() => {
+                                    haptics.heavyImpact();
                                     const d = selected.phone.replace(/[^0-9]/g, '');
                                     Linking.openURL('tel:' + d).catch(() => {
                                         Alert.alert('Calling not supported on this device', `Dial ${selected.phone} from your phone.`);
@@ -1230,7 +1280,11 @@ export default function MapScreen() {
                             {selected.mapEligible && (
                             <TouchableOpacity
                                 style={styles.modalBtn}
+                                accessibilityRole="button"
+                                accessibilityLabel={`Get directions to ${selected.name}`}
+                                accessibilityHint="Opens navigation maps app"
                                 onPress={async () => {
+                                    haptics.heavyImpact();
                                     const { lat, lng, name, address } = selected;
                                     const encodedName = encodeURIComponent(name);
                                     let opened = false;
@@ -1267,7 +1321,11 @@ export default function MapScreen() {
                         {selected.website !== '' && (
                             <TouchableOpacity
                                 style={[styles.websiteBtn, { backgroundColor: theme.bg }]}
+                                accessibilityRole="button"
+                                accessibilityLabel={`Visit website for ${selected.name}`}
+                                accessibilityHint="Opens pantry website in browser"
                                 onPress={() => {
+                                    haptics.mediumImpact();
                                     Linking.openURL(selected.website).catch(() => {
                                         Alert.alert('Could not open website', 'Please try again later.');
                                     });

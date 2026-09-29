@@ -70,6 +70,14 @@ service cloud.firestore {
           && (!('miniProfile' in data) || data.miniProfile == null || data.miniProfile is map);
     }
 
+    function validOperatorSelfServiceFields(data) {
+      return (!('phone' in data) || data.phone is string)
+          && (!('website' in data) || data.website is string)
+          && (!('eligibility' in data) || data.eligibility is string)
+          && (!('hours' in data) || (data.hours is string && data.hours.size() <= 300))
+          && (!('structuredHours' in data) || (data.structuredHours is map && data.structuredHours.size() <= 7));
+    }
+
     // ══════════════════════════════════════════════════════════════════════════
     // TIER 3A: App Session Validation
     // ══════════════════════════════════════════════════════════════════════════
@@ -292,9 +300,31 @@ service cloud.firestore {
       // access during list evaluation), causing permission-denied on the agencies query in the app.
       allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
       allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data));
-      allow update: if operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data));
+      allow update: if
+          (operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data)))
+          ||
+          // ── Phase 5: Operator Portal self-service edit ──
+          // A pantry operator (email/password account, operatorUid on the doc)
+          // can update only the presentation fields listed below.
+          // affectedKeys().hasOnly() is the canonical Firestore pattern — it
+          // blocks any field not in the allow-list, including future schema
+          // additions, without requiring one-by-one immutability assertions.
+          (
+            operatorWriteAllowed()
+            && resource.data.operatorPortalAccess == true
+            && resource.data.operatorUid == request.auth.uid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                 'phone', 'website', 'eligibility', 'hours',
+                 'structuredHours', 'updatedAt', 'lastOperatorEdit'
+               ])
+            && validAgencyOptionalFields(request.resource.data)
+            && validOperatorSelfServiceFields(request.resource.data)
+            && request.resource.data.updatedAt == request.time
+            && request.resource.data.lastOperatorEdit == request.time
+          );
       allow delete: if operatorWriteAllowed() && (false);
     }
+
 
     match /resources/{resourceId} {
       // Same auth-first pattern as agencies — isAuthed() required for list queries

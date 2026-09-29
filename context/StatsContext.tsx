@@ -16,11 +16,13 @@ import { useAuthReady } from './AuthReadyContext';
 type StatsContextType = {
     pantryCount: string;
     countyCount: string;
+    refreshStats: () => Promise<void>;
 };
 
 const StatsContext = createContext<StatsContextType>({
     pantryCount: '—',
     countyCount: '—',
+    refreshStats: async () => {},
 });
 
 export function StatsProvider({ children }: { children: React.ReactNode }) {
@@ -28,29 +30,30 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
     const [pantryCount, setPantryCount] = useState('—');
     const [countyCount, setCountyCount] = useState('—');
 
+    const loadStats = async () => {
+        try {
+            const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
+            const snapshot = await getDocs(q);
+            const counties = new Set<string>();
+            snapshot.docs.forEach(d => {
+                const county = d.data().county;
+                if (county) counties.add(county);
+            });
+            setPantryCount(String(snapshot.size > 0 ? snapshot.size : '883+'));
+            setCountyCount(String(counties.size > 0 ? counties.size : '67'));
+        } catch {
+            setPantryCount('880+');
+            setCountyCount('67');
+        }
+    };
+
     useEffect(() => {
         if (!authReady) return;
-
-        (async () => {
-            try {
-                const q = query(collection(db, 'agencies'), where('status', '==', 'active'));
-                const snapshot = await getDocs(q);
-                const counties = new Set<string>();
-                snapshot.docs.forEach(d => {
-                    const county = d.data().county;
-                    if (county) counties.add(county);
-                });
-                setPantryCount(String(snapshot.size > 0 ? snapshot.size : '883+'));
-                setCountyCount(String(counties.size > 0 ? counties.size : '67'));
-            } catch {
-                setPantryCount('880+');
-                setCountyCount('67');
-            }
-        })();
+        loadStats();
     }, [authReady]);
 
     return (
-        <StatsContext.Provider value={{ pantryCount, countyCount }}>
+        <StatsContext.Provider value={{ pantryCount, countyCount, refreshStats: loadStats }}>
             {children}
         </StatsContext.Provider>
     );

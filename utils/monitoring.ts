@@ -13,12 +13,17 @@
 
 import { Platform } from 'react-native';
 
+import Constants, { ExecutionEnvironment } from 'expo-constants';
+
+const isExpoGo = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+
 // Dynamic requires protect against the module failing to load in Expo Go /
 // web contexts where native modules are unavailable.
 let _analytics: any = null;
 let _crashlytics: any = null;
 
 function getAnalytics() {
+  if (isExpoGo) return null;
   if (_analytics) return _analytics;
   try {
     _analytics = require('@react-native-firebase/analytics').default();
@@ -30,6 +35,7 @@ function getAnalytics() {
 }
 
 function getCrashlytics() {
+  if (isExpoGo) return null;
   if (_crashlytics) return _crashlytics;
   try {
     _crashlytics = require('@react-native-firebase/crashlytics').default();

@@ -1,11 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { Alert, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert, Image, ImageBackground, Linking, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useStats } from '../../context/StatsContext';
 import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING, TYPOGRAPHY } from '../../theme/tokens';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
+import { haptics } from '../../utils/haptics';
 import { getLastKnownCounty } from '../../utils/userLocation';
 
 // ── Quick Resources — grouped by purpose, no rainbow colors ──
@@ -25,9 +26,29 @@ const PROGRAMS = [
 export default function HomeScreen() {
     const router = useRouter();
     const theme = useTheme();
-    const { pantryCount, countyCount } = useStats();
+    const { pantryCount, countyCount, refreshStats } = useStats();
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(async () => {
+        haptics.lightImpact();
+        setRefreshing(true);
+        try {
+            await refreshStats();
+            haptics.success();
+        } catch {
+            haptics.error();
+        } finally {
+            setRefreshing(false);
+        }
+    }, [refreshStats]);
 
     const handleQuickLink = async (item: { id: string; title: string; url: string | null }) => {
+        if (item.url?.startsWith('tel:')) {
+            haptics.heavyImpact();
+        } else {
+            haptics.mediumImpact();
+        }
+
         if (item.id === '5') {
             router.push('/(tabs)/map');
         } else if (item.url) {
@@ -57,6 +78,9 @@ export default function HomeScreen() {
             key={item.id}
             style={[styles.resourceCard, { backgroundColor: theme.card }, SHADOWS.md]}
             onPress={() => handleQuickLink(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.title}, ${item.sub}`}
+            accessibilityHint={item.url?.startsWith('tel:') ? 'Opens dialer for emergency assistance' : item.id === '5' ? 'Navigates to the map screen' : 'Opens resource in external browser'}
         >
             <View style={[styles.resourceCardIcon, { backgroundColor: theme.input }]}>
                 <Ionicons name={item.icon} size={24} color={theme.primary} />
@@ -67,7 +91,18 @@ export default function HomeScreen() {
     );
 
     return (
-        <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
+        <ScrollView
+            style={[styles.container, { backgroundColor: theme.bg }]}
+            contentContainerStyle={styles.content}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor={COLORS.primary}
+                    colors={[COLORS.primary]}
+                />
+            }
+        >
             {/* Header with background pattern + real logo */}
             <ImageBackground
                 source={require('../../assets/background.png')}
@@ -93,7 +128,11 @@ export default function HomeScreen() {
             </ImageBackground>
 
             {/* Stats — simplified, no redundant icons */}
-            <View style={[styles.statsBar, { backgroundColor: theme.card }, SHADOWS.md]}>
+            <View
+                style={[styles.statsBar, { backgroundColor: theme.card }, SHADOWS.md]}
+                accessible={true}
+                accessibilityLabel={`Statistics: ${pantryCount} pantries across ${countyCount} counties, 100% free service`}
+            >
                 <View style={[styles.statItem, styles.statDivider, { borderRightColor: theme.border }]}>
                     <Text style={[TYPOGRAPHY.stat, { color: theme.primary }]}>{pantryCount}</Text>
                     <Text style={[TYPOGRAPHY.label, { color: theme.subtext }]}>Pantries</Text>
@@ -123,7 +162,16 @@ export default function HomeScreen() {
                     <Text style={[TYPOGRAPHY.caption, { color: theme.subtext, lineHeight: 21 }]}>
                         AccessBelt is now available to download on the App Store. Thank you for being part of our mission to connect Alabama's Black Belt with food pantries, SNAP resources, and community support.
                     </Text>
-                    <TouchableOpacity style={styles.learnMore} onPress={() => router.push('/(tabs)/map')}>
+                    <TouchableOpacity
+                        style={styles.learnMore}
+                        onPress={() => {
+                            haptics.mediumImpact();
+                            router.push('/(tabs)/map');
+                        }}
+                        accessibilityRole="button"
+                        accessibilityLabel="Explore the Map"
+                        accessibilityHint="Navigates to the interactive pantry map"
+                    >
                         <Text style={[TYPOGRAPHY.caption, { color: theme.primary, fontWeight: '600' }]}>Explore the Map</Text>
                         <Ionicons name="arrow-forward" size={14} color={theme.primary} />
                     </TouchableOpacity>
@@ -172,7 +220,13 @@ export default function HomeScreen() {
             {/* Ask Pete banner */}
             <TouchableOpacity
                 style={[styles.peteBanner, { backgroundColor: theme.successMuted, borderColor: theme.dark ? COLORS.success + '4d' : '#bbf7d0' }]}
-                onPress={() => router.push('/(tabs)/pete')}
+                onPress={() => {
+                    haptics.mediumImpact();
+                    router.push('/(tabs)/pete');
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Ask Pete, AI assistant for SNAP help, recipes, and pantry info"
+                accessibilityHint="Navigates to the Pete AI assistant screen"
             >
                 <View style={[styles.peteBannerIcon, { backgroundColor: theme.dark ? COLORS.success + '40' : '#dcfce7' }]}>
                     <Ionicons name="chatbubble-ellipses" size={22} color={theme.success} />

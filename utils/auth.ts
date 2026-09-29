@@ -28,7 +28,9 @@ import {
 } from 'firebase/auth';
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth, db } from '../config/firebase';
+import { PETE_HISTORY_KEY } from '../constants/storageKeys';
 
 const SESSION_GRACE_MS = 10 * 60 * 1000; // re-bootstrap every 10 minutes
 
@@ -383,6 +385,7 @@ export async function deleteAccount(): Promise<{ ok: boolean; error?: string }> 
         return { ok: false, error: 'Could not delete your account. Check your connection and try again.' };
     }
 
+    await AsyncStorage.removeItem(PETE_HISTORY_KEY).catch(() => {});
     await reestablishSession();
     return { ok: true };
 }
@@ -400,5 +403,6 @@ export async function signOutUser(): Promise<void> {
         console.warn('[Security] Sign out failed:', err);
         throw err;
     }
+    await AsyncStorage.removeItem(PETE_HISTORY_KEY).catch(() => {});
     await reestablishSession();
 }

@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Alert,
+    Animated,
     Image,
     ImageBackground,
     KeyboardAvoidingView,
@@ -21,14 +23,46 @@ import { useTheme } from '../../context/ThemeContext';
 import { COLORS, RADIUS, SHADOWS, SPACING, TYPOGRAPHY } from '../../theme/tokens';
 import { logPeteRequest, logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { askGemini, GeminiTurn } from '../../utils/gemini';
+import { haptics } from '../../utils/haptics';
+import { useIsOffline } from '../../utils/network';
 import { extractCounty, fetchNearestPantries, fetchPantriesByCounty } from '../../utils/pantries';
 import { getLastKnownCounty, getLocationPreference, setPendingSearchOutcome } from '../../utils/userLocation';
 import * as Location from 'expo-location';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+import { PETE_HISTORY_KEY } from '../../constants/storageKeys';
 
 // Enable smooth, non-jarring layout transitions on Android when the pantry
 // card list expands (iOS animates LayoutAnimation by default).
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+function TypingDots({ color }: { color: string }) {
+    const pulseAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        const loop = Animated.loop(
+            Animated.sequence([
+                Animated.timing(pulseAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+                Animated.timing(pulseAnim, { toValue: 0, duration: 600, useNativeDriver: true }),
+            ])
+        );
+        loop.start();
+        return () => loop.stop();
+    }, [pulseAnim]);
+
+    const op1 = pulseAnim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.35, 1, 0.35] });
+    const op2 = pulseAnim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.65, 0.35, 1] });
+    const op3 = pulseAnim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [1, 0.65, 0.35] });
+
+    return (
+        <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center', paddingVertical: 2 }}>
+            <Animated.Text style={{ fontSize: 18, color, opacity: op1 }}>●</Animated.Text>
+            <Animated.Text style={{ fontSize: 18, color, opacity: op2 }}>●</Animated.Text>
+            <Animated.Text style={{ fontSize: 18, color, opacity: op3 }}>●</Animated.Text>
+        </View>
+    );
 }
 
 // ─────────────────────────────────────────────────────────
@@ -165,18 +199,93 @@ const QUICK_QUESTIONS = [
     'Emergency help',
 ];
 
+const MAX_SAVED_HISTORY = 50; // Cap persistent chat history to the last 50 messages
+const WELCOME_MESSAGE: Message = {
+    id: 1,
+    role: 'assistant',
+    text: "Hi! I'm Pete, your food assistance helper for Alabama's Black Belt.\n\nI can help you find pantries, apply for SNAP, get recipe ideas, and more. What do you need today?",
+};
+
 export default function PeteScreen() {
     const theme = useTheme();
+    const isOffline = useIsOffline();
     const { pantryCount, countyCount } = useStats();
-    const [messages, setMessages] = useState<Message[]>([
-        { id: 1, role: 'assistant', text: "Hi! I'm Pete, your food assistance helper for Alabama's Black Belt.\n\nI can help you find pantries, apply for SNAP, get recipe ideas, and more. What do you need today?" },
-    ]);
+    const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [visibleCounts, setVisibleCounts] = useState<Record<number, number>>({});
     const scrollRef = useRef<ScrollView>(null);
+    const sessionTurnsRef = useRef(0);
+
+    useEffect(() => {
+        AsyncStorage.getItem(PETE_HISTORY_KEY).then(saved => {
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        setMessages(prev => {
+                            const isInitialState = prev.length === 1 && prev[0].id === WELCOME_MESSAGE.id;
+                            return isInitialState ? parsed.slice(-MAX_SAVED_HISTORY) : prev;
+                        });
+                    }
+                } catch {}
+            }
+        }).catch(() => {});
+    }, []);
+
+    // Clear chat history on user sign-out or account change
+    useEffect(() => {
+        let prevUid = auth.currentUser?.uid;
+        const unsubscribe = onAuthStateChanged(auth, user => {
+            const currentUid = user?.uid;
+            if (prevUid && currentUid !== prevUid) {
+                sessionTurnsRef.current = 0;
+                setMessages([WELCOME_MESSAGE]);
+                AsyncStorage.removeItem(PETE_HISTORY_KEY).catch(() => {});
+            }
+            prevUid = currentUid;
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const updateMessagesAndPersist = (updater: (prev: Message[]) => Message[]) => {
+        setMessages(prev => {
+            const next = updater(prev);
+            // Don't persist ephemeral live GPS pantry lists across sessions
+            const toPersist = next.slice(-MAX_SAVED_HISTORY).map(m => {
+                if (m.pantries) {
+                    const { pantries, ...rest } = m;
+                    return rest;
+                }
+                return m;
+            });
+            AsyncStorage.setItem(PETE_HISTORY_KEY, JSON.stringify(toPersist)).catch(() => {});
+            return next;
+        });
+    };
+
+    const clearConversation = () => {
+        Alert.alert(
+            'Clear Conversation',
+            'Would you like to clear your conversation history with Pete and start over?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Clear',
+                    style: 'destructive',
+                    onPress: async () => {
+                        haptics.mediumImpact();
+                        sessionTurnsRef.current = 0;
+                        setMessages([WELCOME_MESSAGE]);
+                        await AsyncStorage.removeItem(PETE_HISTORY_KEY).catch(() => {});
+                    },
+                },
+            ]
+        );
+    };
 
     function showMorePantries(id: number, total: number) {
+        haptics.lightImpact();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setVisibleCounts(prev => ({ ...prev, [id]: Math.min(total, (prev[id] ?? PANTRY_PAGE_SIZE) + PANTRY_PAGE_SIZE) }));
         setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 50);
@@ -187,22 +296,47 @@ export default function PeteScreen() {
         if (!msg || loading) return;
 
         // ── Per-session rate limit ──────────────────────────────────────────
-        const userTurns = messages.filter(m => m.role === 'user').length;
-        if (userTurns >= MAX_MESSAGES_PER_SESSION) {
-            setMessages(prev => [...prev, {
+        // Counts only turns sent during this active app session so restored
+        // chat history does not exhaust the user's allowance.
+        if (sessionTurnsRef.current >= MAX_MESSAGES_PER_SESSION) {
+            haptics.warning();
+            updateMessagesAndPersist(prev => [...prev, {
                 id: Date.now(),
                 role: 'assistant',
                 text: "You've reached the chat limit for this session. For ongoing food help, please call 211, free 24/7. Restart the app to begin a new session.",
             }]);
             return;
         }
+        sessionTurnsRef.current += 1;
 
+        haptics.mediumImpact();
         const userMsg: Message = { id: Date.now(), role: 'user', text: msg };
-        const history = [...messages, userMsg];
-        setMessages(history);
+        updateMessagesAndPersist(prev => [...prev, userMsg]);
         setInput('');
         setLoading(true);
         setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+
+        // Immediate offline fallback if disconnected:
+        if (isOffline) {
+            const localReply = getPeteResponse(msg);
+            setTimeout(() => {
+                haptics.success();
+                updateMessagesAndPersist(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: localReply }]);
+                setLoading(false);
+                setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
+            }, 300);
+            return;
+        }
+
+        const appendAssistantReply = (replyText: string, pantries?: PantryPreview[]) => {
+            haptics.success();
+            updateMessagesAndPersist(prev => [...prev, {
+                id: Date.now() + 1,
+                role: 'assistant',
+                text: replyText,
+                pantries,
+            }]);
+        };
 
         const topic = detectTopic(msg);
         // Log to analytics_searches with raw message + interaction source
@@ -222,30 +356,18 @@ export default function PeteScreen() {
             try {
                 const locationAllowed = await getLocationPreference();
                 if (!locationAllowed) {
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: "Location Services is off in Profile → Preferences, so I can't find what's nearest to you. Turn it back on, or tell me your city or county instead.",
-                    }]);
+                    appendAssistantReply("Location Services is off in Profile → Preferences, so I can't find what's nearest to you. Turn it back on, or tell me your city or county instead.");
                     return;
                 }
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== 'granted') {
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: "I need location access to find pantries near you. Enable it in Settings, or tell me your city or county instead.",
-                    }]);
+                    appendAssistantReply("I need location access to find pantries near you. Enable it in Settings, or tell me your city or county instead.");
                     return;
                 }
                 const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
                 const results = await fetchNearestPantries(loc.coords.latitude, loc.coords.longitude);
                 if (results.length === 0) {
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: "I couldn't find any active pantries nearby. Check the Map tab, or call 211, free 24/7.",
-                    }]);
+                    appendAssistantReply("I couldn't find any active pantries nearby. Check the Map tab, or call 211, free 24/7.");
                 } else {
                     const pantries: PantryPreview[] = results.map(p => ({
                         name: p.name,
@@ -253,20 +375,11 @@ export default function PeteScreen() {
                         phone: p.phone || undefined,
                         hours: p.hours || undefined,
                     }));
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: 'Here are the pantries closest to you right now:',
-                        pantries,
-                    }]);
+                    appendAssistantReply('Here are the pantries closest to you right now:', pantries);
                 }
             } catch (err) {
                 console.error('Nearest-pantry lookup failed:', err);
-                setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
-                    role: 'assistant',
-                    text: "I couldn't determine your location just now. Please try again, check the Map tab, or tell me your city or county instead.",
-                }]);
+                appendAssistantReply("I couldn't determine your location just now. Please try again, check the Map tab, or tell me your city or county instead.");
             } finally {
                 setLoading(false);
                 setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
@@ -278,11 +391,7 @@ export default function PeteScreen() {
             const targetCounty = extractCounty(msg) ?? lastCounty;
 
             if (!targetCounty) {
-                setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
-                    role: 'assistant',
-                    text: "I'd love to help you find a pantry! Which city or county are you in? (For example: \"Autauga\" or \"Dallas County\".) Or open the Map tab to browse all of them.",
-                }]);
+                appendAssistantReply("I'd love to help you find a pantry! Which city or county are you in? (For example: \"Autauga\" or \"Dallas County\".) Or open the Map tab to browse all of them.");
                 setLoading(false);
                 setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
                 return;
@@ -291,11 +400,7 @@ export default function PeteScreen() {
             try {
                 const results = await fetchPantriesByCounty(targetCounty);
                 if (results.length === 0) {
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: `I didn't find any active pantries listed for ${targetCounty} County right now. Check the Map tab for nearby counties, or call 211, free 24/7, for the most current options.`,
-                    }]);
+                    appendAssistantReply(`I didn't find any active pantries listed for ${targetCounty} County right now. Check the Map tab for nearby counties, or call 211, free 24/7, for the most current options.`);
                 } else {
                     const pantries: PantryPreview[] = results.map(p => ({
                         name: p.name,
@@ -303,20 +408,11 @@ export default function PeteScreen() {
                         phone: p.phone || undefined,
                         hours: p.hours || undefined,
                     }));
-                    setMessages(prev => [...prev, {
-                        id: Date.now() + 1,
-                        role: 'assistant',
-                        text: `Here are active pantries in ${targetCounty} County:`,
-                        pantries,
-                    }]);
+                    appendAssistantReply(`Here are active pantries in ${targetCounty} County:`, pantries);
                 }
             } catch (err) {
                 console.error('Pantry lookup failed:', err);
-                setMessages(prev => [...prev, {
-                    id: Date.now() + 1,
-                    role: 'assistant',
-                    text: "I couldn't reach the pantry database just now, so I don't want to guess. Please try again in a moment, check the Map tab, or call 211, free 24/7.",
-                }]);
+                appendAssistantReply("I couldn't reach the pantry database just now, so I don't want to guess. Please try again in a moment, check the Map tab, or call 211, free 24/7.");
             } finally {
                 setLoading(false);
                 setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
@@ -327,7 +423,7 @@ export default function PeteScreen() {
         // ── Cache check ────────────────────────────────────────────────────
         const cacheKey = msg.toLowerCase().trim();
         if (responseCache.has(cacheKey)) {
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: responseCache.get(cacheKey)! }]);
+            appendAssistantReply(responseCache.get(cacheKey)!);
             setLoading(false);
             setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
             return;
@@ -344,14 +440,14 @@ export default function PeteScreen() {
         try {
             const reply = await askGemini(geminiHistory, msg);
             responseCache.set(cacheKey, reply);
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+            appendAssistantReply(reply);
         } catch (err: any) {
             if (err?.code === 'resource-exhausted' || err?.message?.includes('30 messages') || err?.message?.includes('daily limit')) {
-                setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: err.message }]);
+                appendAssistantReply(err.message);
             } else {
                 console.warn('Pete Cloud Function unavailable, using local response:', err);
                 const reply = getPeteResponse(msg);
-                setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
+                appendAssistantReply(reply);
             }
         } finally {
             setLoading(false);
@@ -373,11 +469,26 @@ export default function PeteScreen() {
                 <Image source={require('../../assets/pete.png')} style={styles.avatar} resizeMode="cover" />
                 <View style={styles.headerText}>
                     <Text style={[TYPOGRAPHY.bodyBold, { color: theme.text, fontWeight: '800' }]}>Pete</Text>
-                    <Text style={[TYPOGRAPHY.small, { color: theme.success }]}>● Powered by Gemini AI</Text>
+                    <Text style={[TYPOGRAPHY.small, { color: isOffline ? theme.warning : theme.success }]}>
+                        {isOffline ? '● Offline Mode' : '● Online'}
+                    </Text>
                 </View>
                 <TouchableOpacity
+                    style={[styles.clearBtn, { backgroundColor: theme.input, borderColor: theme.border }]}
+                    onPress={clearConversation}
+                    accessibilityRole="button"
+                    accessibilityLabel="Clear conversation history"
+                    accessibilityHint="Resets the conversation with Pete"
+                >
+                    <Ionicons name="trash-outline" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+                <TouchableOpacity
                     style={[styles.callBtn, { backgroundColor: theme.successMuted, borderColor: theme.success }]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Call 211 emergency food help"
+                    accessibilityHint="Dials 211 free 24/7 helpline"
                     onPress={async () => {
+                        haptics.heavyImpact();
                         Linking.openURL('tel:211').catch(() => {
                             Alert.alert('Calling not supported on this device', 'Dial 211 from any phone, free 24/7.');
                         });
@@ -391,6 +502,16 @@ export default function PeteScreen() {
                     <Text style={[TYPOGRAPHY.small, { color: theme.success, fontWeight: '700' }]}>211</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Offline notice banner */}
+            {isOffline && (
+                <View style={[styles.offlineBanner, { backgroundColor: theme.dark ? '#78350f40' : '#fef3c7', borderBottomColor: theme.dark ? '#b45309' : '#fcd34d' }]}>
+                    <Ionicons name="cloud-offline-outline" size={15} color={theme.dark ? '#fbbf24' : '#d97706'} />
+                    <Text style={[styles.offlineBannerText, { color: theme.dark ? '#fde68a' : '#92400e' }]}>
+                        Offline Mode · Answering with built-in pantry and benefit guides.
+                    </Text>
+                </View>
+            )}
 
             {/* Messages */}
             <ScrollView
@@ -414,7 +535,7 @@ export default function PeteScreen() {
                                 <View style={styles.pantryList}>
                                     {msg.pantries.slice(0, shown).map((p, idx) => (
                                         <View key={idx} style={[styles.pantryCard, { backgroundColor: theme.bg }]}>
-                                            <View style={styles.pantryCardHeader}>
+                                             <View style={styles.pantryCardHeader}>
                                                 <Text style={[styles.pantryCardName, { color: theme.text }]} numberOfLines={2}>{p.name}</Text>
                                                 <View style={[styles.pantryAreaBadge, { backgroundColor: theme.primaryMuted }]}>
                                                     <Text style={[TYPOGRAPHY.badge, { color: theme.primary, fontSize: 10 }]}>{p.area}</Text>
@@ -424,9 +545,15 @@ export default function PeteScreen() {
                                             {p.phone && (
                                                 <TouchableOpacity
                                                     style={styles.pantryCallRow}
-                                                    onPress={() => Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, '')).catch(() => {
-                                                        Alert.alert('Calling not supported on this device', `Dial ${p.phone} from your phone.`);
-                                                    })}
+                                                    accessibilityRole="button"
+                                                    accessibilityLabel={`Call ${p.name} at ${p.phone}`}
+                                                    accessibilityHint="Opens dialer with pantry phone number"
+                                                    onPress={() => {
+                                                        haptics.heavyImpact();
+                                                        Linking.openURL('tel:' + p.phone!.replace(/[^0-9]/g, '')).catch(() => {
+                                                            Alert.alert('Calling not supported on this device', `Dial ${p.phone} from your phone.`);
+                                                        });
+                                                    }}
                                                 >
                                                     <Ionicons name="call-outline" size={13} color={theme.success} />
                                                     <Text style={[TYPOGRAPHY.small, { color: theme.success, fontWeight: '700' }]}>{p.phone}</Text>
@@ -439,6 +566,8 @@ export default function PeteScreen() {
                                         <TouchableOpacity
                                             style={[styles.showMoreBtn, { backgroundColor: theme.primaryMuted }]}
                                             onPress={() => showMorePantries(msg.id, msg.pantries!.length)}
+                                            accessibilityRole="button"
+                                            accessibilityLabel={`Show ${Math.min(PANTRY_PAGE_SIZE, msg.pantries.length - shown)} more pantries`}
                                         >
                                             <Text style={[TYPOGRAPHY.caption, { color: theme.primary, fontWeight: '700' }]}>
                                                 Show {Math.min(PANTRY_PAGE_SIZE, msg.pantries.length - shown)} more
@@ -460,10 +589,8 @@ export default function PeteScreen() {
                 {loading && (
                     <View style={styles.msgRow}>
                         <Image source={require('../../assets/pete.png')} style={styles.petePip} resizeMode="cover" />
-                        <View style={[styles.bubble, styles.bubblePete, { backgroundColor: theme.card, flexDirection: 'row', gap: 6, paddingVertical: SPACING.lg }]}>
-                            <Text style={{ fontSize: 20, color: theme.success }}>●</Text>
-                            <Text style={{ fontSize: 20, color: theme.success, opacity: 0.6 }}>●</Text>
-                            <Text style={{ fontSize: 20, color: theme.success, opacity: 0.3 }}>●</Text>
+                        <View style={[styles.bubble, styles.bubblePete, { backgroundColor: theme.card, paddingVertical: SPACING.md }]}>
+                            <TypingDots color={theme.success} />
                         </View>
                     </View>
                 )}
@@ -481,6 +608,9 @@ export default function PeteScreen() {
                         key={label}
                         style={[styles.quickChip, { backgroundColor: theme.input, borderColor: theme.border }]}
                         onPress={() => sendMessage(label)}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Quick question: ${label}`}
+                        accessibilityHint="Asks Pete this question immediately"
                     >
                         <Text style={[TYPOGRAPHY.small, { color: theme.text, fontWeight: '600' }]}>{label}</Text>
                     </TouchableOpacity>
@@ -498,11 +628,14 @@ export default function PeteScreen() {
                     onSubmitEditing={() => sendMessage()}
                     returnKeyType="send"
                     multiline
+                    accessibilityLabel="Ask Pete anything"
                 />
                 <TouchableOpacity
                     style={[styles.sendBtn, { backgroundColor: COLORS.primary }, (!input.trim() || loading) && styles.sendBtnDisabled]}
                     onPress={() => sendMessage()}
                     disabled={!input.trim() || loading}
+                    accessibilityRole="button"
+                    accessibilityLabel="Send question to Pete"
                 >
                     <Ionicons name="send" size={18} color={COLORS.white} />
                 </TouchableOpacity>
@@ -518,7 +651,10 @@ const styles = StyleSheet.create({
     header: { paddingTop: SPACING['5xl'], paddingBottom: SPACING.md, paddingHorizontal: SPACING.lg, flexDirection: 'row', alignItems: 'center', gap: SPACING.md, borderBottomWidth: 1 },
     avatar: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden' },
     headerText: { flex: 1 },
+    clearBtn: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
     callBtn: { borderRadius: RADIUS.sm, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
+    offlineBanner: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, paddingHorizontal: SPACING.lg, paddingVertical: SPACING.xs + 2, borderBottomWidth: 1 },
+    offlineBannerText: { fontSize: 12, fontWeight: '600', flex: 1 },
     messages: { flex: 1 },
     messagesContent: { padding: SPACING.lg, gap: SPACING.md },
     msgRow: { flexDirection: 'row', alignItems: 'flex-end', gap: SPACING.sm },

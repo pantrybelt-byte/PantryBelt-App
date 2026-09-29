@@ -62,7 +62,12 @@ const FALLBACK_TTL_MS = 30 * 60 * 1000; // 30 minutes
  * requests simply go out unattested, which is exactly the pre-App-Check
  * behaviour and is still fine while enforcement is in monitor-only mode.
  */
+import Constants, { ExecutionEnvironment } from 'expo-constants';
+
 export function initAppCheck(): Promise<void> {
+    if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+        return Promise.resolve();
+    }
     if (_initPromise) return _initPromise;
 
     _initPromise = (async () => {

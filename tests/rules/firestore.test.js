@@ -27,6 +27,11 @@ const {
   getDoc,
   setDoc,
   deleteDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
   serverTimestamp,
 } = require('firebase/firestore');
 
@@ -288,4 +293,187 @@ describe('function-owned collections are closed to all clients', () => {
       await assertFails(setDoc(doc(db, coll, 'x'), { count: 0 }));
     });
   }
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+describe('Operator Portal self-service update (Phase 5)', () => {
+  const AGENCY_ID = 'portal-agency-1';
+  const OPERATOR_UID = 'operator-portal-uid';
+  const WRONG_UID = 'wrong-uid';
+
+  // Seed a full agency doc with operatorPortalAccess + operatorUid before each test.
+  const AGENCY_DOC = {
+    orgId: 'org-portal',
+    name: 'Portal Test Pantry',
+    county: 'Dallas',
+    status: 'active',
+    verified: false,
+    coordinates: { lat: 32.407, lng: -87.021 },
+    geohash: 'djfq1234',
+    phone: '(334) 555-0000',
+    website: '',
+    eligibility: '',
+    hours: 'Mon-Fri 9am-3pm',
+    operatorPortalAccess: true,
+    operatorUid: OPERATOR_UID,
+  };
+
+  /** A verified email/password user acting as a portal operator. */
+  function portalOperator(uid) {
+    return testEnv.authenticatedContext(uid, {
+      email: 'operator@pantry.org',
+      email_verified: true,
+      firebase: { sign_in_provider: 'password' },
+    });
+  }
+
+  /** Same user but with email_verified: false. */
+  function unverifiedPortalOperator(uid) {
+    return testEnv.authenticatedContext(uid, {
+      email: 'operator@pantry.org',
+      email_verified: false,
+      firebase: { sign_in_provider: 'password' },
+    });
+  }
+
+  async function seedAgency() {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'agencies', AGENCY_ID), AGENCY_DOC);
+    });
+  }
+
+  test('DENIED: unverified operator cannot update via portal path', async () => {
+    await seedAgency();
+    const db = unverifiedPortalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-9999',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: wrong uid cannot update even with valid fields', async () => {
+    await seedAgency();
+    const db = portalOperator(WRONG_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-9999',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: operator cannot change coordinates', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      coordinates: { lat: 99.0, lng: -99.0 },
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: operator cannot change status', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      status: 'inactive',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: operator cannot change verified flag', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      verified: true,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('ALLOWED: exact payload PantryAdmin sends with structuredHours and timestamps', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertSucceeds(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-1234',
+      website: 'https://mypantry.org',
+      eligibility: 'All Dallas County residents',
+      hours: 'Mon-Sat 8am-4pm',
+      structuredHours: {
+        monday: { open: '09:00', close: '15:00', closed: false },
+        tuesday: { open: '09:00', close: '15:00', closed: false },
+      },
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: operator cannot update when operatorPortalAccess is false', async () => {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'agencies', AGENCY_ID), {
+        ...AGENCY_DOC,
+        operatorPortalAccess: false,
+      });
+    });
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-1234',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: operator cannot change operatorUid or operatorPortalAccess', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      operatorUid: 'new-uid',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      operatorPortalAccess: false,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: wrong-typed phone or website is rejected', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: 1234567890,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      website: true,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: unauthenticated user cannot update agency', async () => {
+    await seedAgency();
+    const db = testEnv.unauthenticatedContext().firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-1234',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('ALLOWED: operator list query by operatorUid on active agencies', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    const q = query(
+      collection(db, 'agencies'),
+      where('operatorUid', '==', OPERATOR_UID),
+      where('operatorPortalAccess', '==', true),
+      where('status', '==', 'active')
+    );
+    const result = await assertSucceeds(getDocs(q));
+    assert.ok(result.size > 0, 'Query should return at least 1 agency');
+  });
 });

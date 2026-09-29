@@ -16,6 +16,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
 import { COLORS } from '../../theme/tokens';
+import { haptics } from '../../utils/haptics';
 
 const { width } = Dimensions.get('window');
 
@@ -87,12 +88,23 @@ export default function OnboardingScreen() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const finish = async () => {
+        haptics.success();
         await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-        router.replace('/(tabs)/map');
+        if (router.canGoBack()) {
+            router.back();
+        } else {
+            router.replace('/(tabs)/map');
+        }
+    };
+
+    const handleSkip = () => {
+        haptics.lightImpact();
+        finish();
     };
 
     const handleNext = () => {
         if (currentIndex < SLIDES.length - 1) {
+            haptics.selection();
             const next = currentIndex + 1;
             listRef.current?.scrollToIndex({ index: next, animated: true });
             setCurrentIndex(next);
@@ -208,7 +220,7 @@ export default function OnboardingScreen() {
 
             <TouchableOpacity
                 style={[styles.skipBtn, { top: insets.top + 12 }]}
-                onPress={finish}
+                onPress={handleSkip}
                 accessibilityRole="button"
                 accessibilityLabel="Skip onboarding"
             >
@@ -227,7 +239,10 @@ export default function OnboardingScreen() {
                 scrollEventThrottle={16}
                 onMomentumScrollEnd={(e) => {
                     const idx = Math.round(e.nativeEvent.contentOffset.x / width);
-                    setCurrentIndex(idx);
+                    if (idx !== currentIndex) {
+                        haptics.selection();
+                        setCurrentIndex(idx);
+                    }
                 }}
                 getItemLayout={(_, index) => ({
                     length: width,
