@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Alert,
+    BackHandler,
     Linking,
     Platform,
     ScrollView,
@@ -22,13 +23,16 @@ import { useToast } from '../../components/Toast';
 import { recordError } from '../../utils/monitoring';
 import { useAuthReady } from '../../context/AuthReadyContext';
 import { useStats } from '../../context/StatsContext';
+import { useTextScale } from '../../context/TextScaleContext';
 import { useTheme } from '../../context/ThemeContext';
 import { logReferral, updateMonthlySummary } from '../../utils/analytics';
 import { signOutUser } from '../../utils/auth';
 import { registerForPushNotificationsAsync } from '../../utils/notifications';
 import { updateNewsletterOptIn, updatePushToken } from '../../utils/userProfile';
 import { getLastKnownCounty, getLocationPreference, setLocationPreference } from '../../utils/userLocation';
+import { haptics } from '../../utils/haptics';
 import { getMapDiagnostics, subscribeMapDiagnostics } from '../../utils/mapDiagnostics';
+import { getDictationEnabled, setDictationEnabled } from '../../utils/voicePrefs';
 
 const PUSH_ENABLED_KEY = '@pb_push_enabled';
 const NEWSLETTER_KEY = '@pb_newsletter_enabled';
@@ -42,15 +46,50 @@ const RESOURCES = [
     { id: '6', title: 'Alabama 211 – Emergency Help', sub: 'Free 24/7 hotline', icon: 'call-outline' as const, color: '#b52525', url: 'tel:211' },
 ];
 
+// Settings sub-pages. The main screen shows only Account + this menu so it
+// isn't overloaded; every option still exists one tap deeper.
+type SettingsPage = 'home' | 'accessibility' | 'privacy' | 'help' | 'resources' | 'about';
+const SETTINGS_PAGES: { id: Exclude<SettingsPage, 'home'>; title: string; desc: string; icon: React.ComponentProps<typeof Ionicons>['name'] }[] = [
+    { id: 'accessibility', title: 'Accessibility', desc: 'Dark mode, text size, and dictation for Pete', icon: 'accessibility-outline' },
+    { id: 'privacy', title: 'Notifications & Location', desc: 'Alerts, location, and newsletter', icon: 'notifications-outline' },
+    { id: 'resources', title: 'Food Assistance Resources', desc: 'SNAP, WIC, 211, and more', icon: 'heart-outline' },
+    { id: 'help', title: 'Help & Feedback', desc: 'App tutorial and send feedback', icon: 'help-circle-outline' },
+    { id: 'about', title: 'About & Legal', desc: 'Coverage, privacy, terms, disclaimers', icon: 'information-circle-outline' },
+];
+
 // Flag to control visibility of map diagnostics on Profile screen.
 export const SHOW_MAP_DIAGNOSTICS = false;
 
 export default function ProfileScreen() {
     const router = useRouter();
     const theme = useTheme();
+    const { textSize, setTextSize, scale } = useTextScale();
     const { authReady, accountLabel } = useAuthReady();
     const { pantryCount, countyCount } = useStats();
     const { showToast } = useToast();
+
+    const badgeBg = theme.primaryMuted;
+    const badgeIconColor = theme.primary;
+    const brandRed = '#b52525';
+
+    const dynamicTypography = useMemo(() => ({
+        headerTitle: { fontSize: Math.round(32 * scale) },
+        sectionTitle: { fontSize: Math.round(16 * scale) },
+        settingTitle: { fontSize: Math.round(15 * scale) },
+        settingDesc: { fontSize: Math.round(12 * scale) },
+        linkText: { fontSize: Math.round(15 * scale) },
+        linkSub: { fontSize: Math.round(11 * scale) },
+        segmentText: { fontSize: Math.round(13 * scale) },
+        statValue: { fontSize: Math.round(20 * scale) },
+        statLabel: { fontSize: Math.round(11 * scale) },
+        statsDisclaimer: { fontSize: Math.round(11 * scale), lineHeight: Math.round(15 * scale) },
+        aboutTitle: { fontSize: Math.round(15 * scale) },
+        aboutText: { fontSize: Math.round(13 * scale), lineHeight: Math.round(20 * scale) },
+        disclaimerTitle: { fontSize: Math.round(14 * scale) },
+        disclaimerText: { fontSize: Math.round(12 * scale), lineHeight: Math.round(18 * scale) },
+        signOutBtnText: { fontSize: Math.round(16 * scale) },
+        version: { fontSize: Math.round(12 * scale) },
+    }), [scale]);
 
     const [notifications, setNotifications] = useState(true);
     const [locationEnabled, setLocationEnabled] = useState(true);
@@ -59,6 +98,38 @@ export default function ProfileScreen() {
     const [legalModalVisible, setLegalModalVisible] = useState(false);
     const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy'>('privacy');
     const [mapDiag, setMapDiag] = useState(getMapDiagnostics);
+    const [dictation, setDictation] = useState(false);
+    const [page, setPage] = useState<SettingsPage>('home');
+    const scrollRef = useRef<ScrollView>(null);
+
+    const openPage = (next: SettingsPage) => {
+        haptics.selection();
+        setPage(next);
+        scrollRef.current?.scrollTo({ y: 0, animated: false });
+    };
+
+    // Android hardware back steps out of a sub-page before leaving the tab.
+    useEffect(() => {
+        if (page === 'home') return;
+        const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+            setPage('home');
+            return true;
+        });
+        return () => sub.remove();
+    }, [page]);
+
+    const handleToggleDictation = async (value: boolean) => {
+        haptics.selection();
+        setDictation(value);
+        try {
+            await setDictationEnabled(value);
+        } catch (err) {
+            setDictation(!value);
+            recordError(err, 'profile:toggleDictation');
+            showToast('Could not save that change.', 'error');
+        }
+    };
+
 
     useEffect(() => {
         return subscribeMapDiagnostics(setMapDiag);
@@ -91,6 +162,7 @@ export default function ProfileScreen() {
             if (val !== null) setNewsletter(val === 'true');
         }).catch(() => {});
         getLocationPreference().then(setLocationEnabled).catch(() => {});
+        getDictationEnabled().then(setDictation);
     }, []);
 
     // Optimistic with rollback: the switch flips immediately so the UI stays
@@ -98,6 +170,7 @@ export default function ProfileScreen() {
     // write fails we put it back and say so. Leaving a flipped switch over a
     // failed write is the worst option — the user believes they opted in.
     const handleToggleNewsletter = async (value: boolean) => {
+        haptics.selection();
         const previous = newsletter;
         setNewsletter(value);
         try {
@@ -117,6 +190,7 @@ export default function ProfileScreen() {
     };
 
     const handleToggleLocation = async (value: boolean) => {
+        haptics.selection();
         const previous = locationEnabled;
         setLocationEnabled(value);
         try {
@@ -136,6 +210,7 @@ export default function ProfileScreen() {
     };
 
     const handleToggleNotifications = async (value: boolean) => {
+        haptics.selection();
         const previous = notifications;
 
         if (!value) {
@@ -177,36 +252,38 @@ export default function ProfileScreen() {
     };
 
     return (
-        <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
+        <ScrollView ref={scrollRef} style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
 
-            <Text style={[styles.headerTitle, { color: theme.text }]}>Settings</Text>
+            {page === 'home' ? (
+                <Text style={[styles.headerTitle, dynamicTypography.headerTitle, { color: theme.text }]}>Settings</Text>
+            ) : (
+                <TouchableOpacity
+                    style={styles.backRow}
+                    onPress={() => openPage('home')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Back to Settings"
+                >
+                    <Ionicons name="chevron-back" size={26} color={brandRed} />
+                    <Text style={[styles.headerTitle, dynamicTypography.headerTitle, { color: theme.text, marginBottom: 0 }]}>
+                        {SETTINGS_PAGES.find(p => p.id === page)?.title}
+                    </Text>
+                </TouchableOpacity>
+            )}
 
-            {/* Stats */}
-            <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
-                <View style={styles.statItem}>
-                    <Text style={styles.statValue}>{pantryCount}</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Pantries</Text>
-                </View>
-                <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
-                <View style={styles.statItem}>
-                    <Text style={styles.statValue}>{countyCount}</Text>
-                    <Text style={[styles.statLabel, { color: theme.subtext }]}>Counties</Text>
-                </View>
-            </View>
-            <Text style={[styles.statsDisclaimer, { color: theme.subtext }]}>
-                Coverage spans all 67 Alabama counties. Some listed pantries are still undergoing verification — look for the Verified/Active/Unverified badge on the Map tab.
-            </Text>
-
+            {/* Home: account + a short menu. Every setting lives on a sub-page
+                so this screen stays light; nothing was removed. */}
+            {page === 'home' && (
+                <>
             {/* Account */}
-            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Account</Text>
+            <Text style={[styles.sectionTitle, dynamicTypography.sectionTitle, { color: theme.subtext }]}>Account</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
-                <TouchableOpacity style={styles.settingRow} onPress={() => router.push('/account')}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: accountLabel ? (theme.dark ? '#16a34a26' : '#f0fdf4') : (theme.dark ? '#b5252526' : '#fff0f0') }]}>
-                        <Ionicons name={accountLabel ? 'person-circle-outline' : 'person-add-outline'} size={18} color={accountLabel ? '#16a34a' : '#b52525'} />
+                <TouchableOpacity style={styles.settingRow} onPress={() => router.push('/account')} accessibilityRole="button" accessibilityLabel={accountLabel ? `Account, ${accountLabel}` : 'Sign in or create account'}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name={accountLabel ? 'person-circle-outline' : 'person-add-outline'} size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>{accountLabel ?? 'Sign In / Create Account'}</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>{accountLabel ?? 'Sign In / Create Account'}</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>
                             {accountLabel ? 'Signed in · Edit your About You info' : 'Optional — account, About You info, and more'}
                         </Text>
                     </View>
@@ -214,21 +291,52 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             </View>
 
-            {/* Preferences */}
-            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Preferences</Text>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
+                {SETTINGS_PAGES.map((item, i) => (
+                    <View key={item.id}>
+                        <TouchableOpacity
+                            style={styles.settingRow}
+                            onPress={() => openPage(item.id)}
+                            accessibilityRole="button"
+                            accessibilityLabel={item.title}
+                            accessibilityHint={item.desc}
+                        >
+                            <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                                <Ionicons name={item.icon} size={18} color={badgeIconColor} />
+                            </View>
+                            <View style={styles.settingTextWrap}>
+                                <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>{item.title}</Text>
+                                <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>{item.desc}</Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                        </TouchableOpacity>
+                        {i < SETTINGS_PAGES.length - 1 && <View style={[styles.divider, { backgroundColor: theme.border }]} />}
+                    </View>
+                ))}
+            </View>
+                </>
+            )}
+
+            {/* Accessibility: display + Pete voice options on one page. */}
+            {page === 'accessibility' && (
+                <>
+            <Text style={[styles.sectionTitle, dynamicTypography.sectionTitle, { color: theme.subtext }]}>Display</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#3a3a3c' : '#ede9fe' }]}>
-                        <Ionicons name={theme.dark ? 'moon' : 'moon-outline'} size={18} color="#a78bfa" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name={theme.dark ? 'moon' : 'moon-outline'} size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Dark Mode</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Easy on the eyes at night</Text>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Dark Mode</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Easy on the eyes at night</Text>
                     </View>
                     <Switch
                         value={theme.dark}
-                        onValueChange={theme.toggle}
-                        trackColor={{ true: '#a78bfa', false: theme.border }}
+                        onValueChange={() => {
+                            haptics.selection();
+                            theme.toggle();
+                        }}
+                        trackColor={{ true: brandRed, false: theme.border }}
                         thumbColor="#fff"
                         accessibilityRole="switch"
                         accessibilityLabel="Dark Mode"
@@ -237,18 +345,90 @@ export default function ProfileScreen() {
                     />
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <View style={styles.textSizeRow}>
+                    <View style={styles.settingRowHeader}>
+                        <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                            <Ionicons name="text-outline" size={18} color={badgeIconColor} />
+                        </View>
+                        <View style={styles.settingTextWrap}>
+                            <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Text Size</Text>
+                            <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>
+                                {textSize === 'standard' ? 'Standard' : textSize === 'large' ? 'Large (+15%)' : 'Extra large (+30%)'}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={[styles.segmentContainer, { backgroundColor: theme.dark ? '#1c1c1e' : '#f2f2f7' }]}>
+                        {(['standard', 'large', 'extra-large'] as const).map(option => {
+                            const isSelected = textSize === option;
+                            const labels = { standard: 'Standard', large: 'Large', 'extra-large': 'Extra large' };
+                            return (
+                                <TouchableOpacity
+                                    key={option}
+                                    style={[
+                                        styles.segmentBtn,
+                                        isSelected && [styles.segmentBtnActive, { backgroundColor: theme.card }]
+                                    ]}
+                                    onPress={() => {
+                                        haptics.selection();
+                                        setTextSize(option);
+                                    }}
+                                    accessibilityRole="button"
+                                    accessibilityState={{ selected: isSelected }}
+                                    accessibilityLabel={`Text size ${labels[option]}`}
+                                >
+                                    <Text style={[
+                                        styles.segmentBtnText,
+                                        dynamicTypography.segmentText,
+                                        { color: isSelected ? theme.text : theme.subtext, fontWeight: isSelected ? '700' : '500' }
+                                    ]}>
+                                        {labels[option]}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </View>
+                </View>
+            </View>
+            <Text style={[styles.sectionTitle, dynamicTypography.sectionTitle, { color: theme.subtext }]}>Pete</Text>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
-                        <Ionicons name="notifications-outline" size={18} color="#b52525" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="mic-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Push Notifications</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Alerts about nearby pantries</Text>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Dictation</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Adds a mic button so you can talk to Pete using your keyboard&apos;s microphone</Text>
+                    </View>
+                    <Switch
+                        value={dictation}
+                        onValueChange={handleToggleDictation}
+                        trackColor={{ true: brandRed, false: theme.border }}
+                        thumbColor="#fff"
+                        accessibilityRole="switch"
+                        accessibilityLabel="Dictation"
+                        accessibilityHint="Adds a mic button in Pete for talking instead of typing"
+                        accessibilityState={{ checked: dictation }}
+                    />
+                </View>
+            </View>
+                </>
+            )}
+
+            {page === 'privacy' && (
+                <>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
+                <View style={styles.settingRow}>
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="notifications-outline" size={18} color={badgeIconColor} />
+                    </View>
+                    <View style={styles.settingTextWrap}>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Push Notifications</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Alerts about nearby pantries</Text>
                     </View>
                     <Switch
                         value={notifications}
                         onValueChange={handleToggleNotifications}
-                        trackColor={{ true: '#b52525', false: theme.border }}
+                        trackColor={{ true: brandRed, false: theme.border }}
                         thumbColor="#fff"
                         accessibilityRole="switch"
                         accessibilityLabel="Push Notifications"
@@ -258,17 +438,17 @@ export default function ProfileScreen() {
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#2563eb26' : '#eff6ff' }]}>
-                        <Ionicons name="location-outline" size={18} color="#2563eb" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="location-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Location Services</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Find pantries near you</Text>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Location Services</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Find pantries near you</Text>
                     </View>
                     <Switch
                         value={locationEnabled}
                         onValueChange={handleToggleLocation}
-                        trackColor={{ true: '#2563eb', false: theme.border }}
+                        trackColor={{ true: brandRed, false: theme.border }}
                         thumbColor="#fff"
                         accessibilityRole="switch"
                         accessibilityLabel="Location Services"
@@ -278,17 +458,17 @@ export default function ProfileScreen() {
                 </View>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <View style={styles.settingRow}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
-                        <Ionicons name="mail-outline" size={18} color="#16a34a" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="mail-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Newsletter</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Monthly updates & resources</Text>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Newsletter</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Monthly updates & resources</Text>
                     </View>
                     <Switch
                         value={newsletter}
                         onValueChange={handleToggleNewsletter}
-                        trackColor={{ true: '#16a34a', false: theme.border }}
+                        trackColor={{ true: brandRed, false: theme.border }}
                         thumbColor="#fff"
                         accessibilityRole="switch"
                         accessibilityLabel="Newsletter"
@@ -296,27 +476,72 @@ export default function ProfileScreen() {
                         accessibilityState={{ checked: newsletter }}
                     />
                 </View>
-                <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                <TouchableOpacity style={styles.settingRow} onPress={() => setFeedbackVisible(true)}>
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
-                        <Ionicons name="chatbox-ellipses-outline" size={18} color="#b52525" />
+            </View>
+                </>
+            )}
+
+            {page === 'help' && (
+                <>
+            <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
+                <TouchableOpacity
+                    style={styles.settingRow}
+                    onPress={() => {
+                        haptics.mediumImpact();
+                        setFeedbackVisible(true);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Send Feedback"
+                    accessibilityHint="Report a bug or share an idea"
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="chatbox-ellipses-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Send Feedback</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Report a bug or share an idea</Text>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>Send Feedback</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Report a bug or share an idea</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
+                <TouchableOpacity
+                    style={styles.settingRow}
+                    onPress={() => {
+                        haptics.mediumImpact();
+                        router.push('/(onboarding)');
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="App Tutorial and Guide"
+                    accessibilityHint="Replays the introductory onboarding screens"
+                >
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="book-outline" size={18} color={badgeIconColor} />
+                    </View>
+                    <View style={styles.settingTextWrap}>
+                        <Text style={[styles.settingTitle, dynamicTypography.settingTitle, { color: theme.text }]}>App Tutorial & Guide</Text>
+                        <Text style={[styles.settingDesc, dynamicTypography.settingDesc, { color: theme.subtext }]}>Review how to find food & use Pete</Text>
                     </View>
                     <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
                 </TouchableOpacity>
             </View>
+                </>
+            )}
 
-            {/* Food Assistance Resources */}
-            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Food Assistance Resources</Text>
+            {page === 'resources' && (
+                <>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 {RESOURCES.map((res, i) => (
                     <View key={res.id}>
                         <TouchableOpacity
                             style={styles.linkRow}
+                            accessibilityRole="button"
+                            accessibilityLabel={`${res.title}, ${res.sub}`}
+                            accessibilityHint={res.url.startsWith('tel:') ? 'Dials phone number' : 'Opens external resource in browser'}
                             onPress={async () => {
+                                if (res.url.startsWith('tel:')) {
+                                    haptics.heavyImpact();
+                                } else {
+                                    haptics.mediumImpact();
+                                }
                                 Linking.openURL(res.url).catch(() => {
                                     Alert.alert(
                                         res.url.startsWith('tel:') ? 'Calling not supported on this device' : 'Could not open link',
@@ -336,12 +561,12 @@ export default function ProfileScreen() {
                                 }
                             }}
                         >
-                            <View style={[styles.linkIconCircle, { backgroundColor: res.color + '18' }]}>
-                                <Ionicons name={res.icon} size={18} color={res.color} />
+                            <View style={[styles.linkIconCircle, { backgroundColor: badgeBg }]}>
+                                <Ionicons name={res.icon} size={18} color={badgeIconColor} />
                             </View>
                             <View style={styles.linkTextWrap}>
-                                <Text style={[styles.linkText, { color: theme.text }]}>{res.title}</Text>
-                                <Text style={[styles.linkSub, { color: theme.subtext }]}>{res.sub}</Text>
+                                <Text style={[styles.linkText, dynamicTypography.linkText, { color: theme.text }]}>{res.title}</Text>
+                                <Text style={[styles.linkSub, dynamicTypography.linkSub, { color: theme.subtext }]}>{res.sub}</Text>
                             </View>
                             <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
                         </TouchableOpacity>
@@ -349,12 +574,34 @@ export default function ProfileScreen() {
                     </View>
                 ))}
             </View>
+                </>
+            )}
 
-            {/* Legal */}
-            <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Legal & Disclaimers</Text>
+            {page === 'about' && (
+                <>
+            {/* Stats */}
+            <View style={[styles.statsRow, { backgroundColor: theme.card }]}>
+                <View style={styles.statItem}>
+                    <Text style={[styles.statValue, dynamicTypography.statValue]}>{pantryCount}</Text>
+                    <Text style={[styles.statLabel, dynamicTypography.statLabel, { color: theme.subtext }]}>Pantries</Text>
+                </View>
+                <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
+                <View style={styles.statItem}>
+                    <Text style={[styles.statValue, dynamicTypography.statValue]}>{countyCount}</Text>
+                    <Text style={[styles.statLabel, dynamicTypography.statLabel, { color: theme.subtext }]}>Counties</Text>
+                </View>
+            </View>
+            <Text style={[styles.statsDisclaimer, dynamicTypography.statsDisclaimer, { color: theme.subtext }]}>
+                Coverage spans all 67 Alabama counties. Some listed pantries are still undergoing verification — look for the Verified/Active/Unverified badge on the Map tab.
+            </Text>
+
+            <Text style={[styles.sectionTitle, dynamicTypography.sectionTitle, { color: theme.subtext }]}>Legal & Disclaimers</Text>
             <View style={[styles.settingsGroup, { backgroundColor: theme.card }]}>
                 <TouchableOpacity
                     style={styles.linkRow}
+                    accessibilityRole="button"
+                    accessibilityLabel="Privacy Policy"
+                    accessibilityHint="Opens in your web browser"
                     onPress={() => {
                         Alert.alert(
                             'Open Privacy Policy',
@@ -373,18 +620,21 @@ export default function ProfileScreen() {
                         );
                     }}
                 >
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#2563eb26' : '#eff6ff' }]}>
-                        <Ionicons name="shield-checkmark-outline" size={18} color="#2563eb" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="shield-checkmark-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.linkTextWrap}>
-                        <Text style={[styles.linkText, { color: theme.text }]}>Privacy Policy</Text>
-                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/privacy</Text>
+                        <Text style={[styles.linkText, dynamicTypography.linkText, { color: theme.text }]}>Privacy Policy</Text>
+                        <Text style={[styles.linkSub, dynamicTypography.linkSub, { color: theme.subtext }]}>accessbelt.com/privacy</Text>
                     </View>
                     <Ionicons name="open-outline" size={16} color={theme.subtext} />
                 </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity
                     style={styles.linkRow}
+                    accessibilityRole="button"
+                    accessibilityLabel="Terms of Service"
+                    accessibilityHint="Opens in your web browser"
                     onPress={() => {
                         Alert.alert(
                             'Open Terms of Service',
@@ -403,18 +653,21 @@ export default function ProfileScreen() {
                         );
                     }}
                 >
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
-                        <Ionicons name="document-text-outline" size={18} color="#b52525" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="document-text-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.linkTextWrap}>
-                        <Text style={[styles.linkText, { color: theme.text }]}>Terms of Service</Text>
-                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/terms</Text>
+                        <Text style={[styles.linkText, dynamicTypography.linkText, { color: theme.text }]}>Terms of Service</Text>
+                        <Text style={[styles.linkSub, dynamicTypography.linkSub, { color: theme.subtext }]}>accessbelt.com/terms</Text>
                     </View>
                     <Ionicons name="open-outline" size={16} color={theme.subtext} />
                 </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity
                     style={styles.linkRow}
+                    accessibilityRole="button"
+                    accessibilityLabel="DMCA Takedown Policy"
+                    accessibilityHint="Opens in your web browser"
                     onPress={() => {
                         Alert.alert(
                             'Open DMCA Takedown Policy',
@@ -433,18 +686,21 @@ export default function ProfileScreen() {
                         );
                     }}
                 >
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#16a34a26' : '#f0fdf4' }]}>
-                        <Ionicons name="document-lock-outline" size={18} color="#16a34a" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="document-lock-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.linkTextWrap}>
-                        <Text style={[styles.linkText, { color: theme.text }]}>DMCA Takedown Policy</Text>
-                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/dmca · getaccessbelt@gmail.com</Text>
+                        <Text style={[styles.linkText, dynamicTypography.linkText, { color: theme.text }]}>DMCA Takedown Policy</Text>
+                        <Text style={[styles.linkSub, dynamicTypography.linkSub, { color: theme.subtext }]}>accessbelt.com/dmca · getaccessbelt@gmail.com</Text>
                     </View>
                     <Ionicons name="open-outline" size={16} color={theme.subtext} />
                 </TouchableOpacity>
                 <View style={[styles.divider, { backgroundColor: theme.border }]} />
                 <TouchableOpacity
                     style={styles.linkRow}
+                    accessibilityRole="button"
+                    accessibilityLabel="UGC Moderation Policy"
+                    accessibilityHint="Opens in your web browser"
                     onPress={() => {
                         Alert.alert(
                             'Open UGC Moderation Policy',
@@ -463,14 +719,39 @@ export default function ProfileScreen() {
                         );
                     }}
                 >
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#9333ea26' : '#fdf4ff' }]}>
-                        <Ionicons name="chatbubbles-outline" size={18} color="#9333ea" />
+                    <View style={[styles.settingIconCircle, { backgroundColor: badgeBg }]}>
+                        <Ionicons name="chatbubbles-outline" size={18} color={badgeIconColor} />
                     </View>
                     <View style={styles.linkTextWrap}>
-                        <Text style={[styles.linkText, { color: theme.text }]}>UGC Content Moderation</Text>
-                        <Text style={[styles.linkSub, { color: theme.subtext }]}>accessbelt.com/ugc · Community rules</Text>
+                        <Text style={[styles.linkText, dynamicTypography.linkText, { color: theme.text }]}>UGC Content Moderation</Text>
+                        <Text style={[styles.linkSub, dynamicTypography.linkSub, { color: theme.subtext }]}>accessbelt.com/ugc · Community rules</Text>
                     </View>
                     <Ionicons name="open-outline" size={16} color={theme.subtext} />
+                </TouchableOpacity>
+            </View>
+
+            {/* Accessibility statement — WCAG 2.1 AA commitment + a way to report
+                barriers. Wording approved by both Members 2026-10-02. */}
+            <View style={[styles.aboutCard, { backgroundColor: theme.card }]}>
+                <Text style={[styles.aboutTitle, dynamicTypography.aboutTitle, { color: theme.text }]} accessibilityRole="header">Accessibility</Text>
+                <Text style={[styles.aboutText, dynamicTypography.aboutText, { color: theme.subtext }]}>
+                    AccessBelt is built to be usable by everyone, including people who use screen readers like VoiceOver and TalkBack, larger text, or voice dictation. We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA.
+                </Text>
+                <Text style={[styles.aboutText, dynamicTypography.aboutText, { color: theme.subtext, marginTop: 8 }]}>
+                    If any part of the app is hard to use, please tell us and we&apos;ll work to fix it.
+                </Text>
+                <TouchableOpacity
+                    style={styles.a11yContactBtn}
+                    onPress={() => {
+                        Linking.openURL('mailto:getaccessbelt@gmail.com?subject=Accessibility%20feedback').catch(() => {
+                            Alert.alert('Could not open email', 'Please email getaccessbelt@gmail.com.');
+                        });
+                    }}
+                    accessibilityRole="link"
+                    accessibilityLabel="Email getaccessbelt@gmail.com about accessibility"
+                >
+                    <Ionicons name="mail-outline" size={16} color={brandRed} importantForAccessibility="no" />
+                    <Text style={[styles.a11yContactText, dynamicTypography.aboutText]}>getaccessbelt@gmail.com</Text>
                 </TouchableOpacity>
             </View>
 
@@ -478,40 +759,46 @@ export default function ProfileScreen() {
             <View style={[styles.disclaimerCard, { backgroundColor: theme.dark ? '#1c1917' : '#fffbeb', borderColor: theme.dark ? '#44403c' : '#fef3c7' }]}>
                 <View style={styles.disclaimerHeader}>
                     <Ionicons name="alert-circle-outline" size={18} color="#b52525" />
-                    <Text style={[styles.disclaimerTitle, { color: theme.text }]}>Government & Informational Disclaimer</Text>
+                    <Text style={[styles.disclaimerTitle, dynamicTypography.disclaimerTitle, { color: theme.text }]}>Government & Informational Disclaimer</Text>
                 </View>
-                <Text style={[styles.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
+                <Text style={[styles.disclaimerText, dynamicTypography.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
                     <Text style={{ fontWeight: '700' }}>Non-Affiliation Notice:</Text> AccessBelt is an independent community initiative and is <Text style={{ fontWeight: '700' }}>NOT affiliated with, endorsed by, authorized by, or representing any federal, state, or local government entity or agency.</Text>
                 </Text>
-                <Text style={[styles.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
+                <Text style={[styles.disclaimerText, dynamicTypography.disclaimerText, { color: theme.subtext, marginBottom: 8 }]}>
                     <Text style={{ fontWeight: '700' }}>Official Government Sources:</Text> All government assistance program information (e.g. SNAP, WIC, School Meals) is aggregated for public benefit from official sources:
                     {'\n'}• USDA Food & Nutrition Service: https://www.fns.usda.gov
                     {'\n'}• Alabama Public Health (WIC): https://www.alabamapublichealth.gov
                     {'\n'}• Benefits.gov: https://www.benefits.gov
                     {'\n'}• Alabama DHR Food Assistance: https://dhr.alabama.gov
                 </Text>
-                <Text style={[styles.disclaimerText, { color: theme.subtext }]}>
+                <Text style={[styles.disclaimerText, dynamicTypography.disclaimerText, { color: theme.subtext }]}>
                     Pantry hours, eligibility, and inventory levels are crowd-sourced and managed by third-party community organizations. AccessBelt does not guarantee resource availability at any listed facility.
                 </Text>
             </View>
 
             {/* About */}
             <View style={[styles.aboutCard, { backgroundColor: theme.card }]}>
-                <Text style={[styles.aboutTitle, { color: theme.text }]}>About AccessBelt</Text>
-                <Text style={[styles.aboutText, { color: theme.subtext }]}>
+                <Text style={[styles.aboutTitle, dynamicTypography.aboutTitle, { color: theme.text }]}>About AccessBelt</Text>
+                <Text style={[styles.aboutText, dynamicTypography.aboutText, { color: theme.subtext }]}>
                     AccessBelt is built specifically for families across the state of Alabama, connecting them to food pantries, SNAP/EBT resources, and community programs. Our mission: more meals, less stress.
                 </Text>
             </View>
+                </>
+            )}
 
+            {page === 'home' && (
+                <>
             {accountLabel && (
-                <TouchableOpacity style={styles.signOutBtn} onPress={handleSignOut}>
-                    <Text style={styles.signOutBtnText}>Sign Out</Text>
+                <TouchableOpacity style={styles.signOutBtn} onPress={handleSignOut} accessibilityRole="button" accessibilityLabel="Sign out">
+                    <Text style={[styles.signOutBtnText, dynamicTypography.signOutBtnText]}>Sign Out</Text>
                 </TouchableOpacity>
             )}
 
-            <Text style={[styles.version, { color: theme.subtext }]}>
+            <Text style={[styles.version, dynamicTypography.version, { color: theme.subtext }]}>
                 AccessBelt v1.0.1 (build {Application.nativeBuildVersion ?? Constants.nativeBuildVersion ?? Constants.expoConfig?.android?.versionCode ?? '7'}) · Free for families
             </Text>
+                </>
+            )}
             {SHOW_MAP_DIAGNOSTICS && (
                 <Text style={[styles.diagnostics, { color: theme.subtext }]}>
                     Map: ready {mapDiag.ready ? 'yes' : 'no'}, loaded {mapDiag.loaded ? 'yes' : 'no'}, provider {mapDiag.provider}{mapDiag.size ? `, size ${mapDiag.size}` : ''}
@@ -538,6 +825,7 @@ const styles = StyleSheet.create({
     container: { flex: 1 },
     content: { padding: 20, paddingTop: 60, paddingBottom: 40 },
     headerTitle: { fontSize: 32, fontWeight: '800', marginBottom: 20 },
+    backRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 20, marginLeft: -6 },
     statsRow: { flexDirection: 'row', borderRadius: 16, padding: 16, marginBottom: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
     statsDisclaimer: { fontSize: 11, lineHeight: 15, textAlign: 'center', marginBottom: 28, paddingHorizontal: 8 },
     statItem: { flex: 1, alignItems: 'center', gap: 4 },
@@ -547,6 +835,12 @@ const styles = StyleSheet.create({
     sectionTitle: { fontSize: 16, fontWeight: '600', marginBottom: 10, marginLeft: 4 },
     settingsGroup: { borderRadius: 16, marginBottom: 28, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3, overflow: 'hidden' },
     settingRow: { flexDirection: 'row', alignItems: 'center', padding: 14, gap: 12 },
+    textSizeRow: { padding: 14, gap: 10 },
+    settingRowHeader: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    segmentContainer: { flexDirection: 'row', borderRadius: 10, padding: 3, marginTop: 4 },
+    segmentBtn: { flex: 1, paddingVertical: 8, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
+    segmentBtnActive: { shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2, elevation: 1 },
+    segmentBtnText: { fontSize: 13 },
     settingIconCircle: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
     settingTextWrap: { flex: 1 },
     settingTitle: { fontSize: 15, fontWeight: '600' },
@@ -560,6 +854,8 @@ const styles = StyleSheet.create({
     aboutCard: { borderRadius: 16, padding: 18, marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
     aboutTitle: { fontSize: 15, fontWeight: '800', marginBottom: 8 },
     aboutText: { fontSize: 13, lineHeight: 20 },
+    a11yContactBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 12, paddingVertical: 6, alignSelf: 'flex-start' },
+    a11yContactText: { color: '#b52525', fontWeight: '700' },
     disclaimerCard: { borderRadius: 16, padding: 16, marginBottom: 24, borderWidth: 1 },
     disclaimerHeader: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
     disclaimerTitle: { fontSize: 14, fontWeight: '800' },

@@ -31,7 +31,7 @@ export default function LegalModal({ visible, type, onClose }: Props) {
                 {/* Header */}
                 <View style={[styles.header, { borderBottomColor: theme.border }]}>
                     <Text style={[styles.headerTitle, { color: theme.text }]}>{title}</Text>
-                    <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+                    <TouchableOpacity style={styles.closeBtn} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" hitSlop={8}>
                         <Ionicons name="close" size={24} color={theme.text} />
                     </TouchableOpacity>
                 </View>
@@ -117,7 +117,10 @@ export default function LegalModal({ visible, type, onClose }: Props) {
 
                     <TouchableOpacity
                         style={[styles.webBtn, { backgroundColor: theme.dark ? '#334155' : '#f1f5f9' }]}
-                        onPress={() => Linking.openURL(webUrl)}
+                        onPress={() => Linking.openURL(webUrl).catch(() => {})}
+                        accessibilityRole="button"
+                        accessibilityLabel="Open full version on the web"
+                        accessibilityHint="Opens in your browser"
                     >
                         <Text style={[styles.webBtnText, { color: '#0071e3' }]}>Open Full Version on Web ({webUrl})</Text>
                         <Ionicons name="open-outline" size={16} color="#0071e3" />

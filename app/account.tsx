@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -181,7 +180,7 @@ export default function AccountScreen() {
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
-            <TouchableOpacity style={styles.backRow} onPress={goBackOrSettings}>
+            <TouchableOpacity style={styles.backRow} onPress={goBackOrSettings} accessibilityRole="button" accessibilityLabel="Back to Settings">
                 <Ionicons name="chevron-back" size={20} color={theme.text} />
                 <Text style={[styles.backText, { color: theme.text }]}>Settings</Text>
             </TouchableOpacity>
@@ -200,7 +199,7 @@ export default function AccountScreen() {
                         </View>
                     </View>
                 ) : (
-                    <TouchableOpacity style={styles.settingRow} onPress={() => router.push('/(auth)/signin')}>
+                    <TouchableOpacity style={styles.settingRow} onPress={() => router.push('/(auth)/signin')} accessibilityRole="button" accessibilityLabel="Sign in or create account" accessibilityHint="Optional. Keeps your info across devices">
                         <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#b5252526' : '#fff0f0' }]}>
                             <Ionicons name="person-add-outline" size={18} color="#b52525" />
                         </View>
@@ -350,6 +349,9 @@ export default function AccountScreen() {
                                                 { backgroundColor: selected ? '#b52525' : theme.input, borderColor: selected ? '#b52525' : theme.border },
                                             ]}
                                             onPress={() => setRace(selected ? null : opt.value)}
+                                            accessibilityRole="button"
+                                            accessibilityLabel={opt.label}
+                                            accessibilityState={{ selected }}
                                         >
                                             <Text style={[styles.raceChipText, { color: selected ? '#fff' : theme.text }]}>{opt.label}</Text>
                                         </TouchableOpacity>
@@ -360,6 +362,9 @@ export default function AccountScreen() {
                                 style={[styles.aboutYouSaveBtn, savingProfile && styles.aboutYouSaveBtnDisabled]}
                                 onPress={handleSaveProfile}
                                 disabled={savingProfile || !authReady}
+                                accessibilityRole="button"
+                                accessibilityLabel={savingProfile ? 'Saving' : 'Save About You info'}
+                                accessibilityState={{ disabled: savingProfile || !authReady, busy: savingProfile }}
                             >
                                 <Text style={styles.aboutYouSaveBtnText}>{savingProfile ? 'Saving…' : 'Save'}</Text>
                             </TouchableOpacity>
@@ -378,43 +383,17 @@ export default function AccountScreen() {
                             {savedProfile?.contactEmail ? (
                                 <Text style={[styles.aboutYouSummaryText, { color: theme.subtext }]}>{savedProfile.contactEmail}</Text>
                             ) : null}
-                            <TouchableOpacity onPress={() => setEditingAboutYou(true)}>
+                            <TouchableOpacity onPress={() => setEditingAboutYou(true)} accessibilityRole="button" accessibilityLabel="Edit About You info" hitSlop={8}>
                                 <Text style={styles.aboutYouEditLink}>Edit</Text>
                             </TouchableOpacity>
                         </View>
                     )}
                 </View>
 
-                <View style={[styles.divider, { backgroundColor: theme.border }]} />
-
-                <TouchableOpacity
-                    style={styles.settingRow}
-                    onPress={async () => {
-                        await AsyncStorage.removeItem('hasSeenOnboarding');
-                        Alert.alert(
-                            'Reset Successful',
-                            'Onboarding state has been reset. Would you like to view it now?',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Show Onboarding', onPress: () => router.replace('/(onboarding)/') },
-                            ]
-                        );
-                    }}
-                >
-                    <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#d9770626' : '#fffbeb' }]}>
-                        <Ionicons name="play-outline" size={18} color="#d97706" />
-                    </View>
-                    <View style={styles.settingTextWrap}>
-                        <Text style={[styles.settingTitle, { color: theme.text }]}>Replay Onboarding</Text>
-                        <Text style={[styles.settingDesc, { color: theme.subtext }]}>Watch the app intro again</Text>
-                    </View>
-                    <Ionicons name="chevron-forward" size={16} color={theme.subtext} />
-                </TouchableOpacity>
-
                 {accountLabel && (
                     <>
                         <View style={[styles.divider, { backgroundColor: theme.border }]} />
-                        <TouchableOpacity style={styles.settingRow} onPress={handleDeleteAccount}>
+                        <TouchableOpacity style={styles.settingRow} onPress={handleDeleteAccount} accessibilityRole="button" accessibilityLabel="Delete account" accessibilityHint="Permanently removes your account and saved info. You will be asked to confirm.">
                             <View style={[styles.settingIconCircle, { backgroundColor: theme.dark ? '#dc262626' : '#fef2f2' }]}>
                                 <Ionicons name="trash-outline" size={18} color="#dc2626" />
                             </View>

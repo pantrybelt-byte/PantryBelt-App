@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import {
     Alert,
     Animated,
@@ -31,6 +32,7 @@ import * as Location from 'expo-location';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { PETE_HISTORY_KEY } from '../../constants/storageKeys';
+import { getDictationEnabled } from '../../utils/voicePrefs';
 
 // Enable smooth, non-jarring layout transitions on Android when the pantry
 // card list expands (iOS animates LayoutAnimation by default).
@@ -216,6 +218,25 @@ export default function PeteScreen() {
     const [visibleCounts, setVisibleCounts] = useState<Record<number, number>>({});
     const scrollRef = useRef<ScrollView>(null);
     const sessionTurnsRef = useRef(0);
+
+    // ── Dictation (Settings → Accessibility) ────────────────────────────────
+    // Dictation uses the keyboard's own mic: the OS turns speech into text,
+    // so the app never touches audio and needs no microphone permission.
+    // The button just opens the keyboard and points at that mic.
+    const [dictationEnabled, setDictationEnabled] = useState(false);
+    const [showDictationTip, setShowDictationTip] = useState(false);
+    const inputRef = useRef<TextInput>(null);
+    const startDictation = () => {
+        haptics.lightImpact();
+        inputRef.current?.focus();
+        setShowDictationTip(true);
+        setTimeout(() => setShowDictationTip(false), 6000);
+    };
+    // Re-read on every focus so flipping the setting takes effect without a restart.
+    useFocusEffect(useCallback(() => {
+        getDictationEnabled().then(setDictationEnabled);
+    }, []));
+
 
     useEffect(() => {
         AsyncStorage.getItem(PETE_HISTORY_KEY).then(saved => {
@@ -618,8 +639,28 @@ export default function PeteScreen() {
             </ScrollView>
 
             {/* Input */}
+            {showDictationTip && (
+                <View style={[styles.dictationTip, { backgroundColor: theme.card, borderTopColor: theme.border }]}>
+                    <Ionicons name="mic" size={14} color={COLORS.primary} importantForAccessibility="no" />
+                    <Text style={[TYPOGRAPHY.small, { color: theme.text, flex: 1 }]}>
+                        Tap the microphone on your keyboard and start talking.
+                    </Text>
+                </View>
+            )}
             <View style={[styles.inputBar, { backgroundColor: theme.card, borderTopColor: theme.border }]}>
+                {dictationEnabled && (
+                    <TouchableOpacity
+                        style={[styles.micBtn, { backgroundColor: theme.input }]}
+                        onPress={startDictation}
+                        accessibilityRole="button"
+                        accessibilityLabel="Talk to Pete"
+                        accessibilityHint="Opens the keyboard so you can use its microphone to dictate"
+                    >
+                        <Ionicons name="mic-outline" size={20} color={COLORS.primary} />
+                    </TouchableOpacity>
+                )}
                 <TextInput
+                    ref={inputRef}
                     style={[styles.input, { backgroundColor: theme.input, color: theme.text }]}
                     value={input}
                     onChangeText={setInput}
@@ -651,7 +692,6 @@ const styles = StyleSheet.create({
     header: { paddingTop: SPACING['5xl'], paddingBottom: SPACING.md, paddingHorizontal: SPACING.lg, flexDirection: 'row', alignItems: 'center', gap: SPACING.md, borderBottomWidth: 1 },
     avatar: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden' },
     headerText: { flex: 1 },
-    clearBtn: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
     callBtn: { borderRadius: RADIUS.sm, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
     offlineBanner: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, paddingHorizontal: SPACING.lg, paddingVertical: SPACING.xs + 2, borderBottomWidth: 1 },
     offlineBannerText: { fontSize: 12, fontWeight: '600', flex: 1 },
@@ -678,6 +718,9 @@ const styles = StyleSheet.create({
     quickChip: { borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs + 1, borderWidth: 1 },
     inputBar: { flexDirection: 'row', padding: SPACING.md, borderTopWidth: 1, gap: SPACING.sm + 2, alignItems: 'flex-end' },
     input: { flex: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.lg, paddingVertical: SPACING.sm + 2, fontSize: 14, maxHeight: 100 },
+    clearBtn: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', borderWidth: 1 },
     sendBtn: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+    micBtn: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+    dictationTip: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, borderTopWidth: 1 },
     sendBtnDisabled: { opacity: 0.35 },
 });

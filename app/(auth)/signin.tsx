@@ -155,13 +155,15 @@ export default function SignInScreen() {
                             </Text>
                         </View>
 
-                        <TouchableOpacity style={styles.bubbleBtnPrimary} onPress={() => openForm('signup')}>
+                        <TouchableOpacity style={styles.bubbleBtnPrimary} onPress={() => openForm('signup')} accessibilityRole="button" accessibilityLabel="Create account">
                             <Text style={styles.bubbleBtnPrimaryText}>Create Account</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.bubbleBtnSecondary, { backgroundColor: theme.input, borderColor: theme.border }]}
                             onPress={() => openForm('signin')}
+                            accessibilityRole="button"
+                            accessibilityLabel="Sign in"
                         >
                             <Text style={[styles.bubbleBtnSecondaryText, { color: theme.text }]}>Sign In</Text>
                         </TouchableOpacity>
@@ -169,13 +171,16 @@ export default function SignInScreen() {
                         <TouchableOpacity
                             style={[styles.bubbleBtnSecondary, { backgroundColor: theme.input, borderColor: theme.border }]}
                             onPress={goBackOrHome}
+                            accessibilityRole="button"
+                            accessibilityLabel="Continue as guest"
+                            accessibilityHint="Use the app without an account"
                         >
                             <Text style={[styles.bubbleBtnSecondaryText, { color: theme.text }]}>Continue as Guest</Text>
                         </TouchableOpacity>
                     </View>
                 ) : (
                     <View style={[styles.card, { backgroundColor: theme.card }]}>
-                        <TouchableOpacity style={styles.backRow} onPress={() => setView('choice')}>
+                        <TouchableOpacity style={styles.backRow} onPress={() => setView('choice')} accessibilityRole="button" accessibilityLabel="Back">
                             <Ionicons name="chevron-back" size={16} color={theme.subtext} />
                             <Text style={[styles.backText, { color: theme.subtext }]}>Back</Text>
                         </TouchableOpacity>
@@ -190,11 +195,11 @@ export default function SignInScreen() {
                         </Text>
 
                         <View style={styles.kindToggle}>
-                            <TouchableOpacity onPress={() => { setKind('email'); setError(null); }}>
+                            <TouchableOpacity onPress={() => { setKind('email'); setError(null); }} accessibilityRole="button" accessibilityLabel="Use email" accessibilityState={{ selected: kind === 'email' }} hitSlop={8}>
                                 <Text style={[styles.kindToggleText, { color: kind === 'email' ? '#b52525' : theme.subtext }]}>Use email</Text>
                             </TouchableOpacity>
                             <Text style={[styles.kindToggleSep, { color: theme.subtext }]}>·</Text>
-                            <TouchableOpacity onPress={() => { setKind('username'); setError(null); }}>
+                            <TouchableOpacity onPress={() => { setKind('username'); setError(null); }} accessibilityRole="button" accessibilityLabel="Use a username instead" accessibilityState={{ selected: kind === 'username' }} hitSlop={8}>
                                 <Text style={[styles.kindToggleText, { color: kind === 'username' ? '#b52525' : theme.subtext }]}>Use a username instead</Text>
                             </TouchableOpacity>
                         </View>
@@ -309,6 +314,8 @@ export default function SignInScreen() {
                             style={[styles.enterBtn, (loading || !authReady) && styles.enterBtnDisabled]}
                             onPress={handleSubmit}
                             disabled={loading || !authReady}
+                            accessibilityRole="button"
+                            accessibilityState={{ disabled: loading || !authReady, busy: loading }}
                         >
                             <Text style={styles.enterBtnText}>
                                 {!authReady
@@ -331,7 +338,7 @@ export default function SignInScreen() {
 
 const styles = StyleSheet.create({
     bg: { flex: 1 },
-    overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(181,37,37,0.85)' },
+    overlay: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(181,37,37,0.85)' },
     container: { flex: 1, justifyContent: 'center', padding: 24, paddingTop: 60, paddingBottom: 40 },
     logoContainer: { alignItems: 'center', marginBottom: 24 },
     logoImage: { width: 130, height: 130, borderRadius: 65, borderWidth: 3, borderColor: 'rgba(255,255,255,0.5)' },

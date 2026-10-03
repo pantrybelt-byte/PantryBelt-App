@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 import { FeedbackCategory, submitFeedback } from '../utils/feedback';
 
@@ -63,15 +64,17 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
         setSubmitted(true);
     };
 
+    const insets = useSafeAreaInsets();
+
     return (
         <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-            <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose} />
+            <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close feedback" />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.avoidWrap}
                 pointerEvents="box-none"
             >
-                <View style={[styles.card, { backgroundColor: theme.card }]}>
+                <View style={[styles.card, { backgroundColor: theme.card, paddingBottom: submitted ? 36 : 0 }]}>
                     <View style={[styles.handle, { backgroundColor: theme.border }]} />
 
                     {submitted ? (
@@ -81,15 +84,21 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
                             <Text style={[styles.thankYouText, { color: theme.subtext }]}>
                                 Your feedback helps us make AccessBelt better for families across Alabama.
                             </Text>
-                            <TouchableOpacity style={styles.doneBtn} onPress={onClose}>
+                            <TouchableOpacity style={styles.doneBtn} onPress={onClose} accessibilityRole="button" accessibilityLabel="Done">
                                 <Text style={styles.doneBtnText}>Done</Text>
                             </TouchableOpacity>
                         </View>
                     ) : (
-                        <ScrollView showsVerticalScrollIndicator={false}>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            // Room below Submit / Not now for the home indicator,
+                            // so the last button is never tucked under it.
+                            contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+                            keyboardShouldPersistTaps="handled"
+                        >
                             <View style={styles.header}>
                                 <Text style={[styles.title, { color: theme.text }]}>Send Feedback</Text>
-                                <TouchableOpacity onPress={onClose}>
+                                <TouchableOpacity onPress={onClose} accessibilityRole="button" accessibilityLabel="Close feedback" hitSlop={8}>
                                     <Ionicons name="close-circle" size={28} color={theme.subtext} />
                                 </TouchableOpacity>
                             </View>
@@ -97,7 +106,14 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
                             <Text style={[styles.label, { color: theme.text }]}>How's the app working for you?</Text>
                             <View style={styles.starsRow}>
                                 {[1, 2, 3, 4, 5].map(n => (
-                                    <TouchableOpacity key={n} onPress={() => setRating(n)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
+                                    <TouchableOpacity
+                                        key={n}
+                                        onPress={() => setRating(n)}
+                                        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+                                        accessibilityRole="button"
+                                        accessibilityLabel={`${n} star${n === 1 ? '' : 's'}`}
+                                        accessibilityState={{ selected: n === rating }}
+                                    >
                                         <Ionicons
                                             name={n <= rating ? 'star' : 'star-outline'}
                                             size={34}
@@ -119,6 +135,9 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
                                             category === c && styles.chipActive,
                                         ]}
                                         onPress={() => setCategory(c)}
+                                        accessibilityRole="button"
+                                        accessibilityLabel={c}
+                                        accessibilityState={{ selected: category === c }}
                                     >
                                         <Text style={[styles.chipText, { color: theme.text }, category === c && styles.chipTextActive]}>
                                             {c}
@@ -155,12 +174,15 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
                                 style={[styles.submitBtn, !canSubmit && styles.submitBtnDisabled]}
                                 onPress={handleSubmit}
                                 disabled={!canSubmit}
+                                accessibilityRole="button"
+                                accessibilityLabel={submitting ? 'Sending feedback' : 'Submit feedback'}
+                                accessibilityState={{ disabled: !canSubmit, busy: submitting }}
                             >
                                 <Text style={styles.submitBtnText}>{submitting ? 'Sending…' : 'Submit Feedback'}</Text>
                             </TouchableOpacity>
 
                             {onNotNow && (
-                                <TouchableOpacity style={styles.notNowBtn} onPress={onNotNow}>
+                                <TouchableOpacity style={styles.notNowBtn} onPress={onNotNow} accessibilityRole="button" accessibilityLabel="Not now">
                                     <Text style={[styles.notNowText, { color: theme.subtext }]}>Not now</Text>
                                 </TouchableOpacity>
                             )}
@@ -174,7 +196,10 @@ export default function FeedbackModal({ visible, onClose, screenName, onNotNow }
 
 const styles = StyleSheet.create({
     backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
-    avoidWrap: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+    // Full-screen, bottom-aligned: the card's maxHeight '88%' needs a parent with
+    // a real height to resolve against. With only bottom:0 it was ignored, so a
+    // tall form (or large text) grew past the screen and clipped Submit.
+    avoidWrap: { ...StyleSheet.absoluteFill, justifyContent: 'flex-end' },
     card: { borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 36, maxHeight: '88%', shadowColor: '#000', shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.15, shadowRadius: 12 },
     handle: { width: 40, height: 4, backgroundColor: '#e5e5ea', borderRadius: 2, alignSelf: 'center', marginBottom: 16 },
     header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },

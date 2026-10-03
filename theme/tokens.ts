@@ -74,72 +74,99 @@ export const SPACING = {
 
 // ── Typography ───────────────────────────────────────────
 // System fonts only — San Francisco (iOS) / Roboto (Android)
+let _globalTextScale = 1.0;
+
+export function setGlobalTextScale(scale: number) {
+    _globalTextScale = scale;
+}
+
+export function getGlobalTextScale(): number {
+    return _globalTextScale;
+}
+
+export function getScaledTypography(scale: number = _globalTextScale) {
+    return {
+        hero: {
+            fontSize: Math.round(34 * scale),
+            fontWeight: '800' as const,
+            letterSpacing: -0.3,
+            lineHeight: Math.round(40 * scale),
+        },
+        heading1: {
+            fontSize: Math.round(32 * scale),
+            fontWeight: '800' as const,
+            letterSpacing: -0.2,
+            lineHeight: Math.round(38 * scale),
+        },
+        heading2: {
+            fontSize: Math.round(20 * scale),
+            fontWeight: '700' as const,
+            lineHeight: Math.round(26 * scale),
+        },
+        heading3: {
+            fontSize: Math.round(17 * scale),
+            fontWeight: '700' as const,
+            lineHeight: Math.round(22 * scale),
+        },
+        body: {
+            fontSize: Math.round(15 * scale),
+            fontWeight: '400' as const,
+            lineHeight: Math.round(22 * scale),
+        },
+        bodyBold: {
+            fontSize: Math.round(15 * scale),
+            fontWeight: '600' as const,
+            lineHeight: Math.round(22 * scale),
+        },
+        caption: {
+            fontSize: Math.round(13 * scale),
+            fontWeight: '500' as const,
+            lineHeight: Math.round(18 * scale),
+        },
+        small: {
+            fontSize: Math.round(12 * scale),
+            fontWeight: '500' as const,
+            lineHeight: Math.round(16 * scale),
+        },
+        label: {
+            fontSize: Math.round(11 * scale),
+            fontWeight: '600' as const,
+            lineHeight: Math.round(14 * scale),
+            textTransform: 'uppercase' as const,
+            letterSpacing: 0.3,
+        },
+        stat: {
+            fontSize: Math.round(20 * scale),
+            fontWeight: '800' as const,
+            lineHeight: Math.round(24 * scale),
+        },
+        badge: {
+            fontSize: Math.round(11 * scale),
+            fontWeight: '700' as const,
+            lineHeight: Math.round(14 * scale),
+        },
+        tabLabel: {
+            fontSize: Math.round(10 * scale),
+            fontWeight: '600' as const,
+            marginTop: 2,
+        },
+    };
+}
+
 export const TYPOGRAPHY = {
-    hero: {
-        fontSize: 34,
-        fontWeight: '800' as const,
-        letterSpacing: -0.3,
-        lineHeight: 40,
-    },
-    heading1: {
-        fontSize: 32,
-        fontWeight: '800' as const,
-        letterSpacing: -0.2,
-        lineHeight: 38,
-    },
-    heading2: {
-        fontSize: 20,
-        fontWeight: '700' as const,
-        lineHeight: 26,
-    },
-    heading3: {
-        fontSize: 17,
-        fontWeight: '700' as const,
-        lineHeight: 22,
-    },
-    body: {
-        fontSize: 15,
-        fontWeight: '400' as const,
-        lineHeight: 22,
-    },
-    bodyBold: {
-        fontSize: 15,
-        fontWeight: '600' as const,
-        lineHeight: 22,
-    },
-    caption: {
-        fontSize: 13,
-        fontWeight: '500' as const,
-        lineHeight: 18,
-    },
-    small: {
-        fontSize: 12,
-        fontWeight: '500' as const,
-        lineHeight: 16,
-    },
-    label: {
-        fontSize: 11,
-        fontWeight: '600' as const,
-        lineHeight: 14,
-        textTransform: 'uppercase' as const,
-        letterSpacing: 0.3,
-    },
-    stat: {
-        fontSize: 20,
-        fontWeight: '800' as const,
-        lineHeight: 24,
-    },
-    badge: {
-        fontSize: 11,
-        fontWeight: '700' as const,
-        lineHeight: 14,
-    },
-    tabLabel: {
-        fontSize: 10,
-        fontWeight: '600' as const,
-        marginTop: 2,
-    },
-} as const;
+    get hero() { return getScaledTypography(_globalTextScale).hero; },
+    get heading1() { return getScaledTypography(_globalTextScale).heading1; },
+    get heading2() { return getScaledTypography(_globalTextScale).heading2; },
+    get heading3() { return getScaledTypography(_globalTextScale).heading3; },
+    get body() { return getScaledTypography(_globalTextScale).body; },
+    get bodyBold() { return getScaledTypography(_globalTextScale).bodyBold; },
+    get caption() { return getScaledTypography(_globalTextScale).caption; },
+    get small() { return getScaledTypography(_globalTextScale).small; },
+    get label() { return getScaledTypography(_globalTextScale).label; },
+    get stat() { return getScaledTypography(_globalTextScale).stat; },
+    get badge() { return getScaledTypography(_globalTextScale).badge; },
+    get tabLabel() { return getScaledTypography(_globalTextScale).tabLabel; },
+};
 
 // ── Radii ────────────────────────────────────────────────
 export const RADIUS = {

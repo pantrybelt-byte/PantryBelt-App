@@ -18,14 +18,14 @@ module.exports = {
   expo: {
     name: 'AccessBelt',
     slug: 'accessbelt',
-    version: '1.1.1',
+    version: '1.1.2',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
     scheme: 'accessbelt',
-    newArchEnabled: false,
     ios: {
       bundleIdentifier: 'com.accessbelt.app',
+      buildNumber: '37',
       supportsTablet: true,
       // No googleMapsApiKey here on purpose: iOS renders with Apple Maps
       // (PROVIDER_DEFAULT in map.tsx), so shipping a Google key in the
@@ -87,6 +87,7 @@ module.exports = {
     },
     android: {
       package: 'com.accessbelt.app',
+      versionCode: 12,
       // Root window background (AppTheme's android:windowBackground, via
       // expo-system-ui below) — matches the splash screen's backgroundColor
       // so there's no black flash if JS takes a moment to paint its first
@@ -108,7 +109,7 @@ module.exports = {
     updates: {
       url: 'https://u.expo.dev/59f03f7a-deae-43d4-abb2-ee18a299a9b0',
     },
-    runtimeVersion: '1.1.1',
+    runtimeVersion: '1.1.2',
     owner: 'accessbelt',
     extra: {
       eas: {
@@ -144,6 +145,7 @@ module.exports = {
         },
       ],
       'expo-notifications',
+      'expo-status-bar',
     ],
   },
 };

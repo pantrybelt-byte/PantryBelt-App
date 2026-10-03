@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
                         <Text style={styles.subtitle}>
                             An unexpected error occurred. Tap below to reload the app.
                         </Text>
-                        <TouchableOpacity style={styles.button} onPress={this.handleReload} activeOpacity={0.8}>
+                        <TouchableOpacity style={styles.button} onPress={this.handleReload} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel="Reload the app">
                             <Ionicons name="refresh-outline" size={18} color="#fff" style={{ marginRight: 6 }} />
                             <Text style={styles.buttonText}>Tap to reload</Text>
                         </TouchableOpacity>
@@ -85,7 +85,7 @@ export function FallbackErrorBoundary({ error, retry }: { error?: Error; retry?:
                 <Text style={styles.subtitle}>
                     An unexpected error occurred. Tap below to reload the app.
                 </Text>
-                <TouchableOpacity style={styles.button} onPress={handleRetry} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.button} onPress={handleRetry} activeOpacity={0.8} accessibilityRole="button" accessibilityLabel="Reload">
                     <Ionicons name="refresh-outline" size={18} color="#fff" style={{ marginRight: 6 }} />
                     <Text style={styles.buttonText}>Tap to reload</Text>
                 </TouchableOpacity>

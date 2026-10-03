@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import * as Updates from 'expo-updates';
 import React, { useRef, useState } from 'react';
 import {
     Dimensions,
@@ -76,6 +77,7 @@ const SLIDES: Slide[] = [
             { icon: 'chatbubble-ellipses', text: 'Ask about SNAP & EBT benefits' },
             { icon: 'basket', text: 'Get tips on what to bring' },
             { icon: 'call', text: 'Find emergency food help fast' },
+            { icon: 'mic', text: 'Talk instead of type: turn on Dictation in Settings → Accessibility' },
         ],
     },
 ];
@@ -91,10 +93,18 @@ export default function OnboardingScreen() {
         haptics.success();
         await AsyncStorage.setItem('hasSeenOnboarding', 'true');
         if (router.canGoBack()) {
-            router.back();
-        } else {
-            router.replace('/(tabs)/map');
+            // Replayed from Settings → Help & Feedback: restart the app fresh
+            // (like reopening it) so pantries, location, and session all
+            // resync, landing back on the map. First-run onboarding has no
+            // history and just continues into the app below.
+            try {
+                await Updates.reloadAsync();
+                return;
+            } catch {
+                // Reload unavailable in this environment — fall through.
+            }
         }
+        router.replace('/(tabs)/map');
     };
 
     const handleSkip = () => {

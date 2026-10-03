@@ -99,7 +99,7 @@ export function MapLoadingSkeleton() {
             {/* Fake map background */}
             <Animated.View
                 style={[
-                    StyleSheet.absoluteFillObject,
+                    StyleSheet.absoluteFill,
                     { backgroundColor: baseColor, opacity },
                 ]}
             />
