@@ -15,7 +15,8 @@
       },
       "android": {
         "buildType": "apk"
-      }
+      },
+      "node": "24.14.0"
     },
     "preview": {
       "distribution": "internal",
@@ -25,7 +26,8 @@
       },
       "ios": {
         "simulator": false
-      }
+      },
+      "node": "24.14.0"
     },
     "production": {
       "autoIncrement": true,
@@ -35,7 +37,8 @@
       },
       "android": {
         "buildType": "app-bundle"
-      }
+      },
+      "node": "24.14.0"
     }
   },
   "submit": {
