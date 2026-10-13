@@ -33,6 +33,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { PETE_HISTORY_KEY } from '../../constants/storageKeys';
 import { getDictationEnabled } from '../../utils/voicePrefs';
+import { LIVE_STATUS_LABEL, type LiveStatus } from '../../utils/pantryDoc';
 
 // Enable smooth, non-jarring layout transitions on Android when the pantry
 // card list expands (iOS animates LayoutAnimation by default).
@@ -175,7 +176,7 @@ function isNearMeQuery(text: string): boolean {
 
 // logSearchTopic replaced by logPeteRequest from utils/analytics.ts
 
-type PantryPreview = { name: string; area: string; phone?: string; hours?: string };
+type PantryPreview = { name: string; area: string; phone?: string; hours?: string; liveStatus?: LiveStatus | null };
 
 type Message = { id: number; role: 'user' | 'assistant'; text: string; pantries?: PantryPreview[] };
 
@@ -395,6 +396,7 @@ export default function PeteScreen() {
                         area: p.city || p.county,
                         phone: p.phone || undefined,
                         hours: p.hours || undefined,
+                        liveStatus: p.liveStatus,
                     }));
                     appendAssistantReply('Here are the pantries closest to you right now:', pantries);
                 }
@@ -428,6 +430,7 @@ export default function PeteScreen() {
                         area: p.city || p.county,
                         phone: p.phone || undefined,
                         hours: p.hours || undefined,
+                        liveStatus: p.liveStatus,
                     }));
                     appendAssistantReply(`Here are active pantries in ${targetCounty} County:`, pantries);
                 }
@@ -562,6 +565,15 @@ export default function PeteScreen() {
                                                     <Text style={[TYPOGRAPHY.badge, { color: theme.primary, fontSize: 10 }]}>{p.area}</Text>
                                                 </View>
                                             </View>
+                                            {p.liveStatus && (
+                                                <View style={styles.pantryLiveRow}>
+                                                    <View style={[styles.pantryLiveDot, { backgroundColor: p.liveStatus.isOpen ? (p.liveStatus.state === 'closing_early' ? COLORS.warning : COLORS.success) : COLORS.danger }]} />
+                                                    <Text style={[TYPOGRAPHY.small, { color: theme.text, fontWeight: '700' }]}>{LIVE_STATUS_LABEL[p.liveStatus.state]}</Text>
+                                                    {p.liveStatus.note !== '' && (
+                                                        <Text style={[TYPOGRAPHY.small, { color: theme.subtext, flexShrink: 1 }]} numberOfLines={2}>{p.liveStatus.note}</Text>
+                                                    )}
+                                                </View>
+                                            )}
                                             {p.hours && <Text style={[TYPOGRAPHY.small, { color: theme.subtext }]}>{p.hours}</Text>}
                                             {p.phone && (
                                                 <TouchableOpacity
@@ -711,6 +723,8 @@ const styles = StyleSheet.create({
     pantryCardHeader: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: SPACING.sm },
     pantryCardName: { flex: 1, fontSize: 13, fontWeight: '700' },
     pantryAreaBadge: { paddingHorizontal: SPACING.sm, paddingVertical: 3, borderRadius: 10 },
+    pantryLiveRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+    pantryLiveDot: { width: 8, height: 8, borderRadius: 4 },
     pantryCallRow: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: SPACING.xxs },
     showMoreBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.xs, paddingVertical: SPACING.sm + 2, borderRadius: RADIUS.md },
     quickWrap: { maxHeight: SPACING['4xl'], borderTopWidth: 1 },

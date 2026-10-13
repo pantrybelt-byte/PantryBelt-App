@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BroadcastBanner from '../../components/BroadcastBanner';
 import FeedbackModal from '../../components/FeedbackModal';
 import { MapLoadingSkeleton, PantryListSkeleton } from '../../components/SkeletonLoader';
 import { db } from '../../config/firebase';
@@ -18,7 +19,8 @@ import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { canShowMapSearchFeedbackPrompt, markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
-import { docToPantry, isLiveStatusFresh, type Pantry } from '../../utils/pantryDoc';
+import { dismissBroadcast, fetchPantryAlerts, fetchUrgentBroadcast, type PantryAlert, type UrgentBroadcast } from '../../utils/broadcasts';
+import { describeLiveStatus, docToPantry, isLiveStatusFresh, LIVE_STATUS_LABEL, type LiveState, type Pantry } from '../../utils/pantryDoc';
 import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 import { updateMapDiagnostics } from '../../utils/mapDiagnostics';
@@ -64,6 +66,15 @@ type PantryRowProps = {
     userLocation: { lat: number; lng: number } | null;
     onPress: (item: Pantry) => void;
     theme: any;
+};
+
+// Dot color per Shift Mode state. The label is always set in the body text
+// color (these hues miss 4.5:1 as small text on white), never in the dot color.
+const LIVE_STATUS_COLOR: Record<LiveState, string> = {
+    open: COLORS.success,
+    closing_early: COLORS.warning,
+    closed: COLORS.danger,
+    emergency_closed: COLORS.danger,
 };
 
 const PantryRowItem = React.memo(function PantryRowItem({ item, userLocation, onPress, theme }: PantryRowProps) {
@@ -170,6 +181,12 @@ const PantryPinMarker = React.memo(function PantryPinMarker({ pantry, theme, onP
                         </View>
                     </View>
                     <Text style={styles.calloutCity}>{pantry.city}</Text>
+                    {isLiveStatusFresh(pantry.liveStatus, Date.now()) && pantry.liveStatus && (
+                        <View style={styles.liveRow}>
+                            <View style={[styles.liveDot, { backgroundColor: LIVE_STATUS_COLOR[pantry.liveStatus.state] }]} />
+                            <Text style={[styles.liveLabelSmall, { color: theme.text }]}>{LIVE_STATUS_LABEL[pantry.liveStatus.state]}</Text>
+                        </View>
+                    )}
                     <Text style={[styles.calloutTap, { color: theme.subtext }]}>Tap for details</Text>
                 </View>
             </Callout>
@@ -260,6 +277,11 @@ export default function MapScreen() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
     const [selected, setSelected] = useState<Pantry | null>(null);
+    // Urgent alert for the user's county (banner) and the open pantry's alerts (sheet).
+    const [broadcast, setBroadcast] = useState<UrgentBroadcast | null>(null);
+    const [pantryAlerts, setPantryAlerts] = useState<PantryAlert[]>([]);
+    // Guards against a slow alerts fetch for one pantry landing on another's sheet.
+    const alertsPantryId = useRef<string | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     // Tracks the user's coarse location for analytics (county / food desert)
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -584,6 +606,11 @@ export default function MapScreen() {
         setSearchFocused(false);
         setSelected(pantry);
         setModalVisible(true);
+        setPantryAlerts([]);
+        alertsPantryId.current = pantry.id;
+        fetchPantryAlerts(pantry.id)
+            .then(alerts => { if (alertsPantryId.current === pantry.id) setPantryAlerts(alerts); })
+            .catch(() => { /* No alerts shown; the sheet still works. */ });
         logPantryEngagement(pantry.id, pantry.name, pantry.county, pantry.city, 'view');
         updateMonthlySummary(pantry.county, 'pantryViews');
         (async () => {
@@ -594,6 +621,25 @@ export default function MapScreen() {
             }
         })();
     }, []);
+
+    // ── Urgent alerts for the user's county ────────────────
+    // Asked by county only (the one map.tsx already inferred), so location
+    // never leaves the phone. Refreshed on focus and every 5 minutes.
+    const refreshBroadcast = useCallback(async () => {
+        try {
+            const county = await getLastKnownCounty();
+            setBroadcast(county ? await fetchUrgentBroadcast(county) : null);
+        } catch {
+            // Keep whatever banner is showing; alerts are a convenience.
+        }
+    }, []);
+
+    useFocusEffect(useCallback(() => {
+        if (!authReady || loading) return;
+        refreshBroadcast();
+        const timer = setInterval(refreshBroadcast, 5 * 60_000);
+        return () => clearInterval(timer);
+    }, [authReady, loading, refreshBroadcast]));
 
     // ── Live updates for the open pantry ───────────────────
     // While a pantry's detail sheet is open, follow that ONE document so an
@@ -977,19 +1023,36 @@ export default function MapScreen() {
                         {selected.hours !== '' ? selected.hours : 'Call ahead or visit to confirm hours'}
                     </Text>
                 </View>
-                {isLiveStatusFresh(selected.liveStatus, Date.now()) && selected.liveStatus && (
-                    <View style={styles.modalRow}>
-                        <Ionicons
-                            name={selected.liveStatus.isOpen ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                            size={16}
-                            color={selected.liveStatus.isOpen ? '#16a34a' : '#b52525'}
-                        />
-                        <Text style={[styles.modalText, { color: selected.liveStatus.isOpen ? '#16a34a' : '#b52525' }]}>
-                            {selected.liveStatus.isOpen ? 'Open right now' : 'Closed right now'}
-                            {selected.liveStatus.note !== '' ? ` — ${selected.liveStatus.note}` : ''}
-                        </Text>
+                {isLiveStatusFresh(selected.liveStatus, Date.now()) && selected.liveStatus ? (
+                    <View style={[styles.liveCard, { borderColor: LIVE_STATUS_COLOR[selected.liveStatus.state] }]}>
+                        <View style={styles.liveRow}>
+                            <View style={[styles.liveDot, { backgroundColor: LIVE_STATUS_COLOR[selected.liveStatus.state] }]} />
+                            <Text style={[styles.liveLabel, { color: theme.text }]}>{LIVE_STATUS_LABEL[selected.liveStatus.state]}</Text>
+                            <Text style={[styles.liveSource, { color: theme.subtext }]}>Live from the pantry</Text>
+                        </View>
+                        {selected.liveStatus.note !== '' && (
+                            <Text style={[styles.liveNote, { color: theme.text }]}>{selected.liveStatus.note}</Text>
+                        )}
+                        {describeLiveStatus(selected.liveStatus) !== '' && (
+                            <Text style={[styles.liveMeta, { color: theme.subtext }]}>{describeLiveStatus(selected.liveStatus)}</Text>
+                        )}
+                    </View>
+                ) : selected.operatorPortalAccess && (
+                    <View style={styles.liveRow}>
+                        <View style={[styles.liveDot, { backgroundColor: COLORS.unverified }]} />
+                        <Text style={[styles.liveLabelSmall, { color: theme.text }]}>Scheduled</Text>
+                        <Text style={[styles.liveSource, { color: theme.subtext }]}>No live update right now. Posted hours are above.</Text>
                     </View>
                 )}
+                {pantryAlerts.map(alert => (
+                    <View key={alert.id} style={[styles.alertCard, { borderColor: alert.priority === 'urgent' ? COLORS.danger : COLORS.warning }]}>
+                        <View style={styles.liveRow}>
+                            <Ionicons name={alert.priority === 'urgent' ? 'alert-circle' : 'information-circle'} size={16} color={alert.priority === 'urgent' ? COLORS.danger : COLORS.warning} />
+                            <Text style={[styles.liveLabelSmall, { color: theme.text, flexShrink: 1 }]}>{alert.title}</Text>
+                        </View>
+                        {alert.message !== '' && <Text style={[styles.liveMeta, { color: theme.text }]}>{alert.message}</Text>}
+                    </View>
+                ))}
                 {selected.eligibility !== '' && (
                     <View style={styles.modalRow}>
                         <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />
@@ -1673,6 +1736,25 @@ export default function MapScreen() {
                     <Text style={styles.myLocationPillText}>Back to my location</Text>
                 </TouchableOpacity>
             )}
+
+            {/* Urgent pantry alert for the user's county */}
+            {!searchOpen && broadcast && (
+                <View style={styles.bannerWrapper}>
+                    <BroadcastBanner
+                        broadcast={broadcast}
+                        onOpenPantry={pantries.some(p => p.id === broadcast.pantryId)
+                            ? () => {
+                                const pantry = pantries.find(p => p.id === broadcast.pantryId);
+                                if (pantry) openPantryDetails(pantry);
+                            }
+                            : undefined}
+                        onDismiss={() => {
+                            dismissBroadcast(broadcast.id);
+                            setBroadcast(null);
+                        }}
+                    />
+                </View>
+            )}
             </View>
 
             {/* Verification tier legend */}
@@ -1891,6 +1973,16 @@ const styles = StyleSheet.create({
     calloutTierBadge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8 },
     calloutTierText: { fontSize: 9, fontWeight: '700' },
     calloutName: { fontSize: 13, fontWeight: '700', color: '#1c1c1e' },
+    bannerWrapper: { marginTop: 8 },
+    liveRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginTop: 4 },
+    liveDot: { width: 10, height: 10, borderRadius: 5 },
+    liveLabel: { fontSize: 16, fontWeight: '700' },
+    liveLabelSmall: { fontSize: 13, fontWeight: '700' },
+    liveSource: { fontSize: 12, fontWeight: '500' },
+    liveNote: { fontSize: 15, lineHeight: 21 },
+    liveMeta: { fontSize: 13, fontWeight: '500' },
+    liveCard: { borderWidth: 1.5, borderRadius: 12, padding: 12, gap: 6, marginVertical: 6 },
+    alertCard: { borderWidth: 1, borderRadius: 12, padding: 10, gap: 4, marginBottom: 6 },
     calloutCity: { fontSize: 11, color: '#b52525', fontWeight: '600', marginTop: 2 },
     calloutTap: { fontSize: 10, color: '#8e8e93', marginTop: 4 },
     modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
