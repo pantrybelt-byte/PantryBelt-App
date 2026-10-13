@@ -439,16 +439,11 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     }));
   });
 
-  test('TRANSITION: legacy `eligibility` is still accepted for one release (remove with the cleanup commit)', async () => {
+  test('DENIED: legacy `eligibility` key is no longer writable (mobile reads eligibilityNotes)', async () => {
     await seedAgency();
     const db = portalOperator(OPERATOR_UID).firestore();
-    await assertSucceeds(updateDoc(doc(db, 'agencies', AGENCY_ID), {
-      eligibility: 'All Dallas County residents',
-      updatedAt: serverTimestamp(),
-      lastOperatorEdit: serverTimestamp(),
-    }));
     await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
-      eligibility: 42,
+      eligibility: 'All Dallas County residents',
       updatedAt: serverTimestamp(),
       lastOperatorEdit: serverTimestamp(),
     }));
