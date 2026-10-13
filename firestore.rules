@@ -556,16 +556,24 @@ service cloud.firestore {
 
 
     // ── Waitlist (Public Landing Page) ─────────────────────────────────────────
+    // Texts are optional: a phone number is accepted only together with an SMS
+    // opt-in (sms_consent == true) and is never stored without one.
     match /waitlist/{docId} {
       allow read, update, delete: if false;
-      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'phone_sms', 'created_at'])
-                    && request.resource.data.keys().hasOnly(['name', 'email', 'phone_sms', 'created_at'])
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'sms_consent', 'created_at'])
+                    && request.resource.data.keys().hasOnly(['name', 'email', 'sms_consent', 'phone_sms', 'created_at'])
                     && request.resource.data.name is string
                     && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 120
                     && request.resource.data.email is string
                     && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
-                    && request.resource.data.phone_sms is string
-                    && request.resource.data.phone_sms.matches('^\\+1[0-9]{10}$')
+                    && request.resource.data.sms_consent is bool
+                    && ((request.resource.data.sms_consent == true
+                          && request.resource.data.keys().hasAll(['phone_sms'])
+                          && request.resource.data.phone_sms is string
+                          && request.resource.data.phone_sms.matches('^\\+1[0-9]{10}$'))
+                        || (request.resource.data.sms_consent == false
+                          && !request.resource.data.keys().hasAny(['phone_sms'])))
                     && request.resource.data.created_at is timestamp;
     }
   }
