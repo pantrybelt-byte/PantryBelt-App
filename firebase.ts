@@ -21,6 +21,8 @@ const emulator = resolveEmulatorSettings(
   {
     USE_EMULATORS: process.env.EXPO_PUBLIC_USE_EMULATORS,
     EMULATOR_HOST: process.env.EXPO_PUBLIC_EMULATOR_HOST,
+    AUTH_PORT: process.env.EXPO_PUBLIC_EMULATOR_AUTH_PORT,
+    FIRESTORE_PORT: process.env.EXPO_PUBLIC_EMULATOR_FIRESTORE_PORT,
   },
   __DEV__
 );

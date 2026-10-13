@@ -26,12 +26,27 @@ const ALLOWED_HOST =
 export interface EmulatorSettings {
   host: string;
   projectId: string;
-  ports: typeof EMULATOR_PORTS;
+  ports: { auth: number; firestore: number; functions: number };
+}
+
+function parsePort(raw: string | undefined, fallback: number, name: string): number {
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 1024 || n > 65535) {
+    throw new Error(`Emulator ${name} port "${raw}" is not a valid port. Refusing to start.`);
+  }
+  return n;
 }
 
 /** Returns settings when emulator mode is on, `null` when off. Throws if unsafe. */
 export function resolveEmulatorSettings(
-  env: { USE_EMULATORS?: string; EMULATOR_HOST?: string; PROJECT_ID?: string },
+  env: {
+    USE_EMULATORS?: string;
+    EMULATOR_HOST?: string;
+    PROJECT_ID?: string;
+    AUTH_PORT?: string;
+    FIRESTORE_PORT?: string;
+  },
   isDev: boolean
 ): EmulatorSettings | null {
   if (env.USE_EMULATORS !== 'true') return null;
@@ -56,5 +71,13 @@ export function resolveEmulatorSettings(
     );
   }
 
-  return { host, projectId, ports: EMULATOR_PORTS };
+  return {
+    host,
+    projectId,
+    ports: {
+      auth: parsePort(env.AUTH_PORT, EMULATOR_PORTS.auth, 'auth'),
+      firestore: parsePort(env.FIRESTORE_PORT, EMULATOR_PORTS.firestore, 'firestore'),
+      functions: EMULATOR_PORTS.functions,
+    },
+  };
 }

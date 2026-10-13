@@ -40,3 +40,12 @@ test('public hosts are rejected, private ones allowed', () => {
     assert.strictEqual(resolveEmulatorSettings({ USE_EMULATORS: 'true', EMULATOR_HOST: host }, true).host, host);
   }
 });
+
+test('port overrides are honoured and validated', () => {
+  const s = resolveEmulatorSettings({ USE_EMULATORS: 'true', FIRESTORE_PORT: '18080', AUTH_PORT: '19099' }, true);
+  assert.strictEqual(s.ports.firestore, 18080);
+  assert.strictEqual(s.ports.auth, 19099);
+  for (const FIRESTORE_PORT of ['80', 'abc', '70000']) {
+    assert.throws(() => resolveEmulatorSettings({ USE_EMULATORS: 'true', FIRESTORE_PORT }, true), /valid port/);
+  }
+});
