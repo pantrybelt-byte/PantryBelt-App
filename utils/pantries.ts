@@ -9,6 +9,13 @@
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { computeMapEligible, sanitizeWebsite } from './mapEligibility';
+import { docToPantry, isLiveStatusFresh, type LiveStatus } from './pantryDoc';
+
+/** The doc's live status if it's still current, else null — same rule as the map. */
+function freshLiveStatus(r: Record<string, any>): LiveStatus | null {
+    const ls = docToPantry('', r, { sanitizeWebsite: (_id, url) => url, computeMapEligible: () => true }).liveStatus;
+    return isLiveStatusFresh(ls, Date.now()) ? ls : null;
+}
 
 export const ALABAMA_COUNTIES = [
     'Autauga', 'Baldwin', 'Barbour', 'Bibb', 'Blount', 'Bullock', 'Butler',
@@ -156,6 +163,8 @@ export type PantryResult = {
     // written to Firestore. false when this doc's coordinates collide with
     // another doc's to 5 decimals, or fall outside its named county.
     mapEligible: boolean;
+    // Current Shift Mode status, or null (utils/pantryDoc.ts parses it).
+    liveStatus: LiveStatus | null;
 };
 
 /** Great-circle distance in miles between two lat/lng points (haversine). */
@@ -212,6 +221,7 @@ export async function fetchPantriesByCounty(county: string, max = 8): Promise<Pa
             lat: typeof coords.lat === 'number' ? coords.lat : 0,
             lng: typeof coords.lng === 'number' ? coords.lng : 0,
             mapEligible: computeMapEligible(d.id),
+            liveStatus: freshLiveStatus(r),
         };
     });
 }
@@ -244,6 +254,7 @@ export async function fetchNearestPantries(lat: number, lng: number, max = 8): P
             lat: typeof coords.lat === 'number' ? coords.lat : 0,
             lng: typeof coords.lng === 'number' ? coords.lng : 0,
             mapEligible: computeMapEligible(d.id),
+            liveStatus: freshLiveStatus(r),
         };
     }).filter(p => p.lat !== 0 && p.lng !== 0 && !isNaN(p.lat) && !isNaN(p.lng));
 

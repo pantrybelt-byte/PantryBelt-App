@@ -4,7 +4,7 @@
  */
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { docToPantry, formatHours, isLiveStatusFresh, LIVE_STATUS_MAX_AGE_MS } = require('../utils/pantryDoc.ts');
+const { describeLiveStatus, docToPantry, formatHours, isLiveStatusFresh, LIVE_STATUS_MAX_AGE_MS } = require('../utils/pantryDoc.ts');
 
 const helpers = { sanitizeWebsite: (_id, u) => u, computeMapEligible: () => true };
 const BASE = {
@@ -48,4 +48,33 @@ test('green-tier inputs come from the doc', () => {
   assert.ok(p.verified && p.operatorPortalAccess && p.hasMiniProfile);
   const q = docToPantry('a', { ...BASE, miniProfile: null }, helpers);
   assert.strictEqual(q.hasMiniProfile, false);
+});
+
+test('4-state status: wait time, expiry, and fallback for the original {isOpen, note} shape', () => {
+  const now = Date.now();
+  const ms = (offset) => ({ toMillis: () => now + offset });
+  const p = docToPantry('a', { ...BASE, liveStatus: {
+    state: 'closing_early', isOpen: true, note: 'Closing at 2', waitMinutes: 20, updatedAt: ms(-1000), expiresAt: ms(3_600_000),
+  } }, helpers).liveStatus;
+  assert.strictEqual(p.state, 'closing_early');
+  assert.strictEqual(p.isOpen, true);
+  assert.strictEqual(p.waitMinutes, 20);
+  assert.ok(isLiveStatusFresh(p, now));
+  assert.ok(!isLiveStatusFresh(p, now + 3_600_001), 'expires at expiresAt even inside 12h');
+
+  const legacy = docToPantry('a', { ...BASE, liveStatus: { isOpen: false, note: '', updatedAt: ms(-1000) } }, helpers).liveStatus;
+  assert.strictEqual(legacy.state, 'closed');
+  assert.strictEqual(legacy.waitMinutes, null);
+  assert.strictEqual(legacy.expiresAtMs, null);
+  assert.ok(isLiveStatusFresh(legacy, now));
+
+  const unknown = docToPantry('a', { ...BASE, liveStatus: { state: 'busy', isOpen: true, note: '', updatedAt: ms(0) } }, helpers).liveStatus;
+  assert.strictEqual(unknown.state, 'open');
+});
+
+test('describeLiveStatus shows wait only while open', () => {
+  const base = { note: '', updatedAtMs: null, expiresAtMs: null };
+  assert.strictEqual(describeLiveStatus({ ...base, state: 'open', isOpen: true, waitMinutes: 0 }), 'No wait');
+  assert.strictEqual(describeLiveStatus({ ...base, state: 'open', isOpen: true, waitMinutes: 15 }), 'Wait about 15 min');
+  assert.strictEqual(describeLiveStatus({ ...base, state: 'closed', isOpen: false, waitMinutes: 15 }), '');
 });

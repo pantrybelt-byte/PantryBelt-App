@@ -6,12 +6,30 @@
  * app/(tabs)/map.tsx, which must produce identical results.
  */
 
+/** ADR-005's four Shift Mode states. */
+export type LiveState = 'open' | 'closed' | 'closing_early' | 'emergency_closed';
+
 export type LiveStatus = {
+    /** Derived from isOpen when the portal wrote the original {isOpen, note} shape. */
+    state: LiveState;
     isOpen: boolean;
     note: string;
+    /** Minutes a family should expect to wait, or null when not reported. */
+    waitMinutes: number | null;
     /** ms since epoch, or null when the server timestamp is still pending. */
     updatedAtMs: number | null;
+    /** When the portal says the status stops applying (end of posted hours), or null. */
+    expiresAtMs: number | null;
 };
+
+export const LIVE_STATUS_LABEL: Record<LiveState, string> = {
+    open: 'Open now',
+    closing_early: 'Closing early',
+    closed: 'Closed today',
+    emergency_closed: 'Closed: emergency',
+};
+
+const LIVE_STATES: LiveState[] = ['open', 'closed', 'closing_early', 'emergency_closed'];
 
 export type Pantry = {
     id: string;
@@ -42,9 +60,28 @@ export type Pantry = {
 /** A "Open now" flag nobody has touched in half a day is more likely forgotten than true. */
 export const LIVE_STATUS_MAX_AGE_MS = 12 * 60 * 60 * 1000;
 
+/**
+ * Whether to show a status at all. A status the portal gave an expiresAt
+ * (end of that day's posted hours) applies until then; one without falls
+ * back to the 12-hour rule. Either way it never outlives 12 hours.
+ */
 export function isLiveStatusFresh(ls: LiveStatus | null, nowMs: number): boolean {
-    return ls !== null && ls.updatedAtMs !== null
-        && nowMs - ls.updatedAtMs >= 0 && nowMs - ls.updatedAtMs < LIVE_STATUS_MAX_AGE_MS;
+    if (ls === null || ls.updatedAtMs === null) return false;
+    const age = nowMs - ls.updatedAtMs;
+    if (age < 0 || age >= LIVE_STATUS_MAX_AGE_MS) return false;
+    return ls.expiresAtMs === null || nowMs < ls.expiresAtMs;
+}
+
+/** "Wait about 20 min  ·  Updated 9:42 AM" — only the parts that exist. */
+export function describeLiveStatus(ls: LiveStatus): string {
+    const parts: string[] = [];
+    if (ls.isOpen && ls.waitMinutes !== null) {
+        parts.push(ls.waitMinutes === 0 ? 'No wait' : `Wait about ${ls.waitMinutes} min`);
+    }
+    if (ls.updatedAtMs !== null) {
+        parts.push(`Updated ${new Date(ls.updatedAtMs).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`);
+    }
+    return parts.join('  ·  ');
 }
 
 export function formatHours(hours: Record<string, any> | string | null | undefined): string {
@@ -60,14 +97,23 @@ export function formatHours(hours: Record<string, any> | string | null | undefin
     return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
 }
 
-function parseLiveStatus(raw: any): LiveStatus | null {
-    if (!raw || typeof raw !== 'object' || typeof raw.isOpen !== 'boolean') return null;
-    const ts = raw.updatedAt;
-    const updatedAtMs =
-        ts && typeof ts.toMillis === 'function' ? ts.toMillis()
+function toMs(ts: any): number | null {
+    return ts && typeof ts.toMillis === 'function' ? ts.toMillis()
         : typeof ts === 'number' ? ts
         : null;
-    return { isOpen: raw.isOpen, note: typeof raw.note === 'string' ? raw.note : '', updatedAtMs };
+}
+
+function parseLiveStatus(raw: any): LiveStatus | null {
+    if (!raw || typeof raw !== 'object' || typeof raw.isOpen !== 'boolean') return null;
+    const state: LiveState = LIVE_STATES.includes(raw.state) ? raw.state : raw.isOpen ? 'open' : 'closed';
+    return {
+        state,
+        isOpen: state === 'open' || state === 'closing_early',
+        note: typeof raw.note === 'string' ? raw.note : '',
+        waitMinutes: typeof raw.waitMinutes === 'number' ? raw.waitMinutes : null,
+        updatedAtMs: toMs(raw.updatedAt),
+        expiresAtMs: toMs(raw.expiresAt),
+    };
 }
 
 export function docToPantry(

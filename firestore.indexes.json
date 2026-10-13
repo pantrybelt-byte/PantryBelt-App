@@ -1,5 +1,8 @@
 {
   "indexes": [
+    { "collectionGroup": "broadcasts", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "priority", "order": "ASCENDING" }, { "fieldPath": "expiresAt", "order": "ASCENDING" } ] },
+    { "collectionGroup": "broadcasts", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "pantryId", "order": "ASCENDING" }, { "fieldPath": "expiresAt", "order": "ASCENDING" } ] },
+    { "collectionGroup": "broadcasts", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "pantryId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
     { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
     { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "county", "order": "ASCENDING" }, { "fieldPath": "locationType", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
     { "collectionGroup": "agencies", "queryScope": "COLLECTION", "fields": [ { "fieldPath": "orgId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
