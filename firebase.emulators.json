@@ -1,0 +1,32 @@
+{
+  "_comment": [
+    "Local-only Emulator Suite config for `npm run emulators`. Run with --project demo-accessbelt",
+    "(the demo- prefix makes it impossible for the emulators to reach production).",
+    "This file must never be passed to `firebase deploy`; CI deploys firebase.json only.",
+    "",
+    "LIMITATION (firebase-tools 13.x): the emulator loads rules for the (default) database only.",
+    "Named databases (accessbelt-operator, accessbelt-agency) run with NO security rules here,",
+    "so operator-database rules (events, broadcasts, closures, activity) are NOT exercised locally.",
+    "The array form of `firestore` is NOT used: in 13.35 it silently loads no rules at all and the",
+    "emulator then allows every read and write, which would hide rules bugs."
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "auth": {
+      "host": "127.0.0.1",
+      "port": 9099
+    },
+    "firestore": {
+      "host": "127.0.0.1",
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    },
+    "singleProjectMode": false
+  }
+}

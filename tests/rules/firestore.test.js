@@ -312,7 +312,7 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     geohash: 'djfq1234',
     phone: '(334) 555-0000',
     website: '',
-    eligibility: '',
+    eligibilityNotes: '',
     hours: 'Mon-Fri 9am-3pm',
     operatorPortalAccess: true,
     operatorUid: OPERATOR_UID,
@@ -398,7 +398,7 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     await assertSucceeds(updateDoc(doc(db, 'agencies', AGENCY_ID), {
       phone: '(334) 555-1234',
       website: 'https://mypantry.org',
-      eligibility: 'All Dallas County residents',
+      eligibilityNotes: 'All Dallas County residents',
       hours: 'Mon-Sat 8am-4pm',
       structuredHours: {
         monday: { open: '09:00', close: '15:00', closed: false },
@@ -434,6 +434,103 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     }));
     await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
       operatorPortalAccess: false,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('TRANSITION: legacy `eligibility` is still accepted for one release (remove with the cleanup commit)', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertSucceeds(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      eligibility: 'All Dallas County residents',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      eligibility: 42,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: wrong-typed eligibilityNotes is rejected', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      eligibilityNotes: 42,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: org staff cannot write verified, operatorUid or operatorPortalAccess', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    const admin = operator('admin-1', 'org_admin', 'org-portal', ['Dallas'], true).firestore();
+    for (const db of [staff, admin]) {
+      await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), { verified: true }));
+      await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), { operatorUid: 'op-2' }));
+      await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), { operatorUid: null }));
+      await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), { operatorPortalAccess: false }));
+    }
+  });
+
+  test('DENIED: org staff cannot change orgId/createdBy or add an unlisted field', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), { createdBy: 'someone' }));
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), { someFutureField: 1 }));
+  });
+
+  test('ALLOWED: org staff can still edit listed presentation fields', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    await assertSucceeds(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      phone: '(334) 555-9999',
+      hours: 'Tue 10am-2pm',
+      eligibilityNotes: 'Dallas County residents',
+      status: 'inactive',
+    }));
+  });
+
+  test('ALLOWED: state_admin can set verified, operatorUid and operatorPortalAccess (types checked)', async () => {
+    await seedAgency();
+    const sa = operator('sa-1', 'state_admin', 'org-state', [], true).firestore();
+    await assertSucceeds(updateDoc(doc(sa, 'agencies', AGENCY_ID), {
+      verified: true, operatorUid: 'op-2', operatorPortalAccess: true,
+    }));
+    await assertFails(updateDoc(doc(sa, 'agencies', AGENCY_ID), { operatorUid: 123 }));
+  });
+
+  test('DENIED: org staff cannot create an agency that is pre-verified or has an operator', async () => {
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    const base = {
+      orgId: 'org-portal', name: 'New Pantry', county: 'Dallas', status: 'active',
+      coordinates: { lat: 32.4, lng: -87.0 }, geohash: 'djfq',
+    };
+    await assertFails(setDoc(doc(staff, 'agencies', 'new-1'), { ...base, verified: true }));
+    await assertFails(setDoc(doc(staff, 'agencies', 'new-2'), { ...base, operatorUid: 'x' }));
+    await assertFails(setDoc(doc(staff, 'agencies', 'new-3'), { ...base, operatorPortalAccess: true }));
+    await assertSucceeds(setDoc(doc(staff, 'agencies', 'new-4'), { ...base, verified: false }));
+  });
+
+  test('liveStatus: org staff and self-service operator may set it; shape is validated', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    await assertSucceeds(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: false, note: 'Back at 2pm', updatedAt: serverTimestamp() },
+      lastOperatorEdit: serverTimestamp(),
+    }));
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: 'yes', note: '' },
+    }));
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: true, note: 'x'.repeat(281) },
+    }));
+    const op = portalOperator(OPERATOR_UID).firestore();
+    await assertSucceeds(updateDoc(doc(op, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: true, note: '', updatedAt: serverTimestamp() },
       updatedAt: serverTimestamp(),
       lastOperatorEdit: serverTimestamp(),
     }));

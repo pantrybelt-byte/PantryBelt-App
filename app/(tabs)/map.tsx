@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Alert, FlatList, Keyboard, LayoutChangeEvent, Linking, Modal, Platform, RefreshControl,
@@ -18,6 +18,7 @@ import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme/tokens';
 import { logFoodDesert, logPantryEngagement, logSearchOutcome, logUserCounty, updateMonthlySummary } from '../../utils/analytics';
 import { canShowMapSearchFeedbackPrompt, markFeedbackPromptShown, shouldShowFeedbackPrompt, snoozeFeedbackPrompt } from '../../utils/feedback';
 import { computeMapEligible, sanitizeWebsite } from '../../utils/mapEligibility';
+import { docToPantry, isLiveStatusFresh, type Pantry } from '../../utils/pantryDoc';
 import { distanceMiles, evaluateAdaptiveFoodDesert, getCountyTierConfig } from '../../utils/pantries';
 import { clearPendingSearchOutcome, getLastKnownCounty, getLocationPreference, getPendingSearchOutcome, setLastKnownCounty } from '../../utils/userLocation';
 import { updateMapDiagnostics } from '../../utils/mapDiagnostics';
@@ -30,29 +31,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // new session open on an old county ("Search in Jefferson County…"). Every
 // session now starts clean on Near me; the key is only kept to delete it.
 const MAP_FILTER_KEY = '@pb_map_county_filter';
-
-type Pantry = {
-    id: string;
-    name: string;
-    city: string;
-    county: string;
-    lat: number;
-    lng: number;
-    phone: string;
-    address: string;
-    hours: string;
-    eligibility: string;
-    docs: string;
-    website: string;
-    verified: boolean;
-    socialMedia: string[];
-    operatorPortalAccess: boolean;
-    hasMiniProfile: boolean;
-    // Computed client-side at read time (utils/mapEligibility.ts) — never
-    // written to Firestore. false when this doc's coordinates collide with
-    // another doc's to 5 decimals, or fall outside its named county.
-    mapEligible: boolean;
-};
 
 // ── Verification color tiers ──────────────────────────────
 // Grey (default): active but no self-reported activity yet.
@@ -111,19 +89,6 @@ const PantryRowItem = React.memo(function PantryRowItem({ item, userLocation, on
         </TouchableOpacity>
     );
 });
-
-function formatHours(hours: Record<string, any> | string | null | undefined): string {
-    if (!hours) return '';
-    if (typeof hours === 'string') return hours;
-    const labels: [string, string][] = [
-        ['monday', 'Mon'], ['tuesday', 'Tue'], ['wednesday', 'Wed'],
-        ['thursday', 'Thu'], ['friday', 'Fri'], ['saturday', 'Sat'], ['sunday', 'Sun'],
-    ];
-    const lines = labels
-        .filter(([key]) => hours[key] && !hours[key].closed)
-        .map(([key, abbr]) => `${abbr} ${hours[key].open}–${hours[key].close}`);
-    return lines.length > 0 ? lines.join('  ·  ') : (hours.notes ?? '');
-}
 
 // Default fallback camera & region: Alabama center (statewide view)
 const ALABAMA_CENTER = { latitude: 32.75, longitude: -86.83 };
@@ -407,30 +372,9 @@ export default function MapScreen() {
             setServedFromCache(snapshot.metadata.fromCache);
 
             if (!snapshot.empty) {
-                const data = snapshot.docs.map(d => {
-                    const r = d.data();
-                    const coords = r.coordinates ?? {};
-                    const addr   = r.address   ?? {};
-                    return {
-                        id:          d.id,
-                        name:        r.name        ?? '',
-                        county:      r.county      ?? '',
-                        city:        addr.city     ?? '',
-                        lat:         typeof coords.lat === 'number' ? coords.lat : 0,
-                        lng:         typeof coords.lng === 'number' ? coords.lng : 0,
-                        phone:       r.phone       ?? '',
-                        website:     sanitizeWebsite(d.id, r.website ?? ''),
-                        address:     [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', '),
-                        eligibility: r.eligibilityNotes ?? '',
-                        docs:        Array.isArray(r.docsRequired) ? r.docsRequired.join(', ') : '',
-                        hours:       formatHours(r.hours),
-                        verified:    r.verified    ?? false,
-                        socialMedia: Array.isArray(r.socialMedia) ? r.socialMedia : [],
-                        operatorPortalAccess: r.operatorPortalAccess ?? false,
-                        hasMiniProfile: r.miniProfile != null,
-                        mapEligible: computeMapEligible(d.id),
-                    } as Pantry;
-                });
+                const data = snapshot.docs.map(d =>
+                    docToPantry(d.id, d.data(), { sanitizeWebsite, computeMapEligible })
+                );
 
                 const valid = data.filter(
                     p => typeof p.lat === 'number' && typeof p.lng === 'number'
@@ -650,6 +594,39 @@ export default function MapScreen() {
             }
         })();
     }, []);
+
+    // ── Live updates for the open pantry ───────────────────
+    // While a pantry's detail sheet is open, follow that ONE document so an
+    // operator's edit (hours, phone, open/closed) shows up within seconds.
+    // Deliberately not a listener on the whole map query: that would stream
+    // every pantry change to every user. Detached when the sheet closes.
+    const selectedId = selected?.id ?? null;
+    useEffect(() => {
+        if (!selectedId || !modalVisible) return;
+        const unsubscribe = onSnapshot(
+            doc(db, 'agencies', selectedId),
+            (snap) => {
+                const data = snap.data();
+                if (!snap.exists() || !data) return;
+                if (data.status !== 'active') {
+                    // No longer listed: drop it from the map and close the sheet.
+                    setPantries(prev => prev.filter(p => p.id !== selectedId));
+                    setModalVisible(false);
+                    setSelected(null);
+                    return;
+                }
+                const fresh = docToPantry(snap.id, data, { sanitizeWebsite, computeMapEligible });
+                if (!fresh.lat || !fresh.lng) return;
+                setSelected(prev => (prev && prev.id === fresh.id ? fresh : prev));
+                setPantries(prev => prev.map(p => (p.id === fresh.id ? fresh : p)));
+            },
+            () => {
+                // Keep showing the last known details; the list fetch already
+                // surfaces offline/cached state.
+            },
+        );
+        return unsubscribe;
+    }, [selectedId, modalVisible]);
 
     // Selecting a search result: fly the map to it, sync the active county filter, and open its detail modal.
     const selectSearchResult = useCallback((pantry: Pantry) => {
@@ -1000,6 +977,19 @@ export default function MapScreen() {
                         {selected.hours !== '' ? selected.hours : 'Call ahead or visit to confirm hours'}
                     </Text>
                 </View>
+                {isLiveStatusFresh(selected.liveStatus, Date.now()) && selected.liveStatus && (
+                    <View style={styles.modalRow}>
+                        <Ionicons
+                            name={selected.liveStatus.isOpen ? 'checkmark-circle-outline' : 'close-circle-outline'}
+                            size={16}
+                            color={selected.liveStatus.isOpen ? '#16a34a' : '#b52525'}
+                        />
+                        <Text style={[styles.modalText, { color: selected.liveStatus.isOpen ? '#16a34a' : '#b52525' }]}>
+                            {selected.liveStatus.isOpen ? 'Open right now' : 'Closed right now'}
+                            {selected.liveStatus.note !== '' ? ` — ${selected.liveStatus.note}` : ''}
+                        </Text>
+                    </View>
+                )}
                 {selected.eligibility !== '' && (
                     <View style={styles.modalRow}>
                         <Ionicons name="checkmark-circle-outline" size={16} color="#16a34a" />

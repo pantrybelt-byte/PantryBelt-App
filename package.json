@@ -8,7 +8,11 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test:rules": "firebase emulators:exec --config firebase.test.json --only firestore --project pantrybelt-rules-test \"node --test tests/rules/*.test.js\"",
-    "test:rules:ci": "firebase emulators:exec --config firebase.test.json --only firestore --project pantrybelt-rules-test \"node --test tests/rules/*.test.js\""
+    "test:rules:ci": "firebase emulators:exec --config firebase.test.json --only firestore --project pantrybelt-rules-test \"node --test tests/rules/*.test.js\"",
+    "emulators": "firebase emulators:start --config firebase.emulators.json --project demo-accessbelt",
+    "seed:emulator": "FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099 GCLOUD_PROJECT=demo-accessbelt node tools/seedEmulator.js",
+    "start:emulator": "EXPO_PUBLIC_USE_EMULATORS=true expo start",
+    "test:guard": "node --test tests/emulatorGuard.test.js tests/pantryDoc.test.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
