@@ -1,0 +1,33 @@
+{
+  "_comment": [
+    "Local-only Emulator Suite config for `npm run emulators`.",
+    "Declares all three databases so the mobile app and the Operator Portal can",
+    "be developed together against one emulator. Run with --project demo-accessbelt",
+    "(the demo- prefix makes it impossible for the emulators to reach production).",
+    "This file must never be passed to `firebase deploy`; CI deploys firebase.json only.",
+    "The operator rules path points into the separate, gitignored Operator-Portal repo."
+  ],
+  "firestore": [
+    {
+      "database": "(default)",
+      "rules": "firestore.rules",
+      "indexes": "firestore.indexes.json"
+    },
+    {
+      "database": "accessbelt-agency",
+      "rules": "firestore.agency.rules",
+      "indexes": "firestore.empty.indexes.json"
+    },
+    {
+      "database": "accessbelt-operator",
+      "rules": "Operator-Portal/firestore/operator.rules",
+      "indexes": "Operator-Portal/firestore/operator.indexes.json"
+    }
+  ],
+  "emulators": {
+    "auth": { "host": "127.0.0.1", "port": 9099 },
+    "firestore": { "host": "127.0.0.1", "port": 8080 },
+    "ui": { "enabled": true, "port": 4000 },
+    "singleProjectMode": false
+  }
+}
