@@ -238,20 +238,37 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Fields on agencies that only the backend (Admin SDK / Cloud Functions)
+    // may set. liveStatus is copied in from the operator database by the
+    // syncLiveStatus function after it checks the pantry belongs to the
+    // operator's org; verified is earned by human verification, never
+    // self-asserted; operatorPortalAccess is set when a pantry claim is approved.
+    function serverOwnedAgencyFields() { return ['liveStatus', 'verified', 'operatorPortalAccess']; }
+
     match /agencies/{agencyId} {
-      // Public read for active agencies (needed for the map)
+      // Public read for active agencies (needed for the map), including liveStatus.
       allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data);
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data)
+                    && !request.resource.data.keys().hasAny(serverOwnedAgencyFields());
+      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data)
+                    && !request.resource.data.diff(resource.data).affectedKeys().hasAny(serverOwnedAgencyFields());
       allow delete: if false;
     }
 
+    // Retired 2026-08-25 (renamed to agencies). Kept readable for anything
+    // still pointing here; no client may write to it, so a stale reference
+    // fails loudly instead of writing where no family's app reads.
     match /resources/{resourceId} {
-      // Public read for active resources (needed for the map)
       allow read: if resource.data.status == 'active' || (isAuthed() && (hasOrgAccess(resource.data.orgId) || isStateAdmin()));
-      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
-      allow update: if isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data);
-      allow delete: if false;
+      allow create, update, delete: if false;
+    }
+
+    // Public copies of operator broadcasts, written only by the syncBroadcast
+    // function. Broadcasts are public announcements by design: the app reads
+    // them by county, and expired ones are filtered by the query.
+    match /broadcasts/{broadcastId} {
+      allow read: if true;
+      allow write: if false;
     }
 
     match /events/{eventId} {

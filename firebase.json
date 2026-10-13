@@ -13,7 +13,7 @@
     {
       "database": "accessbelt-operator",
       "rules": "firestore.operator.rules",
-      "indexes": "firestore.empty.indexes.json"
+      "indexes": "firestore.operator.indexes.json"
     }
   ],
   "functions": [
@@ -35,5 +35,20 @@
     "fs-bq-sessions": "firebase/firestore-bigquery-export@0.3.2",
     "fs-bq-food-deserts": "firebase/firestore-bigquery-export@0.3.2",
     "fs-bq-user-counties": "firebase/firestore-bigquery-export@0.3.2"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8085
+    },
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": false
+    },
+    "singleProjectMode": true
   }
 }

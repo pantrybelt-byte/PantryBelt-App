@@ -1,11 +1,198 @@
 rules_version = '2';
 
-// accessbelt-operator database. No collections/schema exist yet — the
-// Operator Portal currently runs entirely on mock data (src/data/mockData.ts).
-// Deny-all until a schema (inventory, shifts, announcements, multi-operator
-// access control) is designed and real rules are written against it.
+// ═══════════════════════════════════════════════════════════════════════════
+// AccessBelt Operator Portal — rules for the `accessbelt-operator` database.
+//
+// This file is the deployed source of truth (firebase.json points here).
+// Operator-Portal/firestore/operator.rules is a copy kept for reference;
+// edit this one.
+//
+//   firebase deploy --only firestore:accessbelt-operator
+//
+// (default) keeps its own rules in firestore.rules. Nothing here can grant
+// access there.
+//
+// Claim model is identical to (default) so one token works against both:
+//   role      state_admin | org_admin | org_staff
+//   orgId     the organisation the operator belongs to
+//   counties  counties the operator may act in
+// Claims are minted only by Cloud Functions (functions/index.js).
+//
+// No shelf inventory, by design (ADR-005): pantries report live status only.
+// ═══════════════════════════════════════════════════════════════════════════
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isAuthed()    { return request.auth != null; }
+    function role()        { return request.auth.token.role; }
+    function callerOrgId() { return request.auth.token.orgId; }
+    function verifiedEmail() {
+      return isAuthed() && request.auth.token.email_verified == true;
+    }
+
+    function isStateAdmin() { return isAuthed() && role() == 'state_admin'; }
+    function isOrgStaff()   { return isAuthed() && role() in ['org_staff', 'org_admin', 'state_admin']; }
+
+    function ownsOrg(orgId)     { return callerOrgId() == orgId || isStateAdmin(); }
+    function orgUnchanged()     { return request.resource.data.orgId == resource.data.orgId; }
+    function pantryUnchanged()  { return request.resource.data.pantryId == resource.data.pantryId; }
+
+    // Every portal document is scoped to an org and a pantry.
+    function validScope(data) {
+      return data.orgId is string && data.orgId.size() > 0
+          && data.pantryId is string && data.pantryId.size() > 0;
+    }
+
+    function boundedString(value, min, max) {
+      return value is string && value.size() >= min && value.size() <= max;
+    }
+
+    // ── Live status (Shift Mode) ─────────────────────────────────────────
+    // One document per pantry (id = pantry id). The syncLiveStatus function
+    // copies it onto (default)/agencies/{pantryId}.liveStatus only after it
+    // confirms the pantry belongs to this orgId, so writing a status for
+    // another org's pantry id reaches no family.
+    match /liveStatus/{pantryId} {
+      function validStatus(d) {
+        return validScope(d)
+            && d.pantryId == pantryId
+            && d.keys().hasOnly(['orgId', 'pantryId', 'state', 'isOpen', 'note', 'waitMinutes', 'updatedBy', 'updatedAt'])
+            && d.state in ['open', 'closed', 'closing_early', 'emergency_closed']
+            && d.isOpen == (d.state in ['open', 'closing_early'])
+            && boundedString(d.note, 0, 280)
+            && (!('waitMinutes' in d) || d.waitMinutes == null
+                || (d.waitMinutes is int && d.waitMinutes >= 0 && d.waitMinutes <= 600))
+            && d.updatedBy == request.auth.uid
+            && d.updatedAt == request.time;
+      }
+
+      allow read:   if isAuthed() && ownsOrg(resource.data.orgId);
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && validStatus(request.resource.data);
+      allow update: if isOrgStaff() && ownsOrg(resource.data.orgId) && orgUnchanged()
+                    && validStatus(request.resource.data);
+      allow delete: if false;
+    }
+
+    // ── Broadcasts ───────────────────────────────────────────────────────
+    // `sentToApp` and `viewsCount` are written by the syncBroadcast function,
+    // not by operators: a client must never be able to claim a broadcast
+    // reached the app, or inflate how many people saw it. The audience is
+    // the pantry's county (resolved server-side); radiusMiles is legacy and
+    // optional.
+    match /broadcasts/{broadcastId} {
+      function validBroadcast(d) {
+        return validScope(d)
+            && boundedString(d.title, 1, 120)
+            && boundedString(d.message, 1, 500)
+            && d.priority in ['normal', 'important', 'urgent']
+            && d.expiresAt is timestamp
+            && (!('radiusMiles' in d) || (d.radiusMiles is number && d.radiusMiles > 0 && d.radiusMiles <= 50));
+      }
+
+      allow read:   if isAuthed() && ownsOrg(resource.data.orgId);
+      allow create: if isOrgStaff()
+                    && ownsOrg(request.resource.data.orgId)
+                    && validBroadcast(request.resource.data)
+                    && request.resource.data.sentToApp == false
+                    && request.resource.data.viewsCount == 0;
+      // Operators may correct the text; delivery fields stay server-owned.
+      allow update: if isOrgStaff() && ownsOrg(resource.data.orgId) && orgUnchanged() && pantryUnchanged()
+                    && validBroadcast(request.resource.data)
+                    && request.resource.data.sentToApp == resource.data.sentToApp
+                    && request.resource.data.viewsCount == resource.data.viewsCount;
+      allow delete: if isOrgStaff() && ownsOrg(resource.data.orgId);
+    }
+
+    // ── Distribution events ──────────────────────────────────────────────
+    match /events/{eventId} {
+      allow read:   if isAuthed() && ownsOrg(resource.data.orgId);
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && validScope(request.resource.data)
+                    && boundedString(request.resource.data.title, 1, 200);
+      allow update: if isOrgStaff() && ownsOrg(resource.data.orgId) && orgUnchanged() && pantryUnchanged();
+      allow delete: if isOrgStaff() && ownsOrg(resource.data.orgId);
+    }
+
+    // ── Special closures ─────────────────────────────────────────────────
+    match /closures/{closureId} {
+      allow read:   if isAuthed() && ownsOrg(resource.data.orgId);
+      allow create: if isOrgStaff() && ownsOrg(request.resource.data.orgId) && validScope(request.resource.data);
+      allow update: if isOrgStaff() && ownsOrg(resource.data.orgId) && orgUnchanged();
+      allow delete: if isOrgStaff() && ownsOrg(resource.data.orgId);
+    }
+
+    // ── Activity log ─────────────────────────────────────────────────────
+    // Append-only. An audit trail that can be edited or deleted is not an
+    // audit trail.
+    match /activity/{entryId} {
+      allow read:   if isAuthed() && ownsOrg(resource.data.orgId);
+      allow create: if isOrgStaff()
+                    && ownsOrg(request.resource.data.orgId)
+                    && validScope(request.resource.data)
+                    && request.resource.data.operatorId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ── Pantry claims ("Claim my pantry") ────────────────────────────────
+    // Anyone signed in with a verified email may ask to manage a listed
+    // pantry; they need no claims yet. Only a state admin can approve, via
+    // the reviewPantryClaim function, which is the only writer after create.
+    match /pantryClaims/{claimId} {
+      function validClaim(d) {
+        return d.keys().hasOnly(['claimantUid', 'claimantEmail', 'pantryId', 'pantryName', 'county',
+                                 'contactName', 'contactPhone', 'roleAtPantry', 'message', 'status', 'createdAt'])
+            && d.keys().hasAll(['claimantUid', 'claimantEmail', 'pantryId', 'pantryName', 'county',
+                                'contactName', 'contactPhone', 'roleAtPantry', 'message', 'status', 'createdAt'])
+            && d.claimantUid == request.auth.uid
+            && d.claimantEmail == request.auth.token.email
+            && boundedString(d.pantryId, 1, 128)
+            && boundedString(d.pantryName, 1, 200)
+            && boundedString(d.county, 1, 40)
+            && boundedString(d.contactName, 1, 120)
+            && boundedString(d.contactPhone, 7, 30)
+            && boundedString(d.roleAtPantry, 1, 120)
+            && boundedString(d.message, 0, 1000)
+            && d.status == 'pending'
+            && d.createdAt == request.time;
+      }
+
+      allow create: if verifiedEmail() && validClaim(request.resource.data);
+      allow read:   if isAuthed() && (resource.data.claimantUid == request.auth.uid || isStateAdmin());
+      allow update, delete: if false;
+    }
+
+    // ── New pantry submissions ("Add an unlisted pantry") ────────────────
+    match /newPantrySubmissions/{submissionId} {
+      function validSubmission(d) {
+        return d.keys().hasOnly(['submitterUid', 'submitterEmail', 'orgName', 'pantryName', 'street', 'city',
+                                 'county', 'zip', 'phone', 'website', 'hoursText', 'contactName', 'message',
+                                 'status', 'createdAt'])
+            && d.keys().hasAll(['submitterUid', 'submitterEmail', 'orgName', 'pantryName', 'street', 'city',
+                                'county', 'zip', 'phone', 'website', 'hoursText', 'contactName', 'message',
+                                'status', 'createdAt'])
+            && d.submitterUid == request.auth.uid
+            && d.submitterEmail == request.auth.token.email
+            && boundedString(d.orgName, 0, 200)
+            && boundedString(d.pantryName, 1, 200)
+            && boundedString(d.street, 1, 200)
+            && boundedString(d.city, 1, 100)
+            && boundedString(d.county, 1, 40)
+            && d.zip is string && d.zip.matches('^[0-9]{5}$')
+            && boundedString(d.phone, 7, 30)
+            && boundedString(d.website, 0, 300)
+            && boundedString(d.hoursText, 1, 500)
+            && boundedString(d.contactName, 1, 120)
+            && boundedString(d.message, 0, 1000)
+            && d.status == 'pending'
+            && d.createdAt == request.time;
+      }
+
+      allow create: if verifiedEmail() && validSubmission(request.resource.data);
+      allow read:   if isAuthed() && (resource.data.submitterUid == request.auth.uid || isStateAdmin());
+      allow update, delete: if false;
+    }
+
+    // Anything not matched above is denied.
     match /{document=**} {
       allow read, write: if false;
     }
