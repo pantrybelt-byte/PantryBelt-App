@@ -312,7 +312,7 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     geohash: 'djfq1234',
     phone: '(334) 555-0000',
     website: '',
-    eligibility: '',
+    eligibilityNotes: '',
     hours: 'Mon-Fri 9am-3pm',
     operatorPortalAccess: true,
     operatorUid: OPERATOR_UID,
@@ -398,7 +398,7 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     await assertSucceeds(updateDoc(doc(db, 'agencies', AGENCY_ID), {
       phone: '(334) 555-1234',
       website: 'https://mypantry.org',
-      eligibility: 'All Dallas County residents',
+      eligibilityNotes: 'All Dallas County residents',
       hours: 'Mon-Sat 8am-4pm',
       structuredHours: {
         monday: { open: '09:00', close: '15:00', closed: false },
@@ -437,6 +437,34 @@ describe('Operator Portal self-service update (Phase 5)', () => {
       updatedAt: serverTimestamp(),
       lastOperatorEdit: serverTimestamp(),
     }));
+  });
+
+  test('DENIED: legacy `eligibility` key is no longer writable (mobile reads eligibilityNotes)', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      eligibility: 'All Dallas County residents',
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('DENIED: wrong-typed eligibilityNotes is rejected', async () => {
+    await seedAgency();
+    const db = portalOperator(OPERATOR_UID).firestore();
+    await assertFails(updateDoc(doc(db, 'agencies', AGENCY_ID), {
+      eligibilityNotes: 42,
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
+  test('operatorUid is type-checked on the org-staff path (string or null only)', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), { operatorUid: 123 }));
+    await assertSucceeds(updateDoc(doc(staff, 'agencies', AGENCY_ID), { operatorUid: 'op-2' }));
+    await assertSucceeds(updateDoc(doc(staff, 'agencies', AGENCY_ID), { operatorUid: null }));
   });
 
   test('DENIED: wrong-typed phone or website is rejected', async () => {

@@ -67,13 +67,14 @@ service cloud.firestore {
     function validAgencyOptionalFields(data) {
       return (!('socialMedia' in data) || data.socialMedia == null || data.socialMedia is list)
           && (!('operatorPortalAccess' in data) || data.operatorPortalAccess is bool)
-          && (!('miniProfile' in data) || data.miniProfile == null || data.miniProfile is map);
+          && (!('miniProfile' in data) || data.miniProfile == null || data.miniProfile is map)
+          && (!('operatorUid' in data) || data.operatorUid == null || data.operatorUid is string);
     }
 
     function validOperatorSelfServiceFields(data) {
       return (!('phone' in data) || data.phone is string)
           && (!('website' in data) || data.website is string)
-          && (!('eligibility' in data) || data.eligibility is string)
+          && (!('eligibilityNotes' in data) || data.eligibilityNotes is string)
           && (!('hours' in data) || (data.hours is string && data.hours.size() <= 300))
           && (!('structuredHours' in data) || (data.structuredHours is map && data.structuredHours.size() <= 7));
     }
@@ -314,7 +315,7 @@ service cloud.firestore {
             && resource.data.operatorPortalAccess == true
             && resource.data.operatorUid == request.auth.uid
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-                 'phone', 'website', 'eligibility', 'hours',
+                 'phone', 'website', 'eligibilityNotes', 'hours',
                  'structuredHours', 'updatedAt', 'lastOperatorEdit'
                ])
             && validAgencyOptionalFields(request.resource.data)
