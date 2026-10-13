@@ -68,7 +68,14 @@ service cloud.firestore {
       return (!('socialMedia' in data) || data.socialMedia == null || data.socialMedia is list)
           && (!('operatorPortalAccess' in data) || data.operatorPortalAccess is bool)
           && (!('miniProfile' in data) || data.miniProfile == null || data.miniProfile is map)
-          && (!('operatorUid' in data) || data.operatorUid == null || data.operatorUid is string);
+          && (!('operatorUid' in data) || data.operatorUid == null || data.operatorUid is string)
+          // Live open/closed state shown on the pantry's detail screen:
+          // { isOpen: bool, note: string (<=280), updatedAt?: timestamp }.
+          && (!('liveStatus' in data) || data.liveStatus == null
+              || (data.liveStatus is map
+                  && data.liveStatus.isOpen is bool
+                  && data.liveStatus.note is string && data.liveStatus.note.size() <= 280
+                  && (!('updatedAt' in data.liveStatus) || data.liveStatus.updatedAt is timestamp)));
     }
 
     // ── Agency field ownership ──────────────────────────────────────────────
@@ -85,7 +92,7 @@ service cloud.firestore {
         'name', 'locationType', 'status', 'county', 'coordinates', 'geohash',
         'address', 'hours', 'structuredHours', 'phone', 'website', 'socialMedia',
         'eligibilityNotes', 'eligibility', 'docsRequired', 'serviceRadiusMiles', 'capacity',
-        'tags', 'miniProfile', 'updatedAt', 'lastOperatorEdit'
+        'tags', 'miniProfile', 'liveStatus', 'updatedAt', 'lastOperatorEdit'
       ]);
     }
 
@@ -344,7 +351,7 @@ service cloud.firestore {
             && resource.data.operatorUid == request.auth.uid
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
                  'phone', 'website', 'eligibilityNotes', 'eligibility', 'hours',
-                 'structuredHours', 'updatedAt', 'lastOperatorEdit'
+                 'structuredHours', 'liveStatus', 'updatedAt', 'lastOperatorEdit'
                ])
             && validAgencyOptionalFields(request.resource.data)
             && validOperatorSelfServiceFields(request.resource.data)

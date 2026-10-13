@@ -515,6 +515,27 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     await assertSucceeds(setDoc(doc(staff, 'agencies', 'new-4'), { ...base, verified: false }));
   });
 
+  test('liveStatus: org staff and self-service operator may set it; shape is validated', async () => {
+    await seedAgency();
+    const staff = operator('staff-1', 'org_staff', 'org-portal', ['Dallas'], true).firestore();
+    await assertSucceeds(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: false, note: 'Back at 2pm', updatedAt: serverTimestamp() },
+      lastOperatorEdit: serverTimestamp(),
+    }));
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: 'yes', note: '' },
+    }));
+    await assertFails(updateDoc(doc(staff, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: true, note: 'x'.repeat(281) },
+    }));
+    const op = portalOperator(OPERATOR_UID).firestore();
+    await assertSucceeds(updateDoc(doc(op, 'agencies', AGENCY_ID), {
+      liveStatus: { isOpen: true, note: '', updatedAt: serverTimestamp() },
+      updatedAt: serverTimestamp(),
+      lastOperatorEdit: serverTimestamp(),
+    }));
+  });
+
   test('DENIED: wrong-typed phone or website is rejected', async () => {
     await seedAgency();
     const db = portalOperator(OPERATOR_UID).firestore();
