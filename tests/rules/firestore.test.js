@@ -33,6 +33,7 @@ const {
   where,
   getDocs,
   serverTimestamp,
+  Timestamp,
 } = require('firebase/firestore');
 
 let testEnv;
@@ -572,5 +573,100 @@ describe('Operator Portal self-service update (Phase 5)', () => {
     );
     const result = await assertSucceeds(getDocs(q));
     assert.ok(result.size > 0, 'Query should return at least 1 agency');
+  });
+});
+
+describe('Shift Mode live status, pantry alerts and the retired resources collection', () => {
+  const AGENCY_ID = 'shift-agency-1';
+  const AGENCY_DOC = {
+    orgId: 'org-shift',
+    name: 'Shift Test Pantry',
+    county: 'Dallas',
+    status: 'active',
+    verified: false,
+    coordinates: { lat: 32.407, lng: -87.021 },
+    geohash: 'djfq1234',
+  };
+  const inHours = (h) => Timestamp.fromMillis(Date.now() + h * 3_600_000);
+
+  async function seed() {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'agencies', AGENCY_ID), AGENCY_DOC);
+      await setDoc(doc(ctx.firestore(), 'resources', 'old-1'), AGENCY_DOC);
+    });
+  }
+
+  const staff = () => operator('shift-staff', 'org_staff', 'org-shift', ['Dallas'], true).firestore();
+  const otherOrg = () => operator('other-staff', 'org_staff', 'org-other', ['Dallas'], true).firestore();
+  const anon = () => testEnv.authenticatedContext('anon-1', { firebase: { sign_in_provider: 'anonymous' } }).firestore();
+
+  test('ALLOWED: 4-state status with wait time and expiry', async () => {
+    await seed();
+    await assertSucceeds(updateDoc(doc(staff(), 'agencies', AGENCY_ID), {
+      liveStatus: { state: 'closing_early', isOpen: true, note: 'Closing at 2', waitMinutes: 20, updatedAt: serverTimestamp(), expiresAt: inHours(4) },
+    }));
+    await assertSucceeds(updateDoc(doc(staff(), 'agencies', AGENCY_ID), {
+      liveStatus: { state: 'emergency_closed', isOpen: false, note: 'Out of food', waitMinutes: null, updatedAt: serverTimestamp(), expiresAt: inHours(6) },
+    }));
+  });
+
+  test('DENIED: state that disagrees with isOpen, bad wait, far expiry, unknown keys', async () => {
+    await seed();
+    const bad = [
+      { state: 'closed', isOpen: true, note: '' },
+      { state: 'busy', isOpen: true, note: '' },
+      { state: 'open', isOpen: true, note: '', waitMinutes: 900 },
+      { state: 'open', isOpen: true, note: '', waitMinutes: 12.5 },
+      { state: 'open', isOpen: true, note: '', expiresAt: inHours(48) },
+      { state: 'open', isOpen: true, note: '', capacity: 50 },
+    ];
+    for (const liveStatus of bad) {
+      await assertFails(updateDoc(doc(staff(), 'agencies', AGENCY_ID), { liveStatus }));
+    }
+  });
+
+  test('DENIED: no client may write the retired resources collection', async () => {
+    await seed();
+    await assertFails(updateDoc(doc(staff(), 'resources', 'old-1'), { phone: '3345550100' }));
+    await assertFails(setDoc(doc(staff(), 'resources', 'new-1'), AGENCY_DOC));
+  });
+
+  const alert = (overrides = {}) => ({
+    orgId: 'org-shift', pantryId: AGENCY_ID, pantryName: 'Shift Test Pantry', county: 'Dallas',
+    title: 'Closing early', message: 'Storm warning', language: 'English', priority: 'urgent',
+    createdBy: 'shift-staff', createdAt: serverTimestamp(), expiresAt: inHours(6), ...overrides,
+  });
+
+  test('ALLOWED: staff post an alert for their own pantry; anonymous app users can read it', async () => {
+    await seed();
+    await assertSucceeds(setDoc(doc(staff(), 'broadcasts', 'b1'), alert()));
+    await assertSucceeds(getDoc(doc(anon(), 'broadcasts', 'b1')));
+  });
+
+  test('DENIED: alerts for another org, another county, spoofed author, long expiry, or from anonymous', async () => {
+    await seed();
+    await assertFails(setDoc(doc(otherOrg(), 'broadcasts', 'b2'), alert({ orgId: 'org-other', createdBy: 'other-staff' })));
+    await assertFails(setDoc(doc(staff(), 'broadcasts', 'b3'), alert({ county: 'Wilcox' })));
+    await assertFails(setDoc(doc(staff(), 'broadcasts', 'b4'), alert({ createdBy: 'someone-else' })));
+    await assertFails(setDoc(doc(staff(), 'broadcasts', 'b5'), alert({ expiresAt: inHours(24 * 8) })));
+    await assertFails(setDoc(doc(anon(), 'broadcasts', 'b6'), alert()));
+  });
+
+  test('ALLOWED: staff edit text or delete their alert; DENIED: moving it to another pantry', async () => {
+    await seed();
+    await assertSucceeds(setDoc(doc(staff(), 'broadcasts', 'b7'), alert()));
+    await assertSucceeds(updateDoc(doc(staff(), 'broadcasts', 'b7'), { message: 'Updated' }));
+    await assertFails(updateDoc(doc(staff(), 'broadcasts', 'b7'), { county: 'Wilcox' }));
+    await assertFails(deleteDoc(doc(otherOrg(), 'broadcasts', 'b7')));
+    await assertSucceeds(deleteDoc(doc(staff(), 'broadcasts', 'b7')));
+  });
+
+  test('waitlist requires sms_consent and a phone only with opt-in', async () => {
+    const db = testEnv.unauthenticatedContext().firestore();
+    const base = { name: 'Ann', email: 'ann@example.com', created_at: serverTimestamp() };
+    await assertSucceeds(setDoc(doc(db, 'waitlist', 'w1'), { ...base, sms_consent: false }));
+    await assertSucceeds(setDoc(doc(db, 'waitlist', 'w2'), { ...base, sms_consent: true, phone_sms: '+13345550100' }));
+    await assertFails(setDoc(doc(db, 'waitlist', 'w3'), base));
+    await assertFails(setDoc(doc(db, 'waitlist', 'w4'), { ...base, sms_consent: false, phone_sms: '+13345550100' }));
   });
 });
