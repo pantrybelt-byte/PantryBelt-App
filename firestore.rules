@@ -71,6 +71,32 @@ service cloud.firestore {
           && (!('operatorUid' in data) || data.operatorUid == null || data.operatorUid is string);
     }
 
+    // ── Agency field ownership ──────────────────────────────────────────────
+    // `verified`, `operatorUid` and `operatorPortalAccess` drive the map's
+    // verified/green pin tier, so a pantry's own org staff must not be able to
+    // grant them to themselves. Only a state_admin (or the Admin SDK, which
+    // bypasses rules) may write them.
+    //
+    // Update path: non-state-admins get an explicit allow-list. Anything not
+    // named here (verified, operatorUid, operatorPortalAccess, orgId,
+    // createdBy, createdAt, and any future field) is rejected by default.
+    function orgStaffEditableAgencyFields(data) {
+      return data.diff(resource.data).affectedKeys().hasOnly([
+        'name', 'locationType', 'status', 'county', 'coordinates', 'geohash',
+        'address', 'hours', 'structuredHours', 'phone', 'website', 'socialMedia',
+        'eligibilityNotes', 'docsRequired', 'serviceRadiusMiles', 'capacity',
+        'tags', 'miniProfile', 'updatedAt', 'lastOperatorEdit'
+      ]);
+    }
+
+    // Create path: a non-state-admin may not create an agency that is already
+    // verified or already has an operator attached.
+    function noPrivilegedAgencyFields(data) {
+      return (!('verified' in data) || data.verified == false)
+          && (!('operatorUid' in data) || data.operatorUid == null)
+          && (!('operatorPortalAccess' in data) || data.operatorPortalAccess == false);
+    }
+
     function validOperatorSelfServiceFields(data) {
       return (!('phone' in data) || data.phone is string)
           && (!('website' in data) || data.website is string)
@@ -300,9 +326,9 @@ service cloud.firestore {
       // that pattern is unreliable for collection queries (Firestore cannot guarantee resource.data
       // access during list evaluation), causing permission-denied on the agencies query in the app.
       allow read: if isAuthed() && (resource.data.status == 'active' || hasOrgAccess(resource.data.orgId) || isStateAdmin());
-      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data));
+      allow create: if operatorWriteAllowed() && (isOrgStaff() && ownsOrg(request.resource.data.orgId) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data) && (isStateAdmin() || noPrivilegedAgencyFields(request.resource.data)));
       allow update: if
-          (operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data)))
+          (operatorWriteAllowed() && (isOrgStaff() && hasOrgAccess(resource.data.orgId) && orgUnchanged() && countyOk(resource.data.county) && countyOk(request.resource.data.county) && validResourceStatus(request.resource.data.status) && validCoordinates(request.resource.data) && validGeohash(request.resource.data) && validAgencyOptionalFields(request.resource.data) && (isStateAdmin() || orgStaffEditableAgencyFields(request.resource.data))))
           ||
           // ── Phase 5: Operator Portal self-service edit ──
           // A pantry operator (email/password account, operatorUid on the doc)
